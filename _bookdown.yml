@@ -3,7 +3,7 @@ book_filename: "NdML"
 repo: https://github.com/highlando/script-ndml
 output_dir: docs
 rmd_files: ["index.Rmd",
-            # "vl_01.Rmd",
+            "01_introduction.Rmd",
             # "vl_02.Rmd",
             # "vl_03.Rmd",
             # "vl_04.Rmd",
