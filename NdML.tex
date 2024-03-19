@@ -80,6 +80,23 @@
 \author{Jan Heiland}
 \date{TU Ilmenau -- Sommersemester 2024}
 
+\usepackage{amsthm}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}{Lemma}[chapter]
+\newtheorem{corollary}{Corollary}[chapter]
+\newtheorem{proposition}{Proposition}[chapter]
+\newtheorem{conjecture}{Conjecture}[chapter]
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[chapter]
+\theoremstyle{definition}
+\newtheorem{example}{Example}[chapter]
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}[chapter]
+\theoremstyle{definition}
+\newtheorem{hypothesis}{Hypothesis}[chapter]
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+\newtheorem*{solution}{Solution}
 \begin{document}
 \maketitle
 
@@ -101,21 +118,77 @@ Korrekturen und Wünsche immer gerne als \emph{issues} oder \emph{pull requests}
 
 What is \emph{Numerical Methods for Machine Learning}? (ML)
 
-In short, for training an ML model, a computer steps through millions of instructions that are formulated in terms of mathematical expressions.
-Same holds for evaluating a model.
+In short, for the training of an ML model, a computer steps through millions of instructions that are formulated in terms of mathematical expressions.
+Same holds for the evaluation of such a model.
 
-In order to describe we introduce the general concepts
+In order to describe what is happening and for the analysis later, we introduce the general concepts
 
 \begin{itemize}
 \tightlist
 \item
   algorithm
 \item
-  exception
+  methods
 \item
   accuracy
 \item
   stability
+\item
+  exception
+\end{itemize}
+
+some of which are classical \emph{numerical analysis}.
+
+Curiously, the term \emph{algorithm} is similarly intuitive and abstract. It took great efforts to come up with a general and concise definition that would meet requirements and limitations of all fields (ranging from, say, \emph{cooking recipes} to the analysis of of \emph{formal languages}).
+
+\begin{definition}[Algorithm]
+\protect\hypertarget{def:algorithm}{}\label{def:algorithm}A problem solution procedure is called an \emph{algorithm} if, and only if, there exists a \emph{Turing machine} that is equivalent to the procedure and that, for every input for which a solution exists, \emph{stops}.
+\end{definition}
+
+This definition is not too helpful in its generality -- we haven't even defined what is a Turing machine.
+
+\leavevmode\hypertarget{rem-coors}{}%
+\begin{JHSAYS}
+A \emph{Turing machine} can be described as a machine that reads a strip of instructions and that can write onto this strip. Depending on what it reads it may move forward, move backward, or stop (when the strip has reached a predefined state). The beauty is that this setup can be put into an entirely mathematical framework.
+
+\end{JHSAYS}
+
+It is more helpful and more common, to look at the implications of this definition to check if a procedure has at least the necessary conditions for being an algorithm
+
+\begin{itemize}
+\tightlist
+\item
+  The algorithm is described by finitely many instructions (finiteness).
+\item
+  Every step is \emph{feasible}.
+\item
+  The algorithm requires a finite amount of memory.
+\item
+  It will finish after finitely many steps.
+\item
+  At every step, the next step is uniquely defined (\emph{deterministic}).
+\item
+  For the same initial state, it will stop at the same final state (\emph{determined}).
+\end{itemize}
+
+Thus, an informal good-practice definition of an algorithm could be
+
+\begin{definition}[Algorithm -- informally]
+\protect\hypertarget{def:info-algorithm}{}\label{def:info-algorithm}An procedure of finitely many instructions that deterministically defines a determined solution to a problem -- if it exsists -- in finitely many steps is called an algorithm.
+\end{definition}
+
+\leavevmode\hypertarget{rem-coors}{}%
+\begin{JHSAYS}
+Note how some properties (like finitely many instructions) are assumed a-priori.
+
+\end{JHSAYS}
+
+Further reading:
+
+\begin{itemize}
+\tightlist
+\item
+  \href{https://de.wikipedia.org/wiki/Algorithmus\#Definition}{wikipedia:Algorithmus}
 \end{itemize}
 
 \hypertarget{referenzen}{%
