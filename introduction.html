@@ -103,13 +103,14 @@
 <h1><span class="header-section-number">1</span> Introduction<a href="introduction.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>What is <em>Numerical Methods for Machine Learning</em>? (ML)</p>
 <p>In short, for the training of an ML model, a computer steps through millions of instructions that are formulated in terms of mathematical expressions.
-Same holds for the evaluation of such a model.</p>
-<p>In order to describe what is happening and for the analysis later, we introduce the general concepts</p>
+Same holds for the evaluation of such a model.
+Then questions arise like <em>will there be a point when the training is comes to an end?</em> and <em>will the model be accurate?</em>.</p>
+<p>In order to describe what is happening and for the analysis later, we introduce the general concepts of</p>
 <ul>
 <li>algorithm</li>
-<li>methods</li>
-<li>accuracy</li>
+<li>consistency/accuracy</li>
 <li>stability</li>
+<li>computational effort</li>
 <li>exception</li>
 </ul>
 <p>some of which are classical <em>numerical analysis</em>.</p>
@@ -121,7 +122,7 @@ Same holds for the evaluation of such a model.</p>
 <div id="rem-coors" class="JHSAYS">
 <p>A <em>Turing machine</em> can be described as a machine that reads a strip of instructions and that can write onto this strip. Depending on what it reads it may move forward, move backward, or stop (when the strip has reached a predefined state). The beauty is that this setup can be put into an entirely mathematical framework.</p>
 </div>
-<p>It is more helpful and more common, to look at the implications of this definition to check if a procedure has at least the necessary conditions for being an algorithm</p>
+<p>It is more helpful and more common, to look at the implications of this definition to check if a procedure meets at least the necessary conditions for being an algorithm</p>
 <ul>
 <li>The algorithm is described by finitely many instructions (finiteness).</li>
 <li>Every step is <em>feasible</em>.</li>
@@ -132,11 +133,35 @@ Same holds for the evaluation of such a model.</p>
 </ul>
 <p>Thus, an informal good-practice definition of an algorithm could be</p>
 <div class="definition">
-<p><span id="def:info-algorithm" class="definition"><strong>Definition 1.2  (Algorithm -- informally) </strong></span>An procedure of finitely many instructions that deterministically defines a determined solution to a problem – if it exsists – in finitely many steps is called an algorithm.</p>
+<p><span id="def:info-algorithm" class="definition"><strong>Definition 1.2  (Algorithm -- informally) </strong></span>An procedure of finitely many instructions is called an <em>algorithm</em> if it computes a determined solution – if it exsists – to a problem in finitely many steps.</p>
 </div>
 <div id="rem-coors" class="JHSAYS">
 <p>Note how some properties (like finitely many instructions) are assumed a-priori.</p>
 </div>
+<p>As an even more informal reference to algorithms we will use the term <strong>_ (numerical) method_</strong> or <strong><em>scheme</em></strong> to address a procedure by listing its underlying ideas and sub procedures, whereas <em>algorithm</em> will refer to a specific realization of a <em>method</em>.</p>
+<p>Furthermore, we will distinguish</p>
+<ul>
+<li><em>direct</em> methods – that compute the solution exactly (like the solution of a linear system by <em>Gauss elimination</em>) and</li>
+<li><em>iterative</em> methods – that iteratively compute a sequence of approximations to the solution (like the computation of roots using a <em>Newton scheme</em>).</li>
+</ul>
+<p>For the analysis of numerical methods the following terms are generally used:</p>
+<div class="definition">
+<p><span id="def:consistency" class="definition"><strong>Definition 1.3  (Consistency) </strong></span>If, in exact arithmetics, an algorithm computes the solution to the problem with a given accuracy, it is called <em>consistent</em>.</p>
+</div>
+<div class="definition">
+<p><span id="def:stability" class="definition"><strong>Definition 1.4  (Stability (informal)) </strong></span>If the output of an algorithm depends continously on differences in the input and continously on differences in the instructions, then the algorithm is called <em>stable</em>.</p>
+</div>
+<p>The <em>differences in the instructions</em> are typically due to rounding errors as they occur in <em>inexact arithmetics</em>.</p>
+<div id="rem-coors" class="JHSAYS">
+<p>One could say that an algorithm is consistent if <em>it does the right thing</em> and that is stable <em>if it works despite all kinds of small inaccuracies</em>. If an algorithm is consistent and stable, it is often called <em>convergent</em> to express that it will eventually compute the solution even in inexact arithmetics.</p>
+</div>
+<p>However, terms like</p>
+<ul>
+<li><em>accuracy</em> – how close the computed output matches that actual solution or</li>
+<li><em>convergence</em> – how fast (typically with respect to the computational effort) the algorithm approaches the actual solution</li>
+</ul>
+<p>are not intrinsic properties of an algorithm because they depend on the problem that is to be solved.
+However, one can talk of <em>order consistency</em> of an algorithm to specify the expected accuracy for a class or problems and call an algorithm convergent or a certain order if it is stable too.</p>
 <p>Further reading:</p>
 <ul>
 <li><a href="https://de.wikipedia.org/wiki/Algorithmus#Definition">wikipedia:Algorithmus</a></li>

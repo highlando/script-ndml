@@ -1,3 +1,5 @@
 def:algorithm
 def:info-algorithm
+def:consistency
+def:stability
 introduction
