@@ -4,3 +4,7 @@ def:consistency
 def:stability
 def:landau-symbs
 introduction
+what-is-an-algorithm
+consistency-stability-accuracy
+computational-complexity
+exercises

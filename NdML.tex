@@ -46,6 +46,46 @@
   urlcolor=purple,
   pdfcreator={LaTeX via pandoc}}
 \urlstyle{same} % disable monospaced font for URLs
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 \usepackage{longtable,booktabs}
 % Correct order of tables after \paragraph or \subparagraph
 \usepackage{etoolbox}
@@ -138,6 +178,9 @@ In order to describe what is happening and for the analysis later, we introduce 
 
 some of which are classical \emph{numerical analysis}.
 
+\hypertarget{what-is-an-algorithm}{%
+\section{What is an Algorithm}\label{what-is-an-algorithm}}
+
 Curiously, the term \emph{algorithm} is similarly intuitive and abstract. It took great efforts to come up with a general and concise definition that would meet requirements and limitations of all fields (ranging from, say, \emph{cooking recipes} to the analysis of of \emph{formal languages}).
 
 \begin{definition}[Algorithm]
@@ -194,6 +237,9 @@ Furthermore, we will distinguish
   \emph{iterative} methods -- that iteratively compute a sequence of approximations to the solution (like the computation of roots using a \emph{Newton scheme}).
 \end{itemize}
 
+\hypertarget{consistency-stability-accuracy}{%
+\section{Consistency, Stability, Accuracy}\label{consistency-stability-accuracy}}
+
 For the analysis of numerical methods the following terms are generally used:
 
 \begin{definition}[Consistency]
@@ -225,21 +271,102 @@ Note that terms like
 are not intrinsic properties of an algorithm because they depend on the problem that is to be solved.
 However, one can talk of \emph{order consistency} of an algorithm to specify the expected accuracy for a class or problems and call an algorithm convergent or a certain order if it is stable too.
 
+\hypertarget{computational-complexity}{%
+\section{Computational Complexity}\label{computational-complexity}}
+
 The \emph{computational complexity} of an algorithm is important both theoretically (to estimate how the effort scales with, say, the size of the problem) and practically (to say how long the procedure will last and which costs in terms of CPU time or memory usage it will generate).
 
 Typically, the complexity is measured by counting the elementary operations, often referred to as \emph{FLOP}s, which is short for \emph{floating point operations}.
 To classify the algorithms in terms of complexity versus problem size the following function classes are helpful
 
-\begin{definition}[Landau Symbols]
-\protect\hypertarget{def:landau-symbs}{}\label{def:landau-symbs}Let \(g\colon \mathbb R^{} \to \mathbb R^{}\) with \(g(x)\to \infty\), as \(x\to \infty\). Then we say for a function \(f\colon \mathbb R \to \mathbb R^{}\) that \(f\in O(g)\) if
+\begin{definition}[Landau Symbols or big O notation]
+\protect\hypertarget{def:landau-symbs}{}\label{def:landau-symbs}Let \(g\colon \mathbb R^{} \to \mathbb R^{}\) and \(a\in\mathbb R^{} \cup \{-\infty, +\infty\}\). Then we say for a function \(f\colon \mathbb R \to \mathbb R^{}\) that \(f\in O(g)\) if
 \begin{equation*}
-\limsup_{x\to \infty} \frac{|f(x)|}{|g(x)|} < \infty
+\limsup_{x\to a} \frac{|f(x)|}{|g(x)|} < \infty
 \end{equation*}
 and that \(f\in o(g)\) if
 \begin{equation*}
-\limsup_{x\to \infty} \frac{|f(x)|}{|g(x)|} = 0.
+\limsup_{x\to a} \frac{|f(x)|}{|g(x)|} = 0.
 \end{equation*}
 \end{definition}
+
+The sense and functionality of these concepts might become clear from looking at the typical applications:
+
+\begin{itemize}
+\tightlist
+\item
+  if \(h> 0\) is a discretization parameter and, say, \(e(h)\) is the discretization error, then we may say that \(e(h) = O(h^2)\), if \emph{asymptotically}, i.e.~for ever smaller \(h\) -- the error approaches \(0\) at least as fast as \(h^2\)
+\item
+  if \(C(n)\) is the complexity of an algorithm for a problem size \(n\), than we could say that \(C(n) = O(n)\) to express that the complexity grows \emph{asymptotically}, i.e.~for ever larger \(n\), at the same speed as the problem size
+\end{itemize}
+
+Unfortunately, the common use of the Landau symbols is a bit sloppy.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  the often used ``\(=\)''-sign is informal and by no means an equality
+\item
+  what is the limit \(a\) is hardly ever mentioned explicitly but fortunately generally clear from the context
+\end{enumerate}
+
+As an example we look at two different ways to evaluate a polynomial \(p\) of the degree \(n\) at the abscissa \(x\) based on the two equivalent representations
+\begin{equation*}
+\begin{split}
+p(x) &= a_0 + a_1x +  a_2x^2+ \dotsm + a_nx^n \\
+     &= a_0 + x(a_1 + x(a_2 + \dotsm +x(a_{n-1} + a_nx) \dotsm ))
+\end{split}
+\end{equation*}
+
+For a direct implementation of the first representation we obtain
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\textquotesingle{}\textquotesingle{}\textquotesingle{}evaluation of p(x) in standard representation}
+\CommentTok{\textquotesingle{}\textquotesingle{}\textquotesingle{}}
+\NormalTok{n }\OperatorTok{=} \DecValTok{10}                                      \CommentTok{\# example value for n}
+\NormalTok{ais }\OperatorTok{=}\NormalTok{ [(}\OperatorTok{{-}}\DecValTok{1}\NormalTok{)}\OperatorTok{**}\NormalTok{k}\OperatorTok{*}\DecValTok{1}\OperatorTok{/}\NormalTok{k }\ControlFlowTok{for}\NormalTok{ k }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(}\DecValTok{1}\NormalTok{, n}\OperatorTok{+}\DecValTok{2}\NormalTok{)]  }\CommentTok{\# list of example coefficients}
+\NormalTok{x }\OperatorTok{=} \DecValTok{5}                                       \CommentTok{\# an example value for x}
+\NormalTok{cpx }\OperatorTok{=}\NormalTok{ ais[}\DecValTok{0}\NormalTok{]                                }\CommentTok{\# the k=0 case}
+\ControlFlowTok{for}\NormalTok{ k }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(n):}
+\NormalTok{    cpx }\OperatorTok{=}\NormalTok{ cpx }\OperatorTok{+}\NormalTok{ ais[k}\OperatorTok{+}\DecValTok{1}\NormalTok{] }\OperatorTok{*}\NormalTok{ x}\OperatorTok{**}\NormalTok{(k}\OperatorTok{+}\DecValTok{1}\NormalTok{)         }\CommentTok{\# the the k{-}th contribution}
+\BuiltInTok{print}\NormalTok{(}\SpecialStringTok{f\textquotesingle{}x=}\SpecialCharTok{\{x\}}\SpecialStringTok{: p(x)=}\SpecialCharTok{\{}\NormalTok{cpx}\SpecialCharTok{:.4f\}}\SpecialStringTok{\textquotesingle{}}\NormalTok{)             }\CommentTok{\# print the output }
+\end{Highlighting}
+\end{Shaded}
+
+In the \(k\)-th step, the algorithm requires one addition (if we also count the initialization as an addition) and \(k\) multiplications. That makes an overall complexity of
+\begin{equation*}
+C(n) = \sum_{k=0}^n(1+k) = n+1 + \frac{n(n-1)}{2} = 1 + \frac n2 + \frac{n^2}2 = O(n^2)
+\end{equation*}
+
+For the second representation, we can implement the so-called \emph{Horner scheme} that would read
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\textquotesingle{}\textquotesingle{}\textquotesingle{}evaluation of p(x) using the Horner scheme}
+\CommentTok{\textquotesingle{}\textquotesingle{}\textquotesingle{}}
+\NormalTok{n }\OperatorTok{=} \DecValTok{10}                                      \CommentTok{\# example value for n}
+\NormalTok{ais }\OperatorTok{=}\NormalTok{ [(}\OperatorTok{{-}}\DecValTok{1}\NormalTok{)}\OperatorTok{**}\NormalTok{k}\OperatorTok{*}\DecValTok{1}\OperatorTok{/}\NormalTok{k }\ControlFlowTok{for}\NormalTok{ k }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(}\DecValTok{1}\NormalTok{, n}\OperatorTok{+}\DecValTok{2}\NormalTok{)]  }\CommentTok{\# list of example coefficients}
+\NormalTok{x }\OperatorTok{=} \DecValTok{5}                                       \CommentTok{\# an example value for x}
+\NormalTok{cpx }\OperatorTok{=}\NormalTok{ ais[n]                                }\CommentTok{\# the k=n case}
+\ControlFlowTok{for}\NormalTok{ k }\KeywordTok{in} \BuiltInTok{reversed}\NormalTok{(}\BuiltInTok{range}\NormalTok{(n)):                }
+\NormalTok{    cpx }\OperatorTok{=}\NormalTok{ ais[k] }\OperatorTok{+}\NormalTok{ x}\OperatorTok{*}\NormalTok{cpx                    }\CommentTok{\# the the k{-}th contribution}
+\BuiltInTok{print}\NormalTok{(}\SpecialStringTok{f\textquotesingle{}x=}\SpecialCharTok{\{x\}}\SpecialStringTok{: p(x)=}\SpecialCharTok{\{}\NormalTok{cpx}\SpecialCharTok{:.4f\}}\SpecialStringTok{\textquotesingle{}}\NormalTok{)             }\CommentTok{\# print the output }
+\end{Highlighting}
+\end{Shaded}
+
+Overall, this scheme needs \(n+1\) additions and \(n\) multiplications, i.e.~\(2n+1\) FLOPs, so that we can say that \emph{this algorithm is \(O(n)\)}.
+
+\hypertarget{exercises}{%
+\section{Exercises}\label{exercises}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Compare the two implementations for evaluating a polynomial by plotting the complexity as a function of \(n\) and by measuring and plotting the CPU time needed for an example evaluation versus \(n\).
+\end{enumerate}
 
 Further reading:
 
