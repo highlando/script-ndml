@@ -269,7 +269,7 @@ p(x) &amp;= a_0 + a_1x +  a_2x^2+ \dotsm + a_nx^n \\
 \end{split}
 \end{equation*}\]</span></p>
 <p>For a direct implementation of the first representation we obtain</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb1-1"><a href="introduction.html#cb1-1" aria-hidden="true"></a><span class="co">&#39;&#39;&#39;evaluation of p(x) in standard representation</span></span>
+<div class="sourceCode" id="cb1"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb1-1"><a href="introduction.html#cb1-1" aria-hidden="true"></a><span class="co">&#39;&#39;&#39;computation of p(x) in standard representation</span></span>
 <span id="cb1-2"><a href="introduction.html#cb1-2" aria-hidden="true"></a><span class="co">&#39;&#39;&#39;</span></span>
 <span id="cb1-3"><a href="introduction.html#cb1-3" aria-hidden="true"></a>n <span class="op">=</span> <span class="dv">10</span>                                      <span class="co"># example value for n</span></span>
 <span id="cb1-4"><a href="introduction.html#cb1-4" aria-hidden="true"></a>ais <span class="op">=</span> [(<span class="op">-</span><span class="dv">1</span>)<span class="op">**</span>k<span class="op">*</span><span class="dv">1</span><span class="op">/</span>k <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n<span class="op">+</span><span class="dv">2</span>)]  <span class="co"># list of example coefficients</span></span>
@@ -283,7 +283,7 @@ p(x) &amp;= a_0 + a_1x +  a_2x^2+ \dotsm + a_nx^n \\
 C(n) = \sum_{k=0}^n(1+k) = n+1 + \frac{n(n-1)}{2} = 1 + \frac n2 + \frac{n^2}2 = O(n^2)
 \end{equation*}\]</span></p>
 <p>For the second representation, we can implement the so-called <em>Horner scheme</em> that would read</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb2-1"><a href="introduction.html#cb2-1" aria-hidden="true"></a><span class="co">&#39;&#39;&#39;evaluation of p(x) using the Horner scheme</span></span>
+<div class="sourceCode" id="cb2"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb2-1"><a href="introduction.html#cb2-1" aria-hidden="true"></a><span class="co">&#39;&#39;&#39;computation of p(x) using the Horner scheme</span></span>
 <span id="cb2-2"><a href="introduction.html#cb2-2" aria-hidden="true"></a><span class="co">&#39;&#39;&#39;</span></span>
 <span id="cb2-3"><a href="introduction.html#cb2-3" aria-hidden="true"></a>n <span class="op">=</span> <span class="dv">10</span>                                      <span class="co"># example value for n</span></span>
 <span id="cb2-4"><a href="introduction.html#cb2-4" aria-hidden="true"></a>ais <span class="op">=</span> [(<span class="op">-</span><span class="dv">1</span>)<span class="op">**</span>k<span class="op">*</span><span class="dv">1</span><span class="op">/</span>k <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n<span class="op">+</span><span class="dv">2</span>)]  <span class="co"># list of example coefficients</span></span>
