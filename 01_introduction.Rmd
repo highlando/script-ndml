@@ -120,7 +120,7 @@ p(x) &= a_0 + a_1x +  a_2x^2+ \dotsm + a_nx^n \\
 For a direct implementation of the first representation we obtain
 
 ```py
-'''evaluation of p(x) in standard representation
+'''computation of p(x) in standard representation
 '''
 n = 10                                      # example value for n
 ais = [(-1)**k*1/k for k in range(1, n+2)]  # list of example coefficients
@@ -139,7 +139,7 @@ C(n) = \sum_{k=0}^n(1+k) = n+1 + \frac{n(n-1)}{2} = 1 + \frac n2 + \frac{n^2}2 =
 For the second representation, we can implement the so-called *Horner scheme* that would read
 
 ```py
-'''evaluation of p(x) using the Horner scheme
+'''computation of p(x) using the Horner scheme
 '''
 n = 10                                      # example value for n
 ais = [(-1)**k*1/k for k in range(1, n+2)]  # list of example coefficients
