@@ -69,7 +69,7 @@ The *differences in the instructions* are typically due to rounding errors as th
 One could say that an algorithm is consistent if *it does the right thing* and that is stable *if it works despite all kinds of small inaccuracies*. If an algorithm is consistent and stable, it is often called *convergent* to express that it will eventually compute the solution even in inexact arithmetics.
 :::
 
-However, terms like 
+Note that terms like 
 
 * *accuracy* -- how close the computed output matches that actual solution or
 * *convergence* -- how fast (typically with respect to the computational effort) the algorithm approaches the actual solution
@@ -77,7 +77,22 @@ However, terms like
 are not intrinsic properties of an algorithm because they depend on the problem that is to be solved.
 However, one can talk of *order consistency* of an algorithm to specify the expected accuracy for a class or problems and call an algorithm convergent or a certain order if it is stable too.
 
-Finally, the *computational effort* of an algorithm is important both theoretically (to estimate how the effort scales with, say, the size of the problem) and practically (to say how long the procedure will last and which costs in terms of CPU time or memory usage it will generate).
+The *computational complexity* of an algorithm is important both theoretically (to estimate how the effort scales with, say, the size of the problem) and practically (to say how long the procedure will last and which costs in terms of CPU time or memory usage it will generate).
+
+Typically, the complexity is measured by counting the elementary operations, often referred to as *FLOP*s, which is short for *floating point operations*. 
+To classify the algorithms in terms of complexity versus problem size the following function classes are helpful
+
+::: {.definition #landau-symbs name="Landau Symbols"}
+Let $g\colon \mathbb R^{} \to \mathbb R^{}$ with $g(x)\to \infty$, as $x\to \infty$. Then we say for a function $f\colon \mathbb R \to \mathbb R^{}$ that $f\in O(g)$ if
+\begin{equation*}
+\limsup_{x\to \infty} \frac{|f(x)|}{|g(x)|} < \infty
+\end{equation*}
+and that $f\in o(g)$ if
+\begin{equation*}
+\limsup_{x\to \infty} \frac{|f(x)|}{|g(x)|} = 0.
+\end{equation*}
+
+:::
 
 Further reading: 
 
