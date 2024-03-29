@@ -3,8 +3,13 @@ def:info-algorithm
 def:consistency
 def:stability
 def:landau-symbs
+def:errors
+eq:eqn-scalar-cond
+def:condition
 introduction
 what-is-an-algorithm
 consistency-stability-accuracy
 computational-complexity
 exercises
+errors-and-conditioning
+exercises-1

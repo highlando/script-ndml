@@ -48,7 +48,7 @@ An procedure of finitely many instructions is called an *algorithm* if it comput
 Note how some properties (like finitely many instructions) are assumed a-priori.
 :::
 
-As an even more informal reference to algorithms we will use the term **_ (numerical) method_** or **_scheme_** to address a procedure by listing its underlying ideas and sub procedures, whereas *algorithm* will refer to a specific realization of a *method*.
+As an even more informal reference to algorithms we will use the term **_(numerical) method_** or **_scheme_** to address a procedure by listing its underlying ideas and sub procedures, whereas *algorithm* will refer to a specific realization of a *method*.
 
 Furthermore, we will distinguish
 
