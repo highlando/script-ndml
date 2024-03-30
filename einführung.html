@@ -185,25 +185,25 @@ Dann stellen sich Fragen wie <em>wird es einen Punkt geben, an dem das Training 
 <li>Stabilität</li>
 <li>Rechenaufwand</li>
 </ul>
-<p>ein, von denen einige klassische <em>numerische Analysen</em> sind.</p>
+<p>ein, von denen einige klassische <em>numerische Analysis</em> sind.</p>
 <div id="was-ist-ein-algorithmus" class="section level2 hasAnchor" number="1.1">
 <h2><span class="header-section-number">1.1</span> Was ist ein Algorithmus<a href="einführung.html#was-ist-ein-algorithmus" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Interessanterweise ist der Begriff <em>Algorithmus</em> ähnlich intuitiv und abstrakt. Es bedurfte großer Anstrengungen, um eine allgemeine und prägnante Definition zu finden, die den Anforderungen und Einschränkungen aller Bereiche gerecht wird (von <em>Kochrezepten</em> bis zur Analyse von <em>formalen Sprachen</em>).</p>
+<p>Interessanterweise ist der Begriff <em>Algorithmus</em> zugleich intuitiv und abstrakt. Es bedurfte großer Anstrengungen, um eine allgemeine und wohlgestellte Definition zu finden, die den Anforderungen und Einschränkungen aller Bereiche gerecht wird (von <em>Kochrezepten</em> bis zur Analyse von <em>formalen Sprachen</em>).</p>
 <div class="definition">
-<p><span id="def:algorithm" class="definition"><strong>Definition 1.1  (Algorithmus) </strong></span>Ein Problemlösungsverfahren wird als <em>Algorithmus</em> bezeichnet, wenn und nur wenn es eine <em>Turing-Maschine</em> gibt, die dem Verfahren entspricht und die, für jede Eingabe, für die eine Lösung existiert, <em>anhalten</em> wird.</p>
+<p><span id="def:algorithm" class="definition"><strong>Definition 1.1  (Algorithmus) </strong></span>Ein Problemlösungsverfahren wird als <em>Algorithmus</em> bezeichnet, genau dann wenn es eine <em>Turing-Maschine</em> gibt, die dem Verfahren entspricht und die, für jede Eingabe, für die eine Lösung existiert, <em>anhalten</em> wird.</p>
 </div>
-<p>Diese Definition ist in ihrer Allgemeinheit nicht allzu hilfreich - wir haben nicht einmal definiert, was eine Turing-Maschine ist.</p>
+<p>Diese Definition ist in ihrer Allgemeinheit nicht allzu hilfreich - wir haben noch nicht einmal definiert, was eine Turing-Maschine ist.</p>
 <div id="rem-coors" class="JHSAYS">
-<p>Eine <em>Turing-Maschine</em> kann als eine Maschine beschrieben werden, die einen Streifen von Anweisungen liest und auf diesen Streifen schreiben kann. Abhängig davon, was sie liest, kann sie vorwärts bewegen, rückwärts bewegen oder anhalten (wenn der Streifen einen vordefinierten Zustand erreicht hat). Das Schöne daran ist, dass dieses Setup in einen vollständig mathematischen Rahmen gestellt werden kann.</p>
+<p>Eine <em>Turing-Maschine</em> kann als eine Maschine beschrieben werden, die ein Band von Anweisungen liest und auf dieses Band schreiben kann. Abhängig davon, was sie liest, kann sie vorwärts bewegen, rückwärts bewegen oder anhalten (wenn das Band einen vordefinierten Zustand erreicht hat). Das Schöne daran ist, dass dieses Setup in einen vollständig mathematischen Rahmen gestellt werden kann.</p>
 </div>
 <p>Hilfreicher und gebräuchlicher ist es, die Implikationen dieser Definition zu betrachten, um zu überprüfen, ob ein Verfahren zumindest die notwendigen Bedingungen für einen Algorithmus erfüllt</p>
 <ul>
 <li>Der Algorithmus wird durch endlich viele Anweisungen beschrieben (Endlichkeit).</li>
-<li>Jeder Schritt ist <em>machbar</em>.</li>
+<li>Jeder Schritt ist <em>durchführbar</em>.</li>
 <li>Der Algorithmus erfordert eine endliche Menge an Speicher.</li>
 <li>Er wird nach endlich vielen Schritten beendet.</li>
-<li>In jedem Schritt ist der nächste Schritt eindeutig definiert (<em>deterministisch</em>).</li>
-<li>Für denselben Anfangszustand wird er im selben Endzustand anhalten (<em>bestimmt</em>).</li>
+<li>In jedem Schritt ist der nächste Schritt eindeutig definiert (<em>Determiniertheit</em>).</li>
+<li>Für denselben Anfangszustand wird er im selben Endzustand anhalten (<em>Bestimmtheit</em>).</li>
 </ul>
 <p>Somit könnte eine informelle, gute Praxisdefinition eines Algorithmus sein</p>
 <div class="definition">
@@ -212,7 +212,7 @@ Dann stellen sich Fragen wie <em>wird es einen Punkt geben, an dem das Training 
 <div id="rem-coors" class="JHSAYS">
 <p>Beachten Sie, wie einige Eigenschaften (wie endlich viele Anweisungen) a priori angenommen werden.</p>
 </div>
-<p>Als noch informelleren Verweis auf Algorithmen werden wir die Begriffe <strong><em>(numerische) Methode</em></strong> oder <strong><em>Schema</em></strong> verwenden, um ein Verfahren durch Auflistung seiner zugrundeliegenden Ideen und Unterprozeduren anzusprechen, wobei <em>Algorithmus</em> sich auf eine spezifische Realisierung einer <em>Methode</em> bezieht.</p>
+<p>Als informellere Verweise auf Algorithmen werden wir die Begriffe <strong><em>(numerische) Methode</em></strong> oder <strong><em>Schema</em></strong> verwenden, um ein Verfahren durch Auflistung seiner zugrundeliegenden Ideen und Unterprozeduren anzusprechen, wobei <em>Algorithmus</em> sich auf eine spezifische Realisierung einer <em>Methode</em> bezieht.</p>
 <p>Weiterhin unterscheiden wir</p>
 <ul>
 <li><em>direkte</em> Methoden – die die Lösung exakt berechnen (wie die Lösung eines linearen Systems durch <em>Gauß-Elimination</em>) und</li>
@@ -228,9 +228,9 @@ Dann stellen sich Fragen wie <em>wird es einen Punkt geben, an dem das Training 
 <div class="definition">
 <p><span id="def:stability" class="definition"><strong>Definition 1.4  (Stabilität (informell)) </strong></span>Wenn die Ausgabe eines Algorithmus kontinuierlich von Unterschieden in der Eingabe und kontinuierlich von Unterschieden in den Anweisungen abhängt, dann wird der Algorithmus als <em>stabil</em> bezeichnet.</p>
 </div>
-<p>Die <em>Unterschiede in den Anweisungen</em> sind typischerweise auf Rundungsfehler zurückzuführen, wie sie in <em>ungenauer Arithmetik</em> auftreten.</p>
+<p>Die <em>Unterschiede in den Anweisungen</em> sind typischerweise auf Rundungsfehler zurückzuführen, wie sie in <em>ungenauer Arithmetik</em> (oft auch als <em>Gleitkommaarithmetik</em> bezeichnet) auftreten.</p>
 <div id="rem-coors" class="JHSAYS">
-<p>Man könnte sagen, dass ein Algorithmus konsistent ist, wenn <em>er das Richtige tut</em> und dass er stabil ist, <em>wenn er trotz aller Arten von kleinen Ungenauigkeiten funktioniert</em>. Wenn ein Algorithmus konsistent und stabil ist, wird er oft als <em>konvergent</em> bezeichnet, um auszudrücken, dass er schließlich die Lösung auch in ungenauer Arithmetik berechnen wird.</p>
+<p>Man könnte sagen, dass ein Algorithmus konsistent ist, wenn <em>er das Richtige tut</em> und dass er stabil ist, <em>wenn er trotz beliebiger kleiner Ungenauigkeiten funktioniert</em>. Wenn ein Algorithmus konsistent und stabil ist, wird er oft als <em>konvergent</em> bezeichnet, um auszudrücken, dass er schließlich die Lösung auch in ungenauer Arithmetik berechnen wird.</p>
 </div>
 <p>Beachten Sie, dass Begriffe wie</p>
 <ul>
@@ -238,7 +238,7 @@ Dann stellen sich Fragen wie <em>wird es einen Punkt geben, an dem das Training 
 <li><em>Konvergenz</em> – wie schnell (typischerweise in Bezug auf den Rechenaufwand) der Algorithmus sich der tatsächlichen Lösung nähert</li>
 </ul>
 <p>keine intrinsischen Eigenschaften eines Algorithmus sind, da sie von dem zu lösenden Problem abhängen.
-Man kann jedoch von <em>Ordnungskonsistenz</em> eines Algorithmus sprechen, um die erwartete Genauigkeit für eine Klasse von Problemen zu spezifizieren, und einen Algorithmus als konvergent einer bestimmten Ordnung bezeichnen, wenn er auch stabil ist.</p>
+Man kann jedoch von <em>Konsistenzordnung</em> eines Algorithmus sprechen, um die erwartete Genauigkeit für eine Klasse von Problemen zu spezifizieren, und einen Algorithmus als konvergent einer bestimmten Ordnung bezeichnen, wenn er zusätzlich stabil ist.</p>
 </div>
 <div id="rechenkomplexität" class="section level2 hasAnchor" number="1.3">
 <h2><span class="header-section-number">1.3</span> Rechenkomplexität<a href="einführung.html#rechenkomplexität" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -257,13 +257,13 @@ und dass <span class="math inline">\(f\in o(g)\)</span>, wenn
 </div>
 <p>Der Sinn und die Funktionalität dieser Konzepte wird vielleicht deutlich, wenn man sich die typischen Anwendungen ansieht:</p>
 <ul>
-<li>Wenn <span class="math inline">\(h&gt; 0\)</span> ein Diskretisierungsparameter ist und, sagen wir, <span class="math inline">\(e(h)\)</span> der Diskretisierungsfehler ist, dann könnten wir sagen, dass <span class="math inline">\(e(h) = O(h^2)\)</span>, wenn <em>asymptotisch</em>, d.h. für immer kleinere <span class="math inline">\(h\)</span> – der Fehler mindestens so schnell wie <span class="math inline">\(h^2\)</span> gegen <span class="math inline">\(0\)</span> geht.</li>
+<li>Wenn <span class="math inline">\(h&gt; 0\)</span> ein Diskretisierungsparameter ist und, sagen wir, <span class="math inline">\(e(h)\)</span> der Diskretisierungsfehler ist, dann könnten wir sagen, dass <span class="math inline">\(e(h) = O(h^2)\)</span>, wenn <em>asymptotisch</em>, d.h. für immer kleinere <span class="math inline">\(h\)</span>, der Fehler mindestens so schnell wie <span class="math inline">\(h^2\)</span> gegen <span class="math inline">\(0\)</span> geht.</li>
 <li>Wenn <span class="math inline">\(C(n)\)</span> die Komplexität eines Algorithmus für eine Problemgröße <span class="math inline">\(n\)</span> ist, dann könnten wir sagen, dass <span class="math inline">\(C(n) = O(n)\)</span>, um auszudrücken, dass die Komplexität <em>asymptotisch</em>, d.h. für immer größere <span class="math inline">\(n\)</span>, mit derselben Geschwindigkeit wie die Problemgröße wächst.</li>
 </ul>
-<p>Leider ist die übliche Verwendung der Landau-Symbole etwas nachlässig.</p>
+<p>Leider ist die übliche Verwendung der Landau-Symbole etwas unpräzise.</p>
 <ol style="list-style-type: decimal">
 <li>Das oft verwendete “<span class="math inline">\(=\)</span>”-Zeichen ist informell und keineswegs eine Gleichheit.</li>
-<li>Was das Limit <span class="math inline">\(a\)</span> ist, wird kaum jemals explizit erwähnt, aber glücklicherweise ist es in der Regel aus dem Kontext klar.</li>
+<li>Was der Grenzwert <span class="math inline">\(a\)</span> ist, wird selten explizit erwähnt, aber glücklicherweise ist es in der Regel aus dem Kontext klar.</li>
 </ol>
 <p>Als Beispiel betrachten wir zwei verschiedene Wege, ein Polynom <span class="math inline">\(p\)</span> vom Grad <span class="math inline">\(n\)</span> an der Abszisse <span class="math inline">\(x\)</span> zu bewerten, basierend auf den zwei äquivalenten Darstellungen
 <span class="math display">\[\begin{equation*}
@@ -272,7 +272,7 @@ p(x) &amp;= a_0 + a_1x +  a_2x^2+ \dotsm + a_nx^n \\
      &amp;= a_0 + x(a_1 + x(a_2 + \dotsm +x(a_{n-1} + a_nx) \dotsm ))
 \end{split}
 \end{equation*}\]</span></p>
-<p>Für eine direkte Implementierung der ersten Darstellung erhalten wir</p>
+<p>Für eine direkte Implementierung der ersten Darstellung erhalten wir die Algorithmen</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb1-1"><a href="einführung.html#cb1-1" aria-hidden="true"></a><span class="co">&#39;&#39;&#39;Berechnung von p(x) in Standarddarstellung</span></span>
 <span id="cb1-2"><a href="einführung.html#cb1-2" aria-hidden="true"></a><span class="co">&#39;&#39;&#39;</span></span>
 <span id="cb1-3"><a href="einführung.html#cb1-3" aria-hidden="true"></a>n <span class="op">=</span> <span class="dv">10</span>                                      <span class="co"># Beispielwert für n</span></span>

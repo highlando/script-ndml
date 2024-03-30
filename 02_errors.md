@@ -2,14 +2,15 @@
 
 \def\kij{(\kappa_{A,x})_{ij}}
 Berechnungen auf einem Computer verursachen unvermeidlich Fehler, und die Effizienz oder Leistung von Algorithmen ist immer das Verhältnis von Kosten zu Genauigkeit. 
+
 Zum Beispiel:
 
- * Allein durch Betrachtung von Rundungsfehlern kann die Genauigkeit einfach und signifikant verbessert werden, indem auf Hochpräzisionsarithmetik zurückgegriffen wird, was jedoch höhere Speicheranforderungen und eine höhere Rechenlast mit sich bringt.
+ * Allein aus der Betrachtung von Rundungsfehlern kann die Genauigkeit einfach und signifikant verbessert werden, indem auf *Langzahlarithmetik* zurückgegriffen wird, was jedoch höhere Speicheranforderungen und eine höhere Rechenlast mit sich bringt.
 
- * In iterativen Verfahren können Speicher und Rechenaufwand leicht gespart werden, indem die Iteration in einem frühen Stadium gestoppt wird - auf Kosten einer weniger genauen Lösungsapproximation.
+ * In iterativen Verfahren können Speicher und Rechenaufwand leicht eingespart werden, indem die Iteration in einem frühen Stadium gestoppt wird - nat&uuml;rlich auf Kosten einer weniger genauen Lösungsapproximation.
 
 ::: {#rem-accu-iter .JHSAYS data-latex=''}
-Beide, irgendwie trivialen Beobachtungen sind grundlegende Bestandteile des Trainings neuronaler Netzwerke. Erstens wurde beobachtet, dass Niedrigpräzisionsarithmetik Rechenkosten sparen kann, mit nur geringen Auswirkungen auf die Genauigkeit. Zweitens ist das Training ein iterativer Prozess mit oft langsamer Konvergenz, sodass der richtige Zeitpunkt für einen vorzeitigen Abbruch des Trainings entscheidend ist.
+Beide, irgendwie trivialen Beobachtungen sind grundlegende Bestandteile des Trainings neuronaler Netzwerke. Erstens wurde beobachtet, dass Zahldarstellungen mit *einfacher Genauigkeit* (im Vergleich zum g&auml;ngigen *double precision*) Rechenkosten sparen kann, mit nur geringen Auswirkungen auf die Genauigkeit. Zweitens ist das Training ein iterativer Prozess mit oft langsamer Konvergenz, sodass der richtige Zeitpunkt für einen vorzeitigen Abbruch des Trainings entscheidend ist.
 :::
 
 
@@ -18,7 +19,7 @@ Sei $x\in\mathbb R^{}$ die interessierende Größe und $\tilde x \in \mathbb R^{
 :::
 
 ::: {#rem-rel-abs-err .JHSAYS data-latex=''}
-Generell wird der relative Fehler bevorzugt, da er den gemessenen Fehler in den richtigen Bezug setzt. Zum Beispiel kann ein absoluter Fehler von $10$ km/h je nach Kontext groß oder klein sein. Andererseits erfordert der relative Fehler die Kenntnis des tatsächlichen Werts und die Division durch einen Wert nahe $0$ kann die Fehlerschätzung verstärken.
+Generell wird der relative Fehler bevorzugt, da er den gemessenen Fehler in den richtigen Bezug setzt. Zum Beispiel kann ein absoluter Fehler von $10$ km/h je nach Kontext groß oder klein sein.
 :::
 
 Als Nächstes definieren wir die *Kondition* eines Problems $A$ und analog eines Algorithmus (der das Problem löst). Dafür lassen wir $x$ einen Parameter/Eingabe des Problems sein und $y=A(x)$ die entsprechende Lösung/Ausgabe. Die Kondition ist ein Maß dafür, inwieweit eine Änderung $x+\delta x$ in der Eingabe die resultierende relative Änderung in der Ausgabe beeinflusst. Dafür betrachten wir
@@ -33,7 +34,7 @@ Für infinitesimal kleine $\delta x$ wird der Differenzenquotient $\frac{A(x+\de
 \begin{equation}(\#eq:eqn-scalar-cond)
 \frac{|\delta y|}{|y|} \leq |\frac{\partial A}{\partial x}(x)|\frac{|x|}{|A(x)|}\frac{|\delta x|}{|x|}=:\kappa_{A,x}\frac{|\delta x|}{|x|}.
 \end{equation}
-und nennen $\kappa_{A,x}$ die Konditionszahl.
+Wir nennen $\kappa_{A,x}$ die Konditionszahl.
 
 Für vektorwertige Probleme/Algorithmen können wir die Konditionszahl darüber definieren, wie eine Differenz in der $j$-ten Eingabekomponente $x_j$ die $i$-te Komponente $y_i=A_i(x)$ der Ausgabe beeinflusst.
 
@@ -52,4 +53,4 @@ Anstatt die skalaren Komponentenfunktionen von $A\colon \mathbb R^{n} \to \mathb
 ## Übungen
 
 1. Leiten Sie die *Konditionszahl* wie in \@ref(eq:eqn-scalar-cond) für eine vektorwertige Funktion $A\colon \mathbb R^{n} \to \mathbb R^{m}$ ab. Wo spielt eine Matrixnorm eine Rolle?
-1. Leiten Sie die Konditionszahl einer invertierbaren Matrix $M$ ab, d.h. die Kondition des Problems $x\to y = M^{-1}x$, nach demselben Verfahren. Wo spielt die Matrixnorm eine Rolle?
+1. Leiten Sie mite dem selben Verfahren die Konditionszahl einer invertierbaren Matrix $M$ her, d.h. die Kondition des Problems $x\to y = M^{-1}x$. Wo spielt die Matrixnorm eine Rolle?

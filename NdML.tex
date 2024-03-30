@@ -176,22 +176,22 @@ Um zu beschreiben, was passiert, und für die spätere Analyse führen wir die a
   Rechenaufwand
 \end{itemize}
 
-ein, von denen einige klassische \emph{numerische Analysen} sind.
+ein, von denen einige klassische \emph{numerische Analysis} sind.
 
 \hypertarget{was-ist-ein-algorithmus}{%
 \section{Was ist ein Algorithmus}\label{was-ist-ein-algorithmus}}
 
-Interessanterweise ist der Begriff \emph{Algorithmus} ähnlich intuitiv und abstrakt. Es bedurfte großer Anstrengungen, um eine allgemeine und prägnante Definition zu finden, die den Anforderungen und Einschränkungen aller Bereiche gerecht wird (von \emph{Kochrezepten} bis zur Analyse von \emph{formalen Sprachen}).
+Interessanterweise ist der Begriff \emph{Algorithmus} zugleich intuitiv und abstrakt. Es bedurfte großer Anstrengungen, um eine allgemeine und wohlgestellte Definition zu finden, die den Anforderungen und Einschränkungen aller Bereiche gerecht wird (von \emph{Kochrezepten} bis zur Analyse von \emph{formalen Sprachen}).
 
 \begin{definition}[Algorithmus]
-\protect\hypertarget{def:algorithm}{}\label{def:algorithm}Ein Problemlösungsverfahren wird als \emph{Algorithmus} bezeichnet, wenn und nur wenn es eine \emph{Turing-Maschine} gibt, die dem Verfahren entspricht und die, für jede Eingabe, für die eine Lösung existiert, \emph{anhalten} wird.
+\protect\hypertarget{def:algorithm}{}\label{def:algorithm}Ein Problemlösungsverfahren wird als \emph{Algorithmus} bezeichnet, genau dann wenn es eine \emph{Turing-Maschine} gibt, die dem Verfahren entspricht und die, für jede Eingabe, für die eine Lösung existiert, \emph{anhalten} wird.
 \end{definition}
 
-Diese Definition ist in ihrer Allgemeinheit nicht allzu hilfreich - wir haben nicht einmal definiert, was eine Turing-Maschine ist.
+Diese Definition ist in ihrer Allgemeinheit nicht allzu hilfreich - wir haben noch nicht einmal definiert, was eine Turing-Maschine ist.
 
 \leavevmode\hypertarget{rem-coors}{}%
 \begin{JHSAYS}
-Eine \emph{Turing-Maschine} kann als eine Maschine beschrieben werden, die einen Streifen von Anweisungen liest und auf diesen Streifen schreiben kann. Abhängig davon, was sie liest, kann sie vorwärts bewegen, rückwärts bewegen oder anhalten (wenn der Streifen einen vordefinierten Zustand erreicht hat). Das Schöne daran ist, dass dieses Setup in einen vollständig mathematischen Rahmen gestellt werden kann.
+Eine \emph{Turing-Maschine} kann als eine Maschine beschrieben werden, die ein Band von Anweisungen liest und auf dieses Band schreiben kann. Abhängig davon, was sie liest, kann sie vorwärts bewegen, rückwärts bewegen oder anhalten (wenn das Band einen vordefinierten Zustand erreicht hat). Das Schöne daran ist, dass dieses Setup in einen vollständig mathematischen Rahmen gestellt werden kann.
 
 \end{JHSAYS}
 
@@ -202,15 +202,15 @@ Hilfreicher und gebräuchlicher ist es, die Implikationen dieser Definition zu b
 \item
   Der Algorithmus wird durch endlich viele Anweisungen beschrieben (Endlichkeit).
 \item
-  Jeder Schritt ist \emph{machbar}.
+  Jeder Schritt ist \emph{durchführbar}.
 \item
   Der Algorithmus erfordert eine endliche Menge an Speicher.
 \item
   Er wird nach endlich vielen Schritten beendet.
 \item
-  In jedem Schritt ist der nächste Schritt eindeutig definiert (\emph{deterministisch}).
+  In jedem Schritt ist der nächste Schritt eindeutig definiert (\emph{Determiniertheit}).
 \item
-  Für denselben Anfangszustand wird er im selben Endzustand anhalten (\emph{bestimmt}).
+  Für denselben Anfangszustand wird er im selben Endzustand anhalten (\emph{Bestimmtheit}).
 \end{itemize}
 
 Somit könnte eine informelle, gute Praxisdefinition eines Algorithmus sein
@@ -225,7 +225,7 @@ Beachten Sie, wie einige Eigenschaften (wie endlich viele Anweisungen) a priori 
 
 \end{JHSAYS}
 
-Als noch informelleren Verweis auf Algorithmen werden wir die Begriffe \textbf{\emph{(numerische) Methode}} oder \textbf{\emph{Schema}} verwenden, um ein Verfahren durch Auflistung seiner zugrundeliegenden Ideen und Unterprozeduren anzusprechen, wobei \emph{Algorithmus} sich auf eine spezifische Realisierung einer \emph{Methode} bezieht.
+Als informellere Verweise auf Algorithmen werden wir die Begriffe \textbf{\emph{(numerische) Methode}} oder \textbf{\emph{Schema}} verwenden, um ein Verfahren durch Auflistung seiner zugrundeliegenden Ideen und Unterprozeduren anzusprechen, wobei \emph{Algorithmus} sich auf eine spezifische Realisierung einer \emph{Methode} bezieht.
 
 Weiterhin unterscheiden wir
 
@@ -250,11 +250,11 @@ Für die Analyse numerischer Methoden werden allgemein die folgenden Begriffe ve
 \protect\hypertarget{def:stability}{}\label{def:stability}Wenn die Ausgabe eines Algorithmus kontinuierlich von Unterschieden in der Eingabe und kontinuierlich von Unterschieden in den Anweisungen abhängt, dann wird der Algorithmus als \emph{stabil} bezeichnet.
 \end{definition}
 
-Die \emph{Unterschiede in den Anweisungen} sind typischerweise auf Rundungsfehler zurückzuführen, wie sie in \emph{ungenauer Arithmetik} auftreten.
+Die \emph{Unterschiede in den Anweisungen} sind typischerweise auf Rundungsfehler zurückzuführen, wie sie in \emph{ungenauer Arithmetik} (oft auch als \emph{Gleitkommaarithmetik} bezeichnet) auftreten.
 
 \leavevmode\hypertarget{rem-coors}{}%
 \begin{JHSAYS}
-Man könnte sagen, dass ein Algorithmus konsistent ist, wenn \emph{er das Richtige tut} und dass er stabil ist, \emph{wenn er trotz aller Arten von kleinen Ungenauigkeiten funktioniert}. Wenn ein Algorithmus konsistent und stabil ist, wird er oft als \emph{konvergent} bezeichnet, um auszudrücken, dass er schließlich die Lösung auch in ungenauer Arithmetik berechnen wird.
+Man könnte sagen, dass ein Algorithmus konsistent ist, wenn \emph{er das Richtige tut} und dass er stabil ist, \emph{wenn er trotz beliebiger kleiner Ungenauigkeiten funktioniert}. Wenn ein Algorithmus konsistent und stabil ist, wird er oft als \emph{konvergent} bezeichnet, um auszudrücken, dass er schließlich die Lösung auch in ungenauer Arithmetik berechnen wird.
 
 \end{JHSAYS}
 
@@ -269,7 +269,7 @@ Beachten Sie, dass Begriffe wie
 \end{itemize}
 
 keine intrinsischen Eigenschaften eines Algorithmus sind, da sie von dem zu lösenden Problem abhängen.
-Man kann jedoch von \emph{Ordnungskonsistenz} eines Algorithmus sprechen, um die erwartete Genauigkeit für eine Klasse von Problemen zu spezifizieren, und einen Algorithmus als konvergent einer bestimmten Ordnung bezeichnen, wenn er auch stabil ist.
+Man kann jedoch von \emph{Konsistenzordnung} eines Algorithmus sprechen, um die erwartete Genauigkeit für eine Klasse von Problemen zu spezifizieren, und einen Algorithmus als konvergent einer bestimmten Ordnung bezeichnen, wenn er zusätzlich stabil ist.
 
 \hypertarget{rechenkomplexituxe4t}{%
 \section{Rechenkomplexität}\label{rechenkomplexituxe4t}}
@@ -295,12 +295,12 @@ Der Sinn und die Funktionalität dieser Konzepte wird vielleicht deutlich, wenn 
 \begin{itemize}
 \tightlist
 \item
-  Wenn \(h> 0\) ein Diskretisierungsparameter ist und, sagen wir, \(e(h)\) der Diskretisierungsfehler ist, dann könnten wir sagen, dass \(e(h) = O(h^2)\), wenn \emph{asymptotisch}, d.h. für immer kleinere \(h\) -- der Fehler mindestens so schnell wie \(h^2\) gegen \(0\) geht.
+  Wenn \(h> 0\) ein Diskretisierungsparameter ist und, sagen wir, \(e(h)\) der Diskretisierungsfehler ist, dann könnten wir sagen, dass \(e(h) = O(h^2)\), wenn \emph{asymptotisch}, d.h. für immer kleinere \(h\), der Fehler mindestens so schnell wie \(h^2\) gegen \(0\) geht.
 \item
   Wenn \(C(n)\) die Komplexität eines Algorithmus für eine Problemgröße \(n\) ist, dann könnten wir sagen, dass \(C(n) = O(n)\), um auszudrücken, dass die Komplexität \emph{asymptotisch}, d.h. für immer größere \(n\), mit derselben Geschwindigkeit wie die Problemgröße wächst.
 \end{itemize}
 
-Leider ist die übliche Verwendung der Landau-Symbole etwas nachlässig.
+Leider ist die übliche Verwendung der Landau-Symbole etwas unpräzise.
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -308,7 +308,7 @@ Leider ist die übliche Verwendung der Landau-Symbole etwas nachlässig.
 \item
   Das oft verwendete ``\(=\)''-Zeichen ist informell und keineswegs eine Gleichheit.
 \item
-  Was das Limit \(a\) ist, wird kaum jemals explizit erwähnt, aber glücklicherweise ist es in der Regel aus dem Kontext klar.
+  Was der Grenzwert \(a\) ist, wird selten explizit erwähnt, aber glücklicherweise ist es in der Regel aus dem Kontext klar.
 \end{enumerate}
 
 Als Beispiel betrachten wir zwei verschiedene Wege, ein Polynom \(p\) vom Grad \(n\) an der Abszisse \(x\) zu bewerten, basierend auf den zwei äquivalenten Darstellungen
@@ -319,7 +319,7 @@ p(x) &= a_0 + a_1x +  a_2x^2+ \dotsm + a_nx^n \\
 \end{split}
 \end{equation*}
 
-Für eine direkte Implementierung der ersten Darstellung erhalten wir
+Für eine direkte Implementierung der ersten Darstellung erhalten wir die Algorithmen
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -382,18 +382,19 @@ Weiterführende Literatur:
 \def\kij{(\kappa_{A,x})_{ij}}
 
 Berechnungen auf einem Computer verursachen unvermeidlich Fehler, und die Effizienz oder Leistung von Algorithmen ist immer das Verhältnis von Kosten zu Genauigkeit.
+
 Zum Beispiel:
 
 \begin{itemize}
 \item
-  Allein durch Betrachtung von Rundungsfehlern kann die Genauigkeit einfach und signifikant verbessert werden, indem auf Hochpräzisionsarithmetik zurückgegriffen wird, was jedoch höhere Speicheranforderungen und eine höhere Rechenlast mit sich bringt.
+  Allein aus der Betrachtung von Rundungsfehlern kann die Genauigkeit einfach und signifikant verbessert werden, indem auf \emph{Langzahlarithmetik} zurückgegriffen wird, was jedoch höhere Speicheranforderungen und eine höhere Rechenlast mit sich bringt.
 \item
-  In iterativen Verfahren können Speicher und Rechenaufwand leicht gespart werden, indem die Iteration in einem frühen Stadium gestoppt wird - auf Kosten einer weniger genauen Lösungsapproximation.
+  In iterativen Verfahren können Speicher und Rechenaufwand leicht eingespart werden, indem die Iteration in einem frühen Stadium gestoppt wird - natürlich auf Kosten einer weniger genauen Lösungsapproximation.
 \end{itemize}
 
 \leavevmode\hypertarget{rem-accu-iter}{}%
 \begin{JHSAYS}
-Beide, irgendwie trivialen Beobachtungen sind grundlegende Bestandteile des Trainings neuronaler Netzwerke. Erstens wurde beobachtet, dass Niedrigpräzisionsarithmetik Rechenkosten sparen kann, mit nur geringen Auswirkungen auf die Genauigkeit. Zweitens ist das Training ein iterativer Prozess mit oft langsamer Konvergenz, sodass der richtige Zeitpunkt für einen vorzeitigen Abbruch des Trainings entscheidend ist.
+Beide, irgendwie trivialen Beobachtungen sind grundlegende Bestandteile des Trainings neuronaler Netzwerke. Erstens wurde beobachtet, dass Zahldarstellungen mit \emph{einfacher Genauigkeit} (im Vergleich zum gängigen \emph{double precision}) Rechenkosten sparen kann, mit nur geringen Auswirkungen auf die Genauigkeit. Zweitens ist das Training ein iterativer Prozess mit oft langsamer Konvergenz, sodass der richtige Zeitpunkt für einen vorzeitigen Abbruch des Trainings entscheidend ist.
 
 \end{JHSAYS}
 
@@ -403,7 +404,7 @@ Beide, irgendwie trivialen Beobachtungen sind grundlegende Bestandteile des Trai
 
 \leavevmode\hypertarget{rem-rel-abs-err}{}%
 \begin{JHSAYS}
-Generell wird der relative Fehler bevorzugt, da er den gemessenen Fehler in den richtigen Bezug setzt. Zum Beispiel kann ein absoluter Fehler von \(10\) km/h je nach Kontext groß oder klein sein. Andererseits erfordert der relative Fehler die Kenntnis des tatsächlichen Werts und die Division durch einen Wert nahe \(0\) kann die Fehlerschätzung verstärken.
+Generell wird der relative Fehler bevorzugt, da er den gemessenen Fehler in den richtigen Bezug setzt. Zum Beispiel kann ein absoluter Fehler von \(10\) km/h je nach Kontext groß oder klein sein.
 
 \end{JHSAYS}
 
@@ -419,7 +420,7 @@ Für infinitesimal kleine \(\delta x\) wird der Differenzenquotient \(\frac{A(x+
 \begin{equation}\label{eq:eqn-scalar-cond}
 \frac{|\delta y|}{|y|} \leq |\frac{\partial A}{\partial x}(x)|\frac{|x|}{|A(x)|}\frac{|\delta x|}{|x|}=:\kappa_{A,x}\frac{|\delta x|}{|x|}.
 \end{equation}
-und nennen \(\kappa_{A,x}\) die Konditionszahl.
+Wir nennen \(\kappa_{A,x}\) die Konditionszahl.
 
 Für vektorwertige Probleme/Algorithmen können wir die Konditionszahl darüber definieren, wie eine Differenz in der \(j\)-ten Eingabekomponente \(x_j\) die \(i\)-te Komponente \(y_i=A_i(x)\) der Ausgabe beeinflusst.
 
@@ -446,7 +447,7 @@ Anstatt die skalaren Komponentenfunktionen von \(A\colon \mathbb R^{n} \to \math
 \item
   Leiten Sie die \emph{Konditionszahl} wie in \eqref{eq:eqn-scalar-cond} für eine vektorwertige Funktion \(A\colon \mathbb R^{n} \to \mathbb R^{m}\) ab. Wo spielt eine Matrixnorm eine Rolle?
 \item
-  Leiten Sie die Konditionszahl einer invertierbaren Matrix \(M\) ab, d.h. die Kondition des Problems \(x\to y = M^{-1}x\), nach demselben Verfahren. Wo spielt die Matrixnorm eine Rolle?
+  Leiten Sie mite dem selben Verfahren die Konditionszahl einer invertierbaren Matrix \(M\) her, d.h. die Kondition des Problems \(x\to y = M^{-1}x\). Wo spielt die Matrixnorm eine Rolle?
 \end{enumerate}
 
 \hypertarget{referenzen}{%

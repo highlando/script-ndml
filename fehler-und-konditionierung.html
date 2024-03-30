@@ -174,20 +174,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="fehler-und-konditionierung" class="section level1 hasAnchor" number="2">
 <h1><span class="header-section-number">2</span> Fehler und Konditionierung<a href="fehler-und-konditionierung.html#fehler-und-konditionierung" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>Berechnungen auf einem Computer verursachen unvermeidlich Fehler, und die Effizienz oder Leistung von Algorithmen ist immer das Verhältnis von Kosten zu Genauigkeit.
-Zum Beispiel:</p>
+<p>Berechnungen auf einem Computer verursachen unvermeidlich Fehler, und die Effizienz oder Leistung von Algorithmen ist immer das Verhältnis von Kosten zu Genauigkeit.</p>
+<p>Zum Beispiel:</p>
 <ul>
-<li><p>Allein durch Betrachtung von Rundungsfehlern kann die Genauigkeit einfach und signifikant verbessert werden, indem auf Hochpräzisionsarithmetik zurückgegriffen wird, was jedoch höhere Speicheranforderungen und eine höhere Rechenlast mit sich bringt.</p></li>
-<li><p>In iterativen Verfahren können Speicher und Rechenaufwand leicht gespart werden, indem die Iteration in einem frühen Stadium gestoppt wird - auf Kosten einer weniger genauen Lösungsapproximation.</p></li>
+<li><p>Allein aus der Betrachtung von Rundungsfehlern kann die Genauigkeit einfach und signifikant verbessert werden, indem auf <em>Langzahlarithmetik</em> zurückgegriffen wird, was jedoch höhere Speicheranforderungen und eine höhere Rechenlast mit sich bringt.</p></li>
+<li><p>In iterativen Verfahren können Speicher und Rechenaufwand leicht eingespart werden, indem die Iteration in einem frühen Stadium gestoppt wird - natürlich auf Kosten einer weniger genauen Lösungsapproximation.</p></li>
 </ul>
 <div id="rem-accu-iter" class="JHSAYS">
-<p>Beide, irgendwie trivialen Beobachtungen sind grundlegende Bestandteile des Trainings neuronaler Netzwerke. Erstens wurde beobachtet, dass Niedrigpräzisionsarithmetik Rechenkosten sparen kann, mit nur geringen Auswirkungen auf die Genauigkeit. Zweitens ist das Training ein iterativer Prozess mit oft langsamer Konvergenz, sodass der richtige Zeitpunkt für einen vorzeitigen Abbruch des Trainings entscheidend ist.</p>
+<p>Beide, irgendwie trivialen Beobachtungen sind grundlegende Bestandteile des Trainings neuronaler Netzwerke. Erstens wurde beobachtet, dass Zahldarstellungen mit <em>einfacher Genauigkeit</em> (im Vergleich zum gängigen <em>double precision</em>) Rechenkosten sparen kann, mit nur geringen Auswirkungen auf die Genauigkeit. Zweitens ist das Training ein iterativer Prozess mit oft langsamer Konvergenz, sodass der richtige Zeitpunkt für einen vorzeitigen Abbruch des Trainings entscheidend ist.</p>
 </div>
 <div class="definition">
 <p><span id="def:errors" class="definition"><strong>Definition 2.1  (Absolute und relative Fehler) </strong></span>Sei <span class="math inline">\(x\in\mathbb R^{}\)</span> die interessierende Größe und <span class="math inline">\(\tilde x \in \mathbb R^{}\)</span> eine Annäherung daran. Dann wird der <em>absolute Fehler</em> definiert als <span class="math inline">\(|\delta x|:=|\tilde x- x|\)</span> und der <em>relative Fehler</em> als <span class="math inline">\(\frac{|\delta x|}{|x|}=\frac{|\tilde x- x|}{|x|}\)</span>.</p>
 </div>
 <div id="rem-rel-abs-err" class="JHSAYS">
-<p>Generell wird der relative Fehler bevorzugt, da er den gemessenen Fehler in den richtigen Bezug setzt. Zum Beispiel kann ein absoluter Fehler von <span class="math inline">\(10\)</span> km/h je nach Kontext groß oder klein sein. Andererseits erfordert der relative Fehler die Kenntnis des tatsächlichen Werts und die Division durch einen Wert nahe <span class="math inline">\(0\)</span> kann die Fehlerschätzung verstärken.</p>
+<p>Generell wird der relative Fehler bevorzugt, da er den gemessenen Fehler in den richtigen Bezug setzt. Zum Beispiel kann ein absoluter Fehler von <span class="math inline">\(10\)</span> km/h je nach Kontext groß oder klein sein.</p>
 </div>
 <p>Als Nächstes definieren wir die <em>Kondition</em> eines Problems <span class="math inline">\(A\)</span> und analog eines Algorithmus (der das Problem löst). Dafür lassen wir <span class="math inline">\(x\)</span> einen Parameter/Eingabe des Problems sein und <span class="math inline">\(y=A(x)\)</span> die entsprechende Lösung/Ausgabe. Die Kondition ist ein Maß dafür, inwieweit eine Änderung <span class="math inline">\(x+\delta x\)</span> in der Eingabe die resultierende relative Änderung in der Ausgabe beeinflusst. Dafür betrachten wir
 <span class="math display">\[\begin{equation*}
@@ -201,7 +201,7 @@ Für infinitesimal kleine <span class="math inline">\(\delta x\)</span> wird der
 <span class="math display" id="eq:eqn-scalar-\tag{2.1}on}(#eq:eqn-scalar-cond)
 \frac{|\delta y|}{|y|} \leq |\frac{\partial A}{\partial x}(x)|\frac{|x|}{|A(x)|}\frac{|\delta x|}{|x|}=:\kappa_{A,x}\frac{|\delta x|}{|x|}.
 \end{equation}\]</span>
-und nennen <span class="math inline">\(\kappa_{A,x}\)</span> die Konditionszahl.</p>
+Wir nennen <span class="math inline">\(\kappa_{A,x}\)</span> die Konditionszahl.</p>
 <p>Für vektorwertige Probleme/Algorithmen können wir die Konditionszahl darüber definieren, wie eine Differenz in der <span class="math inline">\(j\)</span>-ten Eingabekomponente <span class="math inline">\(x_j\)</span> die <span class="math inline">\(i\)</span>-te Komponente <span class="math inline">\(y_i=A_i(x)\)</span> der Ausgabe beeinflusst.</p>
 <div class="definition">
 <p><span id="def:condition" class="definition"><strong>Definition 2.2  (Konditionszahl) </strong></span>Für ein Problem/Algorithmus <span class="math inline">\(A\colon \mathbb R^{n}\to \mathbb R^{m}\)</span> nennen wir
@@ -217,7 +217,7 @@ die partielle <em>Konditionszahl</em> des Problems. Ein Problem wird als <em>gut
 <h2><span class="header-section-number">2.1</span> Übungen<a href="fehler-und-konditionierung.html#übungen-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ol style="list-style-type: decimal">
 <li>Leiten Sie die <em>Konditionszahl</em> wie in <a href="#eq:eqn-scalar-cond">(2.1)</a> für eine vektorwertige Funktion <span class="math inline">\(A\colon \mathbb R^{n} \to \mathbb R^{m}\)</span> ab. Wo spielt eine Matrixnorm eine Rolle?</li>
-<li>Leiten Sie die Konditionszahl einer invertierbaren Matrix <span class="math inline">\(M\)</span> ab, d.h. die Kondition des Problems <span class="math inline">\(x\to y = M^{-1}x\)</span>, nach demselben Verfahren. Wo spielt die Matrixnorm eine Rolle?</li>
+<li>Leiten Sie mite dem selben Verfahren die Konditionszahl einer invertierbaren Matrix <span class="math inline">\(M\)</span> her, d.h. die Kondition des Problems <span class="math inline">\(x\to y = M^{-1}x\)</span>. Wo spielt die Matrixnorm eine Rolle?</li>
 </ol>
 
 </div>

@@ -13,30 +13,30 @@ Um zu beschreiben, was passiert, und für die spätere Analyse führen wir die a
 * Stabilität
 * Rechenaufwand
 
-ein, von denen einige klassische *numerische Analysen* sind.
+ein, von denen einige klassische *numerische Analysis* sind.
 
 ## Was ist ein Algorithmus
 
-Interessanterweise ist der Begriff *Algorithmus* ähnlich intuitiv und abstrakt. Es bedurfte großer Anstrengungen, um eine allgemeine und prägnante Definition zu finden, die den Anforderungen und Einschränkungen aller Bereiche gerecht wird (von *Kochrezepten* bis zur Analyse von *formalen Sprachen*).
+Interessanterweise ist der Begriff *Algorithmus* zugleich intuitiv und abstrakt. Es bedurfte großer Anstrengungen, um eine allgemeine und wohlgestellte Definition zu finden, die den Anforderungen und Einschränkungen aller Bereiche gerecht wird (von *Kochrezepten* bis zur Analyse von *formalen Sprachen*).
 
 ::: {.definition #algorithm name="Algorithmus"}
-Ein Problemlösungsverfahren wird als *Algorithmus* bezeichnet, wenn und nur wenn es eine *Turing-Maschine* gibt, die dem Verfahren entspricht und die, für jede Eingabe, für die eine Lösung existiert, *anhalten* wird.
+Ein Problemlösungsverfahren wird als *Algorithmus* bezeichnet, genau dann wenn es eine *Turing-Maschine* gibt, die dem Verfahren entspricht und die, für jede Eingabe, für die eine Lösung existiert, *anhalten* wird.
 :::
 
-Diese Definition ist in ihrer Allgemeinheit nicht allzu hilfreich - wir haben nicht einmal definiert, was eine Turing-Maschine ist.
+Diese Definition ist in ihrer Allgemeinheit nicht allzu hilfreich - wir haben noch nicht einmal definiert, was eine Turing-Maschine ist.
 
 ::: {#rem-coors .JHSAYS data-latex=''}
-Eine *Turing-Maschine* kann als eine Maschine beschrieben werden, die einen Streifen von Anweisungen liest und auf diesen Streifen schreiben kann. Abhängig davon, was sie liest, kann sie vorwärts bewegen, rückwärts bewegen oder anhalten (wenn der Streifen einen vordefinierten Zustand erreicht hat). Das Schöne daran ist, dass dieses Setup in einen vollständig mathematischen Rahmen gestellt werden kann.
+Eine *Turing-Maschine* kann als eine Maschine beschrieben werden, die ein Band von Anweisungen liest und auf dieses Band schreiben kann. Abhängig davon, was sie liest, kann sie vorwärts bewegen, rückwärts bewegen oder anhalten (wenn das Band einen vordefinierten Zustand erreicht hat). Das Schöne daran ist, dass dieses Setup in einen vollständig mathematischen Rahmen gestellt werden kann.
 :::
 
 Hilfreicher und gebräuchlicher ist es, die Implikationen dieser Definition zu betrachten, um zu überprüfen, ob ein Verfahren zumindest die notwendigen Bedingungen für einen Algorithmus erfüllt
 
 * Der Algorithmus wird durch endlich viele Anweisungen beschrieben (Endlichkeit).
-* Jeder Schritt ist *machbar*.
+* Jeder Schritt ist *durchf&uuml;hrbar*.
 * Der Algorithmus erfordert eine endliche Menge an Speicher.
 * Er wird nach endlich vielen Schritten beendet.
-* In jedem Schritt ist der nächste Schritt eindeutig definiert (*deterministisch*).
-* Für denselben Anfangszustand wird er im selben Endzustand anhalten (*bestimmt*).
+* In jedem Schritt ist der nächste Schritt eindeutig definiert (*Determiniertheit*).
+* Für denselben Anfangszustand wird er im selben Endzustand anhalten (*Bestimmtheit*).
 
 Somit könnte eine informelle, gute Praxisdefinition eines Algorithmus sein
 
@@ -48,7 +48,7 @@ Ein Verfahren aus endlich vielen Anweisungen wird als *Algorithmus* bezeichnet, 
 Beachten Sie, wie einige Eigenschaften (wie endlich viele Anweisungen) a priori angenommen werden.
 :::
 
-Als noch informelleren Verweis auf Algorithmen werden wir die Begriffe **_(numerische) Methode_** oder **_Schema_** verwenden, um ein Verfahren durch Auflistung seiner zugrundeliegenden Ideen und Unterprozeduren anzusprechen, wobei *Algorithmus* sich auf eine spezifische Realisierung einer *Methode* bezieht.
+Als informellere Verweise auf Algorithmen werden wir die Begriffe **_(numerische) Methode_** oder **_Schema_** verwenden, um ein Verfahren durch Auflistung seiner zugrundeliegenden Ideen und Unterprozeduren anzusprechen, wobei *Algorithmus* sich auf eine spezifische Realisierung einer *Methode* bezieht.
 
 Weiterhin unterscheiden wir
 
@@ -67,10 +67,10 @@ Wenn ein Algorithmus in exakter Arithmetik die Lösung des Problems mit einer ge
 Wenn die Ausgabe eines Algorithmus kontinuierlich von Unterschieden in der Eingabe und kontinuierlich von Unterschieden in den Anweisungen abhängt, dann wird der Algorithmus als *stabil* bezeichnet.
 :::
 
-Die *Unterschiede in den Anweisungen* sind typischerweise auf Rundungsfehler zurückzuführen, wie sie in *ungenauer Arithmetik* auftreten.
+Die *Unterschiede in den Anweisungen* sind typischerweise auf Rundungsfehler zurückzuführen, wie sie in *ungenauer Arithmetik* (oft auch als *Gleitkommaarithmetik* bezeichnet) auftreten.
 
 ::: {#rem-coors .JHSAYS data-latex=''}
-Man könnte sagen, dass ein Algorithmus konsistent ist, wenn *er das Richtige tut* und dass er stabil ist, *wenn er trotz aller Arten von kleinen Ungenauigkeiten funktioniert*. Wenn ein Algorithmus konsistent und stabil ist, wird er oft als *konvergent* bezeichnet, um auszudrücken, dass er schließlich die Lösung auch in ungenauer Arithmetik berechnen wird.
+Man könnte sagen, dass ein Algorithmus konsistent ist, wenn *er das Richtige tut* und dass er stabil ist, *wenn er trotz beliebiger kleiner Ungenauigkeiten funktioniert*. Wenn ein Algorithmus konsistent und stabil ist, wird er oft als *konvergent* bezeichnet, um auszudrücken, dass er schließlich die Lösung auch in ungenauer Arithmetik berechnen wird.
 :::
 
 Beachten Sie, dass Begriffe wie 
@@ -79,7 +79,7 @@ Beachten Sie, dass Begriffe wie
 * *Konvergenz* -- wie schnell (typischerweise in Bezug auf den Rechenaufwand) der Algorithmus sich der tatsächlichen Lösung nähert
 
 keine intrinsischen Eigenschaften eines Algorithmus sind, da sie von dem zu lösenden Problem abhängen.
-Man kann jedoch von *Ordnungskonsistenz* eines Algorithmus sprechen, um die erwartete Genauigkeit für eine Klasse von Problemen zu spezifizieren, und einen Algorithmus als konvergent einer bestimmten Ordnung bezeichnen, wenn er auch stabil ist.
+Man kann jedoch von *Konsistenzordnung* eines Algorithmus sprechen, um die erwartete Genauigkeit für eine Klasse von Problemen zu spezifizieren, und einen Algorithmus als konvergent einer bestimmten Ordnung bezeichnen, wenn er zus&auml;tzlich stabil ist.
 
 ## Rechenkomplexität
 
@@ -101,13 +101,13 @@ und dass $f\in o(g)$, wenn
 
 Der Sinn und die Funktionalität dieser Konzepte wird vielleicht deutlich, wenn man sich die typischen Anwendungen ansieht:
 
-* Wenn $h> 0$ ein Diskretisierungsparameter ist und, sagen wir, $e(h)$ der Diskretisierungsfehler ist, dann könnten wir sagen, dass $e(h) = O(h^2)$, wenn *asymptotisch*, d.h. für immer kleinere $h$ -- der Fehler mindestens so schnell wie $h^2$ gegen $0$ geht.
+* Wenn $h> 0$ ein Diskretisierungsparameter ist und, sagen wir, $e(h)$ der Diskretisierungsfehler ist, dann könnten wir sagen, dass $e(h) = O(h^2)$, wenn *asymptotisch*, d.h. für immer kleinere $h$, der Fehler mindestens so schnell wie $h^2$ gegen $0$ geht.
 * Wenn $C(n)$ die Komplexität eines Algorithmus für eine Problemgröße $n$ ist, dann könnten wir sagen, dass $C(n) = O(n)$, um auszudrücken, dass die Komplexität *asymptotisch*, d.h. für immer größere $n$, mit derselben Geschwindigkeit wie die Problemgröße wächst.
 
-Leider ist die übliche Verwendung der Landau-Symbole etwas nachlässig.
+Leider ist die übliche Verwendung der Landau-Symbole etwas unpr&auml;zise.
 
 1. Das oft verwendete "$=$"-Zeichen ist informell und keineswegs eine Gleichheit.
-2. Was das Limit $a$ ist, wird kaum jemals explizit erwähnt, aber glücklicherweise ist es in der Regel aus dem Kontext klar.
+2. Was der Grenzwert $a$ ist, wird selten explizit erwähnt, aber glücklicherweise ist es in der Regel aus dem Kontext klar.
 
 Als Beispiel betrachten wir zwei verschiedene Wege, ein Polynom $p$ vom Grad $n$ an der Abszisse $x$ zu bewerten, basierend auf den zwei äquivalenten Darstellungen
 \begin{equation*}
@@ -117,7 +117,7 @@ p(x) &= a_0 + a_1x +  a_2x^2+ \dotsm + a_nx^n \\
 \end{split}
 \end{equation*}
 
-Für eine direkte Implementierung der ersten Darstellung erhalten wir
+Für eine direkte Implementierung der ersten Darstellung erhalten wir die Algorithmen
 
 ```py
 '''Berechnung von p(x) in Standarddarstellung
