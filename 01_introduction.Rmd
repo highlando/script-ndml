@@ -99,7 +99,62 @@ und dass $f\in o(g)$, wenn
 \end{equation*}
 ```
 
-Der Sinn und die Funktionalität dieser Konzepte wird vielleicht deutlich, wenn man sich die typischen Anwendungen ansieht: 
+Der Sinn und die Funktionalität dieser Konzepte wird vielleicht deutlich, wenn man sich die typischen Anwendungen ansieht:
 
-* wenn $h> 0$ ein Diskretisierungsparameter ist und, sagen wir, $e(h)$ der Diskretisierungsfehler ist, dann könnten wir sagen, dass $e(h) = O(h^2)$, wenn *asymptotisch*, d.h. für immer kleinere $h$ -- der Fehler mindestens so schnell wie $h^2$ gegen $0$ geht
-* wenn $C(n)$ die Komplexität eines Algorithmus für eine Problemgröße $n$ ist, dann könnten wir sagen, dass $C(n) = O(n)$, um auszudrücken, dass die Komplexität *asymptotisch
+* Wenn $h> 0$ ein Diskretisierungsparameter ist und, sagen wir, $e(h)$ der Diskretisierungsfehler ist, dann könnten wir sagen, dass $e(h) = O(h^2)$, wenn *asymptotisch*, d.h. für immer kleinere $h$ -- der Fehler mindestens so schnell wie $h^2$ gegen $0$ geht.
+* Wenn $C(n)$ die Komplexität eines Algorithmus für eine Problemgröße $n$ ist, dann könnten wir sagen, dass $C(n) = O(n)$, um auszudrücken, dass die Komplexität *asymptotisch*, d.h. für immer größere $n$, mit derselben Geschwindigkeit wie die Problemgröße wächst.
+
+Leider ist die übliche Verwendung der Landau-Symbole etwas nachlässig.
+
+1. Das oft verwendete "$=$"-Zeichen ist informell und keineswegs eine Gleichheit.
+2. Was das Limit $a$ ist, wird kaum jemals explizit erwähnt, aber glücklicherweise ist es in der Regel aus dem Kontext klar.
+
+Als Beispiel betrachten wir zwei verschiedene Wege, ein Polynom $p$ vom Grad $n$ an der Abszisse $x$ zu bewerten, basierend auf den zwei äquivalenten Darstellungen
+\begin{equation*}
+\begin{split}
+p(x) &= a_0 + a_1x +  a_2x^2+ \dotsm + a_nx^n \\
+     &= a_0 + x(a_1 + x(a_2 + \dotsm +x(a_{n-1} + a_nx) \dotsm ))
+\end{split}
+\end{equation*}
+
+Für eine direkte Implementierung der ersten Darstellung erhalten wir
+
+```py
+'''Berechnung von p(x) in Standarddarstellung
+'''
+n = 10                                      # Beispielwert für n
+ais = [(-1)**k*1/k for k in range(1, n+2)]  # Liste der Beispielkoeffizienten
+x = 5                                       # Ein Beispielwert für x
+cpx = ais[0]                                # der Fall k=0
+for k in range(n):
+    cpx = cpx + ais[k+1] * x**(k+1)         # der Beitrag des k-ten Schritts
+print(f'x={x}: p(x)={cpx:.4f}')             # Ausgabe des Ergebnisses
+```
+
+Im $k$-ten Schritt benötigt der Algorithmus eine Addition (wenn wir auch die Initialisierung als Addition zählen) und $k$ Multiplikationen. Das ergibt eine Gesamtkomplexität von
+\begin{equation*}
+C(n) = \sum_{k=0}^n(1+k) = n+1 + \frac{n(n-1)}{2} = 1 + \frac n2 + \frac{n^2}2 = O(n^2)
+\end{equation*}
+
+Für die zweite Darstellung können wir das sogenannte *Horner-Schema* implementieren, das lauten würde
+
+```py
+'''Berechnung von p(x) mit dem Horner-Schema
+'''
+n = 10                                      # Beispielwert für n
+ais = [(-1)**k*1/k for k in range(1, n+2)]  # Liste der Beispielkoeffizienten
+x = 5                                       # Ein Beispielwert für x
+cpx = ais[n]                                # der Fall k=n
+for k in reversed(range(n)):                
+    cpx = ais[k] + x*cpx                    # der Beitrag des k-ten Schritts
+print(f'x={x}: p(x)={cpx:.4f}')             # Ausgabe des Ergebnisses
+```
+Insgesamt benötigt dieses Schema $n+1$ Additionen und $n$ Multiplikationen, d.h. $2n+1$ FLOPs, so dass wir sagen können, dass *dieser Algorithmus $O(n)$ ist*.
+
+## Übungen
+
+1. Vergleichen Sie die beiden Implementierungen zur Bewertung eines Polynoms, indem Sie die Komplexität als Funktion von $n$ darstellen und die benötigte CPU-Zeit für eine Beispielbewertung im Vergleich zu $n$ messen und darstellen.
+
+Weiterführende Literatur:
+
+* [wikipedia:Algorithmus](https://de.wikipedia.org/wiki/Algorithmus#Definition)
