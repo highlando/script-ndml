@@ -6,10 +6,10 @@ def:landau-symbs
 def:errors
 eq:eqn-scalar-cond
 def:condition
-introduction
-what-is-an-algorithm
-consistency-stability-accuracy
-computational-complexity
-exercises
-errors-and-conditioning
-exercises-1
+einführung
+was-ist-ein-algorithmus
+konsistenz-stabilität-genauigkeit
+rechenkomplexität
+übungen
+fehler-und-konditionierung
+übungen-1

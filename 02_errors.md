@@ -1,54 +1,55 @@
-# Errors and Conditioning
+# Fehler und Konditionierung
+
 \def\kij{(\kappa_{A,x})_{ij}}
-Computations on a computer inevitably cause errors and the efficiency or performance of algorithms are always the ratio of costs versus accuracy. 
-For example
+Berechnungen auf einem Computer verursachen unvermeidlich Fehler, und die Effizienz oder Leistung von Algorithmen ist immer das Verhältnis von Kosten zu Genauigkeit. 
+Zum Beispiel:
 
- * just looking at rounding errors, the accuracy can simply and significantly be improved by resorting to high-precision arithmetics which, however, comes at the cost of higher memory requirements and a higher computational load 
+ * Allein durch Betrachtung von Rundungsfehlern kann die Genauigkeit einfach und signifikant verbessert werden, indem auf Hochpräzisionsarithmetik zurückgegriffen wird, was jedoch höhere Speicheranforderungen und eine höhere Rechenlast mit sich bringt.
 
- * in iterative schemes, memory and computational effort can be saved easily by stopping the iteration at an early stage -- at the expense of a less accurate solution approximation
+ * In iterativen Verfahren können Speicher und Rechenaufwand leicht gespart werden, indem die Iteration in einem frühen Stadium gestoppt wird - auf Kosten einer weniger genauen Lösungsapproximation.
 
 ::: {#rem-accu-iter .JHSAYS data-latex=''}
-Both these somehow trivial observations are fundamental components of training neural networks. Firstly, it has been observed that low-precision arithmetics can save computational costs with only minor effects on accuracy. Secondly, the training is an iterative process with often slow convergence so that the right time for a premature stop of the training is key.
+Beide, irgendwie trivialen Beobachtungen sind grundlegende Bestandteile des Trainings neuronaler Netzwerke. Erstens wurde beobachtet, dass Niedrigpräzisionsarithmetik Rechenkosten sparen kann, mit nur geringen Auswirkungen auf die Genauigkeit. Zweitens ist das Training ein iterativer Prozess mit oft langsamer Konvergenz, sodass der richtige Zeitpunkt für einen vorzeitigen Abbruch des Trainings entscheidend ist.
 :::
 
 
-::: {.definition #errors name="Absolute and relative errors"}
-Let $x\in\mathbb R^{}$ be the quantity of interest and $\tilde x \in \mathbb R^{}$ be an approximation to it. Then, the *absolute error* is defined as $|\delta x|:=|\tilde x- x|$ and the *relative error* as $\frac{|\delta x|}{|x|}=\frac{|\tilde x-\tilde x|}{|x|}$.
+::: {.definition #errors name="Absolute und relative Fehler"}
+Sei $x\in\mathbb R^{}$ die interessierende Größe und $\tilde x \in \mathbb R^{}$ eine Annäherung daran. Dann wird der *absolute Fehler* definiert als $|\delta x|:=|\tilde x- x|$ und der *relative Fehler* als $\frac{|\delta x|}{|x|}=\frac{|\tilde x- x|}{|x|}$.
 :::
 
 ::: {#rem-rel-abs-err .JHSAYS data-latex=''}
-Generally, the relative error is preferred as it puts the measured error into the right reference. For example, an absolute error of $10$ km/h can be large or small depending on the context. On the other hand, the relative error requires knowledge of the actual value and the division by a value close to $0$ can amplify the error estimate.
+Generell wird der relative Fehler bevorzugt, da er den gemessenen Fehler in den richtigen Bezug setzt. Zum Beispiel kann ein absoluter Fehler von $10$ km/h je nach Kontext groß oder klein sein. Andererseits erfordert der relative Fehler die Kenntnis des tatsächlichen Werts und die Division durch einen Wert nahe $0$ kann die Fehlerschätzung verstärken.
 :::
 
-Next, we will define the *condition* of a problem $A$ and, analogously, of an algorithm (that solves the problem). For that we let $x$ be a parameter/input of the problem and $y=A(x)$ be the corresponding solution/output. The condition is a measure to what extend a change $x+\delta x$ in the input will affect the resulting relative change in the output. For that we consider
+Als Nächstes definieren wir die *Kondition* eines Problems $A$ und analog eines Algorithmus (der das Problem löst). Dafür lassen wir $x$ einen Parameter/Eingabe des Problems sein und $y=A(x)$ die entsprechende Lösung/Ausgabe. Die Kondition ist ein Maß dafür, inwieweit eine Änderung $x+\delta x$ in der Eingabe die resultierende relative Änderung in der Ausgabe beeinflusst. Dafür betrachten wir
 \begin{equation*}
 \delta y = \tilde y - y = A(\tilde x) - A(x) = A(x+\delta x) - A(x)
 \end{equation*}
-which after division by $y=A(x)$ and expansion by $x\,\delta x$ becomes
+welches nach Division durch $y=A(x)$ und Erweiterung durch $x\,\delta x$ wird zu
 \begin{equation*}
 \frac{\delta y}{y} = \frac{A(x+\delta x)-A(x)}{\delta x}\frac{x}{A(x)}\frac{\delta x}{x}.
 \end{equation*}
-For infinitesimal small $\delta x$, the difference quotient $\frac{A(x+\delta x)-A(x)}{\delta x}$ becomes the derivative $\frac{\partial A}{\partial x}(x)$ so that we can estimate the condition of the problem/algorithm at $x$ through
+Für infinitesimal kleine $\delta x$ wird der Differenzenquotient $\frac{A(x+\delta x)-A(x)}{\delta x}$ zur Ableitung $\frac{\partial A}{\partial x}(x)$, so dass wir die Kondition des Problems/Algorithmus bei $x$ abschätzen können durch
 \begin{equation}(\#eq:eqn-scalar-cond)
 \frac{|\delta y|}{|y|} \leq |\frac{\partial A}{\partial x}(x)|\frac{|x|}{|A(x)|}\frac{|\delta x|}{|x|}=:\kappa_{A,x}\frac{|\delta x|}{|x|}.
 \end{equation}
-and call $\kappa_{A,x}$ the condition number.
+und nennen $\kappa_{A,x}$ die Konditionszahl.
 
-For vector valued problems/algorithm we can define the condition number through how a difference in the $j$-th input component $x_j$ will affect the $i$-th component $y_i=A_i(x)$ of the output.
+Für vektorwertige Probleme/Algorithmen können wir die Konditionszahl darüber definieren, wie eine Differenz in der $j$-ten Eingabekomponente $x_j$ die $i$-te Komponente $y_i=A_i(x)$ der Ausgabe beeinflusst.
 
-::: {.definition #condition name="Condition number"}
-For a problem/algorithm $A\colon \mathbb R^{n}\to \mathbb R^{m}$, we call
+::: {.definition #condition name="Konditionszahl"}
+Für ein Problem/Algorithmus $A\colon \mathbb R^{n}\to \mathbb R^{m}$ nennen wir
 \begin{equation*}
 (\kappa_{A,x})_{ij} := \frac{\partial A_i}{\partial x_j}(x) \frac{x_j}{A_i(x)}
 \end{equation*}
-the partial *condition number* of the problem. A problem is called *well-conditioned* if $|\kij|\approx 1$ and *badly-conditioned* if $|\kij \gg 1$, for all $i=1,\dotsc,m$ and $j=1,\dotsc,m$.
+die partielle *Konditionszahl* des Problems. Ein Problem wird als *gut konditioniert* bezeichnet, wenn $|\kij|\approx 1$ und als *schlecht konditioniert*, wenn $|\kij \gg 1$, für alle $i=1,\dotsc,m$ und $j=1,\dotsc,m$.
 :::
 
 ::: {#rem-vector-valued-cond .JHSAYS data-latex=''}
-Rather than using the scalar component functions of $A\colon \mathbb R^{n} \to \mathbb R^{m}$, one can repeat the calculations that led to \@ref(eq:eqn-scalar-cond) with vector valued-quantities in the corresponding norms.
+Anstatt die skalaren Komponentenfunktionen von $A\colon \mathbb R^{n} \to \mathbb R^{m}$ zu verwenden, kann man die Berechnungen, die zu \@ref(eq:eqn-scalar-cond) geführt haben, mit vektorwertigen Größen in den entsprechenden Normen wiederholen.
 :::
 
-## Exercises
+## Übungen
 
-1. Derive the *condition* number as in \@ref(eq:eqn-scalar-cond) for a vector valued function $A\colon \mathbb R^{n} \to \mathbb R^{m}$. Where does a matrix norm play a role?
-1. Derive condition number of an invertible matrix $M$, i.e. condition of the problem $x\to y = M^{-1}x$, by the same procedure. Where does the matrix norm play a role?
+1. Leiten Sie die *Konditionszahl* wie in \@ref(eq:eqn-scalar-cond) für eine vektorwertige Funktion $A\colon \mathbb R^{n} \to \mathbb R^{m}$ ab. Wo spielt eine Matrixnorm eine Rolle?
+1. Leiten Sie die Konditionszahl einer invertierbaren Matrix $M$ ab, d.h. die Kondition des Problems $x\to y = M^{-1}x$, nach demselben Verfahren. Wo spielt die Matrixnorm eine Rolle?

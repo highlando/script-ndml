@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>1 Einführung | Numerik des Maschinellen Lernens</title>
+  <meta name="description" content="Vorlesungsnotizen zu meiner integrierten Vorlesung im SoSe 2024" />
+  <meta name="generator" content="bookdown 0.38 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="1 Einführung | Numerik des Maschinellen Lernens" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Vorlesungsnotizen zu meiner integrierten Vorlesung im SoSe 2024" />
+  <meta name="github-repo" content="highlando/script-ndml" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="1 Einführung | Numerik des Maschinellen Lernens" />
+  
+  <meta name="twitter:description" content="Vorlesungsnotizen zu meiner integrierten Vorlesung im SoSe 2024" />
+  
+
+<meta name="author" content="Jan Heiland" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="fehler-und-konditionierung.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">NdML</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Vorwort</a></li>
+<li class="chapter" data-level="1" data-path="einführung.html"><a href="einführung.html"><i class="fa fa-check"></i><b>1</b> Einführung</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="einführung.html"><a href="einführung.html#was-ist-ein-algorithmus"><i class="fa fa-check"></i><b>1.1</b> Was ist ein Algorithmus</a></li>
+<li class="chapter" data-level="1.2" data-path="einführung.html"><a href="einführung.html#konsistenz-stabilität-genauigkeit"><i class="fa fa-check"></i><b>1.2</b> Konsistenz, Stabilität, Genauigkeit</a></li>
+<li class="chapter" data-level="1.3" data-path="einführung.html"><a href="einführung.html#rechenkomplexität"><i class="fa fa-check"></i><b>1.3</b> Rechenkomplexität</a></li>
+<li class="chapter" data-level="1.4" data-path="einführung.html"><a href="einführung.html#übungen"><i class="fa fa-check"></i><b>1.4</b> Übungen</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="fehler-und-konditionierung.html"><a href="fehler-und-konditionierung.html"><i class="fa fa-check"></i><b>2</b> Fehler und Konditionierung</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="fehler-und-konditionierung.html"><a href="fehler-und-konditionierung.html#übungen-1"><i class="fa fa-check"></i><b>2.1</b> Übungen</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="referenzen.html"><a href="referenzen.html"><i class="fa fa-check"></i>Referenzen</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Numerik des Maschinellen Lernens</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="einführung" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">1</span> Einführung<a href="einführung.html#einführung" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Was sind <em>Numerische Methoden für Maschinelles Lernen</em> (ML)?</p>
+<p>Kurz gesagt, beim Training eines ML-Modells durchläuft ein Computer Millionen von Anweisungen, die in Form mathematischer Ausdrücke formuliert sind.
+Gleiches gilt für die Bewertung eines solchen Modells.
+Dann stellen sich Fragen wie <em>wird es einen Punkt geben, an dem das Training endet?</em> und <em>wird das Modell genau sein?</em>.</p>
+<p>Um zu beschreiben, was passiert, und für die spätere Analyse führen wir die allgemeinen Konzepte von</p>
+<ul>
+<li>Algorithmus</li>
+<li>Konsistenz/Genauigkeit</li>
+<li>Stabilität</li>
+<li>Rechenaufwand</li>
+</ul>
+<p>ein, von denen einige klassische <em>numerische Analysen</em> sind.</p>
+<div id="was-ist-ein-algorithmus" class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> Was ist ein Algorithmus<a href="einführung.html#was-ist-ein-algorithmus" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Interessanterweise ist der Begriff <em>Algorithmus</em> ähnlich intuitiv und abstrakt. Es bedurfte großer Anstrengungen, um eine allgemeine und prägnante Definition zu finden, die den Anforderungen und Einschränkungen aller Bereiche gerecht wird (von <em>Kochrezepten</em> bis zur Analyse von <em>formalen Sprachen</em>).</p>
+<div class="definition">
+<p><span id="def:algorithm" class="definition"><strong>Definition 1.1  (Algorithmus) </strong></span>Ein Problemlösungsverfahren wird als <em>Algorithmus</em> bezeichnet, wenn und nur wenn es eine <em>Turing-Maschine</em> gibt, die dem Verfahren entspricht und die, für jede Eingabe, für die eine Lösung existiert, <em>anhalten</em> wird.</p>
+</div>
+<p>Diese Definition ist in ihrer Allgemeinheit nicht allzu hilfreich - wir haben nicht einmal definiert, was eine Turing-Maschine ist.</p>
+<div id="rem-coors" class="JHSAYS">
+<p>Eine <em>Turing-Maschine</em> kann als eine Maschine beschrieben werden, die einen Streifen von Anweisungen liest und auf diesen Streifen schreiben kann. Abhängig davon, was sie liest, kann sie vorwärts bewegen, rückwärts bewegen oder anhalten (wenn der Streifen einen vordefinierten Zustand erreicht hat). Das Schöne daran ist, dass dieses Setup in einen vollständig mathematischen Rahmen gestellt werden kann.</p>
+</div>
+<p>Hilfreicher und gebräuchlicher ist es, die Implikationen dieser Definition zu betrachten, um zu überprüfen, ob ein Verfahren zumindest die notwendigen Bedingungen für einen Algorithmus erfüllt</p>
+<ul>
+<li>Der Algorithmus wird durch endlich viele Anweisungen beschrieben (Endlichkeit).</li>
+<li>Jeder Schritt ist <em>machbar</em>.</li>
+<li>Der Algorithmus erfordert eine endliche Menge an Speicher.</li>
+<li>Er wird nach endlich vielen Schritten beendet.</li>
+<li>In jedem Schritt ist der nächste Schritt eindeutig definiert (<em>deterministisch</em>).</li>
+<li>Für denselben Anfangszustand wird er im selben Endzustand anhalten (<em>bestimmt</em>).</li>
+</ul>
+<p>Somit könnte eine informelle, gute Praxisdefinition eines Algorithmus sein</p>
+<div class="definition">
+<p><span id="def:info-algorithm" class="definition"><strong>Definition 1.2  (Algorithmus -- informell) </strong></span>Ein Verfahren aus endlich vielen Anweisungen wird als <em>Algorithmus</em> bezeichnet, wenn es eine bestimmte Lösung – falls sie existiert – zu einem Problem in endlich vielen Schritten berechnet.</p>
+</div>
+<div id="rem-coors" class="JHSAYS">
+<p>Beachten Sie, wie einige Eigenschaften (wie endlich viele Anweisungen) a priori angenommen werden.</p>
+</div>
+<p>Als noch informelleren Verweis auf Algorithmen werden wir die Begriffe <strong><em>(numerische) Methode</em></strong> oder <strong><em>Schema</em></strong> verwenden, um ein Verfahren durch Auflistung seiner zugrundeliegenden Ideen und Unterprozeduren anzusprechen, wobei <em>Algorithmus</em> sich auf eine spezifische Realisierung einer <em>Methode</em> bezieht.</p>
+<p>Weiterhin unterscheiden wir</p>
+<ul>
+<li><em>direkte</em> Methoden – die die Lösung exakt berechnen (wie die Lösung eines linearen Systems durch <em>Gauß-Elimination</em>) und</li>
+<li><em>iterative</em> Methoden – die iterativ eine Folge von Annäherungen an die Lösung berechnen (wie die Berechnung von Wurzeln mit einem <em>Newton-Schema</em>).</li>
+</ul>
+</div>
+<div id="konsistenz-stabilität-genauigkeit" class="section level2 hasAnchor" number="1.2">
+<h2><span class="header-section-number">1.2</span> Konsistenz, Stabilität, Genauigkeit<a href="einführung.html#konsistenz-stabilität-genauigkeit" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Für die Analyse numerischer Methoden werden allgemein die folgenden Begriffe verwendet:</p>
+<div class="definition">
+<p><span id="def:consistency" class="definition"><strong>Definition 1.3  (Konsistenz) </strong></span>Wenn ein Algorithmus in exakter Arithmetik die Lösung des Problems mit einer gegebenen Genauigkeit berechnet, wird er als <em>konsistent</em> bezeichnet.</p>
+</div>
+<div class="definition">
+<p><span id="def:stability" class="definition"><strong>Definition 1.4  (Stabilität (informell)) </strong></span>Wenn die Ausgabe eines Algorithmus kontinuierlich von Unterschieden in der Eingabe und kontinuierlich von Unterschieden in den Anweisungen abhängt, dann wird der Algorithmus als <em>stabil</em> bezeichnet.</p>
+</div>
+<p>Die <em>Unterschiede in den Anweisungen</em> sind typischerweise auf Rundungsfehler zurückzuführen, wie sie in <em>ungenauer Arithmetik</em> auftreten.</p>
+<div id="rem-coors" class="JHSAYS">
+<p>Man könnte sagen, dass ein Algorithmus konsistent ist, wenn <em>er das Richtige tut</em> und dass er stabil ist, <em>wenn er trotz aller Arten von kleinen Ungenauigkeiten funktioniert</em>. Wenn ein Algorithmus konsistent und stabil ist, wird er oft als <em>konvergent</em> bezeichnet, um auszudrücken, dass er schließlich die Lösung auch in ungenauer Arithmetik berechnen wird.</p>
+</div>
+<p>Beachten Sie, dass Begriffe wie</p>
+<ul>
+<li><em>Genauigkeit</em> – wie nahe die berechnete Ausgabe der tatsächlichen Lösung kommt oder</li>
+<li><em>Konvergenz</em> – wie schnell (typischerweise in Bezug auf den Rechenaufwand) der Algorithmus sich der tatsächlichen Lösung nähert</li>
+</ul>
+<p>keine intrinsischen Eigenschaften eines Algorithmus sind, da sie von dem zu lösenden Problem abhängen.
+Man kann jedoch von <em>Ordnungskonsistenz</em> eines Algorithmus sprechen, um die erwartete Genauigkeit für eine Klasse von Problemen zu spezifizieren, und einen Algorithmus als konvergent einer bestimmten Ordnung bezeichnen, wenn er auch stabil ist.</p>
+</div>
+<div id="rechenkomplexität" class="section level2 hasAnchor" number="1.3">
+<h2><span class="header-section-number">1.3</span> Rechenkomplexität<a href="einführung.html#rechenkomplexität" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Die <em>Rechenkomplexität</em> eines Algorithmus ist sowohl theoretisch (um abzuschätzen, wie der Aufwand mit beispielsweise der Größe des Problems skaliert) als auch praktisch (um zu sagen, wie lange das Verfahren dauern wird und welche Kosten in Bezug auf CPU-Zeit oder Speichernutzung es generieren wird) wichtig.</p>
+<p>Typischerweise wird die Komplexität durch Zählen der elementaren Operationen gemessen, oft als <em>FLOP</em>s bezeichnet, was für <em>floating point operations</em> steht.
+Um die Algorithmen in Bezug auf Komplexität versus Problemgröße zu klassifizieren, sind die folgenden Funktionsklassen hilfreich</p>
+<div class="definition">
+<p><span id="def:landau-symbs" class="definition"><strong>Definition 1.5  (Landau-Symbole oder große O-Notation) </strong></span>Sei <span class="math inline">\(g\colon \mathbb R^{} \to \mathbb R^{}\)</span> und <span class="math inline">\(a\in\mathbb R^{} \cup \{-\infty, +\infty\}\)</span>. Dann sagen wir für eine Funktion <span class="math inline">\(f\colon \mathbb R \to \mathbb R^{}\)</span>, dass <span class="math inline">\(f\in O(g)\)</span>, wenn
+<span class="math display">\[\begin{equation*}
+\limsup_{x\to a} \frac{|f(x)|}{|g(x)|} &lt; \infty
+\end{equation*}\]</span>
+und dass <span class="math inline">\(f\in o(g)\)</span>, wenn
+<span class="math display">\[\begin{equation*}
+\limsup_{x\to a} \frac{|f(x)|}{|g(x)|} = 0.
+\end{equation*}\]</span></p>
+</div>
+<p>Der Sinn und die Funktionalität dieser Konzepte wird vielleicht deutlich, wenn man sich die typischen Anwendungen ansieht:</p>
+<ul>
+<li>Wenn <span class="math inline">\(h&gt; 0\)</span> ein Diskretisierungsparameter ist und, sagen wir, <span class="math inline">\(e(h)\)</span> der Diskretisierungsfehler ist, dann könnten wir sagen, dass <span class="math inline">\(e(h) = O(h^2)\)</span>, wenn <em>asymptotisch</em>, d.h. für immer kleinere <span class="math inline">\(h\)</span> – der Fehler mindestens so schnell wie <span class="math inline">\(h^2\)</span> gegen <span class="math inline">\(0\)</span> geht.</li>
+<li>Wenn <span class="math inline">\(C(n)\)</span> die Komplexität eines Algorithmus für eine Problemgröße <span class="math inline">\(n\)</span> ist, dann könnten wir sagen, dass <span class="math inline">\(C(n) = O(n)\)</span>, um auszudrücken, dass die Komplexität <em>asymptotisch</em>, d.h. für immer größere <span class="math inline">\(n\)</span>, mit derselben Geschwindigkeit wie die Problemgröße wächst.</li>
+</ul>
+<p>Leider ist die übliche Verwendung der Landau-Symbole etwas nachlässig.</p>
+<ol style="list-style-type: decimal">
+<li>Das oft verwendete “<span class="math inline">\(=\)</span>”-Zeichen ist informell und keineswegs eine Gleichheit.</li>
+<li>Was das Limit <span class="math inline">\(a\)</span> ist, wird kaum jemals explizit erwähnt, aber glücklicherweise ist es in der Regel aus dem Kontext klar.</li>
+</ol>
+<p>Als Beispiel betrachten wir zwei verschiedene Wege, ein Polynom <span class="math inline">\(p\)</span> vom Grad <span class="math inline">\(n\)</span> an der Abszisse <span class="math inline">\(x\)</span> zu bewerten, basierend auf den zwei äquivalenten Darstellungen
+<span class="math display">\[\begin{equation*}
+\begin{split}
+p(x) &amp;= a_0 + a_1x +  a_2x^2+ \dotsm + a_nx^n \\
+     &amp;= a_0 + x(a_1 + x(a_2 + \dotsm +x(a_{n-1} + a_nx) \dotsm ))
+\end{split}
+\end{equation*}\]</span></p>
+<p>Für eine direkte Implementierung der ersten Darstellung erhalten wir</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb1-1"><a href="einführung.html#cb1-1" aria-hidden="true"></a><span class="co">&#39;&#39;&#39;Berechnung von p(x) in Standarddarstellung</span></span>
+<span id="cb1-2"><a href="einführung.html#cb1-2" aria-hidden="true"></a><span class="co">&#39;&#39;&#39;</span></span>
+<span id="cb1-3"><a href="einführung.html#cb1-3" aria-hidden="true"></a>n <span class="op">=</span> <span class="dv">10</span>                                      <span class="co"># Beispielwert für n</span></span>
+<span id="cb1-4"><a href="einführung.html#cb1-4" aria-hidden="true"></a>ais <span class="op">=</span> [(<span class="op">-</span><span class="dv">1</span>)<span class="op">**</span>k<span class="op">*</span><span class="dv">1</span><span class="op">/</span>k <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n<span class="op">+</span><span class="dv">2</span>)]  <span class="co"># Liste der Beispielkoeffizienten</span></span>
+<span id="cb1-5"><a href="einführung.html#cb1-5" aria-hidden="true"></a>x <span class="op">=</span> <span class="dv">5</span>                                       <span class="co"># Ein Beispielwert für x</span></span>
+<span id="cb1-6"><a href="einführung.html#cb1-6" aria-hidden="true"></a>cpx <span class="op">=</span> ais[<span class="dv">0</span>]                                <span class="co"># der Fall k=0</span></span>
+<span id="cb1-7"><a href="einführung.html#cb1-7" aria-hidden="true"></a><span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(n):</span>
+<span id="cb1-8"><a href="einführung.html#cb1-8" aria-hidden="true"></a>    cpx <span class="op">=</span> cpx <span class="op">+</span> ais[k<span class="op">+</span><span class="dv">1</span>] <span class="op">*</span> x<span class="op">**</span>(k<span class="op">+</span><span class="dv">1</span>)         <span class="co"># der Beitrag des k-ten Schritts</span></span>
+<span id="cb1-9"><a href="einführung.html#cb1-9" aria-hidden="true"></a><span class="bu">print</span>(<span class="ss">f&#39;x=</span><span class="sc">{x}</span><span class="ss">: p(x)=</span><span class="sc">{</span>cpx<span class="sc">:.4f}</span><span class="ss">&#39;</span>)             <span class="co"># Ausgabe des Ergebnisses</span></span></code></pre></div>
+<p>Im <span class="math inline">\(k\)</span>-ten Schritt benötigt der Algorithmus eine Addition (wenn wir auch die Initialisierung als Addition zählen) und <span class="math inline">\(k\)</span> Multiplikationen. Das ergibt eine Gesamtkomplexität von
+<span class="math display">\[\begin{equation*}
+C(n) = \sum_{k=0}^n(1+k) = n+1 + \frac{n(n-1)}{2} = 1 + \frac n2 + \frac{n^2}2 = O(n^2)
+\end{equation*}\]</span></p>
+<p>Für die zweite Darstellung können wir das sogenannte <em>Horner-Schema</em> implementieren, das lauten würde</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb2-1"><a href="einführung.html#cb2-1" aria-hidden="true"></a><span class="co">&#39;&#39;&#39;Berechnung von p(x) mit dem Horner-Schema</span></span>
+<span id="cb2-2"><a href="einführung.html#cb2-2" aria-hidden="true"></a><span class="co">&#39;&#39;&#39;</span></span>
+<span id="cb2-3"><a href="einführung.html#cb2-3" aria-hidden="true"></a>n <span class="op">=</span> <span class="dv">10</span>                                      <span class="co"># Beispielwert für n</span></span>
+<span id="cb2-4"><a href="einführung.html#cb2-4" aria-hidden="true"></a>ais <span class="op">=</span> [(<span class="op">-</span><span class="dv">1</span>)<span class="op">**</span>k<span class="op">*</span><span class="dv">1</span><span class="op">/</span>k <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n<span class="op">+</span><span class="dv">2</span>)]  <span class="co"># Liste der Beispielkoeffizienten</span></span>
+<span id="cb2-5"><a href="einführung.html#cb2-5" aria-hidden="true"></a>x <span class="op">=</span> <span class="dv">5</span>                                       <span class="co"># Ein Beispielwert für x</span></span>
+<span id="cb2-6"><a href="einführung.html#cb2-6" aria-hidden="true"></a>cpx <span class="op">=</span> ais[n]                                <span class="co"># der Fall k=n</span></span>
+<span id="cb2-7"><a href="einführung.html#cb2-7" aria-hidden="true"></a><span class="cf">for</span> k <span class="kw">in</span> <span class="bu">reversed</span>(<span class="bu">range</span>(n)):                </span>
+<span id="cb2-8"><a href="einführung.html#cb2-8" aria-hidden="true"></a>    cpx <span class="op">=</span> ais[k] <span class="op">+</span> x<span class="op">*</span>cpx                    <span class="co"># der Beitrag des k-ten Schritts</span></span>
+<span id="cb2-9"><a href="einführung.html#cb2-9" aria-hidden="true"></a><span class="bu">print</span>(<span class="ss">f&#39;x=</span><span class="sc">{x}</span><span class="ss">: p(x)=</span><span class="sc">{</span>cpx<span class="sc">:.4f}</span><span class="ss">&#39;</span>)             <span class="co"># Ausgabe des Ergebnisses</span></span></code></pre></div>
+<p>Insgesamt benötigt dieses Schema <span class="math inline">\(n+1\)</span> Additionen und <span class="math inline">\(n\)</span> Multiplikationen, d.h. <span class="math inline">\(2n+1\)</span> FLOPs, so dass wir sagen können, dass <em>dieser Algorithmus <span class="math inline">\(O(n)\)</span> ist</em>.</p>
+</div>
+<div id="übungen" class="section level2 hasAnchor" number="1.4">
+<h2><span class="header-section-number">1.4</span> Übungen<a href="einführung.html#übungen" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li>Vergleichen Sie die beiden Implementierungen zur Bewertung eines Polynoms, indem Sie die Komplexität als Funktion von <span class="math inline">\(n\)</span> darstellen und die benötigte CPU-Zeit für eine Beispielbewertung im Vergleich zu <span class="math inline">\(n\)</span> messen und darstellen.</li>
+</ol>
+<p>Weiterführende Literatur:</p>
+<ul>
+<li><a href="https://de.wikipedia.org/wiki/Algorithmus#Definition">wikipedia:Algorithmus</a></li>
+</ul>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="fehler-und-konditionierung.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["NdML.pdf"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

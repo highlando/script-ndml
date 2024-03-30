@@ -1,115 +1,115 @@
-# Introduction
+# Einführung
 
-What is *Numerical Methods for Machine Learning*? (ML)
+Was sind *Numerische Methoden für Maschinelles Lernen* (ML)?
 
-In short, for the training of an ML model, a computer steps through millions of instructions that are formulated in terms of mathematical expressions. 
-Same holds for the evaluation of such a model.
-Then questions arise like *will there be a point when the training is comes to an end?* and *will the model be accurate?*.
+Kurz gesagt, beim Training eines ML-Modells durchläuft ein Computer Millionen von Anweisungen, die in Form mathematischer Ausdrücke formuliert sind. 
+Gleiches gilt für die Bewertung eines solchen Modells.
+Dann stellen sich Fragen wie *wird es einen Punkt geben, an dem das Training endet?* und *wird das Modell genau sein?*.
 
-In order to describe what is happening and for the analysis later, we introduce the general concepts of
+Um zu beschreiben, was passiert, und für die spätere Analyse führen wir die allgemeinen Konzepte von
 
-* algorithm
-* consistency/accuracy
-* stability
-* computational effort
+* Algorithmus
+* Konsistenz/Genauigkeit
+* Stabilität
+* Rechenaufwand
 
-some of which are classical *numerical analysis*.
+ein, von denen einige klassische *numerische Analysen* sind.
 
-## What is an Algorithm
+## Was ist ein Algorithmus
 
-Curiously, the term *algorithm* is similarly intuitive and abstract. It took great efforts to come up with a general and concise definition that would meet requirements and limitations of all fields (ranging from, say, *cooking recipes* to the analysis of of *formal languages*).
+Interessanterweise ist der Begriff *Algorithmus* ähnlich intuitiv und abstrakt. Es bedurfte großer Anstrengungen, um eine allgemeine und prägnante Definition zu finden, die den Anforderungen und Einschränkungen aller Bereiche gerecht wird (von *Kochrezepten* bis zur Analyse von *formalen Sprachen*).
 
-::: {.definition #algorithm name="Algorithm"}
-A problem solution procedure is called an *algorithm* if, and only if, there exists a *Turing machine* that is equivalent to the procedure and that, for every input for which a solution exists, *stops*.
+::: {.definition #algorithm name="Algorithmus"}
+Ein Problemlösungsverfahren wird als *Algorithmus* bezeichnet, wenn und nur wenn es eine *Turing-Maschine* gibt, die dem Verfahren entspricht und die, für jede Eingabe, für die eine Lösung existiert, *anhalten* wird.
 :::
 
-This definition is not too helpful in its generality -- we haven't even defined what is a Turing machine.
+Diese Definition ist in ihrer Allgemeinheit nicht allzu hilfreich - wir haben nicht einmal definiert, was eine Turing-Maschine ist.
 
 ::: {#rem-coors .JHSAYS data-latex=''}
-A *Turing machine* can be described as a machine that reads a strip of instructions and that can write onto this strip. Depending on what it reads it may move forward, move backward, or stop (when the strip has reached a predefined state). The beauty is that this setup can be put into an entirely mathematical framework.
+Eine *Turing-Maschine* kann als eine Maschine beschrieben werden, die einen Streifen von Anweisungen liest und auf diesen Streifen schreiben kann. Abhängig davon, was sie liest, kann sie vorwärts bewegen, rückwärts bewegen oder anhalten (wenn der Streifen einen vordefinierten Zustand erreicht hat). Das Schöne daran ist, dass dieses Setup in einen vollständig mathematischen Rahmen gestellt werden kann.
 :::
 
-It is more helpful and more common, to look at the implications of this definition to check if a procedure meets at least the necessary conditions for being an algorithm
+Hilfreicher und gebräuchlicher ist es, die Implikationen dieser Definition zu betrachten, um zu überprüfen, ob ein Verfahren zumindest die notwendigen Bedingungen für einen Algorithmus erfüllt
 
-* The algorithm is described by finitely many instructions (finiteness).
-* Every step is *feasible*.
-* The algorithm requires a finite amount of memory.
-* It will finish after finitely many steps.
-* At every step, the next step is uniquely defined (*deterministic*).
-* For the same initial state, it will stop at the same final state (*determined*).
+* Der Algorithmus wird durch endlich viele Anweisungen beschrieben (Endlichkeit).
+* Jeder Schritt ist *machbar*.
+* Der Algorithmus erfordert eine endliche Menge an Speicher.
+* Er wird nach endlich vielen Schritten beendet.
+* In jedem Schritt ist der nächste Schritt eindeutig definiert (*deterministisch*).
+* Für denselben Anfangszustand wird er im selben Endzustand anhalten (*bestimmt*).
 
-Thus, an informal good-practice definition of an algorithm could be
+Somit könnte eine informelle, gute Praxisdefinition eines Algorithmus sein
 
-::: {.definition #info-algorithm name="Algorithm -- informally"}
-An procedure of finitely many instructions is called an *algorithm* if it computes a determined solution -- if it exsists -- to a problem in finitely many steps.
+::: {.definition #info-algorithm name="Algorithmus -- informell"}
+Ein Verfahren aus endlich vielen Anweisungen wird als *Algorithmus* bezeichnet, wenn es eine bestimmte Lösung -- falls sie existiert -- zu einem Problem in endlich vielen Schritten berechnet.
 :::
 
 ::: {#rem-coors .JHSAYS data-latex=''}
-Note how some properties (like finitely many instructions) are assumed a-priori.
+Beachten Sie, wie einige Eigenschaften (wie endlich viele Anweisungen) a priori angenommen werden.
 :::
 
-As an even more informal reference to algorithms we will use the term **_(numerical) method_** or **_scheme_** to address a procedure by listing its underlying ideas and sub procedures, whereas *algorithm* will refer to a specific realization of a *method*.
+Als noch informelleren Verweis auf Algorithmen werden wir die Begriffe **_(numerische) Methode_** oder **_Schema_** verwenden, um ein Verfahren durch Auflistung seiner zugrundeliegenden Ideen und Unterprozeduren anzusprechen, wobei *Algorithmus* sich auf eine spezifische Realisierung einer *Methode* bezieht.
 
-Furthermore, we will distinguish
+Weiterhin unterscheiden wir
 
-* *direct* methods -- that compute the solution exactly (like the solution of a linear system by *Gauss elimination*) and
-* *iterative* methods -- that iteratively compute a sequence of approximations to the solution (like the computation of roots using a *Newton scheme*).
+* *direkte* Methoden -- die die Lösung exakt berechnen (wie die Lösung eines linearen Systems durch *Gauß-Elimination*) und
+* *iterative* Methoden -- die iterativ eine Folge von Annäherungen an die Lösung berechnen (wie die Berechnung von Wurzeln mit einem *Newton-Schema*).
 
-## Consistency, Stability, Accuracy
+## Konsistenz, Stabilität, Genauigkeit
 
-For the analysis of numerical methods the following terms are generally used:
+Für die Analyse numerischer Methoden werden allgemein die folgenden Begriffe verwendet:
 
-::: {.definition #consistency name="Consistency"}
-If, in exact arithmetics, an algorithm computes the solution to the problem with a given accuracy, it is called *consistent*.
+::: {.definition #consistency name="Konsistenz"}
+Wenn ein Algorithmus in exakter Arithmetik die Lösung des Problems mit einer gegebenen Genauigkeit berechnet, wird er als *konsistent* bezeichnet.
 :::
 
-::: {.definition #stability name="Stability (informal)"}
-If the output of an algorithm depends continously on differences in the input and continously on differences in the instructions, then the algorithm is called *stable*.
+::: {.definition #stability name="Stabilität (informell)"}
+Wenn die Ausgabe eines Algorithmus kontinuierlich von Unterschieden in der Eingabe und kontinuierlich von Unterschieden in den Anweisungen abhängt, dann wird der Algorithmus als *stabil* bezeichnet.
 :::
 
-The *differences in the instructions* are typically due to rounding errors as they occur in *inexact arithmetics*.
+Die *Unterschiede in den Anweisungen* sind typischerweise auf Rundungsfehler zurückzuführen, wie sie in *ungenauer Arithmetik* auftreten.
 
 ::: {#rem-coors .JHSAYS data-latex=''}
-One could say that an algorithm is consistent if *it does the right thing* and that is stable *if it works despite all kinds of small inaccuracies*. If an algorithm is consistent and stable, it is often called *convergent* to express that it will eventually compute the solution even in inexact arithmetics.
+Man könnte sagen, dass ein Algorithmus konsistent ist, wenn *er das Richtige tut* und dass er stabil ist, *wenn er trotz aller Arten von kleinen Ungenauigkeiten funktioniert*. Wenn ein Algorithmus konsistent und stabil ist, wird er oft als *konvergent* bezeichnet, um auszudrücken, dass er schließlich die Lösung auch in ungenauer Arithmetik berechnen wird.
 :::
 
-Note that terms like 
+Beachten Sie, dass Begriffe wie 
 
-* *accuracy* -- how close the computed output matches that actual solution or
-* *convergence* -- how fast (typically with respect to the computational effort) the algorithm approaches the actual solution
+* *Genauigkeit* -- wie nahe die berechnete Ausgabe der tatsächlichen Lösung kommt oder
+* *Konvergenz* -- wie schnell (typischerweise in Bezug auf den Rechenaufwand) der Algorithmus sich der tatsächlichen Lösung nähert
 
-are not intrinsic properties of an algorithm because they depend on the problem that is to be solved.
-However, one can talk of *order consistency* of an algorithm to specify the expected accuracy for a class or problems and call an algorithm convergent or a certain order if it is stable too.
+keine intrinsischen Eigenschaften eines Algorithmus sind, da sie von dem zu lösenden Problem abhängen.
+Man kann jedoch von *Ordnungskonsistenz* eines Algorithmus sprechen, um die erwartete Genauigkeit für eine Klasse von Problemen zu spezifizieren, und einen Algorithmus als konvergent einer bestimmten Ordnung bezeichnen, wenn er auch stabil ist.
 
-## Computational Complexity
+## Rechenkomplexität
 
-The *computational complexity* of an algorithm is important both theoretically (to estimate how the effort scales with, say, the size of the problem) and practically (to say how long the procedure will last and which costs in terms of CPU time or memory usage it will generate).
+Die *Rechenkomplexität* eines Algorithmus ist sowohl theoretisch (um abzuschätzen, wie der Aufwand mit beispielsweise der Größe des Problems skaliert) als auch praktisch (um zu sagen, wie lange das Verfahren dauern wird und welche Kosten in Bezug auf CPU-Zeit oder Speichernutzung es generieren wird) wichtig.
 
-Typically, the complexity is measured by counting the elementary operations, often referred to as *FLOP*s, which is short for *floating point operations*. 
-To classify the algorithms in terms of complexity versus problem size the following function classes are helpful
+Typischerweise wird die Komplexität durch Zählen der elementaren Operationen gemessen, oft als *FLOP*s bezeichnet, was für *floating point operations* steht. 
+Um die Algorithmen in Bezug auf Komplexität versus Problemgröße zu klassifizieren, sind die folgenden Funktionsklassen hilfreich
 
-::: {.definition #landau-symbs name="Landau Symbols or big O notation"}
-Let $g\colon \mathbb R^{} \to \mathbb R^{}$ and $a\in\mathbb R^{} \cup \{-\infty, +\infty\}$. Then we say for a function $f\colon \mathbb R \to \mathbb R^{}$ that $f\in O(g)$ if
+::: {.definition #landau-symbs name="Landau-Symbole oder große O-Notation"}
+Sei $g\colon \mathbb R^{} \to \mathbb R^{}$ und $a\in\mathbb R^{} \cup \{-\infty, +\infty\}$. Dann sagen wir für eine Funktion $f\colon \mathbb R \to \mathbb R^{}$, dass $f\in O(g)$, wenn
 \begin{equation*}
 \limsup_{x\to a} \frac{|f(x)|}{|g(x)|} < \infty
 \end{equation*}
-and that $f\in o(g)$ if
+und dass $f\in o(g)$, wenn
 \begin{equation*}
 \limsup_{x\to a} \frac{|f(x)|}{|g(x)|} = 0.
 \end{equation*}
 :::
 
-The sense and functionality of these concepts might become clear from looking at the typical applications: 
+Der Sinn und die Funktionalität dieser Konzepte wird vielleicht deutlich, wenn man sich die typischen Anwendungen ansieht:
 
-* if $h> 0$ is a discretization parameter and, say, $e(h)$ is the discretization error, then we may say that $e(h) = O(h^2)$, if *asymptotically*, i.e. for ever smaller $h$ -- the error approaches $0$ at least as fast as $h^2$
-* if $C(n)$ is the complexity of an algorithm for a problem size $n$, than we could say that $C(n) = O(n)$ to express that the complexity grows *asymptotically*, i.e. for ever larger $n$, at the same speed as the problem size
+* Wenn $h> 0$ ein Diskretisierungsparameter ist und, sagen wir, $e(h)$ der Diskretisierungsfehler ist, dann könnten wir sagen, dass $e(h) = O(h^2)$, wenn *asymptotisch*, d.h. für immer kleinere $h$ -- der Fehler mindestens so schnell wie $h^2$ gegen $0$ geht.
+* Wenn $C(n)$ die Komplexität eines Algorithmus für eine Problemgröße $n$ ist, dann könnten wir sagen, dass $C(n) = O(n)$, um auszudrücken, dass die Komplexität *asymptotisch*, d.h. für immer größere $n$, mit derselben Geschwindigkeit wie die Problemgröße wächst.
 
-Unfortunately, the common use of the Landau symbols is a bit sloppy. 
+Leider ist die übliche Verwendung der Landau-Symbole etwas nachlässig.
 
-1. the often used "$=$"-sign is informal and by no means an equality
-2. what is the limit $a$ is hardly ever mentioned explicitly but fortunately generally clear from the context
+1. Das oft verwendete "$=$"-Zeichen ist informell und keineswegs eine Gleichheit.
+2. Was das Limit $a$ ist, wird kaum jemals explizit erwähnt, aber glücklicherweise ist es in der Regel aus dem Kontext klar.
 
-As an example we look at two different ways to evaluate a polynomial $p$ of the degree $n$ at the abscissa $x$ based on the two equivalent representations
+Als Beispiel betrachten wir zwei verschiedene Wege, ein Polynom $p$ vom Grad $n$ an der Abszisse $x$ zu bewerten, basierend auf den zwei äquivalenten Darstellungen
 \begin{equation*}
 \begin{split}
 p(x) &= a_0 + a_1x +  a_2x^2+ \dotsm + a_nx^n \\
@@ -117,44 +117,44 @@ p(x) &= a_0 + a_1x +  a_2x^2+ \dotsm + a_nx^n \\
 \end{split}
 \end{equation*}
 
-For a direct implementation of the first representation we obtain
+Für eine direkte Implementierung der ersten Darstellung erhalten wir
 
 ```py
-'''computation of p(x) in standard representation
+'''Berechnung von p(x) in Standarddarstellung
 '''
-n = 10                                      # example value for n
-ais = [(-1)**k*1/k for k in range(1, n+2)]  # list of example coefficients
-x = 5                                       # an example value for x
-cpx = ais[0]                                # the k=0 case
+n = 10                                      # Beispielwert für n
+ais = [(-1)**k*1/k for k in range(1, n+2)]  # Liste der Beispielkoeffizienten
+x = 5                                       # Ein Beispielwert für x
+cpx = ais[0]                                # der Fall k=0
 for k in range(n):
-    cpx = cpx + ais[k+1] * x**(k+1)         # the the k-th contribution
-print(f'x={x}: p(x)={cpx:.4f}')             # print the output 
+    cpx = cpx + ais[k+1] * x**(k+1)         # der Beitrag des k-ten Schritts
+print(f'x={x}: p(x)={cpx:.4f}')             # Ausgabe des Ergebnisses
 ```
 
-In the $k$-th step, the algorithm requires one addition (if we also count the initialization as an addition) and $k$ multiplications. That makes an overall complexity of
+Im $k$-ten Schritt benötigt der Algorithmus eine Addition (wenn wir auch die Initialisierung als Addition zählen) und $k$ Multiplikationen. Das ergibt eine Gesamtkomplexität von
 \begin{equation*}
 C(n) = \sum_{k=0}^n(1+k) = n+1 + \frac{n(n-1)}{2} = 1 + \frac n2 + \frac{n^2}2 = O(n^2)
 \end{equation*}
 
-For the second representation, we can implement the so-called *Horner scheme* that would read
+Für die zweite Darstellung können wir das sogenannte *Horner-Schema* implementieren, das lauten würde
 
 ```py
-'''computation of p(x) using the Horner scheme
+'''Berechnung von p(x) mit dem Horner-Schema
 '''
-n = 10                                      # example value for n
-ais = [(-1)**k*1/k for k in range(1, n+2)]  # list of example coefficients
-x = 5                                       # an example value for x
-cpx = ais[n]                                # the k=n case
+n = 10                                      # Beispielwert für n
+ais = [(-1)**k*1/k for k in range(1, n+2)]  # Liste der Beispielkoeffizienten
+x = 5                                       # Ein Beispielwert für x
+cpx = ais[n]                                # der Fall k=n
 for k in reversed(range(n)):                
-    cpx = ais[k] + x*cpx                    # the the k-th contribution
-print(f'x={x}: p(x)={cpx:.4f}')             # print the output 
+    cpx = ais[k] + x*cpx                    # der Beitrag des k-ten Schritts
+print(f'x={x}: p(x)={cpx:.4f}')             # Ausgabe des Ergebnisses
 ```
-Overall, this scheme needs $n+1$ additions and $n$ multiplications, i.e. $2n+1$ FLOPs, so that we can say that *this algorithm is $O(n)$*.
+Insgesamt benötigt dieses Schema $n+1$ Additionen und $n$ Multiplikationen, d.h. $2n+1$ FLOPs, so dass wir sagen können, dass *dieser Algorithmus $O(n)$ ist*.
 
-## Exercises
+## Übungen
 
-1. Compare the two implementations for evaluating a polynomial by plotting the complexity as a function of $n$ and by measuring and plotting the CPU time needed for an example evaluation versus $n$.
+1. Vergleichen Sie die beiden Implementierungen zur Bewertung eines Polynoms, indem Sie die Komplexität als Funktion von $n$ darstellen und die benötigte CPU-Zeit für eine Beispielbewertung im Vergleich zu $n$ messen und darstellen.
 
-Further reading: 
+Weiterführende Literatur:
 
 * [wikipedia:Algorithmus](https://de.wikipedia.org/wiki/Algorithmus#Definition)
