@@ -1,5 +1,6 @@
 # Fehler und Konditionierung
 
+\def\kij{(\kappa_{A,x})_{ij}}
 Berechnungen auf einem Computer verursachen unvermeidlich Fehler, und die Effizienz oder Leistung von Algorithmen ist immer das Verhältnis von Kosten zu Genauigkeit. 
 Zum Beispiel:
 
