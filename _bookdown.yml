@@ -1,0 +1,18 @@
+book_filename: "NdML"
+# chapter_name: "Chapter "
+repo: https://github.com/highlando/script-ndml
+output_dir: docs
+rmd_files: ["index.Rmd",
+            "01_introduction.Rmd",
+            "02_errors.Rmd",
+            # "vl_03.Rmd",
+            # "vl_04.Rmd",
+            # "vl_05.Rmd",
+            # "vl_06.Rmd",
+            # "vl_07.Rmd",
+            # "vl_08.Rmd",
+            # "vl_09.Rmd",
+            # "vl_1010.Rmd",
+            "xxx_lastpage.Rmd"]
+clean: [packages.bib, bookdown.bbl]
+new_session: yes

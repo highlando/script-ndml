@@ -1,0 +1,55 @@
+on:
+  push:
+    branches: main
+
+jobs:
+  build-n-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup R
+        uses: r-lib/actions/setup-r@v2
+
+      - name: Install pandoc and pandoc citeproc
+        run: |
+          sudo apt install libcurl4-openssl-dev
+          sudo apt install pandoc
+          sudo apt install pandoc-citeproc
+          sudo apt install texlive-xetex
+      - name: Cache Renv packages
+        uses: actions/cache@v1
+        with:
+          path: $HOME/.local/share/renv
+          key: r-${{ hashFiles('renv.lock') }}
+          restore-keys: r-
+
+      - name: Cache bookdown results
+        uses: actions/cache@v1
+        with:
+          path: _bookdown_files
+          key: bookdown-${{ hashFiles('**/*Rmd') }}
+          restore-keys: bookdown-
+
+      - name: Install packages
+        run: |
+          R -e 'install.packages("curl")'
+          R -e 'install.packages("hittr")'
+          R -e 'install.packages("rvest")'
+          R -e 'install.packages("kableExtra")'
+          R -e 'install.packages("bookdown")'
+
+      - name: Build site
+        run: |
+          Rscript -e 'bookdown::render_book("index.Rmd", "bookdown::pdf_book", quiet=TRUE)'
+          Rscript -e 'bookdown::render_book("index.Rmd", "bookdown::gitbook", quiet=TRUE)'
+          touch docs/.nojekyll
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4.3.3
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: docs # The folder the action should deploy.
