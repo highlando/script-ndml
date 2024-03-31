@@ -1,4 +1,4 @@
-set spell spelllang=en
+set spell spelllang=de
 
 imap ,a &auml;
 imap ,o &ouml;
