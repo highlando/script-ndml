@@ -398,6 +398,9 @@ Beide, irgendwie trivialen Beobachtungen sind grundlegende Bestandteile des Trai
 
 \end{JHSAYS}
 
+\hypertarget{fehler}{%
+\section{Fehler}\label{fehler}}
+
 \begin{definition}[Absolute und relative Fehler]
 \protect\hypertarget{def:errors}{}\label{def:errors}Sei \(x\in\mathbb R^{}\) die interessierende Größe und \(\tilde x \in \mathbb R^{}\) eine Annäherung daran. Dann wird der \emph{absolute Fehler} definiert als \(|\delta x|:=|\tilde x- x|\) und der \emph{relative Fehler} als \(\frac{|\delta x|}{|x|}=\frac{|\tilde x- x|}{|x|}\).
 \end{definition}
@@ -407,6 +410,9 @@ Beide, irgendwie trivialen Beobachtungen sind grundlegende Bestandteile des Trai
 Generell wird der relative Fehler bevorzugt, da er den gemessenen Fehler in den richtigen Bezug setzt. Zum Beispiel kann ein absoluter Fehler von \(10\) km/h je nach Kontext groß oder klein sein.
 
 \end{JHSAYS}
+
+\hypertarget{kondition}{%
+\section{Kondition}\label{kondition}}
 
 Als Nächstes definieren wir die \emph{Kondition} eines Problems \(A\) und analog eines Algorithmus (der das Problem löst). Dafür lassen wir \(x\) einen Parameter/Eingabe des Problems sein und \(y=A(x)\) die entsprechende Lösung/Ausgabe. Die Kondition ist ein Maß dafür, inwieweit eine Änderung \(x+\delta x\) in der Eingabe die resultierende relative Änderung in der Ausgabe beeinflusst. Dafür betrachten wir
 \begin{equation*}
@@ -438,6 +444,70 @@ Anstatt die skalaren Komponentenfunktionen von \(A\colon \mathbb R^{n} \to \math
 
 \end{JHSAYS}
 
+\hypertarget{kondition-der-grundrechenarten}{%
+\section{Kondition der Grundrechenarten}\label{kondition-der-grundrechenarten}}
+
+Da einfach jede Operation von Zahlen auf dem Computer auf die Grundrechenarten zurueckgeht, ist es wichtig sich zu vergegenwärtigen wie sich diese Basisoperationen in Bezug auf kleine Fehler verhalten.
+
+\hypertarget{addition}{%
+\subsection{Addition}\label{addition}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{def}\NormalTok{ A(x, y):}
+    \ControlFlowTok{return}\NormalTok{ x}\OperatorTok{+}\NormalTok{y}
+
+\NormalTok{x, tx, y }\OperatorTok{=} \FloatTok{1.02}\NormalTok{, }\FloatTok{1.021}\NormalTok{, }\OperatorTok{{-}}\FloatTok{1.00}
+\NormalTok{z }\OperatorTok{=}\NormalTok{ A(x, y)}
+\NormalTok{tz }\OperatorTok{=}\NormalTok{ A(tx, y)}
+\NormalTok{relerrx }\OperatorTok{=}\NormalTok{ (tx }\OperatorTok{{-}}\NormalTok{ x)}\OperatorTok{/}\NormalTok{x        }\CommentTok{\# here: 0.00098039}
+\NormalTok{relerrz }\OperatorTok{=}\NormalTok{ (tz }\OperatorTok{{-}}\NormalTok{ z)}\OperatorTok{/}\NormalTok{z        }\CommentTok{\# here: 0.04999999}
+\NormalTok{kondAx }\OperatorTok{=}\NormalTok{ relerrz}\OperatorTok{/}\NormalTok{relerrx     }\CommentTok{\# here: 50.9999999}
+\end{Highlighting}
+\end{Shaded}
+
+In diesem Code Beispiel liegt der relative Fehler in \(x\) bei etwa \(0.01\)\% und im Ausgang \(z\) bei etwa \(5\)\%, was einer etwa \(50\)-fachen Verstärkung entspricht.
+Für die Konditionszahl der Addtion \(A_y\colon x \to y+x\) gilt:
+\begin{equation*}
+\kappa_{A_y;x} = \frac{|x|}{|x+y|} = \frac{1}{|1+\frac{y}{x}|}.
+\end{equation*}
+
+Diese Konditionszahl kann offenbar beliebig groß werden, wenn \(x\) nah an \(-y\) liegt. Jan spricht von Auslöschung und tatsächlich lässt sich nachvollziehen, dass in diesem Fall die vorderen (korrekten) Stellen einer Zahl von einander abgezogen werden und die hinteren (möglicherweise inkorrekten) Stellen übrig bleiben.
+
+\leavevmode\hypertarget{rem-accu-iter}{}%
+\begin{JHSAYS}
+Praktisch gesagt: Hantiert Jan mit Addition großer Zahlen um ein kleines Ergebnis erzielen ist das numerisch sehr ungünstig.
+
+\end{JHSAYS}
+
+\hypertarget{multiplikation}{%
+\subsection{Multiplikation}\label{multiplikation}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{def}\NormalTok{ M(x, y):}
+    \ControlFlowTok{return}\NormalTok{ x}\OperatorTok{*}\NormalTok{y}
+
+\NormalTok{x, tx, y }\OperatorTok{=} \FloatTok{1.02}\NormalTok{, }\FloatTok{1.021}\NormalTok{, }\OperatorTok{{-}}\FloatTok{1.00}
+\NormalTok{z }\OperatorTok{=}\NormalTok{ M(x, y)}
+\NormalTok{tz }\OperatorTok{=}\NormalTok{ M(tx, y)}
+\NormalTok{relerrx }\OperatorTok{=}\NormalTok{ (tx }\OperatorTok{{-}}\NormalTok{ x)}\OperatorTok{/}\NormalTok{x        }\CommentTok{\# here: 0.00098039}
+\NormalTok{relerrz }\OperatorTok{=}\NormalTok{ (tz }\OperatorTok{{-}}\NormalTok{ z)}\OperatorTok{/}\NormalTok{z        }\CommentTok{\# here: 0.00098039}
+\NormalTok{kondMx }\OperatorTok{=}\NormalTok{ relerrz}\OperatorTok{/}\NormalTok{relerrx    }\CommentTok{\# here: 1.0}
+\end{Highlighting}
+\end{Shaded}
+
+Das Ergebnis \texttt{1.0} für die empirsch ermittelte Konditionszahl war kein Zufall. Es gilt im Allgemeinen für \(M_y \colon x \to yx\) dass
+\begin{equation*}
+\kappa_{M_y;x} = |y|\frac{|x|}{|xy|} = 1.
+\end{equation*}
+Die Multiplikation ist also generell gut konditioniert.
+
+\hypertarget{wurzelziehen}{%
+\subsection{Wurzelziehen}\label{wurzelziehen}}
+
+Das Berechnen der Quadratwurzel \(W\colon x \to \sqrt x\) hat die Konditionszahl \(\frac 12\). Bei Konditionszahlen kleiner als \(1\) verringert sich der relative Fehler, Jan spricht von \emph{Fehlerdäpfung}.
+
 \hypertarget{uxfcbungen-1}{%
 \section{Übungen}\label{uxfcbungen-1}}
 
@@ -448,6 +518,10 @@ Anstatt die skalaren Komponentenfunktionen von \(A\colon \mathbb R^{n} \to \math
   Leiten Sie die \emph{Konditionszahl} wie in \eqref{eq:eqn-scalar-cond} für eine vektorwertige Funktion \(A\colon \mathbb R^{n} \to \mathbb R^{m}\) ab. Wo spielt eine Matrixnorm eine Rolle?
 \item
   Leiten Sie mite dem selben Verfahren die Konditionszahl einer invertierbaren Matrix \(M\) her, d.h. die Kondition des Problems \(x\to y = M^{-1}x\). Wo spielt die Matrixnorm eine Rolle?
+\item
+  Leiten Sie die Konditionszahlen für die Operationen \emph{Division} und \emph{Quadratwurzelziehen} her.
+\item
+  Veranschaulichen Sie an der Darstellung des Vektors \(P=[1, 1]\) in der Standardbasis \(\{[1, 0], \,[0, 1]\}\) und in der Basis \(\{[1, 0], \,[1, 0.1]\}\) unter Verweis auf die Kondition der Addition, warum \emph{orthogonale Basen} als \emph{gut konditioniert} gelten.
 \end{enumerate}
 
 \hypertarget{referenzen}{%

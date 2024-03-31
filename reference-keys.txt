@@ -12,4 +12,10 @@ konsistenz-stabilität-genauigkeit
 rechenkomplexität
 übungen
 fehler-und-konditionierung
+fehler
+kondition
+kondition-der-grundrechenarten
+addition
+multiplikation
+wurzelziehen
 übungen-1

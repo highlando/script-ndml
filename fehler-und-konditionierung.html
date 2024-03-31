@@ -149,7 +149,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="2" data-path="fehler-und-konditionierung.html"><a href="fehler-und-konditionierung.html"><i class="fa fa-check"></i><b>2</b> Fehler und Konditionierung</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="fehler-und-konditionierung.html"><a href="fehler-und-konditionierung.html#übungen-1"><i class="fa fa-check"></i><b>2.1</b> Übungen</a></li>
+<li class="chapter" data-level="2.1" data-path="fehler-und-konditionierung.html"><a href="fehler-und-konditionierung.html#fehler"><i class="fa fa-check"></i><b>2.1</b> Fehler</a></li>
+<li class="chapter" data-level="2.2" data-path="fehler-und-konditionierung.html"><a href="fehler-und-konditionierung.html#kondition"><i class="fa fa-check"></i><b>2.2</b> Kondition</a></li>
+<li class="chapter" data-level="2.3" data-path="fehler-und-konditionierung.html"><a href="fehler-und-konditionierung.html#kondition-der-grundrechenarten"><i class="fa fa-check"></i><b>2.3</b> Kondition der Grundrechenarten</a></li>
+<li class="chapter" data-level="2.4" data-path="fehler-und-konditionierung.html"><a href="fehler-und-konditionierung.html#übungen-1"><i class="fa fa-check"></i><b>2.4</b> Übungen</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="referenzen.html"><a href="referenzen.html"><i class="fa fa-check"></i>Referenzen</a></li>
 <li class="divider"></li>
@@ -183,12 +186,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="rem-accu-iter" class="JHSAYS">
 <p>Beide, irgendwie trivialen Beobachtungen sind grundlegende Bestandteile des Trainings neuronaler Netzwerke. Erstens wurde beobachtet, dass Zahldarstellungen mit <em>einfacher Genauigkeit</em> (im Vergleich zum gängigen <em>double precision</em>) Rechenkosten sparen kann, mit nur geringen Auswirkungen auf die Genauigkeit. Zweitens ist das Training ein iterativer Prozess mit oft langsamer Konvergenz, sodass der richtige Zeitpunkt für einen vorzeitigen Abbruch des Trainings entscheidend ist.</p>
 </div>
+<div id="fehler" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Fehler<a href="fehler-und-konditionierung.html#fehler" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div class="definition">
 <p><span id="def:errors" class="definition"><strong>Definition 2.1  (Absolute und relative Fehler) </strong></span>Sei <span class="math inline">\(x\in\mathbb R^{}\)</span> die interessierende Größe und <span class="math inline">\(\tilde x \in \mathbb R^{}\)</span> eine Annäherung daran. Dann wird der <em>absolute Fehler</em> definiert als <span class="math inline">\(|\delta x|:=|\tilde x- x|\)</span> und der <em>relative Fehler</em> als <span class="math inline">\(\frac{|\delta x|}{|x|}=\frac{|\tilde x- x|}{|x|}\)</span>.</p>
 </div>
 <div id="rem-rel-abs-err" class="JHSAYS">
 <p>Generell wird der relative Fehler bevorzugt, da er den gemessenen Fehler in den richtigen Bezug setzt. Zum Beispiel kann ein absoluter Fehler von <span class="math inline">\(10\)</span> km/h je nach Kontext groß oder klein sein.</p>
 </div>
+</div>
+<div id="kondition" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Kondition<a href="fehler-und-konditionierung.html#kondition" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Als Nächstes definieren wir die <em>Kondition</em> eines Problems <span class="math inline">\(A\)</span> und analog eines Algorithmus (der das Problem löst). Dafür lassen wir <span class="math inline">\(x\)</span> einen Parameter/Eingabe des Problems sein und <span class="math inline">\(y=A(x)\)</span> die entsprechende Lösung/Ausgabe. Die Kondition ist ein Maß dafür, inwieweit eine Änderung <span class="math inline">\(x+\delta x\)</span> in der Eingabe die resultierende relative Änderung in der Ausgabe beeinflusst. Dafür betrachten wir
 <span class="math display">\[\begin{equation*}
 \delta y = \tilde y - y = A(\tilde x) - A(x) = A(x+\delta x) - A(x)
@@ -213,11 +221,60 @@ die partielle <em>Konditionszahl</em> des Problems. Ein Problem wird als <em>gut
 <div id="rem-vector-valued-cond" class="JHSAYS">
 <p>Anstatt die skalaren Komponentenfunktionen von <span class="math inline">\(A\colon \mathbb R^{n} \to \mathbb R^{m}\)</span> zu verwenden, kann man die Berechnungen, die zu <a href="#eq:eqn-scalar-cond">(2.1)</a> geführt haben, mit vektorwertigen Größen in den entsprechenden Normen wiederholen.</p>
 </div>
-<div id="übungen-1" class="section level2 hasAnchor" number="2.1">
-<h2><span class="header-section-number">2.1</span> Übungen<a href="fehler-und-konditionierung.html#übungen-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="kondition-der-grundrechenarten" class="section level2 hasAnchor" number="2.3">
+<h2><span class="header-section-number">2.3</span> Kondition der Grundrechenarten<a href="fehler-und-konditionierung.html#kondition-der-grundrechenarten" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Da einfach jede Operation von Zahlen auf dem Computer auf die Grundrechenarten zurueckgeht, ist es wichtig sich zu vergegenwärtigen wie sich diese Basisoperationen in Bezug auf kleine Fehler verhalten.</p>
+<div id="addition" class="section level3 hasAnchor" number="2.3.1">
+<h3><span class="header-section-number">2.3.1</span> Addition<a href="fehler-und-konditionierung.html#addition" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb3-1"><a href="fehler-und-konditionierung.html#cb3-1" aria-hidden="true"></a><span class="kw">def</span> A(x, y):</span>
+<span id="cb3-2"><a href="fehler-und-konditionierung.html#cb3-2" aria-hidden="true"></a>    <span class="cf">return</span> x<span class="op">+</span>y</span>
+<span id="cb3-3"><a href="fehler-und-konditionierung.html#cb3-3" aria-hidden="true"></a></span>
+<span id="cb3-4"><a href="fehler-und-konditionierung.html#cb3-4" aria-hidden="true"></a>x, tx, y <span class="op">=</span> <span class="fl">1.02</span>, <span class="fl">1.021</span>, <span class="op">-</span><span class="fl">1.00</span></span>
+<span id="cb3-5"><a href="fehler-und-konditionierung.html#cb3-5" aria-hidden="true"></a>z <span class="op">=</span> A(x, y)</span>
+<span id="cb3-6"><a href="fehler-und-konditionierung.html#cb3-6" aria-hidden="true"></a>tz <span class="op">=</span> A(tx, y)</span>
+<span id="cb3-7"><a href="fehler-und-konditionierung.html#cb3-7" aria-hidden="true"></a>relerrx <span class="op">=</span> (tx <span class="op">-</span> x)<span class="op">/</span>x        <span class="co"># here: 0.00098039</span></span>
+<span id="cb3-8"><a href="fehler-und-konditionierung.html#cb3-8" aria-hidden="true"></a>relerrz <span class="op">=</span> (tz <span class="op">-</span> z)<span class="op">/</span>z        <span class="co"># here: 0.04999999</span></span>
+<span id="cb3-9"><a href="fehler-und-konditionierung.html#cb3-9" aria-hidden="true"></a>kondAx <span class="op">=</span> relerrz<span class="op">/</span>relerrx     <span class="co"># here: 50.9999999</span></span></code></pre></div>
+<p>In diesem Code Beispiel liegt der relative Fehler in <span class="math inline">\(x\)</span> bei etwa <span class="math inline">\(0.01\)</span>% und im Ausgang <span class="math inline">\(z\)</span> bei etwa <span class="math inline">\(5\)</span>%, was einer etwa <span class="math inline">\(50\)</span>-fachen Verstärkung entspricht.
+Für die Konditionszahl der Addtion <span class="math inline">\(A_y\colon x \to y+x\)</span> gilt:
+<span class="math display">\[\begin{equation*}
+\kappa_{A_y;x} = \frac{|x|}{|x+y|} = \frac{1}{|1+\frac{y}{x}|}.
+\end{equation*}\]</span></p>
+<p>Diese Konditionszahl kann offenbar beliebig groß werden, wenn <span class="math inline">\(x\)</span> nah an <span class="math inline">\(-y\)</span> liegt. Jan spricht von Auslöschung und tatsächlich lässt sich nachvollziehen, dass in diesem Fall die vorderen (korrekten) Stellen einer Zahl von einander abgezogen werden und die hinteren (möglicherweise inkorrekten) Stellen übrig bleiben.</p>
+<div id="rem-accu-iter" class="JHSAYS">
+<p>Praktisch gesagt: Hantiert Jan mit Addition großer Zahlen um ein kleines Ergebnis erzielen ist das numerisch sehr ungünstig.</p>
+</div>
+</div>
+<div id="multiplikation" class="section level3 hasAnchor" number="2.3.2">
+<h3><span class="header-section-number">2.3.2</span> Multiplikation<a href="fehler-und-konditionierung.html#multiplikation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb4-1"><a href="fehler-und-konditionierung.html#cb4-1" aria-hidden="true"></a><span class="kw">def</span> M(x, y):</span>
+<span id="cb4-2"><a href="fehler-und-konditionierung.html#cb4-2" aria-hidden="true"></a>    <span class="cf">return</span> x<span class="op">*</span>y</span>
+<span id="cb4-3"><a href="fehler-und-konditionierung.html#cb4-3" aria-hidden="true"></a></span>
+<span id="cb4-4"><a href="fehler-und-konditionierung.html#cb4-4" aria-hidden="true"></a>x, tx, y <span class="op">=</span> <span class="fl">1.02</span>, <span class="fl">1.021</span>, <span class="op">-</span><span class="fl">1.00</span></span>
+<span id="cb4-5"><a href="fehler-und-konditionierung.html#cb4-5" aria-hidden="true"></a>z <span class="op">=</span> M(x, y)</span>
+<span id="cb4-6"><a href="fehler-und-konditionierung.html#cb4-6" aria-hidden="true"></a>tz <span class="op">=</span> M(tx, y)</span>
+<span id="cb4-7"><a href="fehler-und-konditionierung.html#cb4-7" aria-hidden="true"></a>relerrx <span class="op">=</span> (tx <span class="op">-</span> x)<span class="op">/</span>x        <span class="co"># here: 0.00098039</span></span>
+<span id="cb4-8"><a href="fehler-und-konditionierung.html#cb4-8" aria-hidden="true"></a>relerrz <span class="op">=</span> (tz <span class="op">-</span> z)<span class="op">/</span>z        <span class="co"># here: 0.00098039</span></span>
+<span id="cb4-9"><a href="fehler-und-konditionierung.html#cb4-9" aria-hidden="true"></a>kondMx <span class="op">=</span> relerrz<span class="op">/</span>relerrx    <span class="co"># here: 1.0</span></span></code></pre></div>
+<p>Das Ergebnis <code>1.0</code> für die empirsch ermittelte Konditionszahl war kein Zufall. Es gilt im Allgemeinen für <span class="math inline">\(M_y \colon x \to yx\)</span> dass
+<span class="math display">\[\begin{equation*}
+\kappa_{M_y;x} = |y|\frac{|x|}{|xy|} = 1.
+\end{equation*}\]</span>
+Die Multiplikation ist also generell gut konditioniert.</p>
+</div>
+<div id="wurzelziehen" class="section level3 hasAnchor" number="2.3.3">
+<h3><span class="header-section-number">2.3.3</span> Wurzelziehen<a href="fehler-und-konditionierung.html#wurzelziehen" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Das Berechnen der Quadratwurzel <span class="math inline">\(W\colon x \to \sqrt x\)</span> hat die Konditionszahl <span class="math inline">\(\frac 12\)</span>. Bei Konditionszahlen kleiner als <span class="math inline">\(1\)</span> verringert sich der relative Fehler, Jan spricht von <em>Fehlerdäpfung</em>.</p>
+</div>
+</div>
+<div id="übungen-1" class="section level2 hasAnchor" number="2.4">
+<h2><span class="header-section-number">2.4</span> Übungen<a href="fehler-und-konditionierung.html#übungen-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ol style="list-style-type: decimal">
 <li>Leiten Sie die <em>Konditionszahl</em> wie in <a href="#eq:eqn-scalar-cond">(2.1)</a> für eine vektorwertige Funktion <span class="math inline">\(A\colon \mathbb R^{n} \to \mathbb R^{m}\)</span> ab. Wo spielt eine Matrixnorm eine Rolle?</li>
 <li>Leiten Sie mite dem selben Verfahren die Konditionszahl einer invertierbaren Matrix <span class="math inline">\(M\)</span> her, d.h. die Kondition des Problems <span class="math inline">\(x\to y = M^{-1}x\)</span>. Wo spielt die Matrixnorm eine Rolle?</li>
+<li>Leiten Sie die Konditionszahlen für die Operationen <em>Division</em> und <em>Quadratwurzelziehen</em> her.</li>
+<li>Veranschaulichen Sie an der Darstellung des Vektors <span class="math inline">\(P=[1, 1]\)</span> in der Standardbasis <span class="math inline">\(\{[1, 0], \,[0, 1]\}\)</span> und in der Basis <span class="math inline">\(\{[1, 0], \,[1, 0.1]\}\)</span> unter Verweis auf die Kondition der Addition, warum <em>orthogonale Basen</em> als <em>gut konditioniert</em> gelten.</li>
 </ol>
 
 </div>
