@@ -14,6 +14,30 @@ Um zu beschreiben, was passiert, und für die spätere Analyse führen wir die a
 
 ein, von denen einige klassische *numerische Analysis* sind.
 
+Bevor wir in die klassischen Themen einsteigen noch ein paar Beispiele wo Numerik und maschinelles Lernen sich treffen.
+
+ * Iterative Methoden
+   - Konvergenz/Konvergenzraten
+   - stochastische Konvergenz
+   * lokale Extrema
+   * randomisierte Methoden
+
+ * Optimierung/Ausgleichsrechnung
+
+ * Approximationstheorie
+   * Universal Approximation Theorem
+
+ * Stabilit&auml;t und Fehleranalyse
+   * mixed precision Arithmetik
+
+ * Numerische lineare Algebra
+   - PCA 
+   * Support Vector Machines
+   * Empfehlungssysteme
+
+ * Automatisches Differenzieren
+   * *backward propagation* zur Gradientenberechnung
+
 ## Was ist ein Algorithmus
 
 Interessanterweise ist der Begriff *Algorithmus* zugleich intuitiv und abstrakt. Es bedurfte großer Anstrengungen, um eine allgemeine und wohlgestellte Definition zu finden, die den Anforderungen und Einschränkungen aller Bereiche gerecht wird (von *Kochrezepten* bis zur Analyse von *formalen Sprachen*).
