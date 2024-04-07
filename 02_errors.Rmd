@@ -68,7 +68,7 @@ z = A(x, y)
 tz = A(tx, y)
 relerrx = (tx - x)/x        # here: 0.00098039
 relerrz = (tz - z)/z        # here: 0.04999999
-kondAx = relerrz/relerrx     # here: 50.9999999
+kondAx = relerrz/relerrx    # here: 50.9999999
 ```
 
 
