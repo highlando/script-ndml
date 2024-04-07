@@ -227,15 +227,15 @@ die partielle <em>Konditionszahl</em> des Problems. Ein Problem wird als <em>gut
 <p>Da einfach jede Operation von Zahlen auf dem Computer auf die Grundrechenarten zurueckgeht, ist es wichtig sich zu vergegenwärtigen wie sich diese Basisoperationen in Bezug auf kleine Fehler verhalten.</p>
 <div id="addition" class="section level3 hasAnchor" number="2.3.1">
 <h3><span class="header-section-number">2.3.1</span> Addition<a href="fehler-und-konditionierung.html#addition" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb3"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb3-1"><a href="fehler-und-konditionierung.html#cb3-1" aria-hidden="true"></a><span class="kw">def</span> A(x, y):</span>
-<span id="cb3-2"><a href="fehler-und-konditionierung.html#cb3-2" aria-hidden="true"></a>    <span class="cf">return</span> x<span class="op">+</span>y</span>
-<span id="cb3-3"><a href="fehler-und-konditionierung.html#cb3-3" aria-hidden="true"></a></span>
-<span id="cb3-4"><a href="fehler-und-konditionierung.html#cb3-4" aria-hidden="true"></a>x, tx, y <span class="op">=</span> <span class="fl">1.02</span>, <span class="fl">1.021</span>, <span class="op">-</span><span class="fl">1.00</span></span>
-<span id="cb3-5"><a href="fehler-und-konditionierung.html#cb3-5" aria-hidden="true"></a>z <span class="op">=</span> A(x, y)</span>
-<span id="cb3-6"><a href="fehler-und-konditionierung.html#cb3-6" aria-hidden="true"></a>tz <span class="op">=</span> A(tx, y)</span>
-<span id="cb3-7"><a href="fehler-und-konditionierung.html#cb3-7" aria-hidden="true"></a>relerrx <span class="op">=</span> (tx <span class="op">-</span> x)<span class="op">/</span>x        <span class="co"># here: 0.00098039</span></span>
-<span id="cb3-8"><a href="fehler-und-konditionierung.html#cb3-8" aria-hidden="true"></a>relerrz <span class="op">=</span> (tz <span class="op">-</span> z)<span class="op">/</span>z        <span class="co"># here: 0.04999999</span></span>
-<span id="cb3-9"><a href="fehler-und-konditionierung.html#cb3-9" aria-hidden="true"></a>kondAx <span class="op">=</span> relerrz<span class="op">/</span>relerrx     <span class="co"># here: 50.9999999</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb4-1"><a href="fehler-und-konditionierung.html#cb4-1" aria-hidden="true"></a><span class="kw">def</span> A(x, y):</span>
+<span id="cb4-2"><a href="fehler-und-konditionierung.html#cb4-2" aria-hidden="true"></a>    <span class="cf">return</span> x<span class="op">+</span>y</span>
+<span id="cb4-3"><a href="fehler-und-konditionierung.html#cb4-3" aria-hidden="true"></a></span>
+<span id="cb4-4"><a href="fehler-und-konditionierung.html#cb4-4" aria-hidden="true"></a>x, tx, y <span class="op">=</span> <span class="fl">1.02</span>, <span class="fl">1.021</span>, <span class="op">-</span><span class="fl">1.00</span></span>
+<span id="cb4-5"><a href="fehler-und-konditionierung.html#cb4-5" aria-hidden="true"></a>z <span class="op">=</span> A(x, y)</span>
+<span id="cb4-6"><a href="fehler-und-konditionierung.html#cb4-6" aria-hidden="true"></a>tz <span class="op">=</span> A(tx, y)</span>
+<span id="cb4-7"><a href="fehler-und-konditionierung.html#cb4-7" aria-hidden="true"></a>relerrx <span class="op">=</span> (tx <span class="op">-</span> x)<span class="op">/</span>x        <span class="co"># here: 0.00098039</span></span>
+<span id="cb4-8"><a href="fehler-und-konditionierung.html#cb4-8" aria-hidden="true"></a>relerrz <span class="op">=</span> (tz <span class="op">-</span> z)<span class="op">/</span>z        <span class="co"># here: 0.04999999</span></span>
+<span id="cb4-9"><a href="fehler-und-konditionierung.html#cb4-9" aria-hidden="true"></a>kondAx <span class="op">=</span> relerrz<span class="op">/</span>relerrx    <span class="co"># here: 50.9999999</span></span></code></pre></div>
 <p>In diesem Code Beispiel liegt der relative Fehler in <span class="math inline">\(x\)</span> bei etwa <span class="math inline">\(0.01\)</span>% und im Ausgang <span class="math inline">\(z\)</span> bei etwa <span class="math inline">\(5\)</span>%, was einer etwa <span class="math inline">\(50\)</span>-fachen Verstärkung entspricht.
 Für die Konditionszahl der Addtion <span class="math inline">\(A_y\colon x \to y+x\)</span> gilt:
 <span class="math display">\[\begin{equation*}
@@ -248,15 +248,15 @@ Für die Konditionszahl der Addtion <span class="math inline">\(A_y\colon x \to 
 </div>
 <div id="multiplikation" class="section level3 hasAnchor" number="2.3.2">
 <h3><span class="header-section-number">2.3.2</span> Multiplikation<a href="fehler-und-konditionierung.html#multiplikation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb4"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb4-1"><a href="fehler-und-konditionierung.html#cb4-1" aria-hidden="true"></a><span class="kw">def</span> M(x, y):</span>
-<span id="cb4-2"><a href="fehler-und-konditionierung.html#cb4-2" aria-hidden="true"></a>    <span class="cf">return</span> x<span class="op">*</span>y</span>
-<span id="cb4-3"><a href="fehler-und-konditionierung.html#cb4-3" aria-hidden="true"></a></span>
-<span id="cb4-4"><a href="fehler-und-konditionierung.html#cb4-4" aria-hidden="true"></a>x, tx, y <span class="op">=</span> <span class="fl">1.02</span>, <span class="fl">1.021</span>, <span class="op">-</span><span class="fl">1.00</span></span>
-<span id="cb4-5"><a href="fehler-und-konditionierung.html#cb4-5" aria-hidden="true"></a>z <span class="op">=</span> M(x, y)</span>
-<span id="cb4-6"><a href="fehler-und-konditionierung.html#cb4-6" aria-hidden="true"></a>tz <span class="op">=</span> M(tx, y)</span>
-<span id="cb4-7"><a href="fehler-und-konditionierung.html#cb4-7" aria-hidden="true"></a>relerrx <span class="op">=</span> (tx <span class="op">-</span> x)<span class="op">/</span>x        <span class="co"># here: 0.00098039</span></span>
-<span id="cb4-8"><a href="fehler-und-konditionierung.html#cb4-8" aria-hidden="true"></a>relerrz <span class="op">=</span> (tz <span class="op">-</span> z)<span class="op">/</span>z        <span class="co"># here: 0.00098039</span></span>
-<span id="cb4-9"><a href="fehler-und-konditionierung.html#cb4-9" aria-hidden="true"></a>kondMx <span class="op">=</span> relerrz<span class="op">/</span>relerrx    <span class="co"># here: 1.0</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb5-1"><a href="fehler-und-konditionierung.html#cb5-1" aria-hidden="true"></a><span class="kw">def</span> M(x, y):</span>
+<span id="cb5-2"><a href="fehler-und-konditionierung.html#cb5-2" aria-hidden="true"></a>    <span class="cf">return</span> x<span class="op">*</span>y</span>
+<span id="cb5-3"><a href="fehler-und-konditionierung.html#cb5-3" aria-hidden="true"></a></span>
+<span id="cb5-4"><a href="fehler-und-konditionierung.html#cb5-4" aria-hidden="true"></a>x, tx, y <span class="op">=</span> <span class="fl">1.02</span>, <span class="fl">1.021</span>, <span class="op">-</span><span class="fl">1.00</span></span>
+<span id="cb5-5"><a href="fehler-und-konditionierung.html#cb5-5" aria-hidden="true"></a>z <span class="op">=</span> M(x, y)</span>
+<span id="cb5-6"><a href="fehler-und-konditionierung.html#cb5-6" aria-hidden="true"></a>tz <span class="op">=</span> M(tx, y)</span>
+<span id="cb5-7"><a href="fehler-und-konditionierung.html#cb5-7" aria-hidden="true"></a>relerrx <span class="op">=</span> (tx <span class="op">-</span> x)<span class="op">/</span>x        <span class="co"># here: 0.00098039</span></span>
+<span id="cb5-8"><a href="fehler-und-konditionierung.html#cb5-8" aria-hidden="true"></a>relerrz <span class="op">=</span> (tz <span class="op">-</span> z)<span class="op">/</span>z        <span class="co"># here: 0.00098039</span></span>
+<span id="cb5-9"><a href="fehler-und-konditionierung.html#cb5-9" aria-hidden="true"></a>kondMx <span class="op">=</span> relerrz<span class="op">/</span>relerrx    <span class="co"># here: 1.0</span></span></code></pre></div>
 <p>Das Ergebnis <code>1.0</code> für die empirsch ermittelte Konditionszahl war kein Zufall. Es gilt im Allgemeinen für <span class="math inline">\(M_y \colon x \to yx\)</span> dass
 <span class="math display">\[\begin{equation*}
 \kappa_{M_y;x} = |y|\frac{|x|}{|xy|} = 1.

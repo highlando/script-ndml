@@ -2,8 +2,7 @@
 
 Was sind *Numerische Methoden für Maschinelles Lernen* (ML)?
 
-Kurz gesagt, beim Training eines ML-Modells durchläuft ein Computer Millionen von Anweisungen, die in Form mathematischer Ausdrücke formuliert sind. 
-Gleiches gilt für die Bewertung eines solchen Modells.
+Kurz gesagt, beim Training eines ML-Modells durchläuft ein Computer Millionen von Anweisungen, die in Form mathematischer Ausdrücke formuliert sind. Gleiches gilt für die Bewertung eines solchen Modells.
 Dann stellen sich Fragen wie *wird es einen Punkt geben, an dem das Training endet?* und *wird das Modell genau sein?*.
 
 Um zu beschreiben, was passiert, und für die spätere Analyse führen wir die allgemeinen Konzepte von
@@ -85,7 +84,13 @@ Man kann jedoch von *Konsistenzordnung* eines Algorithmus sprechen, um die erwar
 
 Die *Rechenkomplexität* eines Algorithmus ist sowohl theoretisch (um abzuschätzen, wie der Aufwand mit beispielsweise der Größe des Problems skaliert) als auch praktisch (um zu sagen, wie lange das Verfahren dauern wird und welche Kosten in Bezug auf CPU-Zeit oder Speichernutzung es generieren wird) wichtig.
 
-Typischerweise wird die Komplexität durch Zählen der elementaren Operationen gemessen, oft als *FLOP*s bezeichnet, was für *floating point operations* steht. 
+Typischerweise wird die Komplexität durch Zählen der elementaren Operationen gemessen -- wir werden stets die Ausf&uuml;hrung einer Grundrechenart als eine Operation z&auml;hlen.
+
+::: {#rem-flops .JHSAYS data-latex=''}
+Die Definition einer *elementaren Operation* auf einem Computer ist nicht universal, da viele Faktoren hier reinspielen. Gerne werden *FLOP*
+s angef&uuml;hrt, was für *floating point operations* steht. Allerdings ist es wiederum sehr verschieden auf verschiedenen Prozessoren wieviele FLOPs f&uuml;r eine Multiplikation oder Addition gebraucht werden. 
+:::
+
 Um die Algorithmen in Bezug auf Komplexität versus Problemgröße zu klassifizieren, sind die folgenden Funktionsklassen hilfreich
 
 ::: {.definition #landau-symbs name="Landau-Symbole oder große O-Notation"}
@@ -153,7 +158,27 @@ Insgesamt benötigt dieses Schema $n+1$ Additionen und $n$ Multiplikationen, d.h
 
 ## Übungen
 
-1. Vergleichen Sie die beiden Implementierungen zur Bewertung eines Polynoms, indem Sie die Komplexität als Funktion von $n$ darstellen und die benötigte CPU-Zeit für eine Beispielbewertung im Vergleich zu $n$ messen und darstellen.
+1. Vergleichen Sie die beiden Implementierungen zur Bewertung eines Polynoms, indem Sie die Komplexität als Funktion von $n$ darstellen und die benötigte CPU-Zeit für eine Beispielauswertung im Vergleich zu $n$ messen und darstellen.
+
+2. Zeigen Sie, dass es f&uuml;r $f\in O(g)$ mit $f\geq 0$ und $g> 0$ eine Konstante $C$ gibt, sodass $f(n)=h(n) + Cg(n)$ mit $h\in o(g)$. *Bemerkung: diese Relation ist die Rechtfertigung f&uuml;r die eigentlich inkorrekte Schreibweise $f=O(g)$*.
+
+3. Ermitteln Sie experimentell *die Ordnung* (d.h. den Exponent $x$ in $O(n^x)$) und *die Konstante* $C$ (s.o.) f&uuml;r die Laufzeit $t(n)$ der in `scipy.linalg.cholesky` implementierten Cholesky Zerlegung der Bandmatrix `A_n` aus dem folgenden Code Beispiel
+```py
+import numpy as np
+from scipy.linalg import cholesky
+from time import time
+n = 10
+A_n = -1*np.diag(np.ones(n-1), -1) + \
+    2*np.diag(np.ones(n), 0) + \
+    -1*np.diag(np.ones(n-1), 1)
+tic = time()
+_ = cholesky(A_n)
+toc = time()
+print(f'n: {n} -- t_n: {toc-tic:.4e}')
+```
+*Hinweis: Hier geht es um die Methodik und um eine sinnvolle Interpretation der Ergebnisse. Es kann gut sein, dass die Ergebnisse auf verschiedenen Rechnern verschieden ausfallen. Au&szlig;erdem k&ouml;nnen f&uuml;r gro&szlig;e $n$ (wo der Exponent und die Konstante am besten sichtbar sind) auf einmal bspw. ein zu voller Arbeitsspeicher die Berechnung negativ beeinflussen).*
+
+4. Diskutieren Sie, wie Laufzeitmessungen (bspw. zur Komplexit&auml;tsanalyse eines Verfahrens) aufgesetzt werden sollten, um reproduzierbare Ergebnisse zu erhalten. Was sollte dokumentiert werden, damit dritte Personen die Ergebnisse einordnen und ggf. reproduzieren k&ouml;nnen.
 
 Weiterführende Literatur:
 

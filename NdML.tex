@@ -158,8 +158,7 @@ Korrekturen und Wünsche immer gerne als \emph{issues} oder \emph{pull requests}
 
 Was sind \emph{Numerische Methoden für Maschinelles Lernen} (ML)?
 
-Kurz gesagt, beim Training eines ML-Modells durchläuft ein Computer Millionen von Anweisungen, die in Form mathematischer Ausdrücke formuliert sind.
-Gleiches gilt für die Bewertung eines solchen Modells.
+Kurz gesagt, beim Training eines ML-Modells durchläuft ein Computer Millionen von Anweisungen, die in Form mathematischer Ausdrücke formuliert sind. Gleiches gilt für die Bewertung eines solchen Modells.
 Dann stellen sich Fragen wie \emph{wird es einen Punkt geben, an dem das Training endet?} und \emph{wird das Modell genau sein?}.
 
 Um zu beschreiben, was passiert, und für die spätere Analyse führen wir die allgemeinen Konzepte von
@@ -276,7 +275,15 @@ Man kann jedoch von \emph{Konsistenzordnung} eines Algorithmus sprechen, um die 
 
 Die \emph{Rechenkomplexität} eines Algorithmus ist sowohl theoretisch (um abzuschätzen, wie der Aufwand mit beispielsweise der Größe des Problems skaliert) als auch praktisch (um zu sagen, wie lange das Verfahren dauern wird und welche Kosten in Bezug auf CPU-Zeit oder Speichernutzung es generieren wird) wichtig.
 
-Typischerweise wird die Komplexität durch Zählen der elementaren Operationen gemessen, oft als \emph{FLOP}s bezeichnet, was für \emph{floating point operations} steht.
+Typischerweise wird die Komplexität durch Zählen der elementaren Operationen gemessen -- wir werden stets die Ausführung einer Grundrechenart als eine Operation zählen.
+
+\leavevmode\hypertarget{rem-flops}{}%
+\begin{JHSAYS}
+Die Definition einer \emph{elementaren Operation} auf einem Computer ist nicht universal, da viele Faktoren hier reinspielen. Gerne werden \emph{FLOP}
+s angeführt, was für \emph{floating point operations} steht. Allerdings ist es wiederum sehr verschieden auf verschiedenen Prozessoren wieviele FLOPs für eine Multiplikation oder Addition gebraucht werden.
+
+\end{JHSAYS}
+
 Um die Algorithmen in Bezug auf Komplexität versus Problemgröße zu klassifizieren, sind die folgenden Funktionsklassen hilfreich
 
 \begin{definition}[Landau-Symbole oder große O-Notation]
@@ -363,9 +370,38 @@ Insgesamt benötigt dieses Schema \(n+1\) Additionen und \(n\) Multiplikationen,
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
+\item
+  Vergleichen Sie die beiden Implementierungen zur Bewertung eines Polynoms, indem Sie die Komplexität als Funktion von \(n\) darstellen und die benötigte CPU-Zeit für eine Beispielauswertung im Vergleich zu \(n\) messen und darstellen.
+\item
+  Zeigen Sie, dass es für \(f\in O(g)\) mit \(f\geq 0\) und \(g> 0\) eine Konstante \(C\) gibt, sodass \(f(n)=h(n) + Cg(n)\) mit \(h\in o(g)\). \emph{Bemerkung: diese Relation ist die Rechtfertigung für die eigentlich inkorrekte Schreibweise \(f=O(g)\)}.
+\item
+  Ermitteln Sie experimentell \emph{die Ordnung} (d.h. den Exponent \(x\) in \(O(n^x)\)) und \emph{die Konstante} \(C\) (s.o.) für die Laufzeit \(t(n)\) der in \texttt{scipy.linalg.cholesky} implementierten Cholesky Zerlegung der Bandmatrix \texttt{A\_n} aus dem folgenden Code Beispiel
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ numpy }\ImportTok{as}\NormalTok{ np}
+\ImportTok{from}\NormalTok{ scipy.linalg }\ImportTok{import}\NormalTok{ cholesky}
+\ImportTok{from}\NormalTok{ time }\ImportTok{import}\NormalTok{ time}
+\NormalTok{n }\OperatorTok{=} \DecValTok{10}
+\NormalTok{A\_n }\OperatorTok{=} \OperatorTok{{-}}\DecValTok{1}\OperatorTok{*}\NormalTok{np.diag(np.ones(n}\OperatorTok{{-}}\DecValTok{1}\NormalTok{), }\OperatorTok{{-}}\DecValTok{1}\NormalTok{) }\OperatorTok{+} \OperatorTok{\textbackslash{}}
+    \DecValTok{2}\OperatorTok{*}\NormalTok{np.diag(np.ones(n), }\DecValTok{0}\NormalTok{) }\OperatorTok{+} \OperatorTok{\textbackslash{}}
+    \OperatorTok{{-}}\DecValTok{1}\OperatorTok{*}\NormalTok{np.diag(np.ones(n}\OperatorTok{{-}}\DecValTok{1}\NormalTok{), }\DecValTok{1}\NormalTok{)}
+\NormalTok{tic }\OperatorTok{=}\NormalTok{ time()}
+\NormalTok{\_ }\OperatorTok{=}\NormalTok{ cholesky(A\_n)}
+\NormalTok{toc }\OperatorTok{=}\NormalTok{ time()}
+\BuiltInTok{print}\NormalTok{(}\SpecialStringTok{f\textquotesingle{}n: }\SpecialCharTok{\{n\}}\SpecialStringTok{ {-}{-} t\_n: }\SpecialCharTok{\{}\NormalTok{toc}\OperatorTok{{-}}\NormalTok{tic}\SpecialCharTok{:.4e\}}\SpecialStringTok{\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\emph{Hinweis: Hier geht es um die Methodik und um eine sinnvolle Interpretation der Ergebnisse. Es kann gut sein, dass die Ergebnisse auf verschiedenen Rechnern verschieden ausfallen. Außerdem können für große \(n\) (wo der Exponent und die Konstante am besten sichtbar sind) auf einmal bspw. ein zu voller Arbeitsspeicher die Berechnung negativ beeinflussen).}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
 \tightlist
 \item
-  Vergleichen Sie die beiden Implementierungen zur Bewertung eines Polynoms, indem Sie die Komplexität als Funktion von \(n\) darstellen und die benötigte CPU-Zeit für eine Beispielbewertung im Vergleich zu \(n\) messen und darstellen.
+  Diskutieren Sie, wie Laufzeitmessungen (bspw. zur Komplexitätsanalyse eines Verfahrens) aufgesetzt werden sollten, um reproduzierbare Ergebnisse zu erhalten. Was sollte dokumentiert werden, damit dritte Personen die Ergebnisse einordnen und ggf. reproduzieren können.
 \end{enumerate}
 
 Weiterführende Literatur:
@@ -462,7 +498,7 @@ Da einfach jede Operation von Zahlen auf dem Computer auf die Grundrechenarten z
 \NormalTok{tz }\OperatorTok{=}\NormalTok{ A(tx, y)}
 \NormalTok{relerrx }\OperatorTok{=}\NormalTok{ (tx }\OperatorTok{{-}}\NormalTok{ x)}\OperatorTok{/}\NormalTok{x        }\CommentTok{\# here: 0.00098039}
 \NormalTok{relerrz }\OperatorTok{=}\NormalTok{ (tz }\OperatorTok{{-}}\NormalTok{ z)}\OperatorTok{/}\NormalTok{z        }\CommentTok{\# here: 0.04999999}
-\NormalTok{kondAx }\OperatorTok{=}\NormalTok{ relerrz}\OperatorTok{/}\NormalTok{relerrx     }\CommentTok{\# here: 50.9999999}
+\NormalTok{kondAx }\OperatorTok{=}\NormalTok{ relerrz}\OperatorTok{/}\NormalTok{relerrx    }\CommentTok{\# here: 50.9999999}
 \end{Highlighting}
 \end{Shaded}
 

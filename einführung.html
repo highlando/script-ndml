@@ -178,8 +178,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="einführung" class="section level1 hasAnchor" number="1">
 <h1><span class="header-section-number">1</span> Einführung<a href="einführung.html#einführung" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>Was sind <em>Numerische Methoden für Maschinelles Lernen</em> (ML)?</p>
-<p>Kurz gesagt, beim Training eines ML-Modells durchläuft ein Computer Millionen von Anweisungen, die in Form mathematischer Ausdrücke formuliert sind.
-Gleiches gilt für die Bewertung eines solchen Modells.
+<p>Kurz gesagt, beim Training eines ML-Modells durchläuft ein Computer Millionen von Anweisungen, die in Form mathematischer Ausdrücke formuliert sind. Gleiches gilt für die Bewertung eines solchen Modells.
 Dann stellen sich Fragen wie <em>wird es einen Punkt geben, an dem das Training endet?</em> und <em>wird das Modell genau sein?</em>.</p>
 <p>Um zu beschreiben, was passiert, und für die spätere Analyse führen wir die allgemeinen Konzepte von</p>
 <ul>
@@ -246,8 +245,12 @@ Man kann jedoch von <em>Konsistenzordnung</em> eines Algorithmus sprechen, um di
 <div id="rechenkomplexität" class="section level2 hasAnchor" number="1.3">
 <h2><span class="header-section-number">1.3</span> Rechenkomplexität<a href="einführung.html#rechenkomplexität" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Die <em>Rechenkomplexität</em> eines Algorithmus ist sowohl theoretisch (um abzuschätzen, wie der Aufwand mit beispielsweise der Größe des Problems skaliert) als auch praktisch (um zu sagen, wie lange das Verfahren dauern wird und welche Kosten in Bezug auf CPU-Zeit oder Speichernutzung es generieren wird) wichtig.</p>
-<p>Typischerweise wird die Komplexität durch Zählen der elementaren Operationen gemessen, oft als <em>FLOP</em>s bezeichnet, was für <em>floating point operations</em> steht.
-Um die Algorithmen in Bezug auf Komplexität versus Problemgröße zu klassifizieren, sind die folgenden Funktionsklassen hilfreich</p>
+<p>Typischerweise wird die Komplexität durch Zählen der elementaren Operationen gemessen – wir werden stets die Ausführung einer Grundrechenart als eine Operation zählen.</p>
+<div id="rem-flops" class="JHSAYS">
+<p>Die Definition einer <em>elementaren Operation</em> auf einem Computer ist nicht universal, da viele Faktoren hier reinspielen. Gerne werden <em>FLOP</em>
+s angeführt, was für <em>floating point operations</em> steht. Allerdings ist es wiederum sehr verschieden auf verschiedenen Prozessoren wieviele FLOPs für eine Multiplikation oder Addition gebraucht werden.</p>
+</div>
+<p>Um die Algorithmen in Bezug auf Komplexität versus Problemgröße zu klassifizieren, sind die folgenden Funktionsklassen hilfreich</p>
 <div class="definition">
 <p><span id="def:landau-symbs" class="definition"><strong>Definition 1.5  (Landau-Symbole oder große O-Notation) </strong></span>Sei <span class="math inline">\(g\colon \mathbb R^{} \to \mathbb R^{}\)</span> und <span class="math inline">\(a\in\mathbb R^{} \cup \{-\infty, +\infty\}\)</span>. Dann sagen wir für eine Funktion <span class="math inline">\(f\colon \mathbb R \to \mathbb R^{}\)</span>, dass <span class="math inline">\(f\in O(g)\)</span>, wenn
 <span class="math display">\[\begin{equation*}
@@ -304,7 +307,24 @@ C(n) = \sum_{k=0}^n(1+k) = n+1 + \frac{n(n-1)}{2} = 1 + \frac n2 + \frac{n^2}2 =
 <div id="übungen" class="section level2 hasAnchor" number="1.4">
 <h2><span class="header-section-number">1.4</span> Übungen<a href="einführung.html#übungen" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ol style="list-style-type: decimal">
-<li>Vergleichen Sie die beiden Implementierungen zur Bewertung eines Polynoms, indem Sie die Komplexität als Funktion von <span class="math inline">\(n\)</span> darstellen und die benötigte CPU-Zeit für eine Beispielbewertung im Vergleich zu <span class="math inline">\(n\)</span> messen und darstellen.</li>
+<li><p>Vergleichen Sie die beiden Implementierungen zur Bewertung eines Polynoms, indem Sie die Komplexität als Funktion von <span class="math inline">\(n\)</span> darstellen und die benötigte CPU-Zeit für eine Beispielauswertung im Vergleich zu <span class="math inline">\(n\)</span> messen und darstellen.</p></li>
+<li><p>Zeigen Sie, dass es für <span class="math inline">\(f\in O(g)\)</span> mit <span class="math inline">\(f\geq 0\)</span> und <span class="math inline">\(g&gt; 0\)</span> eine Konstante <span class="math inline">\(C\)</span> gibt, sodass <span class="math inline">\(f(n)=h(n) + Cg(n)\)</span> mit <span class="math inline">\(h\in o(g)\)</span>. <em>Bemerkung: diese Relation ist die Rechtfertigung für die eigentlich inkorrekte Schreibweise <span class="math inline">\(f=O(g)\)</span></em>.</p></li>
+<li><p>Ermitteln Sie experimentell <em>die Ordnung</em> (d.h. den Exponent <span class="math inline">\(x\)</span> in <span class="math inline">\(O(n^x)\)</span>) und <em>die Konstante</em> <span class="math inline">\(C\)</span> (s.o.) für die Laufzeit <span class="math inline">\(t(n)\)</span> der in <code>scipy.linalg.cholesky</code> implementierten Cholesky Zerlegung der Bandmatrix <code>A_n</code> aus dem folgenden Code Beispiel</p></li>
+</ol>
+<div class="sourceCode" id="cb3"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb3-1"><a href="einführung.html#cb3-1" aria-hidden="true"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-2"><a href="einführung.html#cb3-2" aria-hidden="true"></a><span class="im">from</span> scipy.linalg <span class="im">import</span> cholesky</span>
+<span id="cb3-3"><a href="einführung.html#cb3-3" aria-hidden="true"></a><span class="im">from</span> time <span class="im">import</span> time</span>
+<span id="cb3-4"><a href="einführung.html#cb3-4" aria-hidden="true"></a>n <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb3-5"><a href="einführung.html#cb3-5" aria-hidden="true"></a>A_n <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">*</span>np.diag(np.ones(n<span class="op">-</span><span class="dv">1</span>), <span class="op">-</span><span class="dv">1</span>) <span class="op">+</span> <span class="op">\</span></span>
+<span id="cb3-6"><a href="einführung.html#cb3-6" aria-hidden="true"></a>    <span class="dv">2</span><span class="op">*</span>np.diag(np.ones(n), <span class="dv">0</span>) <span class="op">+</span> <span class="op">\</span></span>
+<span id="cb3-7"><a href="einführung.html#cb3-7" aria-hidden="true"></a>    <span class="op">-</span><span class="dv">1</span><span class="op">*</span>np.diag(np.ones(n<span class="op">-</span><span class="dv">1</span>), <span class="dv">1</span>)</span>
+<span id="cb3-8"><a href="einführung.html#cb3-8" aria-hidden="true"></a>tic <span class="op">=</span> time()</span>
+<span id="cb3-9"><a href="einführung.html#cb3-9" aria-hidden="true"></a>_ <span class="op">=</span> cholesky(A_n)</span>
+<span id="cb3-10"><a href="einführung.html#cb3-10" aria-hidden="true"></a>toc <span class="op">=</span> time()</span>
+<span id="cb3-11"><a href="einführung.html#cb3-11" aria-hidden="true"></a><span class="bu">print</span>(<span class="ss">f&#39;n: </span><span class="sc">{n}</span><span class="ss"> -- t_n: </span><span class="sc">{</span>toc<span class="op">-</span>tic<span class="sc">:.4e}</span><span class="ss">&#39;</span>)</span></code></pre></div>
+<p><em>Hinweis: Hier geht es um die Methodik und um eine sinnvolle Interpretation der Ergebnisse. Es kann gut sein, dass die Ergebnisse auf verschiedenen Rechnern verschieden ausfallen. Außerdem können für große <span class="math inline">\(n\)</span> (wo der Exponent und die Konstante am besten sichtbar sind) auf einmal bspw. ein zu voller Arbeitsspeicher die Berechnung negativ beeinflussen).</em></p>
+<ol start="4" style="list-style-type: decimal">
+<li>Diskutieren Sie, wie Laufzeitmessungen (bspw. zur Komplexitätsanalyse eines Verfahrens) aufgesetzt werden sollten, um reproduzierbare Ergebnisse zu erhalten. Was sollte dokumentiert werden, damit dritte Personen die Ergebnisse einordnen und ggf. reproduzieren können.</li>
 </ol>
 <p>Weiterführende Literatur:</p>
 <ul>
