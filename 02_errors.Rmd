@@ -107,7 +107,7 @@ Die Multiplikation ist also generell gut konditioniert.
 
 ### Wurzelziehen
 
-Das Berechnen der Quadratwurzel $W\colon x \to \sqrt x$ hat die Konditionszahl $\frac 12$. Bei Konditionszahlen kleiner als $1$ verringert sich der relative Fehler, Jan spricht von *Fehlerd&auml;pfung*.
+Das Berechnen der Quadratwurzel $W\colon x \to \sqrt x$ hat die Konditionszahl $\frac 12$. Bei Konditionszahlen kleiner als $1$ verringert sich der relative Fehler, Jan spricht von *Fehlerd&auml;mpfung*.
 
 ## Übungen
 
