@@ -14,29 +14,6 @@ Um zu beschreiben, was passiert, und für die spätere Analyse führen wir die a
 
 ein, von denen einige klassische *numerische Analysis* sind.
 
-Bevor wir in die klassischen Themen einsteigen noch ein paar Beispiele wo Numerik und maschinelles Lernen sich treffen.
-
- * Iterative Methoden
-   - Konvergenz/Konvergenzraten
-   - stochastische Konvergenz
-   * lokale Extrema
-   * randomisierte Methoden
-
- * Optimierung/Ausgleichsrechnung
-
- * Approximationstheorie
-   * Universal Approximation Theorem
-
- * Stabilit&auml;t und Fehleranalyse
-   * mixed precision Arithmetik
-
- * Numerische lineare Algebra
-   - PCA 
-   * Support Vector Machines
-   * Empfehlungssysteme
-
- * Automatisches Differenzieren
-   * *backward propagation* zur Gradientenberechnung
 
 ## Was ist ein Algorithmus
 
@@ -138,7 +115,7 @@ Leider ist die übliche Verwendung der Landau-Symbole etwas unpr&auml;zise.
 1. Das oft verwendete "$=$"-Zeichen ist informell und keineswegs eine Gleichheit.
 2. Was der Grenzwert $a$ ist, wird selten explizit erwähnt, aber glücklicherweise ist es in der Regel aus dem Kontext klar.
 
-Als Beispiel betrachten wir zwei verschiedene Wege, ein Polynom $p$ vom Grad $n$ an der Abszisse $x$ zu bewerten, basierend auf den zwei äquivalenten Darstellungen
+Als Beispiel betrachten wir zwei verschiedene Wege, ein Polynom $p$ vom Grad $n$ an der Abszisse $x$ auszuwerten, basierend auf den zwei äquivalenten Darstellungen
 \begin{equation*}
 \begin{split}
 p(x) &= a_0 + a_1x +  a_2x^2+ \dotsm + a_nx^n \\
@@ -180,9 +157,13 @@ print(f'x={x}: p(x)={cpx:.4f}')             # Ausgabe des Ergebnisses
 ```
 Insgesamt benötigt dieses Schema $n+1$ Additionen und $n$ Multiplikationen, d.h. $2n+1$ FLOPs, so dass wir sagen können, dass *dieser Algorithmus $O(n)$ ist*.
 
+## Literatur
+
+ * [@NocW06]: Ein gut lesbares Buch zur Optimierung.
+
 ## Übungen
 
-1. Vergleichen Sie die beiden Implementierungen zur Bewertung eines Polynoms, indem Sie die Komplexität als Funktion von $n$ darstellen und die benötigte CPU-Zeit für eine Beispielauswertung im Vergleich zu $n$ messen und darstellen.
+1. Vergleichen Sie die beiden Implementierungen zur Auswertung eines Polynoms, indem Sie die Komplexität als Funktion von $n$ darstellen und die benötigte CPU-Zeit für eine Beispielauswertung im Vergleich zu $n$ messen und darstellen.
 
 2. Zeigen Sie, dass es f&uuml;r $f\in O(g)$ mit $f\geq 0$ und $g> 0$ eine Konstante $C$ gibt, sodass $f(n)=h(n) + Cg(n)$ mit $h\in o(g)$. *Bemerkung: diese Relation ist die Rechtfertigung f&uuml;r die eigentlich inkorrekte Schreibweise $f=O(g)$*.
 
@@ -191,16 +172,16 @@ Insgesamt benötigt dieses Schema $n+1$ Additionen und $n$ Multiplikationen, d.h
 import numpy as np
 from scipy.linalg import cholesky
 from time import time
-n = 10
-A_n = -1*np.diag(np.ones(n-1), -1) + \
+n = 10                                  # example problem size
+A_n = -1*np.diag(np.ones(n-1), -1) + \  # a tridiagonal band matrix
     2*np.diag(np.ones(n), 0) + \
     -1*np.diag(np.ones(n-1), 1)
-tic = time()
-_ = cholesky(A_n)
-toc = time()
+tic = time()                            # start the timer
+_ = cholesky(A_n)                       # perform the computation
+toc = time()                            # stop the timer
 print(f'n: {n} -- t_n: {toc-tic:.4e}')
 ```
-*Hinweis: Hier geht es um die Methodik und um eine sinnvolle Interpretation der Ergebnisse. Es kann gut sein, dass die Ergebnisse auf verschiedenen Rechnern verschieden ausfallen. Au&szlig;erdem k&ouml;nnen f&uuml;r gro&szlig;e $n$ (wo der Exponent und die Konstante am besten sichtbar sind) auf einmal bspw. ein zu voller Arbeitsspeicher die Berechnung negativ beeinflussen).*
+*Hinweis: Hier geht es um die Methodik und um eine sinnvolle Interpretation der Ergebnisse. Es kann gut sein, dass die Ergebnisse auf verschiedenen Rechnern verschieden ausfallen. Au&szlig;erdem k&ouml;nnen f&uuml;r gro&szlig;e $n$ (wenn der Exponent und die Konstante am besten sichtbar sind) auf einmal bspw. ein zu voller Arbeitsspeicher die Berechnung negativ beeinflussen.*
 
 4. Diskutieren Sie, wie Laufzeitmessungen (bspw. zur Komplexit&auml;tsanalyse eines Verfahrens) aufgesetzt werden sollten, um reproduzierbare Ergebnisse zu erhalten. Was sollte dokumentiert werden, damit dritte Personen die Ergebnisse einordnen und ggf. reproduzieren k&ouml;nnen.
 
