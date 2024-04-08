@@ -107,11 +107,11 @@ Die Multiplikation ist also generell gut konditioniert.
 
 ### Wurzelziehen
 
-Das Berechnen der Quadratwurzel $W\colon x \to \sqrt x$ hat die Konditionszahl $\frac 12$. Bei Konditionszahlen kleiner als $1$ verringert sich der relative Fehler, Jan spricht von *Fehlerd&auml;pfung*.
+Das Berechnen der Quadratwurzel $W\colon x \to \sqrt x$ hat die Konditionszahl $\frac 12$. Bei Konditionszahlen kleiner als $1$ verringert sich der relative Fehler, Jan spricht von *Fehlerd&auml;mpfung*.
 
 ## Übungen
 
-1. Leiten Sie die *Konditionszahl* wie in \@ref(eq:eqn-scalar-cond) für eine vektorwertige Funktion $A\colon \mathbb R^{n} \to \mathbb R^{m}$ ab. Wo spielt eine Matrixnorm eine Rolle?
+1. Leiten Sie die *Konditionszahl* wie in \@ref(eq:eqn-scalar-cond) für eine vektorwertige Funktion $A\colon \mathbb R^{n} \to \mathbb R^{m}$ her. Wo spielt eine Matrixnorm eine Rolle?
 1. Leiten Sie mite dem selben Verfahren die Konditionszahl einer invertierbaren Matrix $M$ her, d.h. die Kondition des Problems $x\to y = M^{-1}x$. Wo spielt die Matrixnorm eine Rolle?
 1. Leiten Sie die Konditionszahlen f&uuml;r die Operationen *Division* und *Quadratwurzelziehen* her.
 1. Veranschaulichen Sie an der Darstellung des Vektors $P=[1, 1]$ in der Standardbasis $\{[1, 0], \,[0, 1]\}$ und in der Basis $\{[1, 0], \,[1, 0.1]\}$ unter Verweis auf die Kondition der Addition, warum *orthogonale Basen* als *gut konditioniert* gelten.

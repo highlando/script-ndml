@@ -145,7 +145,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.1" data-path="einführung.html"><a href="einführung.html#was-ist-ein-algorithmus"><i class="fa fa-check"></i><b>1.1</b> Was ist ein Algorithmus</a></li>
 <li class="chapter" data-level="1.2" data-path="einführung.html"><a href="einführung.html#konsistenz-stabilität-genauigkeit"><i class="fa fa-check"></i><b>1.2</b> Konsistenz, Stabilität, Genauigkeit</a></li>
 <li class="chapter" data-level="1.3" data-path="einführung.html"><a href="einführung.html#rechenkomplexität"><i class="fa fa-check"></i><b>1.3</b> Rechenkomplexität</a></li>
-<li class="chapter" data-level="1.4" data-path="einführung.html"><a href="einführung.html#übungen"><i class="fa fa-check"></i><b>1.4</b> Übungen</a></li>
+<li class="chapter" data-level="1.4" data-path="einführung.html"><a href="einführung.html#literatur"><i class="fa fa-check"></i><b>1.4</b> Literatur</a></li>
+<li class="chapter" data-level="1.5" data-path="einführung.html"><a href="einführung.html#übungen"><i class="fa fa-check"></i><b>1.5</b> Übungen</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="fehler-und-konditionierung.html"><a href="fehler-und-konditionierung.html"><i class="fa fa-check"></i><b>2</b> Fehler und Konditionierung</a>
 <ul>
@@ -154,6 +155,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.3" data-path="fehler-und-konditionierung.html"><a href="fehler-und-konditionierung.html#kondition-der-grundrechenarten"><i class="fa fa-check"></i><b>2.3</b> Kondition der Grundrechenarten</a></li>
 <li class="chapter" data-level="2.4" data-path="fehler-und-konditionierung.html"><a href="fehler-und-konditionierung.html#übungen-1"><i class="fa fa-check"></i><b>2.4</b> Übungen</a></li>
 </ul></li>
+<li class="chapter" data-level="3" data-path="nachklapp.html"><a href="nachklapp.html"><i class="fa fa-check"></i><b>3</b> Nachklapp</a></li>
 <li class="chapter" data-level="" data-path="referenzen.html"><a href="referenzen.html"><i class="fa fa-check"></i>Referenzen</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -188,35 +190,6 @@ Dann stellen sich Fragen wie <em>wird es einen Punkt geben, an dem das Training 
 <li>Rechenaufwand</li>
 </ul>
 <p>ein, von denen einige klassische <em>numerische Analysis</em> sind.</p>
-<p>Bevor wir in die klassischen Themen einsteigen noch ein paar Beispiele wo Numerik und maschinelles Lernen sich treffen.</p>
-<ul>
-<li><p>Iterative Methoden</p>
-<ul>
-<li>Konvergenz/Konvergenzraten</li>
-<li>stochastische Konvergenz</li>
-<li>lokale Extrema</li>
-<li>randomisierte Methoden</li>
-</ul></li>
-<li><p>Optimierung/Ausgleichsrechnung</p></li>
-<li><p>Approximationstheorie</p>
-<ul>
-<li>Universal Approximation Theorem</li>
-</ul></li>
-<li><p>Stabilität und Fehleranalyse</p>
-<ul>
-<li>mixed precision Arithmetik</li>
-</ul></li>
-<li><p>Numerische lineare Algebra</p>
-<ul>
-<li>PCA</li>
-<li>Support Vector Machines</li>
-<li>Empfehlungssysteme</li>
-</ul></li>
-<li><p>Automatisches Differenzieren</p>
-<ul>
-<li><em>backward propagation</em> zur Gradientenberechnung</li>
-</ul></li>
-</ul>
 <div id="was-ist-ein-algorithmus" class="section level2 hasAnchor" number="1.1">
 <h2><span class="header-section-number">1.1</span> Was ist ein Algorithmus<a href="einführung.html#was-ist-ein-algorithmus" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Interessanterweise ist der Begriff <em>Algorithmus</em> zugleich intuitiv und abstrakt. Es bedurfte großer Anstrengungen, um eine allgemeine und wohlgestellte Definition zu finden, die den Anforderungen und Einschränkungen aller Bereiche gerecht wird (von <em>Kochrezepten</em> bis zur Analyse von <em>formalen Sprachen</em>).</p>
@@ -300,7 +273,7 @@ und dass <span class="math inline">\(f\in o(g)\)</span>, wenn
 <li>Das oft verwendete “<span class="math inline">\(=\)</span>”-Zeichen ist informell und keineswegs eine Gleichheit.</li>
 <li>Was der Grenzwert <span class="math inline">\(a\)</span> ist, wird selten explizit erwähnt, aber glücklicherweise ist es in der Regel aus dem Kontext klar.</li>
 </ol>
-<p>Als Beispiel betrachten wir zwei verschiedene Wege, ein Polynom <span class="math inline">\(p\)</span> vom Grad <span class="math inline">\(n\)</span> an der Abszisse <span class="math inline">\(x\)</span> zu bewerten, basierend auf den zwei äquivalenten Darstellungen
+<p>Als Beispiel betrachten wir zwei verschiedene Wege, ein Polynom <span class="math inline">\(p\)</span> vom Grad <span class="math inline">\(n\)</span> an der Abszisse <span class="math inline">\(x\)</span> auszuwerten, basierend auf den zwei äquivalenten Darstellungen
 <span class="math display">\[\begin{equation*}
 \begin{split}
 p(x) &amp;= a_0 + a_1x +  a_2x^2+ \dotsm + a_nx^n \\
@@ -333,25 +306,31 @@ C(n) = \sum_{k=0}^n(1+k) = n+1 + \frac{n(n-1)}{2} = 1 + \frac n2 + \frac{n^2}2 =
 <span id="cb2-9"><a href="einführung.html#cb2-9" aria-hidden="true"></a><span class="bu">print</span>(<span class="ss">f&#39;x=</span><span class="sc">{x}</span><span class="ss">: p(x)=</span><span class="sc">{</span>cpx<span class="sc">:.4f}</span><span class="ss">&#39;</span>)             <span class="co"># Ausgabe des Ergebnisses</span></span></code></pre></div>
 <p>Insgesamt benötigt dieses Schema <span class="math inline">\(n+1\)</span> Additionen und <span class="math inline">\(n\)</span> Multiplikationen, d.h. <span class="math inline">\(2n+1\)</span> FLOPs, so dass wir sagen können, dass <em>dieser Algorithmus <span class="math inline">\(O(n)\)</span> ist</em>.</p>
 </div>
-<div id="übungen" class="section level2 hasAnchor" number="1.4">
-<h2><span class="header-section-number">1.4</span> Übungen<a href="einführung.html#übungen" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="literatur" class="section level2 hasAnchor" number="1.4">
+<h2><span class="header-section-number">1.4</span> Literatur<a href="einführung.html#literatur" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li><span class="citation">(Nocedal and Wright <a href="#ref-NocW06" role="doc-biblioref">2006</a>)</span>: Ein gut lesbares Buch zur Optimierung.</li>
+</ul>
+</div>
+<div id="übungen" class="section level2 hasAnchor" number="1.5">
+<h2><span class="header-section-number">1.5</span> Übungen<a href="einführung.html#übungen" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ol style="list-style-type: decimal">
-<li><p>Vergleichen Sie die beiden Implementierungen zur Bewertung eines Polynoms, indem Sie die Komplexität als Funktion von <span class="math inline">\(n\)</span> darstellen und die benötigte CPU-Zeit für eine Beispielauswertung im Vergleich zu <span class="math inline">\(n\)</span> messen und darstellen.</p></li>
+<li><p>Vergleichen Sie die beiden Implementierungen zur Auswertung eines Polynoms, indem Sie die Komplexität als Funktion von <span class="math inline">\(n\)</span> darstellen und die benötigte CPU-Zeit für eine Beispielauswertung im Vergleich zu <span class="math inline">\(n\)</span> messen und darstellen.</p></li>
 <li><p>Zeigen Sie, dass es für <span class="math inline">\(f\in O(g)\)</span> mit <span class="math inline">\(f\geq 0\)</span> und <span class="math inline">\(g&gt; 0\)</span> eine Konstante <span class="math inline">\(C\)</span> gibt, sodass <span class="math inline">\(f(n)=h(n) + Cg(n)\)</span> mit <span class="math inline">\(h\in o(g)\)</span>. <em>Bemerkung: diese Relation ist die Rechtfertigung für die eigentlich inkorrekte Schreibweise <span class="math inline">\(f=O(g)\)</span></em>.</p></li>
 <li><p>Ermitteln Sie experimentell <em>die Ordnung</em> (d.h. den Exponent <span class="math inline">\(x\)</span> in <span class="math inline">\(O(n^x)\)</span>) und <em>die Konstante</em> <span class="math inline">\(C\)</span> (s.o.) für die Laufzeit <span class="math inline">\(t(n)\)</span> der in <code>scipy.linalg.cholesky</code> implementierten Cholesky Zerlegung der Bandmatrix <code>A_n</code> aus dem folgenden Code Beispiel</p></li>
 </ol>
 <div class="sourceCode" id="cb3"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb3-1"><a href="einführung.html#cb3-1" aria-hidden="true"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb3-2"><a href="einführung.html#cb3-2" aria-hidden="true"></a><span class="im">from</span> scipy.linalg <span class="im">import</span> cholesky</span>
 <span id="cb3-3"><a href="einführung.html#cb3-3" aria-hidden="true"></a><span class="im">from</span> time <span class="im">import</span> time</span>
-<span id="cb3-4"><a href="einführung.html#cb3-4" aria-hidden="true"></a>n <span class="op">=</span> <span class="dv">10</span></span>
-<span id="cb3-5"><a href="einführung.html#cb3-5" aria-hidden="true"></a>A_n <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">*</span>np.diag(np.ones(n<span class="op">-</span><span class="dv">1</span>), <span class="op">-</span><span class="dv">1</span>) <span class="op">+</span> <span class="op">\</span></span>
+<span id="cb3-4"><a href="einführung.html#cb3-4" aria-hidden="true"></a>n <span class="op">=</span> <span class="dv">10</span>                                  <span class="co"># example problem size</span></span>
+<span id="cb3-5"><a href="einführung.html#cb3-5" aria-hidden="true"></a>A_n <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">*</span>np.diag(np.ones(n<span class="op">-</span><span class="dv">1</span>), <span class="op">-</span><span class="dv">1</span>) <span class="op">+</span> <span class="op">\</span>  <span class="co"># a tridiagonal band matrix</span></span>
 <span id="cb3-6"><a href="einführung.html#cb3-6" aria-hidden="true"></a>    <span class="dv">2</span><span class="op">*</span>np.diag(np.ones(n), <span class="dv">0</span>) <span class="op">+</span> <span class="op">\</span></span>
 <span id="cb3-7"><a href="einführung.html#cb3-7" aria-hidden="true"></a>    <span class="op">-</span><span class="dv">1</span><span class="op">*</span>np.diag(np.ones(n<span class="op">-</span><span class="dv">1</span>), <span class="dv">1</span>)</span>
-<span id="cb3-8"><a href="einführung.html#cb3-8" aria-hidden="true"></a>tic <span class="op">=</span> time()</span>
-<span id="cb3-9"><a href="einführung.html#cb3-9" aria-hidden="true"></a>_ <span class="op">=</span> cholesky(A_n)</span>
-<span id="cb3-10"><a href="einführung.html#cb3-10" aria-hidden="true"></a>toc <span class="op">=</span> time()</span>
+<span id="cb3-8"><a href="einführung.html#cb3-8" aria-hidden="true"></a>tic <span class="op">=</span> time()                            <span class="co"># start the timer</span></span>
+<span id="cb3-9"><a href="einführung.html#cb3-9" aria-hidden="true"></a>_ <span class="op">=</span> cholesky(A_n)                       <span class="co"># perform the computation</span></span>
+<span id="cb3-10"><a href="einführung.html#cb3-10" aria-hidden="true"></a>toc <span class="op">=</span> time()                            <span class="co"># stop the timer</span></span>
 <span id="cb3-11"><a href="einführung.html#cb3-11" aria-hidden="true"></a><span class="bu">print</span>(<span class="ss">f&#39;n: </span><span class="sc">{n}</span><span class="ss"> -- t_n: </span><span class="sc">{</span>toc<span class="op">-</span>tic<span class="sc">:.4e}</span><span class="ss">&#39;</span>)</span></code></pre></div>
-<p><em>Hinweis: Hier geht es um die Methodik und um eine sinnvolle Interpretation der Ergebnisse. Es kann gut sein, dass die Ergebnisse auf verschiedenen Rechnern verschieden ausfallen. Außerdem können für große <span class="math inline">\(n\)</span> (wo der Exponent und die Konstante am besten sichtbar sind) auf einmal bspw. ein zu voller Arbeitsspeicher die Berechnung negativ beeinflussen).</em></p>
+<p><em>Hinweis: Hier geht es um die Methodik und um eine sinnvolle Interpretation der Ergebnisse. Es kann gut sein, dass die Ergebnisse auf verschiedenen Rechnern verschieden ausfallen. Außerdem können für große <span class="math inline">\(n\)</span> (wenn der Exponent und die Konstante am besten sichtbar sind) auf einmal bspw. ein zu voller Arbeitsspeicher die Berechnung negativ beeinflussen.</em></p>
 <ol start="4" style="list-style-type: decimal">
 <li>Diskutieren Sie, wie Laufzeitmessungen (bspw. zur Komplexitätsanalyse eines Verfahrens) aufgesetzt werden sollten, um reproduzierbare Ergebnisse zu erhalten. Was sollte dokumentiert werden, damit dritte Personen die Ergebnisse einordnen und ggf. reproduzieren können.</li>
 </ol>
@@ -360,6 +339,12 @@ C(n) = \sum_{k=0}^n(1+k) = n+1 + \frac{n(n-1)}{2} = 1 + \frac n2 + \frac{n^2}2 =
 <li><a href="https://de.wikipedia.org/wiki/Algorithmus#Definition">wikipedia:Algorithmus</a></li>
 </ul>
 
+</div>
+</div>
+<h3>Referenzen<a href="referenzen.html#referenzen" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references">
+<div id="ref-NocW06">
+<p> Nocedal, J., Wright, S.J.: Numerical optimization. Springer (2006)</p>
 </div>
 </div>
             </section>

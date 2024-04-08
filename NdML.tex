@@ -115,6 +115,11 @@
 \usepackage{xcolor}
 \definecolor{jhsc}{HTML}{1f57c7}
 \newenvironment {JHSAYS} [0] {\begin{quote}\color{jhsc}} {\end{quote}}
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
 
 \title{Numerik des Maschinellen Lernens}
 \author{Jan Heiland}
@@ -176,63 +181,6 @@ Um zu beschreiben, was passiert, und für die spätere Analyse führen wir die a
 \end{itemize}
 
 ein, von denen einige klassische \emph{numerische Analysis} sind.
-
-Bevor wir in die klassischen Themen einsteigen noch ein paar Beispiele wo Numerik und maschinelles Lernen sich treffen.
-
-\begin{itemize}
-\item
-  Iterative Methoden
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Konvergenz/Konvergenzraten
-  \item
-    stochastische Konvergenz
-  \item
-    lokale Extrema
-  \item
-    randomisierte Methoden
-  \end{itemize}
-\item
-  Optimierung/Ausgleichsrechnung
-\item
-  Approximationstheorie
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Universal Approximation Theorem
-  \end{itemize}
-\item
-  Stabilität und Fehleranalyse
-
-  \begin{itemize}
-  \tightlist
-  \item
-    mixed precision Arithmetik
-  \end{itemize}
-\item
-  Numerische lineare Algebra
-
-  \begin{itemize}
-  \tightlist
-  \item
-    PCA
-  \item
-    Support Vector Machines
-  \item
-    Empfehlungssysteme
-  \end{itemize}
-\item
-  Automatisches Differenzieren
-
-  \begin{itemize}
-  \tightlist
-  \item
-    \emph{backward propagation} zur Gradientenberechnung
-  \end{itemize}
-\end{itemize}
 
 \hypertarget{was-ist-ein-algorithmus}{%
 \section{Was ist ein Algorithmus}\label{was-ist-ein-algorithmus}}
@@ -375,7 +323,7 @@ Leider ist die übliche Verwendung der Landau-Symbole etwas unpräzise.
   Was der Grenzwert \(a\) ist, wird selten explizit erwähnt, aber glücklicherweise ist es in der Regel aus dem Kontext klar.
 \end{enumerate}
 
-Als Beispiel betrachten wir zwei verschiedene Wege, ein Polynom \(p\) vom Grad \(n\) an der Abszisse \(x\) zu bewerten, basierend auf den zwei äquivalenten Darstellungen
+Als Beispiel betrachten wir zwei verschiedene Wege, ein Polynom \(p\) vom Grad \(n\) an der Abszisse \(x\) auszuwerten, basierend auf den zwei äquivalenten Darstellungen
 \begin{equation*}
 \begin{split}
 p(x) &= a_0 + a_1x +  a_2x^2+ \dotsm + a_nx^n \\
@@ -422,13 +370,22 @@ Für die zweite Darstellung können wir das sogenannte \emph{Horner-Schema} impl
 
 Insgesamt benötigt dieses Schema \(n+1\) Additionen und \(n\) Multiplikationen, d.h. \(2n+1\) FLOPs, so dass wir sagen können, dass \emph{dieser Algorithmus \(O(n)\) ist}.
 
+\hypertarget{literatur}{%
+\section{Literatur}\label{literatur}}
+
+\begin{itemize}
+\tightlist
+\item
+  (Nocedal and Wright \protect\hyperlink{ref-NocW06}{2006}): Ein gut lesbares Buch zur Optimierung.
+\end{itemize}
+
 \hypertarget{uxfcbungen}{%
 \section{Übungen}\label{uxfcbungen}}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \item
-  Vergleichen Sie die beiden Implementierungen zur Bewertung eines Polynoms, indem Sie die Komplexität als Funktion von \(n\) darstellen und die benötigte CPU-Zeit für eine Beispielauswertung im Vergleich zu \(n\) messen und darstellen.
+  Vergleichen Sie die beiden Implementierungen zur Auswertung eines Polynoms, indem Sie die Komplexität als Funktion von \(n\) darstellen und die benötigte CPU-Zeit für eine Beispielauswertung im Vergleich zu \(n\) messen und darstellen.
 \item
   Zeigen Sie, dass es für \(f\in O(g)\) mit \(f\geq 0\) und \(g> 0\) eine Konstante \(C\) gibt, sodass \(f(n)=h(n) + Cg(n)\) mit \(h\in o(g)\). \emph{Bemerkung: diese Relation ist die Rechtfertigung für die eigentlich inkorrekte Schreibweise \(f=O(g)\)}.
 \item
@@ -440,18 +397,18 @@ Insgesamt benötigt dieses Schema \(n+1\) Additionen und \(n\) Multiplikationen,
 \ImportTok{import}\NormalTok{ numpy }\ImportTok{as}\NormalTok{ np}
 \ImportTok{from}\NormalTok{ scipy.linalg }\ImportTok{import}\NormalTok{ cholesky}
 \ImportTok{from}\NormalTok{ time }\ImportTok{import}\NormalTok{ time}
-\NormalTok{n }\OperatorTok{=} \DecValTok{10}
-\NormalTok{A\_n }\OperatorTok{=} \OperatorTok{{-}}\DecValTok{1}\OperatorTok{*}\NormalTok{np.diag(np.ones(n}\OperatorTok{{-}}\DecValTok{1}\NormalTok{), }\OperatorTok{{-}}\DecValTok{1}\NormalTok{) }\OperatorTok{+} \OperatorTok{\textbackslash{}}
+\NormalTok{n }\OperatorTok{=} \DecValTok{10}                                  \CommentTok{\# example problem size}
+\NormalTok{A\_n }\OperatorTok{=} \OperatorTok{{-}}\DecValTok{1}\OperatorTok{*}\NormalTok{np.diag(np.ones(n}\OperatorTok{{-}}\DecValTok{1}\NormalTok{), }\OperatorTok{{-}}\DecValTok{1}\NormalTok{) }\OperatorTok{+} \OperatorTok{\textbackslash{}}  \CommentTok{\# a tridiagonal band matrix}
     \DecValTok{2}\OperatorTok{*}\NormalTok{np.diag(np.ones(n), }\DecValTok{0}\NormalTok{) }\OperatorTok{+} \OperatorTok{\textbackslash{}}
     \OperatorTok{{-}}\DecValTok{1}\OperatorTok{*}\NormalTok{np.diag(np.ones(n}\OperatorTok{{-}}\DecValTok{1}\NormalTok{), }\DecValTok{1}\NormalTok{)}
-\NormalTok{tic }\OperatorTok{=}\NormalTok{ time()}
-\NormalTok{\_ }\OperatorTok{=}\NormalTok{ cholesky(A\_n)}
-\NormalTok{toc }\OperatorTok{=}\NormalTok{ time()}
+\NormalTok{tic }\OperatorTok{=}\NormalTok{ time()                            }\CommentTok{\# start the timer}
+\NormalTok{\_ }\OperatorTok{=}\NormalTok{ cholesky(A\_n)                       }\CommentTok{\# perform the computation}
+\NormalTok{toc }\OperatorTok{=}\NormalTok{ time()                            }\CommentTok{\# stop the timer}
 \BuiltInTok{print}\NormalTok{(}\SpecialStringTok{f\textquotesingle{}n: }\SpecialCharTok{\{n\}}\SpecialStringTok{ {-}{-} t\_n: }\SpecialCharTok{\{}\NormalTok{toc}\OperatorTok{{-}}\NormalTok{tic}\SpecialCharTok{:.4e\}}\SpecialStringTok{\textquotesingle{}}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\emph{Hinweis: Hier geht es um die Methodik und um eine sinnvolle Interpretation der Ergebnisse. Es kann gut sein, dass die Ergebnisse auf verschiedenen Rechnern verschieden ausfallen. Außerdem können für große \(n\) (wo der Exponent und die Konstante am besten sichtbar sind) auf einmal bspw. ein zu voller Arbeitsspeicher die Berechnung negativ beeinflussen).}
+\emph{Hinweis: Hier geht es um die Methodik und um eine sinnvolle Interpretation der Ergebnisse. Es kann gut sein, dass die Ergebnisse auf verschiedenen Rechnern verschieden ausfallen. Außerdem können für große \(n\) (wenn der Exponent und die Konstante am besten sichtbar sind) auf einmal bspw. ein zu voller Arbeitsspeicher die Berechnung negativ beeinflussen.}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -599,7 +556,7 @@ Die Multiplikation ist also generell gut konditioniert.
 \hypertarget{wurzelziehen}{%
 \subsection{Wurzelziehen}\label{wurzelziehen}}
 
-Das Berechnen der Quadratwurzel \(W\colon x \to \sqrt x\) hat die Konditionszahl \(\frac 12\). Bei Konditionszahlen kleiner als \(1\) verringert sich der relative Fehler, Jan spricht von \emph{Fehlerdäpfung}.
+Das Berechnen der Quadratwurzel \(W\colon x \to \sqrt x\) hat die Konditionszahl \(\frac 12\). Bei Konditionszahlen kleiner als \(1\) verringert sich der relative Fehler, Jan spricht von \emph{Fehlerdämpfung}.
 
 \hypertarget{uxfcbungen-1}{%
 \section{Übungen}\label{uxfcbungen-1}}
@@ -608,7 +565,7 @@ Das Berechnen der Quadratwurzel \(W\colon x \to \sqrt x\) hat die Konditionszahl
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  Leiten Sie die \emph{Konditionszahl} wie in \eqref{eq:eqn-scalar-cond} für eine vektorwertige Funktion \(A\colon \mathbb R^{n} \to \mathbb R^{m}\) ab. Wo spielt eine Matrixnorm eine Rolle?
+  Leiten Sie die \emph{Konditionszahl} wie in \eqref{eq:eqn-scalar-cond} für eine vektorwertige Funktion \(A\colon \mathbb R^{n} \to \mathbb R^{m}\) her. Wo spielt eine Matrixnorm eine Rolle?
 \item
   Leiten Sie mite dem selben Verfahren die Konditionszahl einer invertierbaren Matrix \(M\) her, d.h. die Kondition des Problems \(x\to y = M^{-1}x\). Wo spielt die Matrixnorm eine Rolle?
 \item
@@ -617,8 +574,74 @@ Das Berechnen der Quadratwurzel \(W\colon x \to \sqrt x\) hat die Konditionszahl
   Veranschaulichen Sie an der Darstellung des Vektors \(P=[1, 1]\) in der Standardbasis \(\{[1, 0], \,[0, 1]\}\) und in der Basis \(\{[1, 0], \,[1, 0.1]\}\) unter Verweis auf die Kondition der Addition, warum \emph{orthogonale Basen} als \emph{gut konditioniert} gelten.
 \end{enumerate}
 
+\hypertarget{nachklapp}{%
+\chapter{Nachklapp}\label{nachklapp}}
+
+Ein paar lose Beispiele wo Numerik und maschinelles Lernen sich treffen.
+
+\begin{itemize}
+\item
+  Iterative Methoden
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Konvergenz/Konvergenzraten
+  \item
+    stochastische Konvergenz
+  \item
+    lokale Extrema
+  \item
+    randomisierte Methoden
+  \end{itemize}
+\item
+  Optimierung/Ausgleichsrechnung
+\item
+  Approximationstheorie
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Universal Approximation Theorem
+  \end{itemize}
+\item
+  Stabilität und Fehleranalyse
+
+  \begin{itemize}
+  \tightlist
+  \item
+    mixed precision Arithmetik
+  \end{itemize}
+\item
+  Numerische lineare Algebra
+
+  \begin{itemize}
+  \tightlist
+  \item
+    PCA
+  \item
+    Support Vector Machines
+  \item
+    Empfehlungssysteme
+  \end{itemize}
+\item
+  Automatisches Differenzieren
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \emph{backward propagation} zur Gradientenberechnung
+  \end{itemize}
+\end{itemize}
+
 \hypertarget{referenzen}{%
 \chapter*{Referenzen}\label{referenzen}}
 \addcontentsline{toc}{chapter}{Referenzen}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-NocW06}{}%
+Nocedal, J., Wright, S.J.: Numerical optimization. Springer (2006)
+\end{cslreferences}
 
 \end{document}

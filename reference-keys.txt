@@ -10,6 +10,7 @@ einführung
 was-ist-ein-algorithmus
 konsistenz-stabilität-genauigkeit
 rechenkomplexität
+literatur
 übungen
 fehler-und-konditionierung
 fehler
@@ -19,3 +20,4 @@ addition
 multiplikation
 wurzelziehen
 übungen-1
+nachklapp
