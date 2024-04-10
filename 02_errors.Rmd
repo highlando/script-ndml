@@ -34,9 +34,11 @@ welches nach Division durch $y=A(x)$ und Erweiterung durch $x\,\delta x$ wird zu
 \frac{\delta y}{y} = \frac{A(x+\delta x)-A(x)}{\delta x}\frac{x}{A(x)}\frac{\delta x}{x}.
 \end{equation*}
 Für infinitesimal kleine $\delta x$ wird der Differenzenquotient $\frac{A(x+\delta x)-A(x)}{\delta x}$ zur Ableitung $\frac{\partial A}{\partial x}(x)$, so dass wir die Kondition des Problems/Algorithmus bei $x$ abschätzen können durch
+
 \begin{equation}(\#eq:eqn-scalar-cond)
 \frac{|\delta y|}{|y|} \leq |\frac{\partial A}{\partial x}(x)|\frac{|x|}{|A(x)|}\frac{|\delta x|}{|x|}=:\kappa_{A,x}\frac{|\delta x|}{|x|}.
 \end{equation}
+
 Wir nennen $\kappa_{A,x}$ die Konditionszahl.
 
 Für vektorwertige Probleme/Algorithmen können wir die Konditionszahl darüber definieren, wie eine Differenz in der $j$-ten Eingabekomponente $x_j$ die $i$-te Komponente $y_i=A_i(x)$ der Ausgabe beeinflusst.
