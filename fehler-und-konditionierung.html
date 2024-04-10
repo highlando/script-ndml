@@ -207,11 +207,11 @@ welches nach Division durch <span class="math inline">\(y=A(x)\)</span> und Erwe
 <span class="math display">\[\begin{equation*}
 \frac{\delta y}{y} = \frac{A(x+\delta x)-A(x)}{\delta x}\frac{x}{A(x)}\frac{\delta x}{x}.
 \end{equation*}\]</span>
-Für infinitesimal kleine <span class="math inline">\(\delta x\)</span> wird der Differenzenquotient <span class="math inline">\(\frac{A(x+\delta x)-A(x)}{\delta x}\)</span> zur Ableitung <span class="math inline">\(\frac{\partial A}{\partial x}(x)\)</span>, so dass wir die Kondition des Problems/Algorithmus bei <span class="math inline">\(x\)</span> abschätzen können durch
-<span class="math display" id="eq:eqn-scalar-\tag{2.1}on}(#eq:eqn-scalar-cond)
+Für infinitesimal kleine <span class="math inline">\(\delta x\)</span> wird der Differenzenquotient <span class="math inline">\(\frac{A(x+\delta x)-A(x)}{\delta x}\)</span> zur Ableitung <span class="math inline">\(\frac{\partial A}{\partial x}(x)\)</span>, so dass wir die Kondition des Problems/Algorithmus bei <span class="math inline">\(x\)</span> abschätzen können durch</p>
+<p><span class="math display" id="eq:eqn-scalar-\tag{2.1}on}(#eq:eqn-scalar-cond)
 \frac{|\delta y|}{|y|} \leq |\frac{\partial A}{\partial x}(x)|\frac{|x|}{|A(x)|}\frac{|\delta x|}{|x|}=:\kappa_{A,x}\frac{|\delta x|}{|x|}.
-\end{equation}\]</span>
-Wir nennen <span class="math inline">\(\kappa_{A,x}\)</span> die Konditionszahl.</p>
+\end{equation}\]</span></p>
+<p>Wir nennen <span class="math inline">\(\kappa_{A,x}\)</span> die Konditionszahl.</p>
 <p>Für vektorwertige Probleme/Algorithmen können wir die Konditionszahl darüber definieren, wie eine Differenz in der <span class="math inline">\(j\)</span>-ten Eingabekomponente <span class="math inline">\(x_j\)</span> die <span class="math inline">\(i\)</span>-te Komponente <span class="math inline">\(y_i=A_i(x)\)</span> der Ausgabe beeinflusst.</p>
 <div class="definition">
 <p><span id="def:condition" class="definition"><strong>Definition 2.2  (Konditionszahl) </strong></span>Für ein Problem/Algorithmus <span class="math inline">\(A\colon \mathbb R^{n}\to \mathbb R^{m}\)</span> nennen wir
