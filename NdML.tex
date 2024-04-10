@@ -474,8 +474,9 @@ welches nach Division durch \(y=A(x)\) und Erweiterung durch \(x\,\delta x\) wir
 \end{equation*}
 Für infinitesimal kleine \(\delta x\) wird der Differenzenquotient \(\frac{A(x+\delta x)-A(x)}{\delta x}\) zur Ableitung \(\frac{\partial A}{\partial x}(x)\), so dass wir die Kondition des Problems/Algorithmus bei \(x\) abschätzen können durch
 
-\begin{equation}\label{eq:eqn-scalar-cond}
-\frac{|\delta y|}{|y|} \leq |\frac{\partial A}{\partial x}(x)|\frac{|x|}{|A(x)|}\frac{|\delta x|}{|x|}=:\kappa_{A,x}\frac{|\delta x|}{|x|}.
+\begin{equation}
+\frac{|\delta y|}{|y|} \approx |\frac{\partial A}{\partial x}(x)|\frac{|x|}{|A(x)|}\frac{|\delta x|}{|x|}=:\kappa_{A,x}\frac{|\delta x|}{|x|}.
+\label{eq:eqn-scalar-cond}
 \end{equation}
 
 Wir nennen \(\kappa_{A,x}\) die Konditionszahl.
@@ -569,7 +570,7 @@ Das Berechnen der Quadratwurzel \(W\colon x \to \sqrt x\) hat die Konditionszahl
 \item
   Leiten Sie die \emph{Konditionszahl} wie in \eqref{eq:eqn-scalar-cond} für eine vektorwertige Funktion \(A\colon \mathbb R^{n} \to \mathbb R^{m}\) her. Wo spielt eine Matrixnorm eine Rolle?
 \item
-  Leiten Sie mite dem selben Verfahren die Konditionszahl einer invertierbaren Matrix \(M\) her, d.h. die Kondition des Problems \(x\to y = M^{-1}x\). Wo spielt die Matrixnorm eine Rolle?
+  Leiten Sie mit dem selben Verfahren die Konditionszahl einer invertierbaren Matrix \(M\) her, d.h. die Kondition des Problems \(x\to y = M^{-1}x\). Wo spielt die Matrixnorm eine Rolle?
 \item
   Leiten Sie die Konditionszahlen für die Operationen \emph{Division} und \emph{Quadratwurzelziehen} her.
 \item

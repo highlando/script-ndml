@@ -208,8 +208,9 @@ welches nach Division durch <span class="math inline">\(y=A(x)\)</span> und Erwe
 \frac{\delta y}{y} = \frac{A(x+\delta x)-A(x)}{\delta x}\frac{x}{A(x)}\frac{\delta x}{x}.
 \end{equation*}\]</span>
 Für infinitesimal kleine <span class="math inline">\(\delta x\)</span> wird der Differenzenquotient <span class="math inline">\(\frac{A(x+\delta x)-A(x)}{\delta x}\)</span> zur Ableitung <span class="math inline">\(\frac{\partial A}{\partial x}(x)\)</span>, so dass wir die Kondition des Problems/Algorithmus bei <span class="math inline">\(x\)</span> abschätzen können durch</p>
-<p><span class="math display" id="eq:eqn-scalar-\tag{2.1}on}(#eq:eqn-scalar-cond)
-\frac{|\delta y|}{|y|} \leq |\frac{\partial A}{\partial x}(x)|\frac{|x|}{|A(x)|}\frac{|\delta x|}{|x|}=:\kappa_{A,x}\frac{|\delta x|}{|x|}.
+<p><span class="math display" id="eq:eqn-scalar-cond">\[\begin{equation}
+\frac{|\delta y|}{|y|} \approx |\frac{\partial A}{\partial x}(x)|\frac{|x|}{|A(x)|}\frac{|\delta x|}{|x|}=:\kappa_{A,x}\frac{|\delta x|}{|x|}.
+\tag{2.1}
 \end{equation}\]</span></p>
 <p>Wir nennen <span class="math inline">\(\kappa_{A,x}\)</span> die Konditionszahl.</p>
 <p>Für vektorwertige Probleme/Algorithmen können wir die Konditionszahl darüber definieren, wie eine Differenz in der <span class="math inline">\(j\)</span>-ten Eingabekomponente <span class="math inline">\(x_j\)</span> die <span class="math inline">\(i\)</span>-te Komponente <span class="math inline">\(y_i=A_i(x)\)</span> der Ausgabe beeinflusst.</p>
@@ -221,7 +222,7 @@ Für infinitesimal kleine <span class="math inline">\(\delta x\)</span> wird der
 die partielle <em>Konditionszahl</em> des Problems. Ein Problem wird als <em>gut konditioniert</em> bezeichnet, wenn <span class="math inline">\(|(\kappa_{A,x})_{ij}|\approx 1\)</span> und als <em>schlecht konditioniert</em>, wenn <span class="math inline">\(|(\kappa_{A,x})_{ij}\gg 1\)</span>, für alle <span class="math inline">\(i=1,\dotsc,m\)</span> und <span class="math inline">\(j=1,\dotsc,m\)</span>.</p>
 </div>
 <div id="rem-vector-valued-cond" class="JHSAYS">
-<p>Anstatt die skalaren Komponentenfunktionen von <span class="math inline">\(A\colon \mathbb R^{n} \to \mathbb R^{m}\)</span> zu verwenden, kann man die Berechnungen, die zu <a href="#eq:eqn-scalar-cond">(2.1)</a> geführt haben, mit vektorwertigen Größen in den entsprechenden Normen wiederholen.</p>
+<p>Anstatt die skalaren Komponentenfunktionen von <span class="math inline">\(A\colon \mathbb R^{n} \to \mathbb R^{m}\)</span> zu verwenden, kann man die Berechnungen, die zu <a href="fehler-und-konditionierung.html#eq:eqn-scalar-cond">(2.1)</a> geführt haben, mit vektorwertigen Größen in den entsprechenden Normen wiederholen.</p>
 </div>
 </div>
 <div id="kondition-der-grundrechenarten" class="section level2 hasAnchor" number="2.3">
@@ -273,8 +274,8 @@ Die Multiplikation ist also generell gut konditioniert.</p>
 <div id="übungen-1" class="section level2 hasAnchor" number="2.4">
 <h2><span class="header-section-number">2.4</span> Übungen<a href="fehler-und-konditionierung.html#übungen-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ol style="list-style-type: decimal">
-<li>Leiten Sie die <em>Konditionszahl</em> wie in <a href="#eq:eqn-scalar-cond">(2.1)</a> für eine vektorwertige Funktion <span class="math inline">\(A\colon \mathbb R^{n} \to \mathbb R^{m}\)</span> her. Wo spielt eine Matrixnorm eine Rolle?</li>
-<li>Leiten Sie mite dem selben Verfahren die Konditionszahl einer invertierbaren Matrix <span class="math inline">\(M\)</span> her, d.h. die Kondition des Problems <span class="math inline">\(x\to y = M^{-1}x\)</span>. Wo spielt die Matrixnorm eine Rolle?</li>
+<li>Leiten Sie die <em>Konditionszahl</em> wie in <a href="fehler-und-konditionierung.html#eq:eqn-scalar-cond">(2.1)</a> für eine vektorwertige Funktion <span class="math inline">\(A\colon \mathbb R^{n} \to \mathbb R^{m}\)</span> her. Wo spielt eine Matrixnorm eine Rolle?</li>
+<li>Leiten Sie mit dem selben Verfahren die Konditionszahl einer invertierbaren Matrix <span class="math inline">\(M\)</span> her, d.h. die Kondition des Problems <span class="math inline">\(x\to y = M^{-1}x\)</span>. Wo spielt die Matrixnorm eine Rolle?</li>
 <li>Leiten Sie die Konditionszahlen für die Operationen <em>Division</em> und <em>Quadratwurzelziehen</em> her.</li>
 <li>Veranschaulichen Sie an der Darstellung des Vektors <span class="math inline">\(P=[1, 1]\)</span> in der Standardbasis <span class="math inline">\(\{[1, 0], \,[0, 1]\}\)</span> und in der Basis <span class="math inline">\(\{[1, 0], \,[1, 0.1]\}\)</span> unter Verweis auf die Kondition der Addition, warum <em>orthogonale Basen</em> als <em>gut konditioniert</em> gelten.</li>
 </ol>
