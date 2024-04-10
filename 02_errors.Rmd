@@ -35,8 +35,9 @@ welches nach Division durch $y=A(x)$ und Erweiterung durch $x\,\delta x$ wird zu
 \end{equation*}
 Für infinitesimal kleine $\delta x$ wird der Differenzenquotient $\frac{A(x+\delta x)-A(x)}{\delta x}$ zur Ableitung $\frac{\partial A}{\partial x}(x)$, so dass wir die Kondition des Problems/Algorithmus bei $x$ abschätzen können durch
 
-\begin{equation}(\#eq:eqn-scalar-cond)
-\frac{|\delta y|}{|y|} \leq |\frac{\partial A}{\partial x}(x)|\frac{|x|}{|A(x)|}\frac{|\delta x|}{|x|}=:\kappa_{A,x}\frac{|\delta x|}{|x|}.
+\begin{equation}
+\frac{|\delta y|}{|y|} \approx |\frac{\partial A}{\partial x}(x)|\frac{|x|}{|A(x)|}\frac{|\delta x|}{|x|}=:\kappa_{A,x}\frac{|\delta x|}{|x|}.
+(\#eq:eqn-scalar-cond)
 \end{equation}
 
 Wir nennen $\kappa_{A,x}$ die Konditionszahl.
@@ -114,6 +115,6 @@ Das Berechnen der Quadratwurzel $W\colon x \to \sqrt x$ hat die Konditionszahl $
 ## Übungen
 
 1. Leiten Sie die *Konditionszahl* wie in \@ref(eq:eqn-scalar-cond) für eine vektorwertige Funktion $A\colon \mathbb R^{n} \to \mathbb R^{m}$ her. Wo spielt eine Matrixnorm eine Rolle?
-1. Leiten Sie mite dem selben Verfahren die Konditionszahl einer invertierbaren Matrix $M$ her, d.h. die Kondition des Problems $x\to y = M^{-1}x$. Wo spielt die Matrixnorm eine Rolle?
+1. Leiten Sie mit dem selben Verfahren die Konditionszahl einer invertierbaren Matrix $M$ her, d.h. die Kondition des Problems $x\to y = M^{-1}x$. Wo spielt die Matrixnorm eine Rolle?
 1. Leiten Sie die Konditionszahlen f&uuml;r die Operationen *Division* und *Quadratwurzelziehen* her.
 1. Veranschaulichen Sie an der Darstellung des Vektors $P=[1, 1]$ in der Standardbasis $\{[1, 0], \,[0, 1]\}$ und in der Basis $\{[1, 0], \,[1, 0.1]\}$ unter Verweis auf die Kondition der Addition, warum *orthogonale Basen* als *gut konditioniert* gelten.
