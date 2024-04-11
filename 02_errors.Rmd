@@ -16,7 +16,15 @@ Beide, irgendwie trivialen Beobachtungen sind grundlegende Bestandteile des Trai
 ## Fehler
 
 ```{definition, errors, name="Absolute und relative Fehler"}
-Sei $x\in\mathbb R^{}$ die interessierende Größe und $\tilde x \in \mathbb R^{}$ eine Annäherung daran. Dann wird der *absolute Fehler* definiert als $|\delta x|:=|\tilde x- x|$ und der *relative Fehler* als $\frac{|\delta x|}{|x|}=\frac{|\tilde x- x|}{|x|}$.
+Sei $x\in\mathbb R^{}$ die interessierende Größe und $\tilde x \in \mathbb R^{}$ eine Annäherung daran. Dann wird der *absolute Fehler* definiert als 
+\begin{equation*}
+|\delta x|:=|\tilde x- x|
+\end{equation*}
+und der *relative Fehler* als 
+\begin{equation*}
+\frac{|\delta x|}{|x|}=\frac{|\tilde x- x|}{|x|}.
+\end{equation*}
+
 ```
 
 ::: {#rem-rel-abs-err .JHSAYS data-latex=''}
