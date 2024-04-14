@@ -57,7 +57,7 @@ Für ein Problem/Algorithmus $A\colon \mathbb R^{n}\to \mathbb R^{m}$ nennen wir
 \begin{equation*}
 (\kappa_{A,x})_{ij} := \frac{\partial A_i}{\partial x_j}(x) \frac{x_j}{A_i(x)}
 \end{equation*}
-die partielle *Konditionszahl* des Problems. Ein Problem wird als *gut konditioniert* bezeichnet, wenn $|\kij|\approx 1$ und als *schlecht konditioniert*, wenn $|\kij \gg 1$, für alle $i=1,\dotsc,m$ und $j=1,\dotsc,m$.
+die partielle *Konditionszahl* des Problems. Ein Problem wird als *gut konditioniert* bezeichnet, wenn $|\kij|\approx 1$ und als *schlecht konditioniert*, wenn $|\kij \gg 1|$, für alle $i=1,\dotsc,m$ und $j=1,\dotsc,m$.
 :::
 
 ::: {#rem-vector-valued-cond .JHSAYS data-latex=''}
