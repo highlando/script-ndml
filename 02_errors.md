@@ -66,7 +66,7 @@ Anstatt die skalaren Komponentenfunktionen von $A\colon \mathbb R^{n} \to \mathb
 
 ## Kondition der Grundrechenarten
 
-Da einfach jede Operation von Zahlen auf dem Computer auf die Grundrechenarten zurueckgeht, ist es wichtig sich zu vergegenw&auml;rtigen wie sich diese Basisoperationen in Bezug auf kleine Fehler verhalten.
+Da einfach jede Operation von Zahlen auf dem Computer auf die Grundrechenarten zur&uuml;ckgeht, ist es wichtig sich zu vergegenw&auml;rtigen wie sich diese Basisoperationen in Bezug auf kleine Fehler verhalten.
 
 ### Addition 
 
@@ -84,7 +84,7 @@ kondAx = relerrz/relerrx    # here: 50.9999999
 
 
 In diesem Code Beispiel liegt der relative Fehler in $x$ bei etwa $0.01$\% und im Ausgang $z$ bei etwa $5$\%, was einer etwa $50$-fachen Verst&auml;rkung entspricht. 
-F&uuml;r die Konditionszahl der Addtion $A_y\colon x \to y+x$ gilt:
+F&uuml;r die Konditionszahl der Addition $A_y\colon x \to y+x$ gilt:
 \begin{equation*}
 \kappa_{A_y;x} = \frac{|x|}{|x+y|} = \frac{1}{|1+\frac{y}{x}|}.
 \end{equation*}
@@ -110,7 +110,7 @@ relerrz = (tz - z)/z        # here: 0.00098039
 kondMx = relerrz/relerrx    # here: 1.0
 ```
 
-Das Ergebnis `1.0` f&uuml;r die empirsch ermittelte Konditionszahl war kein Zufall. Es gilt im Allgemeinen f&uuml;r $M_y \colon x \to yx$ dass 
+Das Ergebnis `1.0` f&uuml;r die empirisch ermittelte Konditionszahl war kein Zufall. Es gilt im Allgemeinen f&uuml;r $M_y \colon x \to yx$ dass 
 \begin{equation*}
 \kappa_{M_y;x} = |y|\frac{|x|}{|xy|} = 1.
 \end{equation*}

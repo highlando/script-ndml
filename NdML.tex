@@ -156,7 +156,7 @@
 
 Das ist ein Aufschrieb der parallel zur Vorlesung erweitert wird.
 
-Korrekturen und Wünsche immer gerne als \emph{issues} oder \emph{pull requests} ans \href{https://github.com/highlando/script-nmdl}{github-repo}.
+Korrekturen und Wünsche immer gerne als \emph{issues} oder \emph{pull requests} ans \href{https://github.com/highlando/script-ndml}{github-repo}.
 
 \hypertarget{einfuxfchrung}{%
 \chapter{Einführung}\label{einfuxfchrung}}
@@ -507,7 +507,7 @@ Anstatt die skalaren Komponentenfunktionen von \(A\colon \mathbb R^{n} \to \math
 \hypertarget{kondition-der-grundrechenarten}{%
 \section{Kondition der Grundrechenarten}\label{kondition-der-grundrechenarten}}
 
-Da einfach jede Operation von Zahlen auf dem Computer auf die Grundrechenarten zurueckgeht, ist es wichtig sich zu vergegenwärtigen wie sich diese Basisoperationen in Bezug auf kleine Fehler verhalten.
+Da einfach jede Operation von Zahlen auf dem Computer auf die Grundrechenarten zurückgeht, ist es wichtig sich zu vergegenwärtigen wie sich diese Basisoperationen in Bezug auf kleine Fehler verhalten.
 
 \hypertarget{addition}{%
 \subsection{Addition}\label{addition}}
@@ -527,7 +527,7 @@ Da einfach jede Operation von Zahlen auf dem Computer auf die Grundrechenarten z
 \end{Shaded}
 
 In diesem Code Beispiel liegt der relative Fehler in \(x\) bei etwa \(0.01\)\% und im Ausgang \(z\) bei etwa \(5\)\%, was einer etwa \(50\)-fachen Verstärkung entspricht.
-Für die Konditionszahl der Addtion \(A_y\colon x \to y+x\) gilt:
+Für die Konditionszahl der Addition \(A_y\colon x \to y+x\) gilt:
 \begin{equation*}
 \kappa_{A_y;x} = \frac{|x|}{|x+y|} = \frac{1}{|1+\frac{y}{x}|}.
 \end{equation*}
@@ -557,7 +557,7 @@ Praktisch gesagt: Hantiert Jan mit Addition großer Zahlen um ein kleines Ergebn
 \end{Highlighting}
 \end{Shaded}
 
-Das Ergebnis \texttt{1.0} für die empirsch ermittelte Konditionszahl war kein Zufall. Es gilt im Allgemeinen für \(M_y \colon x \to yx\) dass
+Das Ergebnis \texttt{1.0} für die empirisch ermittelte Konditionszahl war kein Zufall. Es gilt im Allgemeinen für \(M_y \colon x \to yx\) dass
 \begin{equation*}
 \kappa_{M_y;x} = |y|\frac{|x|}{|xy|} = 1.
 \end{equation*}
