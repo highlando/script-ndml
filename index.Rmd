@@ -17,4 +17,4 @@ link-citations: true
 
 Das ist ein Aufschrieb der parallel zur Vorlesung erweitert wird.
 
-Korrekturen und W&uuml;nsche immer gerne als *issues* oder *pull requests* ans [github-repo](https://github.com/highlando/script-nmdl).
+Korrekturen und W&uuml;nsche immer gerne als *issues* oder *pull requests* ans [github-repo](https://github.com/highlando/script-ndml).
