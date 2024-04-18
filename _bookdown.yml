@@ -5,7 +5,7 @@ output_dir: docs
 rmd_files: ["index.Rmd",
             "01_introduction.Rmd",
             "02_errors.Rmd",
-            # "vl_03.Rmd",
+            "03_iterativemethods.Rmd",
             # "vl_04.Rmd",
             # "vl_05.Rmd",
             # "vl_06.Rmd",
