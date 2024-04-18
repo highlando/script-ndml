@@ -1,0 +1,109 @@
+# Iterative Methoden
+
+Allgemein nennen wir ein Verfahren, das sukzessive (also *iterativ*) eine L&ouml;sung $z$ &uuml;ber eine iterativ definierte Folge $x_{k+1}=\phi_k(x_k)$ ann&auml;hert ein *iteratives Verfahren*.
+
+Hierbei k&ouml;nnen $z$, $x_k$, $x_{k+1}$ skalare, Vektoren oder auch unendlich dimensionale Objekte sein und $\phi_k$ ist die Verfahrensfunktion, die das Verfahren beschreibt.
+Oftmals ist das Verfahren immer das gleiche egal bei welchem Schritt $k$ Jan gerade ist, weshalb auch oft einfach $\phi$ geschrieben wird.
+
+Bekannte Beispiele sind iterative Verfahren zur
+
+ * L&ouml;sung linearer Gleichungssysteme (z.B. *Gauss-Seidel*)
+ * L&ouml;sung nichtlinearer Gleichungssysteme (z.B. *Newton*)
+ * Optimierung (z.B. von ML Modellen mittels *Gradientenabstieg*)
+
+Der Einfachheit halber betrachten wir zun&auml;chst $z$, $x_k$, $x_{k+1}\in \mathbb R^{}$. 
+Die Erweiterung der Definitionen erfolgt dann &uuml;ber die Formulierung mit Hilfe passender Normen anstelle des Betrags.
+
+::: {.definition #iterative-convergence name="Konvergenz einer Iteration"}
+Eine Iteration die eine Folge $(x_k)_{k\in \mathbb N^{}}\subset \mathbb R^{}$ produziert, hei&szlig;t *konvergent der Ordnung $p$* (gegen $z\in \mathbb R^{}$) mit $p\geq 1$, falls eine Konstante $c>0$ existiert sodass
+\begin{equation}
+|x_{k+1} - z| \leq c|x_k-z|^p,
+(\#eq:eqn-iterative-cnvrgnc)
+\end{equation}
+f&uuml;r $k=1, 2, \dotsc$.
+
+Ist $p=1$, so ist $0<c<1$ notwendig f&uuml;r Konvergenz, genannt *lineare Konvergenz* und das kleinste $c$, das \@ref(eq:eqn-iterative-cnvrgnc) erf&uuml;llt, hei&szlig;t *(lineare) Konvergenzrate*.
+
+Gilt $p=1$ und gilt $|x_{k+1} - z| \leq c_k|x_k-z|^p$ mit $c_k \to 0$ f&uuml;r $k\to \infty$ hei&szlig;t die Konvergenz *superlinear*.
+:::
+
+::: {#rem-conv-iterat .JHSAYS data-latex=''}
+Wiederum gelten Konvergenzaussagen eigentlich f&uuml;r die Kombination aus Methode und Problem. Dennoch ist es allgemeine Praxis, beispielsweise zu sagen, dass das *Newton-Verfahren quadratisch konvergiert*.
+:::
+
+
+Wir stellen fest, dass im Limit (und wenn vor allem $\phi_k \equiv \phi$ ist) gelten muss, dass
+\begin{equation*}
+x=\phi(x),
+\end{equation*}
+die L&ouml;sung (bzw. das was berechnet wurde) ein *Fixpunkt* der Verfahrensfunktion ist.
+
+In der Tat lassen sich viele iterative Methoden als Fixpunktiteration formulieren und mittels Fixpunkts&auml;tzen analysieren. Im ersten Teil dieses Kapitels, werden wir Fixpunktmethoden betrachten.
+
+Als eine Verallgemeinerung, z.B. f&uuml;r den Fall dass $\phi$ tats&auml;chlich von $k$ abh&auml;ngen soll oder dass kein Fixpunkt sondern beispielsweise ein Minimum angen&auml;hert werden soll, werden wir au&szlig;erdem sogenannte *Auxiliary Function Methods* einf&uuml;hren und anschauen.
+
+## Iterative Methoden als Fixpunktiteration
+
+Um eine iterative Vorschrift, beschrieben durch $\phi$, als (konvergente) Fixpunktiteration zu charakterisieren, sind zwei wesentliche Bedingungen nachzuweisen
+
+1. die gesuchte L&ouml;sung $z$ ist ein Fixpunkt des Verfahrens, also $\phi(z)=z$.
+2. F&uuml;r einen Startwert $x_0$, konvergiert die Folge $x_{k+1}:=\phi(x_k)$, $k=1,2,\dotsc$, gegen $z$.
+
+Dazu kommen Betrachtungen von Konditionierung, Stabilit&auml;t und Konvergenzordnung.
+
+Wir beginnen mit etwas analytischer Betrachtung. Sei $g \colon \mathbb R^{}\to \mathbb R^{}$ stetig differenzierbar und sei $z\in \mathbb R^{}$ ein Fixpunkt von $g$. Dann gilt, dass
+\begin{equation*}
+\lim_{x\to z} \frac{g(x)-g(z)}{x-z} = \lim_{x\to z} \frac{g(x)-z}{x-z} = g'(z)
+\end{equation*}
+und damit, dass f&uuml;r ein $x_k$ in einer Umgebung $U$ um $z$ gilt, dass 
+\begin{equation*}
+|g(x_k)-z|\leq c |x_k-z|
+\end{equation*}
+mit $c=\sup_{x\in U}|g'(x)|$.
+Daraus k&ouml;nnen wir direkt ableiten, dass
+
+* wenn $|g'(z)|<1$ ist, dann ist die Vorschrift $x_{k+1}=\phi(x_k):=g(x_k)$ *lokal* linear konvergent
+* wenn $g'(z)=0$ dann sogar *superlinear*
+* wenn $|g'(z)|>1$ ist, dann divergiert die Folge weg von $z$ (und der Fixpunkt wird *absto&szlig;end* genannt).
+
+F&uuml;r h&ouml;here Konvergenzordnungen wird diese Beobachtung im folgenden Satz verallgemeinert.
+
+::: {.theorem #thm-smooth-fp-conv name="Konvergenz h&ouml;herer Ordnung bei glatter Fixpunktiteration"}
+Sei $g\colon D\subset \mathbb R^{}\to \mathbb R^{}$ $p$-mal stetig differenzierbar, sei $z\in D$ ein Fixpunkt von $g$. Dann  konvergiert die Fixpunktiteration $x_{k+1}=g(x_k)$ *lokal* mit Ordnung $p$, genau dann wenn
+\begin{equation*}
+g(z)=g'(z)=\dotsm g^{(p-1)}(z)=0, \quad g^{(p)}\neq 0.
+\end{equation*}
+:::
+
+::: {.proof}
+Siehe [@RicW17, Thm. 6.33]
+:::
+
+::: {#rem-smooth-fp-conv .JHSAYS data-latex=''}
+Das *genau dann wenn* in Satz \@ref(thm:thm-smooth-fp-conv) ist so zu verstehen, dass die Konvergenzordnung genau gleich $p$ ist, was insbesondere beinhaltet, dass wenn $g^{(p)}=0$ ist, die Ordnung eventuell gr&ouml;sser als $p$ ist. (Jan ist verleitet zu denken, dass in diesem Fall die Iteration nicht (oder mit einer niedrigeren Ordnung) konvergieren w&uuml;rde).
+:::
+
+Ist die Iterationsvorschrift linear (wie bei der iterativen L&ouml;sung linearer Gleichungssysteme), so ist die 1. Ableitung konstant (und gleich der Vorschrift selbst) und alle weiteren Ableitungen sind $0$. Dementsprechend, k&ouml;nnen wir
+
+* maximal lineare Konvergenz erwarten 
+* (die aber beispielsweise durch dynamische Anpassung von Parametern auf superlinear verbessert werden kann)
+* daf&uuml;r aber vergleichsweise direkte Verallgemeinerungen zu merhdimensionalen und sogar $\infty$-dimensionalen Problemstellungen
+
+Zur Illustration betrachten wir den *Landweber-Algorithmus* zur n&auml;herungsweisen L&ouml;sung von "$Ax=b$". 
+Dieser Algorithmus wird zwar insbesondere nicht verwendet um ein lineares Gleichungssystem zu l&ouml;sen, durch die Verbindung zur iterativen Optimierung hat er aber praktische Anwendungen in *compressed sensing* und auch beim *supervised learning* gefunden; vgl. [wikipedia:Landweber_iteration](https://en.wikipedia.org/wiki/Landweber_iteration).
+
+## Auxiliary Function Methods
+
+ * Optimization
+ * Gradient Descent
+ * LGS
+
+## &Uuml;bungen
+
+1. Bestimmen Sie die Konvergenzordnung und die Rate f&uuml;r das Bisektionsverfahren zur Nullstellenberechnung.
+
+2. Benutzen Sie Satz \@ref(thm:thm-smooth-fp-conv) um zu zeigen, dass aus $f$ zweimal stetig differenzierbar und $f(z)=0$, $f'(z)\neq 0$ f&uuml;r ein $z\in D(f)$ folgt, dass das Newton-Verfahren quadratisch konvergiert. *Hinweis*: Hier ist es wichtig zun&auml;chst zu verstehen, was die Funktion $f$ ist und was die Verfahrensfunktion $\phi$ ist.
+
+3. Bestimmen sie die Funktion $h$ in $\phi(x) = x+h(x)f(x)$ derart, dass unter den Bedingungen von 2. die Vorschrift $\phi$ einen Fixpunkt in $z$ hat und derart, dass die Iteration quadratisch konvergiert.
+
+4. Erkl&auml;ren Sie an Hand von Satz \@ref(thm:thm-smooth-fp-conv) (und den vorhergegangenen &Uuml;berlegungen) warum Newton f&uuml;r das Problem *finde $x$, so dass $x^2=0$ ist* **nicht** quadratisch (aber doch superlinear) konvergiert.

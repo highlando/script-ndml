@@ -6,6 +6,9 @@ def:landau-symbs
 def:errors
 eq:eqn-scalar-cond
 def:condition
+def:iterative-convergence
+eq:eqn-iterative-cnvrgnc
+thm:thm-smooth-fp-conv
 einführung
 was-ist-ein-algorithmus
 konsistenz-stabilität-genauigkeit
@@ -20,4 +23,8 @@ addition
 multiplikation
 wurzelziehen
 übungen-1
+iterative-methoden
+iterative-methoden-als-fixpunktiteration
+auxiliary-function-methods
+übungen-2
 nachklapp

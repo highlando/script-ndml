@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>3 Iterative Methoden | Numerik des Maschinellen Lernens</title>
+  <meta name="description" content="Vorlesungsnotizen zu meiner integrierten Vorlesung im SoSe 2024" />
+  <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="3 Iterative Methoden | Numerik des Maschinellen Lernens" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Vorlesungsnotizen zu meiner integrierten Vorlesung im SoSe 2024" />
+  <meta name="github-repo" content="highlando/script-ndml" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="3 Iterative Methoden | Numerik des Maschinellen Lernens" />
+  
+  <meta name="twitter:description" content="Vorlesungsnotizen zu meiner integrierten Vorlesung im SoSe 2024" />
+  
+
+<meta name="author" content="Jan Heiland" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="fehler-und-konditionierung.html"/>
+<link rel="next" href="nachklapp.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">NdML</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Vorwort</a></li>
+<li class="chapter" data-level="1" data-path="einführung.html"><a href="einführung.html"><i class="fa fa-check"></i><b>1</b> Einführung</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="einführung.html"><a href="einführung.html#was-ist-ein-algorithmus"><i class="fa fa-check"></i><b>1.1</b> Was ist ein Algorithmus</a></li>
+<li class="chapter" data-level="1.2" data-path="einführung.html"><a href="einführung.html#konsistenz-stabilität-genauigkeit"><i class="fa fa-check"></i><b>1.2</b> Konsistenz, Stabilität, Genauigkeit</a></li>
+<li class="chapter" data-level="1.3" data-path="einführung.html"><a href="einführung.html#rechenkomplexität"><i class="fa fa-check"></i><b>1.3</b> Rechenkomplexität</a></li>
+<li class="chapter" data-level="1.4" data-path="einführung.html"><a href="einführung.html#literatur"><i class="fa fa-check"></i><b>1.4</b> Literatur</a></li>
+<li class="chapter" data-level="1.5" data-path="einführung.html"><a href="einführung.html#übungen"><i class="fa fa-check"></i><b>1.5</b> Übungen</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="fehler-und-konditionierung.html"><a href="fehler-und-konditionierung.html"><i class="fa fa-check"></i><b>2</b> Fehler und Konditionierung</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="fehler-und-konditionierung.html"><a href="fehler-und-konditionierung.html#fehler"><i class="fa fa-check"></i><b>2.1</b> Fehler</a></li>
+<li class="chapter" data-level="2.2" data-path="fehler-und-konditionierung.html"><a href="fehler-und-konditionierung.html#kondition"><i class="fa fa-check"></i><b>2.2</b> Kondition</a></li>
+<li class="chapter" data-level="2.3" data-path="fehler-und-konditionierung.html"><a href="fehler-und-konditionierung.html#kondition-der-grundrechenarten"><i class="fa fa-check"></i><b>2.3</b> Kondition der Grundrechenarten</a></li>
+<li class="chapter" data-level="2.4" data-path="fehler-und-konditionierung.html"><a href="fehler-und-konditionierung.html#übungen-1"><i class="fa fa-check"></i><b>2.4</b> Übungen</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="iterative-methoden.html"><a href="iterative-methoden.html"><i class="fa fa-check"></i><b>3</b> Iterative Methoden</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="iterative-methoden.html"><a href="iterative-methoden.html#iterative-methoden-als-fixpunktiteration"><i class="fa fa-check"></i><b>3.1</b> Iterative Methoden als Fixpunktiteration</a></li>
+<li class="chapter" data-level="3.2" data-path="iterative-methoden.html"><a href="iterative-methoden.html#auxiliary-function-methods"><i class="fa fa-check"></i><b>3.2</b> Auxiliary Function Methods</a></li>
+<li class="chapter" data-level="3.3" data-path="iterative-methoden.html"><a href="iterative-methoden.html#übungen-2"><i class="fa fa-check"></i><b>3.3</b> Übungen</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="nachklapp.html"><a href="nachklapp.html"><i class="fa fa-check"></i><b>4</b> Nachklapp</a></li>
+<li class="chapter" data-level="" data-path="referenzen.html"><a href="referenzen.html"><i class="fa fa-check"></i>Referenzen</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Numerik des Maschinellen Lernens</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="iterative-methoden" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">3</span> Iterative Methoden<a href="iterative-methoden.html#iterative-methoden" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Allgemein nennen wir ein Verfahren, das sukzessive (also <em>iterativ</em>) eine Lösung <span class="math inline">\(z\)</span> über eine iterativ definierte Folge <span class="math inline">\(x_{k+1}=\phi_k(x_k)\)</span> annähert ein <em>iteratives Verfahren</em>.</p>
+<p>Hierbei können <span class="math inline">\(z\)</span>, <span class="math inline">\(x_k\)</span>, <span class="math inline">\(x_{k+1}\)</span> skalare, Vektoren oder auch unendlich dimensionale Objekte sein und <span class="math inline">\(\phi_k\)</span> ist die Verfahrensfunktion, die das Verfahren beschreibt.
+Oftmals ist das Verfahren immer das gleiche egal bei welchem Schritt <span class="math inline">\(k\)</span> Jan gerade ist, weshalb auch oft einfach <span class="math inline">\(\phi\)</span> geschrieben wird.</p>
+<p>Bekannte Beispiele sind iterative Verfahren zur</p>
+<ul>
+<li>Lösung linearer Gleichungssysteme (z.B. <em>Gauss-Seidel</em>)</li>
+<li>Lösung nichtlinearer Gleichungssysteme (z.B. <em>Newton</em>)</li>
+<li>Optimierung (z.B. von ML Modellen mittels <em>Gradientenabstieg</em>)</li>
+</ul>
+<p>Der Einfachheit halber betrachten wir zunächst <span class="math inline">\(z\)</span>, <span class="math inline">\(x_k\)</span>, <span class="math inline">\(x_{k+1}\in \mathbb R^{}\)</span>.
+Die Erweiterung der Definitionen erfolgt dann über die Formulierung mit Hilfe passender Normen anstelle des Betrags.</p>
+<div class="definition">
+<p><span id="def:iterative-convergence" class="definition"><strong>Definition 3.1  (Konvergenz einer Iteration) </strong></span>Eine Iteration die eine Folge <span class="math inline">\((x_k)_{k\in \mathbb N^{}}\subset \mathbb R^{}\)</span> produziert, heißt <em>konvergent der Ordnung <span class="math inline">\(p\)</span></em> (gegen <span class="math inline">\(z\in \mathbb R^{}\)</span>) mit <span class="math inline">\(p\geq 1\)</span>, falls eine Konstante <span class="math inline">\(c&gt;0\)</span> existiert sodass
+<span class="math display" id="eq:eqn-iterative-cnvrgnc">\[\begin{equation}
+|x_{k+1} - z| \leq c|x_k-z|^p,
+\tag{3.1}
+\end{equation}\]</span>
+für <span class="math inline">\(k=1, 2, \dotsc\)</span>.</p>
+<p>Ist <span class="math inline">\(p=1\)</span>, so ist <span class="math inline">\(0&lt;c&lt;1\)</span> notwendig für Konvergenz, genannt <em>lineare Konvergenz</em> und das kleinste <span class="math inline">\(c\)</span>, das <a href="iterative-methoden.html#eq:eqn-iterative-cnvrgnc">(3.1)</a> erfüllt, heißt <em>(lineare) Konvergenzrate</em>.</p>
+<p>Gilt <span class="math inline">\(p=1\)</span> und gilt <span class="math inline">\(|x_{k+1} - z| \leq c_k|x_k-z|^p\)</span> mit <span class="math inline">\(c_k \to 0\)</span> für <span class="math inline">\(k\to \infty\)</span> heißt die Konvergenz <em>superlinear</em>.</p>
+</div>
+<div id="rem-conv-iterat" class="JHSAYS">
+<p>Wiederum gelten Konvergenzaussagen eigentlich für die Kombination aus Methode und Problem. Dennoch ist es allgemeine Praxis, beispielsweise zu sagen, dass das <em>Newton-Verfahren quadratisch konvergiert</em>.</p>
+</div>
+<p>Wir stellen fest, dass im Limit (und wenn vor allem <span class="math inline">\(\phi_k \equiv \phi\)</span> ist) gelten muss, dass
+<span class="math display">\[\begin{equation*}
+x=\phi(x),
+\end{equation*}\]</span>
+die Lösung (bzw. das was berechnet wurde) ein <em>Fixpunkt</em> der Verfahrensfunktion ist.</p>
+<p>In der Tat lassen sich viele iterative Methoden als Fixpunktiteration formulieren und mittels Fixpunktsätzen analysieren. Im ersten Teil dieses Kapitels, werden wir Fixpunktmethoden betrachten.</p>
+<p>Als eine Verallgemeinerung, z.B. für den Fall dass <span class="math inline">\(\phi\)</span> tatsächlich von <span class="math inline">\(k\)</span> abhängen soll oder dass kein Fixpunkt sondern beispielsweise ein Minimum angenähert werden soll, werden wir außerdem sogenannte <em>Auxiliary Function Methods</em> einführen und anschauen.</p>
+<div id="iterative-methoden-als-fixpunktiteration" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Iterative Methoden als Fixpunktiteration<a href="iterative-methoden.html#iterative-methoden-als-fixpunktiteration" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Um eine iterative Vorschrift, beschrieben durch <span class="math inline">\(\phi\)</span>, als (konvergente) Fixpunktiteration zu charakterisieren, sind zwei wesentliche Bedingungen nachzuweisen</p>
+<ol style="list-style-type: decimal">
+<li>die gesuchte Lösung <span class="math inline">\(z\)</span> ist ein Fixpunkt des Verfahrens, also <span class="math inline">\(\phi(z)=z\)</span>.</li>
+<li>Für einen Startwert <span class="math inline">\(x_0\)</span>, konvergiert die Folge <span class="math inline">\(x_{k+1}:=\phi(x_k)\)</span>, <span class="math inline">\(k=1,2,\dotsc\)</span>, gegen <span class="math inline">\(z\)</span>.</li>
+</ol>
+<p>Dazu kommen Betrachtungen von Konditionierung, Stabilität und Konvergenzordnung.</p>
+<p>Wir beginnen mit etwas analytischer Betrachtung. Sei <span class="math inline">\(g \colon \mathbb R^{}\to \mathbb R^{}\)</span> stetig differenzierbar und sei <span class="math inline">\(z\in \mathbb R^{}\)</span> ein Fixpunkt von <span class="math inline">\(g\)</span>. Dann gilt, dass
+<span class="math display">\[\begin{equation*}
+\lim_{x\to z} \frac{g(x)-g(z)}{x-z} = \lim_{x\to z} \frac{g(x)-z}{x-z} = g&#39;(z)
+\end{equation*}\]</span>
+und damit, dass für ein <span class="math inline">\(x_k\)</span> in einer Umgebung <span class="math inline">\(U\)</span> um <span class="math inline">\(z\)</span> gilt, dass
+<span class="math display">\[\begin{equation*}
+|g(x_k)-z|\leq c |x_k-z|
+\end{equation*}\]</span>
+mit <span class="math inline">\(c=\sup_{x\in U}|g&#39;(x)|\)</span>.
+Daraus können wir direkt ableiten, dass</p>
+<ul>
+<li>wenn <span class="math inline">\(|g&#39;(z)|&lt;1\)</span> ist, dann ist die Vorschrift <span class="math inline">\(x_{k+1}=\phi(x_k):=g(x_k)\)</span> <em>lokal</em> linear konvergent</li>
+<li>wenn <span class="math inline">\(g&#39;(z)=0\)</span> dann sogar <em>superlinear</em></li>
+<li>wenn <span class="math inline">\(|g&#39;(z)|&gt;1\)</span> ist, dann divergiert die Folge weg von <span class="math inline">\(z\)</span> (und der Fixpunkt wird <em>abstoßend</em> genannt).</li>
+</ul>
+<p>Für höhere Konvergenzordnungen wird diese Beobachtung im folgenden Satz verallgemeinert.</p>
+<div class="theorem">
+<p><span id="thm:thm-smooth-fp-conv" class="theorem"><strong>Theorem 3.1  (Konvergenz höherer Ordnung bei glatter Fixpunktiteration) </strong></span>Sei <span class="math inline">\(g\colon D\subset \mathbb R^{}\to \mathbb R^{}\)</span> <span class="math inline">\(p\)</span>-mal stetig differenzierbar, sei <span class="math inline">\(z\in D\)</span> ein Fixpunkt von <span class="math inline">\(g\)</span>. Dann konvergiert die Fixpunktiteration <span class="math inline">\(x_{k+1}=g(x_k)\)</span> <em>lokal</em> mit Ordnung <span class="math inline">\(p\)</span>, genau dann wenn
+<span class="math display">\[\begin{equation*}
+g(z)=g&#39;(z)=\dotsm g^{(p-1)}(z)=0, \quad g^{(p)}\neq 0.
+\end{equation*}\]</span></p>
+</div>
+<div class="proof">
+<p><span id="unlabeled-div-1" class="proof"><em>Proof</em>. </span>Siehe <span class="citation">(Richter and Wick <a href="#ref-RicW17" role="doc-biblioref">2017</a>, Thm. 6.33)</span></p>
+</div>
+<div id="rem-smooth-fp-conv" class="JHSAYS">
+<p>Das <em>genau dann wenn</em> in Satz <a href="iterative-methoden.html#thm:thm-smooth-fp-conv">3.1</a> ist so zu verstehen, dass die Konvergenzordnung genau gleich <span class="math inline">\(p\)</span> ist, was insbesondere beinhaltet, dass wenn <span class="math inline">\(g^{(p)}=0\)</span> ist, die Ordnung eventuell grösser als <span class="math inline">\(p\)</span> ist. (Jan ist verleitet zu denken, dass in diesem Fall die Iteration nicht (oder mit einer niedrigeren Ordnung) konvergieren würde).</p>
+</div>
+<p>Ist die Iterationsvorschrift linear (wie bei der iterativen Lösung linearer Gleichungssysteme), so ist die 1. Ableitung konstant (und gleich der Vorschrift selbst) und alle weiteren Ableitungen sind <span class="math inline">\(0\)</span>. Dementsprechend, können wir</p>
+<ul>
+<li>maximal lineare Konvergenz erwarten</li>
+<li>(die aber beispielsweise durch dynamische Anpassung von Parametern auf superlinear verbessert werden kann)</li>
+<li>dafür aber vergleichsweise direkte Verallgemeinerungen zu merhdimensionalen und sogar <span class="math inline">\(\infty\)</span>-dimensionalen Problemstellungen</li>
+</ul>
+<p>Zur Illustration betrachten wir den <em>Landweber-Algorithmus</em> zur näherungsweisen Lösung von “<span class="math inline">\(Ax=b\)</span>”.
+Dieser Algorithmus wird zwar insbesondere nicht verwendet um ein lineares Gleichungssystem zu lösen, durch die Verbindung zur iterativen Optimierung hat er aber praktische Anwendungen in <em>compressed sensing</em> und auch beim <em>supervised learning</em> gefunden; vgl. <a href="https://en.wikipedia.org/wiki/Landweber_iteration">wikipedia:Landweber_iteration</a>.</p>
+</div>
+<div id="auxiliary-function-methods" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Auxiliary Function Methods<a href="iterative-methoden.html#auxiliary-function-methods" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li>Optimization</li>
+<li>Gradient Descent</li>
+<li>LGS</li>
+</ul>
+</div>
+<div id="übungen-2" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Übungen<a href="iterative-methoden.html#übungen-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li><p>Bestimmen Sie die Konvergenzordnung und die Rate für das Bisektionsverfahren zur Nullstellenberechnung.</p></li>
+<li><p>Benutzen Sie Satz <a href="iterative-methoden.html#thm:thm-smooth-fp-conv">3.1</a> um zu zeigen, dass aus <span class="math inline">\(f\)</span> zweimal stetig differenzierbar und <span class="math inline">\(f(z)=0\)</span>, <span class="math inline">\(f&#39;(z)\neq 0\)</span> für ein <span class="math inline">\(z\in D(f)\)</span> folgt, dass das Newton-Verfahren quadratisch konvergiert. <em>Hinweis</em>: Hier ist es wichtig zunächst zu verstehen, was die Funktion <span class="math inline">\(f\)</span> ist und was die Verfahrensfunktion <span class="math inline">\(\phi\)</span> ist.</p></li>
+<li><p>Bestimmen sie die Funktion <span class="math inline">\(h\)</span> in <span class="math inline">\(\phi(x) = x+h(x)f(x)\)</span> derart, dass unter den Bedingungen von 2. die Vorschrift <span class="math inline">\(\phi\)</span> einen Fixpunkt in <span class="math inline">\(z\)</span> hat und derart, dass die Iteration quadratisch konvergiert.</p></li>
+<li><p>Erklären Sie an Hand von Satz <a href="iterative-methoden.html#thm:thm-smooth-fp-conv">3.1</a> (und den vorhergegangenen Überlegungen) warum Newton für das Problem <em>finde <span class="math inline">\(x\)</span>, so dass <span class="math inline">\(x^2=0\)</span> ist</em> <strong>nicht</strong> quadratisch (aber doch superlinear) konvergiert.</p></li>
+</ol>
+
+</div>
+</div>
+<h3>Referenzen<a href="referenzen.html#referenzen" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references">
+<div id="ref-RicW17">
+<p> Richter, T., Wick, T.: Einführung in die numerische Mathematik. Begriffe, Konzepte und zahlreiche Anwendungsbeispiele. Heidelberg: Springer Spektrum (2017)</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="fehler-und-konditionierung.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="nachklapp.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["NdML.pdf"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

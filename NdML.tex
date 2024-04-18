@@ -584,6 +584,157 @@ Das Berechnen der Quadratwurzel \(W\colon x \to \sqrt x\) hat die Konditionszahl
   Veranschaulichen Sie an der Darstellung des Vektors \(P=[1, 1]\) in der Standardbasis \(\{[1, 0], \,[0, 1]\}\) und in der Basis \(\{[1, 0], \,[1, 0.1]\}\) unter Verweis auf die Kondition der Addition, warum \emph{orthogonale Basen} als \emph{gut konditioniert} gelten.
 \end{enumerate}
 
+\hypertarget{iterative-methoden}{%
+\chapter{Iterative Methoden}\label{iterative-methoden}}
+
+Allgemein nennen wir ein Verfahren, das sukzessive (also \emph{iterativ}) eine Lösung \(z\) über eine iterativ definierte Folge \(x_{k+1}=\phi_k(x_k)\) annähert ein \emph{iteratives Verfahren}.
+
+Hierbei können \(z\), \(x_k\), \(x_{k+1}\) skalare, Vektoren oder auch unendlich dimensionale Objekte sein und \(\phi_k\) ist die Verfahrensfunktion, die das Verfahren beschreibt.
+Oftmals ist das Verfahren immer das gleiche egal bei welchem Schritt \(k\) Jan gerade ist, weshalb auch oft einfach \(\phi\) geschrieben wird.
+
+Bekannte Beispiele sind iterative Verfahren zur
+
+\begin{itemize}
+\tightlist
+\item
+  Lösung linearer Gleichungssysteme (z.B. \emph{Gauss-Seidel})
+\item
+  Lösung nichtlinearer Gleichungssysteme (z.B. \emph{Newton})
+\item
+  Optimierung (z.B. von ML Modellen mittels \emph{Gradientenabstieg})
+\end{itemize}
+
+Der Einfachheit halber betrachten wir zunächst \(z\), \(x_k\), \(x_{k+1}\in \mathbb R^{}\).
+Die Erweiterung der Definitionen erfolgt dann über die Formulierung mit Hilfe passender Normen anstelle des Betrags.
+
+\begin{definition}[Konvergenz einer Iteration]
+\protect\hypertarget{def:iterative-convergence}{}\label{def:iterative-convergence}Eine Iteration die eine Folge \((x_k)_{k\in \mathbb N^{}}\subset \mathbb R^{}\) produziert, heißt \emph{konvergent der Ordnung \(p\)} (gegen \(z\in \mathbb R^{}\)) mit \(p\geq 1\), falls eine Konstante \(c>0\) existiert sodass
+\begin{equation}
+|x_{k+1} - z| \leq c|x_k-z|^p,
+\label{eq:eqn-iterative-cnvrgnc}
+\end{equation}
+für \(k=1, 2, \dotsc\).
+
+Ist \(p=1\), so ist \(0<c<1\) notwendig für Konvergenz, genannt \emph{lineare Konvergenz} und das kleinste \(c\), das \eqref{eq:eqn-iterative-cnvrgnc} erfüllt, heißt \emph{(lineare) Konvergenzrate}.
+
+Gilt \(p=1\) und gilt \(|x_{k+1} - z| \leq c_k|x_k-z|^p\) mit \(c_k \to 0\) für \(k\to \infty\) heißt die Konvergenz \emph{superlinear}.
+\end{definition}
+
+\leavevmode\hypertarget{rem-conv-iterat}{}%
+\begin{JHSAYS}
+Wiederum gelten Konvergenzaussagen eigentlich für die Kombination aus Methode und Problem. Dennoch ist es allgemeine Praxis, beispielsweise zu sagen, dass das \emph{Newton-Verfahren quadratisch konvergiert}.
+
+\end{JHSAYS}
+
+Wir stellen fest, dass im Limit (und wenn vor allem \(\phi_k \equiv \phi\) ist) gelten muss, dass
+\begin{equation*}
+x=\phi(x),
+\end{equation*}
+die Lösung (bzw. das was berechnet wurde) ein \emph{Fixpunkt} der Verfahrensfunktion ist.
+
+In der Tat lassen sich viele iterative Methoden als Fixpunktiteration formulieren und mittels Fixpunktsätzen analysieren. Im ersten Teil dieses Kapitels, werden wir Fixpunktmethoden betrachten.
+
+Als eine Verallgemeinerung, z.B. für den Fall dass \(\phi\) tatsächlich von \(k\) abhängen soll oder dass kein Fixpunkt sondern beispielsweise ein Minimum angenähert werden soll, werden wir außerdem sogenannte \emph{Auxiliary Function Methods} einführen und anschauen.
+
+\hypertarget{iterative-methoden-als-fixpunktiteration}{%
+\section{Iterative Methoden als Fixpunktiteration}\label{iterative-methoden-als-fixpunktiteration}}
+
+Um eine iterative Vorschrift, beschrieben durch \(\phi\), als (konvergente) Fixpunktiteration zu charakterisieren, sind zwei wesentliche Bedingungen nachzuweisen
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  die gesuchte Lösung \(z\) ist ein Fixpunkt des Verfahrens, also \(\phi(z)=z\).
+\item
+  Für einen Startwert \(x_0\), konvergiert die Folge \(x_{k+1}:=\phi(x_k)\), \(k=1,2,\dotsc\), gegen \(z\).
+\end{enumerate}
+
+Dazu kommen Betrachtungen von Konditionierung, Stabilität und Konvergenzordnung.
+
+Wir beginnen mit etwas analytischer Betrachtung. Sei \(g \colon \mathbb R^{}\to \mathbb R^{}\) stetig differenzierbar und sei \(z\in \mathbb R^{}\) ein Fixpunkt von \(g\). Dann gilt, dass
+\begin{equation*}
+\lim_{x\to z} \frac{g(x)-g(z)}{x-z} = \lim_{x\to z} \frac{g(x)-z}{x-z} = g'(z)
+\end{equation*}
+und damit, dass für ein \(x_k\) in einer Umgebung \(U\) um \(z\) gilt, dass
+\begin{equation*}
+|g(x_k)-z|\leq c |x_k-z|
+\end{equation*}
+mit \(c=\sup_{x\in U}|g'(x)|\).
+Daraus können wir direkt ableiten, dass
+
+\begin{itemize}
+\tightlist
+\item
+  wenn \(|g'(z)|<1\) ist, dann ist die Vorschrift \(x_{k+1}=\phi(x_k):=g(x_k)\) \emph{lokal} linear konvergent
+\item
+  wenn \(g'(z)=0\) dann sogar \emph{superlinear}
+\item
+  wenn \(|g'(z)|>1\) ist, dann divergiert die Folge weg von \(z\) (und der Fixpunkt wird \emph{abstoßend} genannt).
+\end{itemize}
+
+Für höhere Konvergenzordnungen wird diese Beobachtung im folgenden Satz verallgemeinert.
+
+\begin{theorem}[Konvergenz höherer Ordnung bei glatter Fixpunktiteration]
+\protect\hypertarget{thm:thm-smooth-fp-conv}{}\label{thm:thm-smooth-fp-conv}Sei \(g\colon D\subset \mathbb R^{}\to \mathbb R^{}\) \(p\)-mal stetig differenzierbar, sei \(z\in D\) ein Fixpunkt von \(g\). Dann konvergiert die Fixpunktiteration \(x_{k+1}=g(x_k)\) \emph{lokal} mit Ordnung \(p\), genau dann wenn
+\begin{equation*}
+g(z)=g'(z)=\dotsm g^{(p-1)}(z)=0, \quad g^{(p)}\neq 0.
+\end{equation*}
+\end{theorem}
+
+\begin{proof}
+Siehe (Richter and Wick \protect\hyperlink{ref-RicW17}{2017}, Thm. 6.33)
+\end{proof}
+
+\leavevmode\hypertarget{rem-smooth-fp-conv}{}%
+\begin{JHSAYS}
+Das \emph{genau dann wenn} in Satz \ref{thm:thm-smooth-fp-conv} ist so zu verstehen, dass die Konvergenzordnung genau gleich \(p\) ist, was insbesondere beinhaltet, dass wenn \(g^{(p)}=0\) ist, die Ordnung eventuell grösser als \(p\) ist. (Jan ist verleitet zu denken, dass in diesem Fall die Iteration nicht (oder mit einer niedrigeren Ordnung) konvergieren würde).
+
+\end{JHSAYS}
+
+Ist die Iterationsvorschrift linear (wie bei der iterativen Lösung linearer Gleichungssysteme), so ist die 1. Ableitung konstant (und gleich der Vorschrift selbst) und alle weiteren Ableitungen sind \(0\). Dementsprechend, können wir
+
+\begin{itemize}
+\tightlist
+\item
+  maximal lineare Konvergenz erwarten
+\item
+  (die aber beispielsweise durch dynamische Anpassung von Parametern auf superlinear verbessert werden kann)
+\item
+  dafür aber vergleichsweise direkte Verallgemeinerungen zu merhdimensionalen und sogar \(\infty\)-dimensionalen Problemstellungen
+\end{itemize}
+
+Zur Illustration betrachten wir den \emph{Landweber-Algorithmus} zur näherungsweisen Lösung von ``\(Ax=b\)''.
+Dieser Algorithmus wird zwar insbesondere nicht verwendet um ein lineares Gleichungssystem zu lösen, durch die Verbindung zur iterativen Optimierung hat er aber praktische Anwendungen in \emph{compressed sensing} und auch beim \emph{supervised learning} gefunden; vgl. \href{https://en.wikipedia.org/wiki/Landweber_iteration}{wikipedia:Landweber\_iteration}.
+
+\hypertarget{auxiliary-function-methods}{%
+\section{Auxiliary Function Methods}\label{auxiliary-function-methods}}
+
+\begin{itemize}
+\tightlist
+\item
+  Optimization
+\item
+  Gradient Descent
+\item
+  LGS
+\end{itemize}
+
+\hypertarget{uxfcbungen-2}{%
+\section{Übungen}\label{uxfcbungen-2}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Bestimmen Sie die Konvergenzordnung und die Rate für das Bisektionsverfahren zur Nullstellenberechnung.
+\item
+  Benutzen Sie Satz \ref{thm:thm-smooth-fp-conv} um zu zeigen, dass aus \(f\) zweimal stetig differenzierbar und \(f(z)=0\), \(f'(z)\neq 0\) für ein \(z\in D(f)\) folgt, dass das Newton-Verfahren quadratisch konvergiert. \emph{Hinweis}: Hier ist es wichtig zunächst zu verstehen, was die Funktion \(f\) ist und was die Verfahrensfunktion \(\phi\) ist.
+\item
+  Bestimmen sie die Funktion \(h\) in \(\phi(x) = x+h(x)f(x)\) derart, dass unter den Bedingungen von 2. die Vorschrift \(\phi\) einen Fixpunkt in \(z\) hat und derart, dass die Iteration quadratisch konvergiert.
+\item
+  Erklären Sie an Hand von Satz \ref{thm:thm-smooth-fp-conv} (und den vorhergegangenen Überlegungen) warum Newton für das Problem \emph{finde \(x\), so dass \(x^2=0\) ist} \textbf{nicht} quadratisch (aber doch superlinear) konvergiert.
+\end{enumerate}
+
 \hypertarget{nachklapp}{%
 \chapter{Nachklapp}\label{nachklapp}}
 
@@ -652,6 +803,9 @@ Ein paar lose Beispiele wo Numerik und maschinelles Lernen sich treffen.
 \begin{cslreferences}
 \leavevmode\hypertarget{ref-NocW06}{}%
 Nocedal, J., Wright, S.J.: Numerical optimization. Springer (2006)
+
+\leavevmode\hypertarget{ref-RicW17}{}%
+Richter, T., Wick, T.: Einführung in die numerische Mathematik. Begriffe, Konzepte und zahlreiche Anwendungsbeispiele. Heidelberg: Springer Spektrum (2017)
 \end{cslreferences}
 
 \end{document}
