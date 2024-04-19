@@ -158,8 +158,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3" data-path="iterative-methoden.html"><a href="iterative-methoden.html"><i class="fa fa-check"></i><b>3</b> Iterative Methoden</a>
 <ul>
 <li class="chapter" data-level="3.1" data-path="iterative-methoden.html"><a href="iterative-methoden.html#iterative-methoden-als-fixpunktiteration"><i class="fa fa-check"></i><b>3.1</b> Iterative Methoden als Fixpunktiteration</a></li>
-<li class="chapter" data-level="3.2" data-path="iterative-methoden.html"><a href="iterative-methoden.html#auxiliary-function-methods"><i class="fa fa-check"></i><b>3.2</b> Auxiliary Function Methods</a></li>
-<li class="chapter" data-level="3.3" data-path="iterative-methoden.html"><a href="iterative-methoden.html#übungen-2"><i class="fa fa-check"></i><b>3.3</b> Übungen</a></li>
+<li class="chapter" data-level="3.2" data-path="iterative-methoden.html"><a href="iterative-methoden.html#gradientenabstiegsverfahren"><i class="fa fa-check"></i><b>3.2</b> Gradientenabstiegsverfahren</a></li>
+<li class="chapter" data-level="3.3" data-path="iterative-methoden.html"><a href="iterative-methoden.html#stochastisches-gradientenabstiegsverfahren"><i class="fa fa-check"></i><b>3.3</b> Stochastisches Gradientenabstiegsverfahren</a></li>
+<li class="chapter" data-level="3.4" data-path="iterative-methoden.html"><a href="iterative-methoden.html#auxiliary-function-methods"><i class="fa fa-check"></i><b>3.4</b> Auxiliary Function Methods</a></li>
+<li class="chapter" data-level="3.5" data-path="iterative-methoden.html"><a href="iterative-methoden.html#übungen-2"><i class="fa fa-check"></i><b>3.5</b> Übungen</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="nachklapp.html"><a href="nachklapp.html"><i class="fa fa-check"></i><b>4</b> Nachklapp</a></li>
 <li class="chapter" data-level="" data-path="referenzen.html"><a href="referenzen.html"><i class="fa fa-check"></i>Referenzen</a></li>
@@ -283,29 +285,36 @@ x_{k+1} - z &amp;= x_k - \gamma A^T(Ax_k -b ) - z  \\
 \end{equation*}\]</span>
 Damit ergibt eine Abschätzung in der <span class="math inline">\(2\)</span>-Norm und der induzierten Matrixnorm, dass
 <span class="math display">\[\begin{equation*}
-\|x_{k+1}-z\|_2 \leq \|I-\gamma A^TA\|_2\|x_k-z\|
+\|x_{k+1}-z\|_2 \leq \|I-\gamma A^TA\|_2\|x_k-z\|_2
 \end{equation*}\]</span>
-was lineare Konvergenz mit der Rate <span class="math inline">\(c=\|I-\gamma A^TA\|_2\)</span> bedeutet, wobei <span class="math inline">\(c&lt;1\)</span> gilt nach der getroffenen Voraussetzung, dass <span class="math inline">\(0&lt;\gamma&lt;\frac{2}{\|A^TA\|_2}\)</span>.</p>
+gile, was lineare Konvergenz mit der Rate <span class="math inline">\(c=\|I-\gamma A^TA\|_2\)</span> bedeutet, wobei <span class="math inline">\(c&lt;1\)</span> gilt nach der getroffenen Voraussetzung, dass <span class="math inline">\(0&lt;\gamma&lt;\frac{2}{\|A^TA\|_2}\)</span> ist.</p>
 </div>
 <div id="rem-fpconv-iteration-contraction" class="JHSAYS">
 <p>Das Prinzip dieser Beweise ist festzustellen, dass die Verfahrensfunktion in der Nähe des Fixpunkts eine <em>Kontraktion</em> ist, d.h. Lipschitz-stetig mit Konstante <span class="math inline">\(L&lt;1\)</span>.</p>
 </div>
 </div>
-<div id="auxiliary-function-methods" class="section level2 hasAnchor" number="3.2">
-<h2><span class="header-section-number">3.2</span> Auxiliary Function Methods<a href="iterative-methoden.html#auxiliary-function-methods" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="gradientenabstiegsverfahren" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Gradientenabstiegsverfahren<a href="iterative-methoden.html#gradientenabstiegsverfahren" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="stochastisches-gradientenabstiegsverfahren" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Stochastisches Gradientenabstiegsverfahren<a href="iterative-methoden.html#stochastisches-gradientenabstiegsverfahren" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="auxiliary-function-methods" class="section level2 hasAnchor" number="3.4">
+<h2><span class="header-section-number">3.4</span> Auxiliary Function Methods<a href="iterative-methoden.html#auxiliary-function-methods" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
 <li>Optimization</li>
 <li>Gradient Descent</li>
 <li>LGS</li>
 </ul>
 </div>
-<div id="übungen-2" class="section level2 hasAnchor" number="3.3">
-<h2><span class="header-section-number">3.3</span> Übungen<a href="iterative-methoden.html#übungen-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="übungen-2" class="section level2 hasAnchor" number="3.5">
+<h2><span class="header-section-number">3.5</span> Übungen<a href="iterative-methoden.html#übungen-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ol style="list-style-type: decimal">
 <li><p>Bestimmen Sie die Konvergenzordnung und die Rate für das Bisektionsverfahren zur Nullstellenberechnung.</p></li>
-<li><p>Benutzen Sie Satz <a href="iterative-methoden.html#thm:thm-smooth-fp-conv">3.1</a> um zu zeigen, dass aus <span class="math inline">\(f\)</span> zweimal stetig differenzierbar und <span class="math inline">\(f(z)=0\)</span>, <span class="math inline">\(f&#39;(z)\neq 0\)</span> für ein <span class="math inline">\(z\in D(f)\)</span> folgt, dass das Newton-Verfahren quadratisch konvergiert. <em>Hinweis</em>: Hier ist es wichtig zunächst zu verstehen, was die Funktion <span class="math inline">\(f\)</span> ist und was die Verfahrensfunktion <span class="math inline">\(\phi\)</span> ist.</p></li>
+<li><p>Benutzen Sie Satz <a href="iterative-methoden.html#thm:thm-smooth-fp-conv">3.1</a> um zu zeigen, dass aus <span class="math inline">\(f\)</span> zweimal stetig differenzierbar und <span class="math inline">\(f(z)=0\)</span>, <span class="math inline">\(f&#39;(z)\neq 0\)</span> für ein <span class="math inline">\(z\in D(f)\)</span> folgt, dass das Newton-Verfahren zur Berechnung von <span class="math inline">\(z\)</span> lokal quadratisch konvergiert. <em>Hinweis</em>: Hier ist es wichtig zunächst zu verstehen, was die Funktion <span class="math inline">\(f\)</span> ist und was die Verfahrensfunktion <span class="math inline">\(\phi\)</span> ist.</p></li>
 <li><p>Bestimmen sie die Funktion <span class="math inline">\(h\)</span> in <span class="math inline">\(\phi(x) = x+h(x)f(x)\)</span> derart, dass unter den Bedingungen von 2. die Vorschrift <span class="math inline">\(\phi\)</span> einen Fixpunkt in <span class="math inline">\(z\)</span> hat und derart, dass die Iteration quadratisch konvergiert.</p></li>
 <li><p>Erklären Sie an Hand von Satz <a href="iterative-methoden.html#thm:thm-smooth-fp-conv">3.1</a> (und den vorhergegangenen Überlegungen) warum Newton für das Problem <em>finde <span class="math inline">\(x\)</span>, so dass <span class="math inline">\(x^2=0\)</span> ist</em> <strong>nicht</strong> quadratisch (aber doch superlinear) konvergiert.</p></li>
+<li><p>Beweisen Sie, dass für <span class="math inline">\(0&lt;\gamma&lt; \frac{2}{\|A\|_2}\)</span> gilt, dass<span class="math inline">\(\|I-\gamma A^TA\|&lt;1\)</span> für beliebige <span class="math inline">\(A\in \mathbb R^{m \times n}\)</span>.</p></li>
 <li><p>Rechnen Sie nach, dass die Landweber Iteration aus Definition <a href="iterative-methoden.html#def:def-landweber-alg">3.2</a> einem gedämpften Gradientenabstiegsverfahren für <span class="math inline">\(\|Ax-b\|_2^2 \to \min_{x\in \mathbb R^{m}}\)</span> entspricht.</p></li>
 </ol>
 

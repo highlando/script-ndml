@@ -118,15 +118,18 @@ x_{k+1} - z &= x_k - \gamma A^T(Ax_k -b ) - z  \\
 \end{equation*}
 Damit ergibt eine Absch&auml;tzung in der $2$-Norm und der induzierten Matrixnorm, dass
 \begin{equation*}
-\|x_{k+1}-z\|_2 \leq \|I-\gamma A^TA\|_2\|x_k-z\|
+\|x_{k+1}-z\|_2 \leq \|I-\gamma A^TA\|_2\|x_k-z\|_2
 \end{equation*}
-was lineare Konvergenz mit der Rate $c=\|I-\gamma A^TA\|_2$ bedeutet, wobei $c<1$ gilt nach der getroffenen Voraussetzung, dass $0<\gamma<\frac{2}{\|A^TA\|_2}$.
+gile, was lineare Konvergenz mit der Rate $c=\|I-\gamma A^TA\|_2$ bedeutet, wobei $c<1$ gilt nach der getroffenen Voraussetzung, dass $0<\gamma<\frac{2}{\|A^TA\|_2}$ ist.
 :::
 
 ::: {#rem-fpconv-iteration-contraction .JHSAYS data-latex=''}
 Das Prinzip dieser Beweise ist festzustellen, dass die Verfahrensfunktion in der N&auml;he des Fixpunkts eine *Kontraktion* ist, d.h. Lipschitz-stetig mit Konstante $L<1$.
 :::
 
+## Gradientenabstiegsverfahren
+
+## Stochastisches Gradientenabstiegsverfahren
 
 ## Auxiliary Function Methods
 
@@ -138,10 +141,12 @@ Das Prinzip dieser Beweise ist festzustellen, dass die Verfahrensfunktion in der
 
 1. Bestimmen Sie die Konvergenzordnung und die Rate f&uuml;r das Bisektionsverfahren zur Nullstellenberechnung.
 
-2. Benutzen Sie Satz \@ref(thm:thm-smooth-fp-conv) um zu zeigen, dass aus $f$ zweimal stetig differenzierbar und $f(z)=0$, $f'(z)\neq 0$ f&uuml;r ein $z\in D(f)$ folgt, dass das Newton-Verfahren quadratisch konvergiert. *Hinweis*: Hier ist es wichtig zun&auml;chst zu verstehen, was die Funktion $f$ ist und was die Verfahrensfunktion $\phi$ ist.
+2. Benutzen Sie Satz \@ref(thm:thm-smooth-fp-conv) um zu zeigen, dass aus $f$ zweimal stetig differenzierbar und $f(z)=0$, $f'(z)\neq 0$ f&uuml;r ein $z\in D(f)$ folgt, dass das Newton-Verfahren zur Berechnung von $z$ lokal quadratisch konvergiert. *Hinweis*: Hier ist es wichtig zun&auml;chst zu verstehen, was die Funktion $f$ ist und was die Verfahrensfunktion $\phi$ ist.
 
 3. Bestimmen sie die Funktion $h$ in $\phi(x) = x+h(x)f(x)$ derart, dass unter den Bedingungen von 2. die Vorschrift $\phi$ einen Fixpunkt in $z$ hat und derart, dass die Iteration quadratisch konvergiert.
 
 4. Erkl&auml;ren Sie an Hand von Satz \@ref(thm:thm-smooth-fp-conv) (und den vorhergegangenen &Uuml;berlegungen) warum Newton f&uuml;r das Problem *finde $x$, so dass $x^2=0$ ist* **nicht** quadratisch (aber doch superlinear) konvergiert.
 
-5. Rechnen Sie nach, dass die Landweber Iteration aus Definition \@ref(def:def-landweber-alg) einem ged&auml;mpften Gradientenabstiegsverfahren f&uuml;r $\|Ax-b\|_2^2 \to \min_{x\in \mathbb R^{m}}$ entspricht.
+5. Beweisen Sie, dass f&uuml;r $0<\gamma< \frac{2}{\|A\|_2}$ gilt, dass$\|I-\gamma A^TA\|<1$ f&uuml;r beliebige $A\in \mathbb R^{m \times n}$. 
+
+6. Rechnen Sie nach, dass die Landweber Iteration aus Definition \@ref(def:def-landweber-alg) einem ged&auml;mpften Gradientenabstiegsverfahren f&uuml;r $\|Ax-b\|_2^2 \to \min_{x\in \mathbb R^{m}}$ entspricht.

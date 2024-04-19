@@ -27,6 +27,8 @@ wurzelziehen
 übungen-1
 iterative-methoden
 iterative-methoden-als-fixpunktiteration
+gradientenabstiegsverfahren
+stochastisches-gradientenabstiegsverfahren
 auxiliary-function-methods
 übungen-2
 nachklapp
