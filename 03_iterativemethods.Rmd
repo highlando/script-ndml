@@ -118,15 +118,18 @@ x_{k+1} - z &= x_k - \gamma A^T(Ax_k -b ) - z  \\
 \end{equation*}
 Damit ergibt eine Absch&auml;tzung in der $2$-Norm und der induzierten Matrixnorm, dass
 \begin{equation*}
-\|x_{k+1}-z\|_2 \leq \|I-\gamma A^TA\|_2\|x_k-z\|
+\|x_{k+1}-z\|_2 \leq \|I-\gamma A^TA\|_2\|x_k-z\|_2
 \end{equation*}
-was lineare Konvergenz mit der Rate $c=\|I-\gamma A^TA\|_2$ bedeutet, wobei $c<1$ gilt nach der getroffenen Voraussetzung, dass $0<\gamma<\frac{2}{\|A^TA\|_2}$.
+gile, was lineare Konvergenz mit der Rate $c=\|I-\gamma A^TA\|_2$ bedeutet, wobei $c<1$ gilt nach der getroffenen Voraussetzung, dass $0<\gamma<\frac{2}{\|A^TA\|_2}$ ist.
 :::
 
 ::: {#rem-fpconv-iteration-contraction .JHSAYS data-latex=''}
 Das Prinzip dieser Beweise ist festzustellen, dass die Verfahrensfunktion in der N&auml;he des Fixpunkts eine *Kontraktion* ist, d.h. Lipschitz-stetig mit Konstante $L<1$.
 :::
 
+## Gradientenabstiegsverfahren
+
+## Stochastisches Gradientenabstiegsverfahren
 
 ## Auxiliary Function Methods
 
