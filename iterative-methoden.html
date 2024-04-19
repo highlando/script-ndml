@@ -252,14 +252,44 @@ g(z)=g&#39;(z)=\dotsm g^{(p-1)}(z)=0, \quad g^{(p)}\neq 0.
 <div id="rem-smooth-fp-conv" class="JHSAYS">
 <p>Das <em>genau dann wenn</em> in Satz <a href="iterative-methoden.html#thm:thm-smooth-fp-conv">3.1</a> ist so zu verstehen, dass die Konvergenzordnung genau gleich <span class="math inline">\(p\)</span> ist, was insbesondere beinhaltet, dass wenn <span class="math inline">\(g^{(p)}=0\)</span> ist, die Ordnung eventuell grösser als <span class="math inline">\(p\)</span> ist. (Jan ist verleitet zu denken, dass in diesem Fall die Iteration nicht (oder mit einer niedrigeren Ordnung) konvergieren würde).</p>
 </div>
-<p>Ist die Iterationsvorschrift linear (wie bei der iterativen Lösung linearer Gleichungssysteme), so ist die 1. Ableitung konstant (und gleich der Vorschrift selbst) und alle weiteren Ableitungen sind <span class="math inline">\(0\)</span>. Dementsprechend, können wir</p>
+<p>Ist die Iterationsvorschrift linear (wie bei der iterativen Lösung linearer Gleichungssysteme), so ist die erste Ableitung <span class="math inline">\(\phi&#39;\)</span> konstant (und gleich der Vorschrift selbst) und alle weiteren Ableitungen sind <span class="math inline">\(0\)</span>. Dementsprechend, können wir</p>
 <ul>
 <li>maximal lineare Konvergenz erwarten</li>
 <li>(die aber beispielsweise durch dynamische Anpassung von Parametern auf superlinear verbessert werden kann)</li>
-<li>dafür aber vergleichsweise direkte Verallgemeinerungen zu merhdimensionalen und sogar <span class="math inline">\(\infty\)</span>-dimensionalen Problemstellungen</li>
+<li>dafür aber vergleichsweise direkte Verallgemeinerungen zu mehrdimensionalen und sogar <span class="math inline">\(\infty\)</span>-dimensionalen Problemstellungen.</li>
 </ul>
 <p>Zur Illustration betrachten wir den <em>Landweber-Algorithmus</em> zur näherungsweisen Lösung von “<span class="math inline">\(Ax=b\)</span>”.
-Dieser Algorithmus wird zwar insbesondere nicht verwendet um ein lineares Gleichungssystem zu lösen, durch die Verbindung zur iterativen Optimierung hat er aber praktische Anwendungen in <em>compressed sensing</em> und auch beim <em>supervised learning</em> gefunden; vgl. <a href="https://en.wikipedia.org/wiki/Landweber_iteration">wikipedia:Landweber_iteration</a>.</p>
+Dieser Algorithmus wird zwar insbesondere nicht verwendet um ein lineares Gleichungssystem zu lösen, durch die Formulierung für möglicherweise überbestimmte Systeme und die Verbindung zur iterativen Optimierung hat er aber praktische Anwendungen in <em>compressed sensing</em> und auch beim <em>supervised learning</em> gefunden; vgl. <a href="https://en.wikipedia.org/wiki/Landweber_iteration">wikipedia:Landweber_iteration</a>.</p>
+<div class="definition">
+<p><span id="def:def-landweber-alg" class="definition"><strong>Definition 3.2  (Landweber Iteration) </strong></span>Sei <span class="math inline">\(A\in \mathbb R^{m\times n}\)</span> und <span class="math inline">\(b\in \mathbb R^{m}\)</span>. Dann ist, ausgehend von einem Startwert <span class="math inline">\(x_0 \in \mathbb R^{n}\)</span>, die <em>Landweber Iteration</em> definiert über
+<span class="math display">\[\begin{equation*}
+x_{k+1} = x_k - \gamma A^T(Ax_k -b ),
+\end{equation*}\]</span>
+wobei der Parameter <span class="math inline">\(\gamma\)</span> als <span class="math inline">\(0&lt;\gamma&lt; \frac{2}{\|A\|_2}\)</span> gewählt wird.</p>
+</div>
+<p>Zur Illustration der Argumente, die die Konvergenz einer Fixpunktiteration mit linearer Verfahrensfunktion herleiten, zeigen wir die Konvergenz im Spezialfall, dass <span class="math inline">\(Ax=b\)</span> ein reguläres lineares Gleichungssystem ist.</p>
+<div class="theorem">
+<p><span id="thm:thm-lw-conv" class="theorem"><strong>Theorem 3.2  (Konvergenz der Landweber Iteration) </strong></span>Unter den Voraussetzungen von Definition <a href="iterative-methoden.html#def:def-landweber-alg">3.2</a> und für <span class="math inline">\(m=n\)</span> und <span class="math inline">\(A\in \mathbb R^{n\times n}\)</span> regulär, konvergiert die Landweber Iteration linear für einen beliebigen Startwert <span class="math inline">\(x_0\)</span>.</p>
+</div>
+<div class="proof">
+<p><span id="unlabeled-div-2" class="proof"><em>Proof</em>. </span>Ist das Gleichungssystem <span class="math inline">\(Az=b\)</span> eindeutig lösbar, bekommen wir direkt, dass
+<span class="math display">\[\begin{equation*}
+\begin{split}
+x_{k+1} - z &amp;= x_k - \gamma A^T(Ax_k -b ) - z  \\
+&amp;= x_k - \gamma A^TAx_k -\gamma A^Tb - z \\
+&amp;= (I-\gamma A^TA)x_k -\gamma A^TAz - z \\
+&amp;= (I-\gamma A^TA)(x_k - z)
+\end{split}
+\end{equation*}\]</span>
+Damit ergibt eine Abschätzung in der <span class="math inline">\(2\)</span>-Norm und der induzierten Matrixnorm, dass
+<span class="math display">\[\begin{equation*}
+\|x_{k+1}-z\|_2 \leq \|I-\gamma A^TA\|_2\|x_k-z\|
+\end{equation*}\]</span>
+was lineare Konvergenz mit der Rate <span class="math inline">\(c=\|I-\gamma A^TA\|_2\)</span> bedeutet, wobei <span class="math inline">\(c&lt;1\)</span> gilt nach der getroffenen Voraussetzung, dass <span class="math inline">\(0&lt;\gamma&lt;\frac{2}{\|A^TA\|_2}\)</span>.</p>
+</div>
+<div id="rem-fpconv-iteration-contraction" class="JHSAYS">
+<p>Das Prinzip dieser Beweise ist festzustellen, dass die Verfahrensfunktion in der Nähe des Fixpunkts eine <em>Kontraktion</em> ist, d.h. Lipschitz-stetig mit Konstante <span class="math inline">\(L&lt;1\)</span>.</p>
+</div>
 </div>
 <div id="auxiliary-function-methods" class="section level2 hasAnchor" number="3.2">
 <h2><span class="header-section-number">3.2</span> Auxiliary Function Methods<a href="iterative-methoden.html#auxiliary-function-methods" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -276,6 +306,7 @@ Dieser Algorithmus wird zwar insbesondere nicht verwendet um ein lineares Gleich
 <li><p>Benutzen Sie Satz <a href="iterative-methoden.html#thm:thm-smooth-fp-conv">3.1</a> um zu zeigen, dass aus <span class="math inline">\(f\)</span> zweimal stetig differenzierbar und <span class="math inline">\(f(z)=0\)</span>, <span class="math inline">\(f&#39;(z)\neq 0\)</span> für ein <span class="math inline">\(z\in D(f)\)</span> folgt, dass das Newton-Verfahren quadratisch konvergiert. <em>Hinweis</em>: Hier ist es wichtig zunächst zu verstehen, was die Funktion <span class="math inline">\(f\)</span> ist und was die Verfahrensfunktion <span class="math inline">\(\phi\)</span> ist.</p></li>
 <li><p>Bestimmen sie die Funktion <span class="math inline">\(h\)</span> in <span class="math inline">\(\phi(x) = x+h(x)f(x)\)</span> derart, dass unter den Bedingungen von 2. die Vorschrift <span class="math inline">\(\phi\)</span> einen Fixpunkt in <span class="math inline">\(z\)</span> hat und derart, dass die Iteration quadratisch konvergiert.</p></li>
 <li><p>Erklären Sie an Hand von Satz <a href="iterative-methoden.html#thm:thm-smooth-fp-conv">3.1</a> (und den vorhergegangenen Überlegungen) warum Newton für das Problem <em>finde <span class="math inline">\(x\)</span>, so dass <span class="math inline">\(x^2=0\)</span> ist</em> <strong>nicht</strong> quadratisch (aber doch superlinear) konvergiert.</p></li>
+<li><p>Rechnen Sie nach, dass die Landweber Iteration aus Definition <a href="iterative-methoden.html#def:def-landweber-alg">3.2</a> einem gedämpften Gradientenabstiegsverfahren für <span class="math inline">\(\|Ax-b\|_2^2 \to \min_{x\in \mathbb R^{m}}\)</span> entspricht.</p></li>
 </ol>
 
 </div>

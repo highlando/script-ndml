@@ -692,7 +692,7 @@ Das \emph{genau dann wenn} in Satz \ref{thm:thm-smooth-fp-conv} ist so zu verste
 
 \end{JHSAYS}
 
-Ist die Iterationsvorschrift linear (wie bei der iterativen Lösung linearer Gleichungssysteme), so ist die 1. Ableitung konstant (und gleich der Vorschrift selbst) und alle weiteren Ableitungen sind \(0\). Dementsprechend, können wir
+Ist die Iterationsvorschrift linear (wie bei der iterativen Lösung linearer Gleichungssysteme), so ist die erste Ableitung \(\phi'\) konstant (und gleich der Vorschrift selbst) und alle weiteren Ableitungen sind \(0\). Dementsprechend, können wir
 
 \begin{itemize}
 \tightlist
@@ -701,11 +701,48 @@ Ist die Iterationsvorschrift linear (wie bei der iterativen Lösung linearer Gle
 \item
   (die aber beispielsweise durch dynamische Anpassung von Parametern auf superlinear verbessert werden kann)
 \item
-  dafür aber vergleichsweise direkte Verallgemeinerungen zu merhdimensionalen und sogar \(\infty\)-dimensionalen Problemstellungen
+  dafür aber vergleichsweise direkte Verallgemeinerungen zu mehrdimensionalen und sogar \(\infty\)-dimensionalen Problemstellungen.
 \end{itemize}
 
 Zur Illustration betrachten wir den \emph{Landweber-Algorithmus} zur näherungsweisen Lösung von ``\(Ax=b\)''.
-Dieser Algorithmus wird zwar insbesondere nicht verwendet um ein lineares Gleichungssystem zu lösen, durch die Verbindung zur iterativen Optimierung hat er aber praktische Anwendungen in \emph{compressed sensing} und auch beim \emph{supervised learning} gefunden; vgl. \href{https://en.wikipedia.org/wiki/Landweber_iteration}{wikipedia:Landweber\_iteration}.
+Dieser Algorithmus wird zwar insbesondere nicht verwendet um ein lineares Gleichungssystem zu lösen, durch die Formulierung für möglicherweise überbestimmte Systeme und die Verbindung zur iterativen Optimierung hat er aber praktische Anwendungen in \emph{compressed sensing} und auch beim \emph{supervised learning} gefunden; vgl. \href{https://en.wikipedia.org/wiki/Landweber_iteration}{wikipedia:Landweber\_iteration}.
+
+\begin{definition}[Landweber Iteration]
+\protect\hypertarget{def:def-landweber-alg}{}\label{def:def-landweber-alg}Sei \(A\in \mathbb R^{m\times n}\) und \(b\in \mathbb R^{m}\). Dann ist, ausgehend von einem Startwert \(x_0 \in \mathbb R^{n}\), die \emph{Landweber Iteration} definiert über
+\begin{equation*}
+x_{k+1} = x_k - \gamma A^T(Ax_k -b ),
+\end{equation*}
+wobei der Parameter \(\gamma\) als \(0<\gamma< \frac{2}{\|A\|_2}\) gewählt wird.
+\end{definition}
+
+Zur Illustration der Argumente, die die Konvergenz einer Fixpunktiteration mit linearer Verfahrensfunktion herleiten, zeigen wir die Konvergenz im Spezialfall, dass \(Ax=b\) ein reguläres lineares Gleichungssystem ist.
+
+\begin{theorem}[Konvergenz der Landweber Iteration]
+\protect\hypertarget{thm:thm-lw-conv}{}\label{thm:thm-lw-conv}Unter den Voraussetzungen von Definition \ref{def:def-landweber-alg} und für \(m=n\) und \(A\in \mathbb R^{n\times n}\) regulär, konvergiert die Landweber Iteration linear für einen beliebigen Startwert \(x_0\).
+\end{theorem}
+
+\begin{proof}
+Ist das Gleichungssystem \(Az=b\) eindeutig lösbar, bekommen wir direkt, dass
+\begin{equation*}
+\begin{split}
+x_{k+1} - z &= x_k - \gamma A^T(Ax_k -b ) - z  \\
+&= x_k - \gamma A^TAx_k -\gamma A^Tb - z \\
+&= (I-\gamma A^TA)x_k -\gamma A^TAz - z \\
+&= (I-\gamma A^TA)(x_k - z)
+\end{split}
+\end{equation*}
+Damit ergibt eine Abschätzung in der \(2\)-Norm und der induzierten Matrixnorm, dass
+\begin{equation*}
+\|x_{k+1}-z\|_2 \leq \|I-\gamma A^TA\|_2\|x_k-z\|
+\end{equation*}
+was lineare Konvergenz mit der Rate \(c=\|I-\gamma A^TA\|_2\) bedeutet, wobei \(c<1\) gilt nach der getroffenen Voraussetzung, dass \(0<\gamma<\frac{2}{\|A^TA\|_2}\).
+\end{proof}
+
+\leavevmode\hypertarget{rem-fpconv-iteration-contraction}{}%
+\begin{JHSAYS}
+Das Prinzip dieser Beweise ist festzustellen, dass die Verfahrensfunktion in der Nähe des Fixpunkts eine \emph{Kontraktion} ist, d.h. Lipschitz-stetig mit Konstante \(L<1\).
+
+\end{JHSAYS}
 
 \hypertarget{auxiliary-function-methods}{%
 \section{Auxiliary Function Methods}\label{auxiliary-function-methods}}
@@ -733,6 +770,8 @@ Dieser Algorithmus wird zwar insbesondere nicht verwendet um ein lineares Gleich
   Bestimmen sie die Funktion \(h\) in \(\phi(x) = x+h(x)f(x)\) derart, dass unter den Bedingungen von 2. die Vorschrift \(\phi\) einen Fixpunkt in \(z\) hat und derart, dass die Iteration quadratisch konvergiert.
 \item
   Erklären Sie an Hand von Satz \ref{thm:thm-smooth-fp-conv} (und den vorhergegangenen Überlegungen) warum Newton für das Problem \emph{finde \(x\), so dass \(x^2=0\) ist} \textbf{nicht} quadratisch (aber doch superlinear) konvergiert.
+\item
+  Rechnen Sie nach, dass die Landweber Iteration aus Definition \ref{def:def-landweber-alg} einem gedämpften Gradientenabstiegsverfahren für \(\|Ax-b\|_2^2 \to \min_{x\in \mathbb R^{m}}\) entspricht.
 \end{enumerate}
 
 \hypertarget{nachklapp}{%

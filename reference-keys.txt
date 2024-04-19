@@ -9,6 +9,8 @@ def:condition
 def:iterative-convergence
 eq:eqn-iterative-cnvrgnc
 thm:thm-smooth-fp-conv
+def:def-landweber-alg
+thm:thm-lw-conv
 einführung
 was-ist-ein-algorithmus
 konsistenz-stabilität-genauigkeit
