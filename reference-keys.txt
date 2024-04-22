@@ -11,6 +11,9 @@ eq:eqn-iterative-cnvrgnc
 thm:thm-smooth-fp-conv
 def:def-landweber-alg
 thm:thm-lw-conv
+def:def-grad-descent
+eq:eqn-grad-desc
+lem:lem-graddesc-as-fp
 einführung
 was-ist-ein-algorithmus
 konsistenz-stabilität-genauigkeit

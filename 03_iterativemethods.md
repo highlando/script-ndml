@@ -129,14 +129,52 @@ Das Prinzip dieser Beweise ist festzustellen, dass die Verfahrensfunktion in der
 
 ## Gradientenabstiegsverfahren
 
+Anstelle der Nullstellensuche behandeln wir jetzt die Aufgabe
+\begin{equation*}
+g(x) \to \min_{x\in \mathbb R^{n}}
+\end{equation*}
+f&uuml;r eine Funktion $g\colon \mathbb R^{n} \to \mathbb R^{}$, also die Aufgabe ein $x^*\in \mathbb R^{n}$ zu finden, f&uuml;r welches der Wert von $g$ minimal wird.
+
+::: {#rem-why-g .JHSAYS data-latex=''}
+Es wird gleich wieder darum gehen, eine Nullstelle zu finden (n&auml;mlich die des Gradienten von $g$). Um uns eine beliebte Schwierigkeit zu ersparen (beziehungsweise den Gedankenschritt, dass die Nullstelle nicht f&uuml;r $f$ sondern f&uuml;r $\nabla f$ gesucht wird), nennen wir die Funktion hier lieber $g$.
+:::
+
+Ist $g$ differenzierbar (der Einfachheit halber nehmen wir an, dass *totale* Differenzierbarkeit vorliegt; es w&uuml;rde aber Differenzierbarkeit in einer beliebigen Richtung, also *Gateaux*-Differenzierbarkeit, gen&uuml;gen), so gilt, dass in einem Punkt $x_0$, der Gradient $\nabla g(x_0)$ (ein Vektor im $\mathbb R^{n}$) in die Richtung des st&auml;rksten Wachstums zeigt und der negative Gradient $-\nabla g(x_0)$ in die Richtung, in der $g$ kleiner wird. 
+
+Auf der Suche nach einem Minimum k&ouml;nnten wir also ausnutzen, dass 
+\begin{equation*}
+g(x_0 - \gamma_0 \nabla g(x_0)):=g(x_1)   < g(x_0)
+\end{equation*}
+falls $\gamma_0$ nur gen&uuml;gend klein ist und $\nabla g(x_0) \neq 0$.
+
+::: {#rem-gamma-zerograd .JHSAYS data-latex=''}
+Was ist wenn $\nabla g(x_0) = 0$ ist und warum gibt es andernfalls so ein $\gamma_0$ und wie k&ouml;nnten wir es systematisch bestimmen?
+:::
+
+Diese Beobachtung am n&auml;chsten Punkt $x_1$ wiederholt, f&uuml;hrt auf des *Gradientenabstiegsverfahren*.
+
+::: {.definition #def-grad-descent name="Gradientenabstiegsverfahren"}
+Sei $g\colon \mathbb R^{n} \to \mathbb R^{}$ differenzierbar, dann hei&szlig;t die Iteration
+\begin{equation}
+x_{k+1} := x_k - \gamma_k\nabla g(x_k)
+(\#eq:eqn-grad-desc)
+\end{equation}
+f&uuml;r passend gew&auml;hlte $\gamma_k>0$, das
+Gradientenabstiegsverfahren zur Berechnung eines Minimums von $g$.
+:::
+
+::: {.lemma #lem-graddesc-as-fp name="Gradientenabstieg als konvergente Fixpunkt Iteration"}
+Sei $D\subset \mathbb R^{n}$ offen und der Definitionsbereich von $g$, ist $x^*\in D$ ein Minimum von $g$ und ist $\nabla g\colon D \to \mathbb R^{n}$ *Lipschitz-stetig* mit Konstante $L$, dann definiert \@ref(eq:eqn-grad-desc) mit $\gamma_k \equiv \frac L2$ eine konvergente Fixpunktiteration f&uuml;r $\phi(x) = x-\gamma \nabla g(x)$ mit $x^*$ als Fixpunkt.
+:::
+
+::: {.proof}
+Einigerma&szlig;en direkt nachzuweisen.
+:::
+
 ## Stochastisches Gradientenabstiegsverfahren
 
 ## Auxiliary Function Methods
-
- * Optimization
- * Gradient Descent
- * LGS
-
+ 
 ## &Uuml;bungen
 
 1. Bestimmen Sie die Konvergenzordnung und die Rate f&uuml;r das Bisektionsverfahren zur Nullstellenberechnung.
@@ -147,6 +185,6 @@ Das Prinzip dieser Beweise ist festzustellen, dass die Verfahrensfunktion in der
 
 4. Erkl&auml;ren Sie an Hand von Satz \@ref(thm:thm-smooth-fp-conv) (und den vorhergegangenen &Uuml;berlegungen) warum Newton f&uuml;r das Problem *finde $x$, so dass $x^2=0$ ist* **nicht** quadratisch (aber doch superlinear) konvergiert.
 
-5. Beweisen Sie, dass f&uuml;r $0<\gamma< \frac{2}{\|A\|_2}$ gilt, dass$\|I-\gamma A^TA\|<1$ f&uuml;r beliebige $A\in \mathbb R^{m \times n}$. 
+5. Beweisen Sie, dass f&uuml;r $0<\gamma< \frac{2}{\|A^TA\|_2}$ gilt, dass$\|I-\gamma A^TA\|<1$ f&uuml;r beliebige $A\in \mathbb R^{m \times n}$. 
 
 6. Rechnen Sie nach, dass die Landweber Iteration aus Definition \@ref(def:def-landweber-alg) einem ged&auml;mpften Gradientenabstiegsverfahren f&uuml;r $\|Ax-b\|_2^2 \to \min_{x\in \mathbb R^{m}}$ entspricht.
