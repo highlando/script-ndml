@@ -22,3 +22,4 @@ imap kk \
 
 imap ,le (\#eq:eqn-)
 imap ,re \@ref(eq:eqn-)
+imap ,def ::: {.definition #def- name="woe"}<CR>:::<esc>
