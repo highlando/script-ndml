@@ -4,4 +4,4 @@
 Rscript -e 'bookdown::render_book("index.Rmd", "bookdown::pdf_book", quiet=FALSE)'
 Rscript -e 'bookdown::render_book("index.Rmd", "bookdown::gitbook", quiet=FALSE)'
 
-cp docs/NdML.pdf /home/heiland/clouds/nc-tui/Teaching/Numerik2-dML/
+cp docs/NdML.pdf /home/heiland/clouds/nc-tui/teaching/24-ndml/
