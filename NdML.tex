@@ -678,12 +678,12 @@ Für höhere Konvergenzordnungen wird diese Beobachtung im folgenden Satz verall
 \begin{theorem}[Konvergenz höherer Ordnung bei glatter Fixpunktiteration]
 \protect\hypertarget{thm:thm-smooth-fp-conv}{}\label{thm:thm-smooth-fp-conv}Sei \(g\colon D\subset \mathbb R^{}\to \mathbb R^{}\) \(p\)-mal stetig differenzierbar, sei \(z\in D\) ein Fixpunkt von \(g\). Dann konvergiert die Fixpunktiteration \(x_{k+1}=g(x_k)\) \emph{lokal} mit Ordnung \(p\), genau dann wenn
 \begin{equation*}
-g(z)=g'(z)=\dotsm g^{(p-1)}(z)=0, \quad g^{(p)}\neq 0.
+g'(z)=\dotsm g^{(p-1)}(z)=0, \quad g^{(p)}\neq 0.
 \end{equation*}
 \end{theorem}
 
 \begin{proof}
-Siehe (Richter and Wick \protect\hyperlink{ref-RicW17}{2017}, Thm. 6.33)
+Siehe (Richter and Wick \protect\hyperlink{ref-RicW17}{2017}, Thm. 6.31)
 \end{proof}
 
 \leavevmode\hypertarget{rem-smooth-fp-conv}{}%
@@ -735,7 +735,7 @@ Damit ergibt eine Abschätzung in der \(2\)-Norm und der induzierten Matrixnorm,
 \begin{equation*}
 \|x_{k+1}-z\|_2 \leq \|I-\gamma A^TA\|_2\|x_k-z\|_2
 \end{equation*}
-gile, was lineare Konvergenz mit der Rate \(c=\|I-\gamma A^TA\|_2\) bedeutet, wobei \(c<1\) gilt nach der getroffenen Voraussetzung, dass \(0<\gamma<\frac{2}{\|A^TA\|_2}\) ist.
+gilt, was lineare Konvergenz mit der Rate \(c=\|I-\gamma A^TA\|_2\) bedeutet, wobei \(c<1\) gilt nach der getroffenen Voraussetzung, dass \(0<\gamma<\frac{2}{\|A^TA\|_2}\) ist.
 \end{proof}
 
 \leavevmode\hypertarget{rem-fpconv-iteration-contraction}{}%
@@ -813,7 +813,7 @@ Einigermaßen direkt nachzuweisen.
 \item
   Erklären Sie an Hand von Satz \ref{thm:thm-smooth-fp-conv} (und den vorhergegangenen Überlegungen) warum Newton für das Problem \emph{finde \(x\), so dass \(x^2=0\) ist} \textbf{nicht} quadratisch (aber doch superlinear) konvergiert.
 \item
-  Beweisen Sie, dass für \(0<\gamma< \frac{2}{\|A^TA\|_2}\) gilt, dass\(\|I-\gamma A^TA\|<1\) für beliebige \(A\in \mathbb R^{m \times n}\).
+  Beweisen Sie, dass für \(0<\gamma< \frac{2}{\|A^TA\|_2}\) gilt, dass\(\|I-\gamma A^TA\|_2<1\) für beliebige \(A\in \mathbb R^{m \times n}\).
 \item
   Rechnen Sie nach, dass die Landweber Iteration aus Definition \ref{def:def-landweber-alg} einem gedämpften Gradientenabstiegsverfahren für \(\|Ax-b\|_2^2 \to \min_{x\in \mathbb R^{m}}\) entspricht.
 \end{enumerate}

@@ -71,12 +71,12 @@ F&uuml;r h&ouml;here Konvergenzordnungen wird diese Beobachtung im folgenden Sat
 ::: {.theorem #thm-smooth-fp-conv name="Konvergenz h&ouml;herer Ordnung bei glatter Fixpunktiteration"}
 Sei $g\colon D\subset \mathbb R^{}\to \mathbb R^{}$ $p$-mal stetig differenzierbar, sei $z\in D$ ein Fixpunkt von $g$. Dann  konvergiert die Fixpunktiteration $x_{k+1}=g(x_k)$ *lokal* mit Ordnung $p$, genau dann wenn
 \begin{equation*}
-g(z)=g'(z)=\dotsm g^{(p-1)}(z)=0, \quad g^{(p)}\neq 0.
+g'(z)=\dotsm g^{(p-1)}(z)=0, \quad g^{(p)}\neq 0.
 \end{equation*}
 :::
 
 ::: {.proof}
-Siehe [@RicW17, Thm. 6.33]
+Siehe [@RicW17, Thm. 6.31]
 :::
 
 ::: {#rem-smooth-fp-conv .JHSAYS data-latex=''}
@@ -120,7 +120,7 @@ Damit ergibt eine Absch&auml;tzung in der $2$-Norm und der induzierten Matrixnor
 \begin{equation*}
 \|x_{k+1}-z\|_2 \leq \|I-\gamma A^TA\|_2\|x_k-z\|_2
 \end{equation*}
-gile, was lineare Konvergenz mit der Rate $c=\|I-\gamma A^TA\|_2$ bedeutet, wobei $c<1$ gilt nach der getroffenen Voraussetzung, dass $0<\gamma<\frac{2}{\|A^TA\|_2}$ ist.
+gilt, was lineare Konvergenz mit der Rate $c=\|I-\gamma A^TA\|_2$ bedeutet, wobei $c<1$ gilt nach der getroffenen Voraussetzung, dass $0<\gamma<\frac{2}{\|A^TA\|_2}$ ist.
 :::
 
 ::: {#rem-fpconv-iteration-contraction .JHSAYS data-latex=''}
@@ -185,6 +185,6 @@ Einigerma&szlig;en direkt nachzuweisen.
 
 4. Erkl&auml;ren Sie an Hand von Satz \@ref(thm:thm-smooth-fp-conv) (und den vorhergegangenen &Uuml;berlegungen) warum Newton f&uuml;r das Problem *finde $x$, so dass $x^2=0$ ist* **nicht** quadratisch (aber doch superlinear) konvergiert.
 
-5. Beweisen Sie, dass f&uuml;r $0<\gamma< \frac{2}{\|A^TA\|_2}$ gilt, dass$\|I-\gamma A^TA\|<1$ f&uuml;r beliebige $A\in \mathbb R^{m \times n}$. 
+5. Beweisen Sie, dass f&uuml;r $0<\gamma< \frac{2}{\|A^TA\|_2}$ gilt, dass$\|I-\gamma A^TA\|_2<1$ f&uuml;r beliebige $A\in \mathbb R^{m \times n}$. 
 
 6. Rechnen Sie nach, dass die Landweber Iteration aus Definition \@ref(def:def-landweber-alg) einem ged&auml;mpften Gradientenabstiegsverfahren f&uuml;r $\|Ax-b\|_2^2 \to \min_{x\in \mathbb R^{m}}$ entspricht.
