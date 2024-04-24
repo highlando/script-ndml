@@ -177,7 +177,7 @@ Einigerma&szlig;en direkt nachzuweisen.
  
 ## &Uuml;bungen
 
-1. Bestimmen Sie die Konvergenzordnung und die Rate f&uuml;r das Bisektionsverfahren zur Nullstellenberechnung.
+1. Bestimmen Sie die Konvergenzordnung und die Rate f&uuml;r das Intervallschachtelungsverfahren zur Nullstellenberechnung.
 
 2. Benutzen Sie Satz \@ref(thm:thm-smooth-fp-conv) um zu zeigen, dass aus $f$ zweimal stetig differenzierbar und $f(z)=0$, $f'(z)\neq 0$ f&uuml;r ein $z\in D(f)$ folgt, dass das Newton-Verfahren zur Berechnung von $z$ lokal quadratisch konvergiert. *Hinweis*: Hier ist es wichtig zun&auml;chst zu verstehen, was die Funktion $f$ ist und was die Verfahrensfunktion $\phi$ ist.
 
