@@ -120,7 +120,7 @@ Damit ergibt eine Absch&auml;tzung in der $2$-Norm und der induzierten Matrixnor
 \begin{equation*}
 \|x_{k+1}-z\|_2 \leq \|I-\gamma A^TA\|_2\|x_k-z\|_2
 \end{equation*}
-gile, was lineare Konvergenz mit der Rate $c=\|I-\gamma A^TA\|_2$ bedeutet, wobei $c<1$ gilt nach der getroffenen Voraussetzung, dass $0<\gamma<\frac{2}{\|A^TA\|_2}$ ist.
+gilt, was lineare Konvergenz mit der Rate $c=\|I-\gamma A^TA\|_2$ bedeutet, wobei $c<1$ gilt nach der getroffenen Voraussetzung, dass $0<\gamma<\frac{2}{\|A^TA\|_2}$ ist.
 :::
 
 ::: {#rem-fpconv-iteration-contraction .JHSAYS data-latex=''}
