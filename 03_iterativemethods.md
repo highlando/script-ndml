@@ -131,44 +131,50 @@ Das Prinzip dieser Beweise ist festzustellen, dass die Verfahrensfunktion in der
 
 Anstelle der Nullstellensuche behandeln wir jetzt die Aufgabe
 \begin{equation*}
-g(x) \to \min_{x\in \mathbb R^{n}}
+f(x) \to \min_{x\in \mathbb R^{n}}
 \end{equation*}
-f&uuml;r eine Funktion $g\colon \mathbb R^{n} \to \mathbb R^{}$, also die Aufgabe ein $x^*\in \mathbb R^{n}$ zu finden, f&uuml;r welches der Wert von $g$ minimal wird.
+f&uuml;r eine Funktion $f\colon \mathbb R^{n} \to \mathbb R^{}$, also die Aufgabe ein $x^*\in \mathbb R^{n}$ zu finden, f&uuml;r welches der Wert von $f$ minimal wird.
 
-::: {#rem-why-g .JHSAYS data-latex=''}
-Es wird gleich wieder darum gehen, eine Nullstelle zu finden (n&auml;mlich die des Gradienten von $g$). Um uns eine beliebte Schwierigkeit zu ersparen (beziehungsweise den Gedankenschritt, dass die Nullstelle nicht f&uuml;r $f$ sondern f&uuml;r $\nabla f$ gesucht wird), nennen wir die Funktion hier lieber $g$.
-:::
-
-Ist $g$ differenzierbar (der Einfachheit halber nehmen wir an, dass *totale* Differenzierbarkeit vorliegt; es w&uuml;rde aber Differenzierbarkeit in einer beliebigen Richtung, also *Gateaux*-Differenzierbarkeit, gen&uuml;gen), so gilt, dass in einem Punkt $x_0$, der Gradient $\nabla g(x_0)$ (ein Vektor im $\mathbb R^{n}$) in die Richtung des st&auml;rksten Wachstums zeigt und der negative Gradient $-\nabla g(x_0)$ in die Richtung, in der $g$ kleiner wird. 
+Ist $f$ differenzierbar (der Einfachheit halber nehmen wir an, dass *totale* Differenzierbarkeit vorliegt; es w&uuml;rde aber Differenzierbarkeit in einer beliebigen Richtung, also *Gateaux*-Differenzierbarkeit, gen&uuml;gen), so gilt, dass in einem Punkt $x_0$, der Gradient $\nabla f(x_0)$ (ein Vektor im $\mathbb R^{n}$) in die Richtung des st&auml;rksten Wachstums zeigt und der negative Gradient $-\nabla f(x_0)$ in die Richtung, in der $f$ kleiner wird. 
 
 Auf der Suche nach einem Minimum k&ouml;nnten wir also ausnutzen, dass 
 \begin{equation*}
-g(x_0 - \gamma_0 \nabla g(x_0)):=g(x_1)   < g(x_0)
+f(x_0 - \gamma_0 \nabla f(x_0)):=f(x_1)   < f(x_0)
 \end{equation*}
-falls $\gamma_0$ nur gen&uuml;gend klein ist und $\nabla g(x_0) \neq 0$.
+falls $\gamma_0$ nur gen&uuml;gend klein ist und $\nabla f(x_0) \neq 0$.
 
 ::: {#rem-gamma-zerograd .JHSAYS data-latex=''}
-Was ist wenn $\nabla g(x_0) = 0$ ist und warum gibt es andernfalls so ein $\gamma_0$ und wie k&ouml;nnten wir es systematisch bestimmen?
+Was ist wenn $\nabla f(x_0) = 0$ ist und warum gibt es andernfalls so ein $\gamma_0$ und wie k&ouml;nnten wir es systematisch bestimmen?
 :::
 
 Diese Beobachtung am n&auml;chsten Punkt $x_1$ wiederholt, f&uuml;hrt auf des *Gradientenabstiegsverfahren*.
 
 ::: {.definition #def-grad-descent name="Gradientenabstiegsverfahren"}
-Sei $g\colon \mathbb R^{n} \to \mathbb R^{}$ differenzierbar, dann hei&szlig;t die Iteration
+Sei $f\colon \mathbb R^{n} \to \mathbb R^{}$ differenzierbar, dann hei&szlig;t die Iteration
 \begin{equation}
-x_{k+1} := x_k - \gamma_k\nabla g(x_k)
+x_{k+1} := x_k - \gamma_k\nabla f(x_k)
 (\#eq:eqn-grad-desc)
 \end{equation}
 f&uuml;r passend gew&auml;hlte $\gamma_k>0$, das
-Gradientenabstiegsverfahren zur Berechnung eines Minimums von $g$.
+Gradientenabstiegsverfahren zur Berechnung eines Minimums von $f$.
 :::
 
 ::: {.lemma #lem-graddesc-as-fp name="Gradientenabstieg als konvergente Fixpunkt Iteration"}
-Sei $D\subset \mathbb R^{n}$ offen und der Definitionsbereich von $g$, ist $x^*\in D$ ein Minimum von $g$ und ist $\nabla g\colon D \to \mathbb R^{n}$ *Lipschitz-stetig* mit Konstante $L$, dann definiert \@ref(eq:eqn-grad-desc) mit $\gamma_k \equiv \frac L2$ eine konvergente Fixpunktiteration f&uuml;r $\phi(x) = x-\gamma \nabla g(x)$ mit $x^*$ als Fixpunkt.
+Sei $D\subset \mathbb R^{n}$ offen und der Definitionsbereich von $f$. Ist $x^*\in D$ ein Minimum von $f$ und ist $\nabla f\colon D \to \mathbb R^{n}$ *Lipschitz-stetig* mit Konstante $L$, dann definiert \@ref(eq:eqn-grad-desc) mit $\gamma_k \equiv \frac L2$ eine konvergente Fixpunktiteration f&uuml;r $\phi(x) = x-\gamma \nabla f(x)$ mit $x^*$ als Fixpunkt und entsprechend $\nabla f(x^*)=0$.
 :::
 
 ::: {.proof}
 Einigerma&szlig;en direkt nachzuweisen.
+:::
+
+Die vorhergegangenen &Uuml;berlegungen gingen von $x^*$ innerhalb eines offenen Definitionsbereichs $D$ von $f$ aus, wo ein Minimum durch $\nabla f(x^*)$ und $f(x^*)\leq f(x)$ f&uuml;r alle $x$ aus einer Umgebung von $x^*$. 
+Ein typischer Anwendungsfall ist, dass $x^*$ in einem zul&auml;ssigen Bereich $C$ liegen muss, der eine echte Teilmenge von $D$ ist. 
+Dann besteht die M&ouml;glichkeit, dass ein (lokales) Minimum am Rand des Bereichs $C$ vorliegt (wo die Funktion $f$ zwar weiter f&auml;llt, aber "das Ende" der Zul&auml;ssigkeit erreicht ist).
+
+Ist $C\subset \mathbb R^{n}$ konvex und abgeschlossen, so gilt folgendes allgemeine Resultat (dessen Argumente und Voraussetzungen auch leicht auf beispielsweise Funktionen auf allgemeinen Hilbertr&auml;umen oder Mengen die nur lokal konvex sind angepasst werden k&ouml;nnen).
+
+::: {.theorem #thm-prj-grad-desc name="Projiziertes Gradientenabstiegsverfahren"}
+bla
 :::
 
 ## Stochastisches Gradientenabstiegsverfahren

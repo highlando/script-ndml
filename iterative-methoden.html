@@ -297,36 +297,40 @@ gilt, was lineare Konvergenz mit der Rate <span class="math inline">\(c=\|I-\gam
 <h2><span class="header-section-number">3.2</span> Gradientenabstiegsverfahren<a href="iterative-methoden.html#gradientenabstiegsverfahren" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Anstelle der Nullstellensuche behandeln wir jetzt die Aufgabe
 <span class="math display">\[\begin{equation*}
-g(x) \to \min_{x\in \mathbb R^{n}}
+f(x) \to \min_{x\in \mathbb R^{n}}
 \end{equation*}\]</span>
-für eine Funktion <span class="math inline">\(g\colon \mathbb R^{n} \to \mathbb R^{}\)</span>, also die Aufgabe ein <span class="math inline">\(x^*\in \mathbb R^{n}\)</span> zu finden, für welches der Wert von <span class="math inline">\(g\)</span> minimal wird.</p>
-<div id="rem-why-g" class="JHSAYS">
-<p>Es wird gleich wieder darum gehen, eine Nullstelle zu finden (nämlich die des Gradienten von <span class="math inline">\(g\)</span>). Um uns eine beliebte Schwierigkeit zu ersparen (beziehungsweise den Gedankenschritt, dass die Nullstelle nicht für <span class="math inline">\(f\)</span> sondern für <span class="math inline">\(\nabla f\)</span> gesucht wird), nennen wir die Funktion hier lieber <span class="math inline">\(g\)</span>.</p>
-</div>
-<p>Ist <span class="math inline">\(g\)</span> differenzierbar (der Einfachheit halber nehmen wir an, dass <em>totale</em> Differenzierbarkeit vorliegt; es würde aber Differenzierbarkeit in einer beliebigen Richtung, also <em>Gateaux</em>-Differenzierbarkeit, genügen), so gilt, dass in einem Punkt <span class="math inline">\(x_0\)</span>, der Gradient <span class="math inline">\(\nabla g(x_0)\)</span> (ein Vektor im <span class="math inline">\(\mathbb R^{n}\)</span>) in die Richtung des stärksten Wachstums zeigt und der negative Gradient <span class="math inline">\(-\nabla g(x_0)\)</span> in die Richtung, in der <span class="math inline">\(g\)</span> kleiner wird.</p>
+für eine Funktion <span class="math inline">\(f\colon \mathbb R^{n} \to \mathbb R^{}\)</span>, also die Aufgabe ein <span class="math inline">\(x^*\in \mathbb R^{n}\)</span> zu finden, für welches der Wert von <span class="math inline">\(f\)</span> minimal wird.</p>
+<p>Ist <span class="math inline">\(f\)</span> differenzierbar (der Einfachheit halber nehmen wir an, dass <em>totale</em> Differenzierbarkeit vorliegt; es würde aber Differenzierbarkeit in einer beliebigen Richtung, also <em>Gateaux</em>-Differenzierbarkeit, genügen), so gilt, dass in einem Punkt <span class="math inline">\(x_0\)</span>, der Gradient <span class="math inline">\(\nabla f(x_0)\)</span> (ein Vektor im <span class="math inline">\(\mathbb R^{n}\)</span>) in die Richtung des stärksten Wachstums zeigt und der negative Gradient <span class="math inline">\(-\nabla f(x_0)\)</span> in die Richtung, in der <span class="math inline">\(f\)</span> kleiner wird.</p>
 <p>Auf der Suche nach einem Minimum könnten wir also ausnutzen, dass
 <span class="math display">\[\begin{equation*}
-g(x_0 - \gamma_0 \nabla g(x_0)):=g(x_1)   &lt; g(x_0)
+f(x_0 - \gamma_0 \nabla f(x_0)):=f(x_1)   &lt; f(x_0)
 \end{equation*}\]</span>
-falls <span class="math inline">\(\gamma_0\)</span> nur genügend klein ist und <span class="math inline">\(\nabla g(x_0) \neq 0\)</span>.</p>
+falls <span class="math inline">\(\gamma_0\)</span> nur genügend klein ist und <span class="math inline">\(\nabla f(x_0) \neq 0\)</span>.</p>
 <div id="rem-gamma-zerograd" class="JHSAYS">
-<p>Was ist wenn <span class="math inline">\(\nabla g(x_0) = 0\)</span> ist und warum gibt es andernfalls so ein <span class="math inline">\(\gamma_0\)</span> und wie könnten wir es systematisch bestimmen?</p>
+<p>Was ist wenn <span class="math inline">\(\nabla f(x_0) = 0\)</span> ist und warum gibt es andernfalls so ein <span class="math inline">\(\gamma_0\)</span> und wie könnten wir es systematisch bestimmen?</p>
 </div>
 <p>Diese Beobachtung am nächsten Punkt <span class="math inline">\(x_1\)</span> wiederholt, führt auf des <em>Gradientenabstiegsverfahren</em>.</p>
 <div class="definition">
-<p><span id="def:def-grad-descent" class="definition"><strong>Definition 3.3  (Gradientenabstiegsverfahren) </strong></span>Sei <span class="math inline">\(g\colon \mathbb R^{n} \to \mathbb R^{}\)</span> differenzierbar, dann heißt die Iteration
+<p><span id="def:def-grad-descent" class="definition"><strong>Definition 3.3  (Gradientenabstiegsverfahren) </strong></span>Sei <span class="math inline">\(f\colon \mathbb R^{n} \to \mathbb R^{}\)</span> differenzierbar, dann heißt die Iteration
 <span class="math display" id="eq:eqn-grad-desc">\[\begin{equation}
-x_{k+1} := x_k - \gamma_k\nabla g(x_k)
+x_{k+1} := x_k - \gamma_k\nabla f(x_k)
 \tag{3.2}
 \end{equation}\]</span>
 für passend gewählte <span class="math inline">\(\gamma_k&gt;0\)</span>, das
-Gradientenabstiegsverfahren zur Berechnung eines Minimums von <span class="math inline">\(g\)</span>.</p>
+Gradientenabstiegsverfahren zur Berechnung eines Minimums von <span class="math inline">\(f\)</span>.</p>
 </div>
 <div class="lemma">
-<p><span id="lem:lem-graddesc-as-fp" class="lemma"><strong>Lemma 3.1  (Gradientenabstieg als konvergente Fixpunkt Iteration) </strong></span>Sei <span class="math inline">\(D\subset \mathbb R^{n}\)</span> offen und der Definitionsbereich von <span class="math inline">\(g\)</span>, ist <span class="math inline">\(x^*\in D\)</span> ein Minimum von <span class="math inline">\(g\)</span> und ist <span class="math inline">\(\nabla g\colon D \to \mathbb R^{n}\)</span> <em>Lipschitz-stetig</em> mit Konstante <span class="math inline">\(L\)</span>, dann definiert <a href="iterative-methoden.html#eq:eqn-grad-desc">(3.2)</a> mit <span class="math inline">\(\gamma_k \equiv \frac L2\)</span> eine konvergente Fixpunktiteration für <span class="math inline">\(\phi(x) = x-\gamma \nabla g(x)\)</span> mit <span class="math inline">\(x^*\)</span> als Fixpunkt.</p>
+<p><span id="lem:lem-graddesc-as-fp" class="lemma"><strong>Lemma 3.1  (Gradientenabstieg als konvergente Fixpunkt Iteration) </strong></span>Sei <span class="math inline">\(D\subset \mathbb R^{n}\)</span> offen und der Definitionsbereich von <span class="math inline">\(f\)</span>. Ist <span class="math inline">\(x^*\in D\)</span> ein Minimum von <span class="math inline">\(f\)</span> und ist <span class="math inline">\(\nabla f\colon D \to \mathbb R^{n}\)</span> <em>Lipschitz-stetig</em> mit Konstante <span class="math inline">\(L\)</span>, dann definiert <a href="iterative-methoden.html#eq:eqn-grad-desc">(3.2)</a> mit <span class="math inline">\(\gamma_k \equiv \frac L2\)</span> eine konvergente Fixpunktiteration für <span class="math inline">\(\phi(x) = x-\gamma \nabla f(x)\)</span> mit <span class="math inline">\(x^*\)</span> als Fixpunkt und entsprechend <span class="math inline">\(\nabla f(x^*)=0\)</span>.</p>
 </div>
 <div class="proof">
 <p><span id="unlabeled-div-3" class="proof"><em>Proof</em>. </span>Einigermaßen direkt nachzuweisen.</p>
+</div>
+<p>Die vorhergegangenen Überlegungen gingen von <span class="math inline">\(x^*\)</span> innerhalb eines offenen Definitionsbereichs <span class="math inline">\(D\)</span> von <span class="math inline">\(f\)</span> aus, wo ein Minimum durch <span class="math inline">\(\nabla f(x^*)\)</span> und <span class="math inline">\(f(x^*)\leq f(x)\)</span> für alle <span class="math inline">\(x\)</span> aus einer Umgebung von <span class="math inline">\(x^*\)</span>.
+Ein typischer Anwendungsfall ist, dass <span class="math inline">\(x^*\)</span> in einem zulässigen Bereich <span class="math inline">\(C\)</span> liegen muss, der eine echte Teilmenge von <span class="math inline">\(D\)</span> ist.
+Dann besteht die Möglichkeit, dass ein (lokales) Minimum am Rand des Bereichs <span class="math inline">\(C\)</span> vorliegt (wo die Funktion <span class="math inline">\(f\)</span> zwar weiter fällt, aber “das Ende” der Zulässigkeit erreicht ist).</p>
+<p>Ist <span class="math inline">\(C\subset \mathbb R^{n}\)</span> konvex und abgeschlossen, so gilt folgendes allgemeine Resultat (dessen Argumente und Voraussetzungen auch leicht auf beispielsweise Funktionen auf allgemeinen Hilberträumen oder Mengen die nur lokal konvex sind angepasst werden können).</p>
+<div class="theorem">
+<p><span id="thm:thm-prj-grad-desc" class="theorem"><strong>Theorem 3.3  (Projiziertes Gradientenabstiegsverfahren) </strong></span>bla</p>
 </div>
 </div>
 <div id="stochastisches-gradientenabstiegsverfahren" class="section level2 hasAnchor" number="3.3">
