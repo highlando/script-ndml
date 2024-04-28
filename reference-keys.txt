@@ -15,6 +15,11 @@ def:def-grad-descent
 eq:eqn-grad-desc
 lem:lem-graddesc-as-fp
 thm:thm-prj-grad-desc
+eq:eqn-prj-grad-desc
+eq:eqn-exa-cnstrnt-optiprob
+eq:eqn-exa-relaxed-optiprob
+eq:eqn-gen-af-method
+eq:eqn-min-barrier
 einführung
 was-ist-ein-algorithmus
 konsistenz-stabilität-genauigkeit
@@ -32,7 +37,7 @@ wurzelziehen
 iterative-methoden
 iterative-methoden-als-fixpunktiteration
 gradientenabstiegsverfahren
-stochastisches-gradientenabstiegsverfahren
 auxiliary-function-methods
+stochastisches-gradientenabstiegsverfahren
 übungen-2
 nachklapp

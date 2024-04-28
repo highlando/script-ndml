@@ -159,8 +159,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="3.1" data-path="iterative-methoden.html"><a href="iterative-methoden.html#iterative-methoden-als-fixpunktiteration"><i class="fa fa-check"></i><b>3.1</b> Iterative Methoden als Fixpunktiteration</a></li>
 <li class="chapter" data-level="3.2" data-path="iterative-methoden.html"><a href="iterative-methoden.html#gradientenabstiegsverfahren"><i class="fa fa-check"></i><b>3.2</b> Gradientenabstiegsverfahren</a></li>
-<li class="chapter" data-level="3.3" data-path="iterative-methoden.html"><a href="iterative-methoden.html#stochastisches-gradientenabstiegsverfahren"><i class="fa fa-check"></i><b>3.3</b> Stochastisches Gradientenabstiegsverfahren</a></li>
-<li class="chapter" data-level="3.4" data-path="iterative-methoden.html"><a href="iterative-methoden.html#auxiliary-function-methods"><i class="fa fa-check"></i><b>3.4</b> Auxiliary Function Methods</a></li>
+<li class="chapter" data-level="3.3" data-path="iterative-methoden.html"><a href="iterative-methoden.html#auxiliary-function-methods"><i class="fa fa-check"></i><b>3.3</b> Auxiliary Function Methods</a></li>
+<li class="chapter" data-level="3.4" data-path="iterative-methoden.html"><a href="iterative-methoden.html#stochastisches-gradientenabstiegsverfahren"><i class="fa fa-check"></i><b>3.4</b> Stochastisches Gradientenabstiegsverfahren</a></li>
 <li class="chapter" data-level="3.5" data-path="iterative-methoden.html"><a href="iterative-methoden.html#übungen-2"><i class="fa fa-check"></i><b>3.5</b> Übungen</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="nachklapp.html"><a href="nachklapp.html"><i class="fa fa-check"></i><b>4</b> Nachklapp</a></li>
@@ -299,7 +299,7 @@ gilt, was lineare Konvergenz mit der Rate <span class="math inline">\(c=\|I-\gam
 <span class="math display">\[\begin{equation*}
 f(x) \to \min_{x\in \mathbb R^{n}}
 \end{equation*}\]</span>
-für eine Funktion <span class="math inline">\(f\colon \mathbb R^{n} \to \mathbb R^{}\)</span>, also die Aufgabe ein <span class="math inline">\(x^*\in \mathbb R^{n}\)</span> zu finden, für welches der Wert von <span class="math inline">\(f\)</span> minimal wird.</p>
+für eine Funktion <span class="math inline">\(f \colon \mathbb R^{n} \to \mathbb R^{}\)</span>, also die Aufgabe ein <span class="math inline">\(z^*\in \mathbb R^{n}\)</span> zu finden, für welches der Wert von <span class="math inline">\(f\)</span> minimal wird.</p>
 <p>Ist <span class="math inline">\(f\)</span> differenzierbar (der Einfachheit halber nehmen wir an, dass <em>totale</em> Differenzierbarkeit vorliegt; es würde aber Differenzierbarkeit in einer beliebigen Richtung, also <em>Gateaux</em>-Differenzierbarkeit, genügen), so gilt, dass in einem Punkt <span class="math inline">\(x_0\)</span>, der Gradient <span class="math inline">\(\nabla f(x_0)\)</span> (ein Vektor im <span class="math inline">\(\mathbb R^{n}\)</span>) in die Richtung des stärksten Wachstums zeigt und der negative Gradient <span class="math inline">\(-\nabla f(x_0)\)</span> in die Richtung, in der <span class="math inline">\(f\)</span> kleiner wird.</p>
 <p>Auf der Suche nach einem Minimum könnten wir also ausnutzen, dass
 <span class="math display">\[\begin{equation*}
@@ -307,7 +307,7 @@ f(x_0 - \gamma_0 \nabla f(x_0)):=f(x_1)   &lt; f(x_0)
 \end{equation*}\]</span>
 falls <span class="math inline">\(\gamma_0\)</span> nur genügend klein ist und <span class="math inline">\(\nabla f(x_0) \neq 0\)</span>.</p>
 <div id="rem-gamma-zerograd" class="JHSAYS">
-<p>Was ist wenn <span class="math inline">\(\nabla f(x_0) = 0\)</span> ist und warum gibt es andernfalls so ein <span class="math inline">\(\gamma_0\)</span> und wie könnten wir es systematisch bestimmen?</p>
+<p>Was ist, wenn <span class="math inline">\(\nabla f(x_0) = 0\)</span> ist und warum gibt es andernfalls so ein <span class="math inline">\(\gamma_0\)</span> und wie könnten wir es systematisch bestimmen?</p>
 </div>
 <p>Diese Beobachtung am nächsten Punkt <span class="math inline">\(x_1\)</span> wiederholt, führt auf des <em>Gradientenabstiegsverfahren</em>.</p>
 <div class="definition">
@@ -320,24 +320,106 @@ für passend gewählte <span class="math inline">\(\gamma_k&gt;0\)</span>, das
 Gradientenabstiegsverfahren zur Berechnung eines Minimums von <span class="math inline">\(f\)</span>.</p>
 </div>
 <div class="lemma">
-<p><span id="lem:lem-graddesc-as-fp" class="lemma"><strong>Lemma 3.1  (Gradientenabstieg als konvergente Fixpunkt Iteration) </strong></span>Sei <span class="math inline">\(D\subset \mathbb R^{n}\)</span> offen und der Definitionsbereich von <span class="math inline">\(f\)</span>. Ist <span class="math inline">\(x^*\in D\)</span> ein Minimum von <span class="math inline">\(f\)</span> und ist <span class="math inline">\(\nabla f\colon D \to \mathbb R^{n}\)</span> <em>Lipschitz-stetig</em> mit Konstante <span class="math inline">\(L\)</span>, dann definiert <a href="iterative-methoden.html#eq:eqn-grad-desc">(3.2)</a> mit <span class="math inline">\(\gamma_k \equiv \frac L2\)</span> eine konvergente Fixpunktiteration für <span class="math inline">\(\phi(x) = x-\gamma \nabla f(x)\)</span> mit <span class="math inline">\(x^*\)</span> als Fixpunkt und entsprechend <span class="math inline">\(\nabla f(x^*)=0\)</span>.</p>
+<p><span id="lem:lem-graddesc-as-fp" class="lemma"><strong>Lemma 3.1  (Gradientenabstieg als konvergente Fixpunkt Iteration) </strong></span>Sei <span class="math inline">\(D\subset \mathbb R^{n}\)</span> offen und der Definitionsbereich von <span class="math inline">\(f\)</span>. Ist <span class="math inline">\(x^*\in D\)</span> ein Minimum von <span class="math inline">\(f\)</span> und ist <span class="math inline">\(\nabla f\colon D \to \mathbb R^{n}\)</span> <em>Lipschitz-stetig</em> mit Konstante <span class="math inline">\(L\)</span>, dann definiert <a href="iterative-methoden.html#eq:eqn-grad-desc">(3.2)</a> mit <span class="math inline">\(\gamma_k \equiv \frac L2\)</span> eine konvergente Fixpunktiteration für <span class="math inline">\(\phi(x) = x-\gamma \nabla f(x)\)</span> mit einem lokalen Minimum <span class="math inline">\(z^*\)</span> von <span class="math inline">\(f\)</span> als Fixpunkt.</p>
 </div>
 <div class="proof">
 <p><span id="unlabeled-div-3" class="proof"><em>Proof</em>. </span>Einigermaßen direkt nachzuweisen.</p>
 </div>
-<p>Die vorhergegangenen Überlegungen gingen von <span class="math inline">\(x^*\)</span> innerhalb eines offenen Definitionsbereichs <span class="math inline">\(D\)</span> von <span class="math inline">\(f\)</span> aus, wo ein Minimum durch <span class="math inline">\(\nabla f(x^*)\)</span> und <span class="math inline">\(f(x^*)\leq f(x)\)</span> für alle <span class="math inline">\(x\)</span> aus einer Umgebung von <span class="math inline">\(x^*\)</span>.
-Ein typischer Anwendungsfall ist, dass <span class="math inline">\(x^*\)</span> in einem zulässigen Bereich <span class="math inline">\(C\)</span> liegen muss, der eine echte Teilmenge von <span class="math inline">\(D\)</span> ist.
+<p>Die vorhergegangenen Überlegungen gingen von <span class="math inline">\(z^*\)</span> innerhalb eines offenen Definitionsbereichs <span class="math inline">\(D\)</span> von <span class="math inline">\(f\)</span> aus, wo ein Minimum durch <span class="math inline">\(\nabla f(x^*)=0\)</span> und <span class="math inline">\(f(x^*)\leq f(x)\)</span> für alle <span class="math inline">\(x\)</span> aus einer Umgebung von <span class="math inline">\(x^*\)</span> gegeben ist.</p>
+<p>Ein typischer Anwendungsfall ist jedoch, dass <span class="math inline">\(x^*\)</span> in einem zulässigen Bereich <span class="math inline">\(C\)</span> liegen muss, der eine echte Teilmenge von <span class="math inline">\(D\)</span> ist.
 Dann besteht die Möglichkeit, dass ein (lokales) Minimum am Rand des Bereichs <span class="math inline">\(C\)</span> vorliegt (wo die Funktion <span class="math inline">\(f\)</span> zwar weiter fällt, aber “das Ende” der Zulässigkeit erreicht ist).</p>
 <p>Ist <span class="math inline">\(C\subset \mathbb R^{n}\)</span> konvex und abgeschlossen, so gilt folgendes allgemeine Resultat (dessen Argumente und Voraussetzungen auch leicht auf beispielsweise Funktionen auf allgemeinen Hilberträumen oder Mengen die nur lokal konvex sind angepasst werden können).</p>
 <div class="theorem">
-<p><span id="thm:thm-prj-grad-desc" class="theorem"><strong>Theorem 3.3  (Projiziertes Gradientenabstiegsverfahren) </strong></span>bla</p>
+<p><span id="thm:thm-prj-grad-desc" class="theorem"><strong>Theorem 3.3  (Projiziertes Gradientenabstiegsverfahren) </strong></span>Sei <span class="math inline">\(C \subset \mathbb R^{n}\)</span> konvex und abgeschlossen, dann ist die Projektion <span class="math inline">\(P_C\colon \mathbb R^{n} \to C\)</span> mittels
+<span class="math display">\[\begin{equation*}
+P_C(x) := x^*,
+\end{equation*}\]</span>
+wobei <span class="math inline">\(x^*\)</span> das Minimierungsproblem
+<span class="math display">\[\begin{equation*}
+\min_{z\in C} \|x-z\|_2
+\end{equation*}\]</span>
+löst, wohldefiniert.</p>
+<p>Sei ferner <span class="math inline">\(f\colon D \to \mathbb R^{}\)</span>, mit <span class="math inline">\(C \subset D\)</span>, differenzierbar mit Lipschitz-stetigem Gradienten mit Konstante <span class="math inline">\(L\)</span>, dann konvergiert das projizierte Gradientenabstiegsverfahren
+<span class="math display" id="eq:eqn-prj-grad-desc">\[\begin{equation}
+x_{k+1} := P_C(x_k - \gamma_k\nabla f(x_k))
+\tag{3.3}
+\end{equation}\]</span>
+für jeden Anfangswert <span class="math inline">\(x_0\in D\)</span> und beliebige Wahl von <span class="math inline">\(\gamma_k &lt; \frac L2\)</span> zu einem lokalen Minimum <span class="math inline">\(z^*\in C\)</span> von <span class="math inline">\(f\)</span>.</p>
+</div>
+<div class="proof">
+<p><span id="unlabeled-div-4" class="proof"><em>Proof</em>. </span>Siehe Vorlesung.</p>
 </div>
 </div>
-<div id="stochastisches-gradientenabstiegsverfahren" class="section level2 hasAnchor" number="3.3">
-<h2><span class="header-section-number">3.3</span> Stochastisches Gradientenabstiegsverfahren<a href="iterative-methoden.html#stochastisches-gradientenabstiegsverfahren" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="auxiliary-function-methods" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Auxiliary Function Methods<a href="iterative-methoden.html#auxiliary-function-methods" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In manchen Fällen ist es hilfreich, wenn das Problem selbst iterativ definiert wird.
+Dann wird in jedem Schritt ein vereinfachtes Problem gelöst und mit der gewonnenen Information, kann das Problem dem eigentlichen aber schwierigen Originalproblem näher gebracht werden.</p>
+<p>Als Beispiel betrachten wir das Problem
+<span class="math display" id="eq:eqn-exa-cnstrnt-optiprob">\[\begin{equation}
+f(x)=x_1^2+x_2^2 \to \min_{x\in D\subset \mathbb R^{2}}, \quad \text{wobei }D:=\{x\in \mathbb R^{2}\,|\, x_1+x_2 \geq 0\}.
+\tag{3.4}
+\end{equation}\]</span></p>
+<p>Zwar ist hier das projizierte Gradientenabstiegsverfahren unmittelbar anwendbar, wir werden aber sehen, dass wir mit einer Hilfsfunktion, sogar die analytische Lösung direkt ablesen können.</p>
+<p>Für <span class="math inline">\(k=1,2,\dotsc\)</span>, sei das Hilfsproblem definiert als
+<span class="math display" id="eq:eqn-exa-relaxed-optiprob">\[\begin{equation}
+B_k(x):=x_1^2+x_2^2 - \frac{1}{k}\log(x_1+x_2-1)\to \inf_C,
+\tag{3.5}
+\end{equation}\]</span>
+wobei <span class="math inline">\(C=\{x\,|\,x_1+x_2&gt;0\}\)</span>. Aus dem “0-setzen” der partiellen Ableitungen von <span class="math inline">\(B_k\)</span>, bekommen wir
+<span class="math display">\[\begin{equation*}
+x_{k,1}=x_{k,2} = \frac 14 + \sqrt{\frac 14 + \frac 1k},
+\end{equation*}\]</span>
+also eine Folge, die zum Minimum des eigentlichen Problems konvergiert.</p>
+<p>Zur Analyse solcher Verfahren, allgemein geschrieben als
+<span class="math display" id="eq:eqn-gen-af-method">\[\begin{equation}
+G_k(x) = f(x) + g_k(x) \to \min_C, \quad k=1,2,\dotsc
+\tag{3.6}
+\end{equation}\]</span>
+werden die folgenden zwei Bedingungen gerne herangenommen:</p>
+<ol style="list-style-type: decimal">
+<li><p>Die Iteration <a href="iterative-methoden.html#eq:eqn-gen-af-method">(3.6)</a> heißt <em>auxiliary function</em> (AF) Methode, falls <span class="math inline">\(g_k(x)\geq 0\)</span>, für alle <span class="math inline">\(k\in \mathbb N\)</span> und <span class="math inline">\(x\in C\)</span>, <span class="math inline">\(g_k(x_{k-1})=0\)</span>.</p></li>
+<li><p>Die Iteration gehört zur <em>SUMMA</em> Klasse, falls <span class="math inline">\(G_k(x)-G_k(x_k) \geq g_{k+1}(x)\)</span>.</p></li>
+</ol>
+<p>Unter der 1. Annahme gilt sofort, dass
+<span class="math display">\[\begin{equation*}
+f(x_{k}) \leq f(x_{k}) + g_k(x_k) = G_k(x_k) \leq G_k(x_{k-1}) = f(x_{k-1}) + g_k(x_{k-1}) = f(x_{k-1}),
+\end{equation*}\]</span>
+also dass die Folge <span class="math inline">\(\{f(x_k)\}_{k\in \mathbb N}\)</span> monoton fallend ist.</p>
+<p>Aus der 2. Annahme folgt dann, dass <span class="math inline">\(f(x_k) \to \beta^*=\inf{x\in c}f(x)\)</span>, für <span class="math inline">\(k\to \infty\)</span>, was sich wie folgt argumentieren läßt:</p>
+<p>Angenommen, <span class="math inline">\(f(x_k) \to \beta &gt; \beta^*\)</span>, dann existiert ein <span class="math inline">\(z\in C\)</span>, sodass <span class="math inline">\(\beta &gt; f(z) \geq \beta^*\)</span>. Dann ist, der 2. 2. Annahme nach,
+<span class="math display">\[\begin{equation*}
+\begin{split}
+g_k(z) - g_{k+1}(z) &amp;= g_k(z) - (G_k(z)-G_k(x_k))    \\
+&amp;=g_k(z) - (f(z) + g_k(z) - f(x_k) - g_k(x_k)) \\
+&amp;\quad \geq f(z) - \beta + g_k(x_k) \geq f(z) - \beta &gt; 0,
+\end{split}
+\end{equation*}\]</span>
+was impliziert, dass <span class="math inline">\(0\leq g_{k+1}(z)&lt;g_k(z)+c\)</span>, für alle <span class="math inline">\(k\)</span> und eine konstantes <span class="math inline">\(c&gt;0\)</span>, was ein Widerspruch ist.</p>
+<p>Wir rechnen nach, dass <a href="iterative-methoden.html#eq:eqn-exa-relaxed-optiprob">(3.5)</a> die Annahmen 1. und 2. erfüllt (allerdings erst nach einigen äquivalenten Umformungen).</p>
+<p>Zunächst halten wir fest, dass die Iteration in <a href="iterative-methoden.html#eq:eqn-exa-relaxed-optiprob">(3.5)</a> geschrieben werden kann als
+<span class="math display" id="eq:eqn-min-barrier">\[\begin{equation}
+B_k(x) = f(x) + \frac 1k b(x) \to \min
+\tag{3.7}
+\end{equation}\]</span>
+was, da eine Skalierung das Minimum nicht änder ebensowenig wie die Addition eines konstanten Termes (konstant bezüglich <span class="math inline">\(x\)</span>),
+äquivalent ist zu
+<span class="math display">\[\begin{equation*}
+G_k(x) = f(x) + g_k(x)
+\end{equation*}\]</span>
+mit
+<span class="math display">\[\begin{equation*}
+g_k(x) = [(k-1)f(x) + b(x)] - [(k-1)f(x_{k-1}) + b(x_{k-1})].
+\end{equation*}\]</span>.</p>
+<p>Wir rechnen direkt nach, dass <span class="math inline">\(g_k(x)\geq 0\)</span> ist (folgt daraus, dass <span class="math inline">\(x_{k-1}\)</span> optimal für <span class="math inline">\(G_{k-1}\)</span> ist), dass <span class="math inline">\(g_k(x_{k-1})=0\)</span> ist, und dass <span class="math inline">\(G_k(x)-G_k(x_k)=g_{k+1}(x)\)</span> ist (dafür muss ein bisschen umgeformt werden), sodass die Voraussetzungen für AF und SUMMA erfüllt sind.</p>
+<p>Zum Abschluss einige Bemerkungen</p>
+<ul>
+<li>das allgemeine <span class="math inline">\(b\)</span> in <a href="iterative-methoden.html#eq:eqn-min-barrier">(3.7)</a> und im speziellen in <a href="iterative-methoden.html#eq:eqn-exa-relaxed-optiprob">(3.5)</a> ist eine sogenannte <em>barrier</em> Funktion, die beispielsweise einen zulässigen Bereich als <span class="math inline">\(C=\{x\,|\, b(x)&lt; \infty\}\)</span> definiert.</li>
+<li>weitere Methoden der Optimierung, die in die betrachteten (AF) Klassen fallen sind beispielsweise <em>Majorization Minimization</em>, <em>Expectation Maximization</em>, <em>Proximal Minimization</em> oder <em>Regularized Gradient Descent</em>.</li>
+<li>Eine schöne Einführung und Übersicht liefert das Skript <em>Lecture Notes on Iterative Optimization Algorithms</em> <span class="citation">(Byrne <a href="#ref-Byr14" role="doc-biblioref">2014</a>)</span>.</li>
+</ul>
 </div>
-<div id="auxiliary-function-methods" class="section level2 hasAnchor" number="3.4">
-<h2><span class="header-section-number">3.4</span> Auxiliary Function Methods<a href="iterative-methoden.html#auxiliary-function-methods" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="stochastisches-gradientenabstiegsverfahren" class="section level2 hasAnchor" number="3.4">
+<h2><span class="header-section-number">3.4</span> Stochastisches Gradientenabstiegsverfahren<a href="iterative-methoden.html#stochastisches-gradientenabstiegsverfahren" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 </div>
 <div id="übungen-2" class="section level2 hasAnchor" number="3.5">
 <h2><span class="header-section-number">3.5</span> Übungen<a href="iterative-methoden.html#übungen-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -348,12 +430,16 @@ Dann besteht die Möglichkeit, dass ein (lokales) Minimum am Rand des Bereichs <
 <li><p>Erklären Sie an Hand von Satz <a href="iterative-methoden.html#thm:thm-smooth-fp-conv">3.1</a> (und den vorhergegangenen Überlegungen) warum Newton für das Problem <em>finde <span class="math inline">\(x\)</span>, so dass <span class="math inline">\(x^2=0\)</span> ist</em> <strong>nicht</strong> quadratisch (aber doch superlinear) konvergiert.</p></li>
 <li><p>Beweisen Sie, dass für <span class="math inline">\(0&lt;\gamma&lt; \frac{2}{\|A^TA\|_2}\)</span> gilt, dass<span class="math inline">\(\|I-\gamma A^TA\|_2&lt;1\)</span> für beliebige <span class="math inline">\(A\in \mathbb R^{m \times n}\)</span>.</p></li>
 <li><p>Rechnen Sie nach, dass die Landweber Iteration aus Definition <a href="iterative-methoden.html#def:def-landweber-alg">3.2</a> einem gedämpften Gradientenabstiegsverfahren für <span class="math inline">\(\|Ax-b\|_2^2 \to \min_{x\in \mathbb R^{m}}\)</span> entspricht.</p></li>
+<li><p>Implementieren Sie das projizierte Gradientenabstiegsverfahren für <a href="iterative-methoden.html#eq:eqn-exa-cnstrnt-optiprob">(3.4)</a> und das <em>nichtprojizierte</em> aber an <span class="math inline">\(k\)</span> angepasste Gradientenabstiegsverfahren für <a href="iterative-methoden.html#eq:eqn-exa-relaxed-optiprob">(3.5)</a>. Vergleichen Sie die Konvergenz für verschiedene Startwerte.</p></li>
 </ol>
 
 </div>
 </div>
 <h3>Referenzen<a href="referenzen.html#referenzen" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="refs" class="references">
+<div id="ref-Byr14">
+<p> Byrne, C.L.: Lecture notes on iterative optimization algorithms, <a href="https://faculty.uml.edu/cbyrne/IOIPNotesOct2014.pdf">https://faculty.uml.edu/cbyrne/IOIPNotesOct2014.pdf</a>, (2014)</p>
+</div>
 <div id="ref-RicW17">
 <p> Richter, T., Wick, T.: Einführung in die numerische Mathematik. Begriffe, Konzepte und zahlreiche Anwendungsbeispiele. Heidelberg: Springer Spektrum (2017)</p>
 </div>
