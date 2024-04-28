@@ -133,7 +133,7 @@ Anstelle der Nullstellensuche behandeln wir jetzt die Aufgabe
 \begin{equation*}
 f(x) \to \min_{x\in \mathbb R^{n}}
 \end{equation*}
-f&uuml;r eine Funktion $f\colon \mathbb R^{n} \to \mathbb R^{}$, also die Aufgabe ein $x^*\in \mathbb R^{n}$ zu finden, f&uuml;r welches der Wert von $f$ minimal wird.
+f&uuml;r eine Funktion $f \colon \mathbb R^{n} \to \mathbb R^{}$, also die Aufgabe ein $z^*\in \mathbb R^{n}$ zu finden, f&uuml;r welches der Wert von $f$ minimal wird.
 
 Ist $f$ differenzierbar (der Einfachheit halber nehmen wir an, dass *totale* Differenzierbarkeit vorliegt; es w&uuml;rde aber Differenzierbarkeit in einer beliebigen Richtung, also *Gateaux*-Differenzierbarkeit, gen&uuml;gen), so gilt, dass in einem Punkt $x_0$, der Gradient $\nabla f(x_0)$ (ein Vektor im $\mathbb R^{n}$) in die Richtung des st&auml;rksten Wachstums zeigt und der negative Gradient $-\nabla f(x_0)$ in die Richtung, in der $f$ kleiner wird. 
 
@@ -144,7 +144,7 @@ f(x_0 - \gamma_0 \nabla f(x_0)):=f(x_1)   < f(x_0)
 falls $\gamma_0$ nur gen&uuml;gend klein ist und $\nabla f(x_0) \neq 0$.
 
 ::: {#rem-gamma-zerograd .JHSAYS data-latex=''}
-Was ist wenn $\nabla f(x_0) = 0$ ist und warum gibt es andernfalls so ein $\gamma_0$ und wie k&ouml;nnten wir es systematisch bestimmen?
+Was ist, wenn $\nabla f(x_0) = 0$ ist und warum gibt es andernfalls so ein $\gamma_0$ und wie k&ouml;nnten wir es systematisch bestimmen?
 :::
 
 Diese Beobachtung am n&auml;chsten Punkt $x_1$ wiederholt, f&uuml;hrt auf des *Gradientenabstiegsverfahren*.
@@ -160,26 +160,122 @@ Gradientenabstiegsverfahren zur Berechnung eines Minimums von $f$.
 :::
 
 ::: {.lemma #lem-graddesc-as-fp name="Gradientenabstieg als konvergente Fixpunkt Iteration"}
-Sei $D\subset \mathbb R^{n}$ offen und der Definitionsbereich von $f$. Ist $x^*\in D$ ein Minimum von $f$ und ist $\nabla f\colon D \to \mathbb R^{n}$ *Lipschitz-stetig* mit Konstante $L$, dann definiert \@ref(eq:eqn-grad-desc) mit $\gamma_k \equiv \frac L2$ eine konvergente Fixpunktiteration f&uuml;r $\phi(x) = x-\gamma \nabla f(x)$ mit $x^*$ als Fixpunkt und entsprechend $\nabla f(x^*)=0$.
+Sei $D\subset \mathbb R^{n}$ offen und der Definitionsbereich von $f$. Ist $x^*\in D$ ein Minimum von $f$ und ist $\nabla f\colon D \to \mathbb R^{n}$ *Lipschitz-stetig* mit Konstante $L$, dann definiert \@ref(eq:eqn-grad-desc) mit $\gamma_k \equiv \frac L2$ eine konvergente Fixpunktiteration f&uuml;r $\phi(x) = x-\gamma \nabla f(x)$ mit einem lokalen Minimum $z^*$ von $f$ als Fixpunkt.
 :::
 
 ::: {.proof}
 Einigerma&szlig;en direkt nachzuweisen.
 :::
 
-Die vorhergegangenen &Uuml;berlegungen gingen von $x^*$ innerhalb eines offenen Definitionsbereichs $D$ von $f$ aus, wo ein Minimum durch $\nabla f(x^*)$ und $f(x^*)\leq f(x)$ f&uuml;r alle $x$ aus einer Umgebung von $x^*$. 
-Ein typischer Anwendungsfall ist, dass $x^*$ in einem zul&auml;ssigen Bereich $C$ liegen muss, der eine echte Teilmenge von $D$ ist. 
+Die vorhergegangenen &Uuml;berlegungen gingen von $z^*$ innerhalb eines offenen Definitionsbereichs $D$ von $f$ aus, wo ein Minimum durch $\nabla f(x^*)=0$ und $f(x^*)\leq f(x)$ f&uuml;r alle $x$ aus einer Umgebung von $x^*$ gegeben ist. 
+
+Ein typischer Anwendungsfall ist jedoch, dass $x^*$ in einem zul&auml;ssigen Bereich $C$ liegen muss, der eine echte Teilmenge von $D$ ist. 
 Dann besteht die M&ouml;glichkeit, dass ein (lokales) Minimum am Rand des Bereichs $C$ vorliegt (wo die Funktion $f$ zwar weiter f&auml;llt, aber "das Ende" der Zul&auml;ssigkeit erreicht ist).
 
 Ist $C\subset \mathbb R^{n}$ konvex und abgeschlossen, so gilt folgendes allgemeine Resultat (dessen Argumente und Voraussetzungen auch leicht auf beispielsweise Funktionen auf allgemeinen Hilbertr&auml;umen oder Mengen die nur lokal konvex sind angepasst werden k&ouml;nnen).
 
 ::: {.theorem #thm-prj-grad-desc name="Projiziertes Gradientenabstiegsverfahren"}
-bla
+Sei $C \subset \mathbb R^{n}$ konvex und abgeschlossen, dann ist die Projektion $P_C\colon \mathbb R^{n} \to C$ mittels
+\begin{equation*}
+P_C(x) := x^*,
+\end{equation*}
+wobei $x^*$ das Minimierungsproblem
+\begin{equation*}
+\min_{z\in C} \|x-z\|_2
+\end{equation*}
+l&ouml;st, wohldefiniert.
+
+Sei ferner $f\colon D \to \mathbb R^{}$, mit $C \subset D$, differenzierbar mit Lipschitz-stetigem Gradienten mit Konstante $L$, dann konvergiert das projizierte Gradientenabstiegsverfahren
+\begin{equation}
+x_{k+1} := P_C(x_k - \gamma_k\nabla f(x_k))
+(\#eq:eqn-prj-grad-desc)
+\end{equation}
+f&uuml;r jeden Anfangswert $x_0\in D$ und beliebige Wahl von $\gamma_k < \frac L2$ zu einem lokalen Minimum $z^*\in C$ von $f$.
 :::
 
-## Stochastisches Gradientenabstiegsverfahren
+::: {.proof}
+Siehe Vorlesung.
+:::
 
 ## Auxiliary Function Methods
+
+In manchen F&auml;llen ist es hilfreich, wenn das Problem selbst iterativ definiert wird. 
+Dann wird in jedem Schritt ein vereinfachtes Problem gel&ouml;st und mit der gewonnenen Information, kann das Problem dem eigentlichen aber schwierigen Originalproblem n&auml;her gebracht werden. 
+
+Als Beispiel betrachten wir das Problem 
+\begin{equation}
+f(x)=x_1^2+x_2^2 \to \min_{x\in D\subset \mathbb R^{2}}, \quad \text{wobei }D:=\{x\in \mathbb R^{2}\,|\, x_1+x_2 \geq 0\}.
+(\#eq:eqn-exa-cnstrnt-optiprob)
+\end{equation}
+
+Zwar ist hier das projizierte Gradientenabstiegsverfahren unmittelbar anwendbar, wir werden aber sehen, dass wir mit einer Hilfsfunktion, sogar die analytische L&ouml;sung direkt ablesen k&ouml;nnen.
+
+F&uuml;r $k=1,2,\dotsc$, sei das Hilfsproblem definiert als
+\begin{equation}
+B_k(x):=x_1^2+x_2^2 - \frac{1}{k}\log(x_1+x_2-1)\to \inf_C,
+(\#eq:eqn-exa-relaxed-optiprob)
+\end{equation}
+wobei $C=\{x\,|\,x_1+x_2>0\}$. Aus dem "0-setzen" der partiellen Ableitungen von $B_k$, bekommen wir 
+\begin{equation*}
+x_{k,1}=x_{k,2} = \frac 14 + \sqrt{\frac 14 + \frac 1k},
+\end{equation*}
+also eine Folge, die zum Minimum des eigentlichen Problems konvergiert.
+
+Zur Analyse solcher Verfahren, allgemein geschrieben als
+\begin{equation}
+G_k(x) = f(x) + g_k(x) \to \min_C, \quad k=1,2,\dotsc
+(\#eq:eqn-gen-af-method)
+\end{equation}
+werden die folgenden zwei Bedingungen gerne herangenommen:
+
+1. Die Iteration \@ref(eq:eqn-gen-af-method) hei&szlig;t *auxiliary function* (AF) Methode, falls $g_k(x)\geq 0$, f&uuml;r alle $k\in \mathbb N$ und $x\in C$, $g_k(x_{k-1})=0$.
+
+2. Die Iteration geh&ouml;rt zur *SUMMA* Klasse, falls $G_k(x)-G_k(x_k) \geq g_{k+1}(x)$.
+
+Unter der 1. Annahme gilt sofort, dass
+\begin{equation*}
+f(x_{k}) \leq f(x_{k}) + g_k(x_k) = G_k(x_k) \leq G_k(x_{k-1}) = f(x_{k-1}) + g_k(x_{k-1}) = f(x_{k-1}),
+\end{equation*}
+also dass die Folge $\{f(x_k)\}_{k\in \mathbb N}$ monoton fallend ist.
+
+Aus der 2. Annahme folgt dann, dass $f(x_k) \to \beta^*=\inf{x\in c}f(x)$, f&uuml;r $k\to \infty$, was sich wie folgt argumentieren l&auml;&szlig;t:
+
+Angenommen, $f(x_k) \to \beta > \beta^*$, dann existiert ein $z\in C$, sodass $\beta > f(z) \geq \beta^*$. Dann ist, der 2. 2. Annahme nach,
+\begin{equation*}
+\begin{split}
+g_k(z) - g_{k+1}(z) &= g_k(z) - (G_k(z)-G_k(x_k))    \\
+&=g_k(z) - (f(z) + g_k(z) - f(x_k) - g_k(x_k)) \\
+&\quad \geq f(z) - \beta + g_k(x_k) \geq f(z) - \beta > 0,
+\end{split}
+\end{equation*}
+was impliziert, dass $0\leq g_{k+1}(z)<g_k(z)+c$, f&uuml;r alle $k$ und eine konstantes $c>0$, was ein Widerspruch ist.
+
+Wir rechnen nach, dass \@ref(eq:eqn-exa-relaxed-optiprob) die Annahmen 1. und 2. erf&uuml;llt (allerdings erst nach einigen &auml;quivalenten Umformungen).
+
+Zun&auml;chst halten wir fest, dass die Iteration in \@ref(eq:eqn-exa-relaxed-optiprob) geschrieben werden kann als
+\begin{equation}
+B_k(x) = f(x) + \frac 1k b(x) \to \min
+(\#eq:eqn-min-barrier)
+\end{equation}
+was, da eine Skalierung das Minimum nicht &auml;nder ebensowenig wie die Addition eines konstanten Termes (konstant bez&uuml;glich $x$),
+&auml;quivalent ist zu
+\begin{equation*}
+G_k(x) = f(x) + g_k(x)
+\end{equation*}
+mit
+\begin{equation*}
+g_k(x) = [(k-1)f(x) + b(x)] - [(k-1)f(x_{k-1}) + b(x_{k-1})].
+\end{equation*}.
+
+Wir rechnen direkt nach, dass $g_k(x)\geq 0$ ist (folgt daraus, dass $x_{k-1}$ optimal f&uuml;r $G_{k-1}$ ist), dass $g_k(x_{k-1})=0$ ist, und dass $G_k(x)-G_k(x_k)=g_{k+1}(x)$ ist (daf&uuml;r muss ein bisschen umgeformt werden), sodass die Voraussetzungen f&uuml;r AF und SUMMA erf&uuml;llt sind.
+
+Zum Abschluss einige Bemerkungen
+
+ * das allgemeine $b$ in \@ref(eq:eqn-min-barrier) und im speziellen in \@ref(eq:eqn-exa-relaxed-optiprob) ist eine sogenannte *barrier* Funktion, die beispielsweise einen zul&auml;ssigen Bereich als $C=\{x\,|\, b(x)< \infty\}$ definiert.
+ * weitere Methoden der Optimierung, die in die betrachteten (AF) Klassen fallen sind beispielsweise *Majorization Minimization*, *Expectation Maximization*, *Proximal Minimization* oder *Regularized Gradient Descent*.
+ * Eine sch&ouml;ne Einf&uuml;hrung und &Uuml;bersicht liefert das Skript *Lecture Notes on Iterative Optimization Algorithms* [@Byr14].
+
+## Stochastisches Gradientenabstiegsverfahren
  
 ## &Uuml;bungen
 
@@ -194,3 +290,5 @@ bla
 5. Beweisen Sie, dass f&uuml;r $0<\gamma< \frac{2}{\|A^TA\|_2}$ gilt, dass$\|I-\gamma A^TA\|_2<1$ f&uuml;r beliebige $A\in \mathbb R^{m \times n}$. 
 
 6. Rechnen Sie nach, dass die Landweber Iteration aus Definition \@ref(def:def-landweber-alg) einem ged&auml;mpften Gradientenabstiegsverfahren f&uuml;r $\|Ax-b\|_2^2 \to \min_{x\in \mathbb R^{m}}$ entspricht.
+
+7. Implementieren Sie das projizierte Gradientenabstiegsverfahren f&uuml;r \@ref(eq:eqn-exa-cnstrnt-optiprob) und das *nichtprojizierte* aber an $k$ angepasste Gradientenabstiegsverfahren f&uuml;r \@ref(eq:eqn-exa-relaxed-optiprob). Vergleichen Sie die Konvergenz f&uuml;r verschiedene Startwerte.
