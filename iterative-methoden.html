@@ -320,10 +320,10 @@ für passend gewählte <span class="math inline">\(\gamma_k&gt;0\)</span>, das
 Gradientenabstiegsverfahren zur Berechnung eines Minimums von <span class="math inline">\(f\)</span>.</p>
 </div>
 <div class="lemma">
-<p><span id="lem:lem-graddesc-as-fp" class="lemma"><strong>Lemma 3.1  (Gradientenabstieg als konvergente Fixpunkt Iteration) </strong></span>Sei <span class="math inline">\(D\subset \mathbb R^{n}\)</span> offen und der Definitionsbereich von <span class="math inline">\(f\)</span>. Ist <span class="math inline">\(x^*\in D\)</span> ein Minimum von <span class="math inline">\(f\)</span> und ist <span class="math inline">\(\nabla f\colon D \to \mathbb R^{n}\)</span> <em>Lipschitz-stetig</em> mit Konstante <span class="math inline">\(L\)</span>, dann definiert <a href="iterative-methoden.html#eq:eqn-grad-desc">(3.2)</a> mit <span class="math inline">\(\gamma_k \equiv \frac L2\)</span> eine konvergente Fixpunktiteration für <span class="math inline">\(\phi(x) = x-\gamma \nabla f(x)\)</span> mit einem lokalen Minimum <span class="math inline">\(z^*\)</span> von <span class="math inline">\(f\)</span> als Fixpunkt.</p>
+<p><span id="lem:lem-graddesc-as-fp" class="lemma"><strong>Lemma 3.1  (Gradientenabstieg als konvergente Fixpunkt Iteration) </strong></span>Sei <span class="math inline">\(f\colon D\subset \mathbb R^{n}\to \mathbb R\)</span> konvex und zweimal stetig differenzierbar auf <span class="math inline">\(D\)</span> offen. Ist <span class="math inline">\(z^*\in D\)</span> ein Minimum von <span class="math inline">\(f\)</span> und sei <span class="math inline">\(\overline \lambda\)</span> die <em>Lipschitz-Konstante</em> von <span class="math inline">\(\nabla f\)</span>, dann definiert <a href="iterative-methoden.html#eq:eqn-grad-desc">(3.2)</a> mit <span class="math inline">\(\gamma_k \equiv \frac 2{\overline \lambda}\)</span> eine konvergente Fixpunktiteration für <span class="math inline">\(\phi(x) = x-\gamma \nabla f(x)\)</span> mit einem lokalen Minimum <span class="math inline">\(z^*\)</span> von <span class="math inline">\(f\)</span> als Fixpunkt.</p>
 </div>
 <div class="proof">
-<p><span id="unlabeled-div-3" class="proof"><em>Proof</em>. </span>Einigermaßen direkt nachzuweisen.</p>
+<p><span id="unlabeled-div-3" class="proof"><em>Proof</em>. </span>Vorlesung.</p>
 </div>
 <p>Die vorhergegangenen Überlegungen gingen von <span class="math inline">\(z^*\)</span> innerhalb eines offenen Definitionsbereichs <span class="math inline">\(D\)</span> von <span class="math inline">\(f\)</span> aus, wo ein Minimum durch <span class="math inline">\(\nabla f(x^*)=0\)</span> und <span class="math inline">\(f(x^*)\leq f(x)\)</span> für alle <span class="math inline">\(x\)</span> aus einer Umgebung von <span class="math inline">\(x^*\)</span> gegeben ist.</p>
 <p>Ein typischer Anwendungsfall ist jedoch, dass <span class="math inline">\(x^*\)</span> in einem zulässigen Bereich <span class="math inline">\(C\)</span> liegen muss, der eine echte Teilmenge von <span class="math inline">\(D\)</span> ist.
@@ -339,7 +339,7 @@ wobei <span class="math inline">\(x^*\)</span> das Minimierungsproblem
 \min_{z\in C} \|x-z\|_2
 \end{equation*}\]</span>
 löst, wohldefiniert.</p>
-<p>Sei ferner <span class="math inline">\(f\colon D \to \mathbb R^{}\)</span>, mit <span class="math inline">\(C \subset D\)</span>, differenzierbar mit Lipschitz-stetigem Gradienten mit Konstante <span class="math inline">\(L\)</span>, dann konvergiert das projizierte Gradientenabstiegsverfahren
+<p>Sei ferner <span class="math inline">\(f\colon D \to \mathbb R^{}\)</span>, mit <span class="math inline">\(C \subset D\)</span>, konvex und differenzierbar mit Lipschitz-stetigem Gradienten mit Konstante <span class="math inline">\(L\)</span>. Dann konvergiert das projizierte Gradientenabstiegsverfahren
 <span class="math display" id="eq:eqn-prj-grad-desc">\[\begin{equation}
 x_{k+1} := P_C(x_k - \gamma_k\nabla f(x_k))
 \tag{3.3}
@@ -385,7 +385,7 @@ werden die folgenden zwei Bedingungen gerne herangenommen:</p>
 f(x_{k}) \leq f(x_{k}) + g_k(x_k) = G_k(x_k) \leq G_k(x_{k-1}) = f(x_{k-1}) + g_k(x_{k-1}) = f(x_{k-1}),
 \end{equation*}\]</span>
 also dass die Folge <span class="math inline">\(\{f(x_k)\}_{k\in \mathbb N}\)</span> monoton fallend ist.</p>
-<p>Aus der 2. Annahme folgt dann, dass <span class="math inline">\(f(x_k) \to \beta^*=\inf{x\in c}f(x)\)</span>, für <span class="math inline">\(k\to \infty\)</span>, was sich wie folgt argumentieren läßt:</p>
+<p>Aus der 2. Annahme folgt dann, dass <span class="math inline">\(f(x_k) \to \beta^*=\inf_{x\in c}f(x)\)</span>, für <span class="math inline">\(k\to \infty\)</span>, was sich wie folgt argumentieren läßt:</p>
 <p>Angenommen, <span class="math inline">\(f(x_k) \to \beta &gt; \beta^*\)</span>, dann existiert ein <span class="math inline">\(z\in C\)</span>, sodass <span class="math inline">\(\beta &gt; f(z) \geq \beta^*\)</span>. Dann ist, der 2. 2. Annahme nach,
 <span class="math display">\[\begin{equation*}
 \begin{split}
@@ -409,7 +409,7 @@ G_k(x) = f(x) + g_k(x)
 mit
 <span class="math display">\[\begin{equation*}
 g_k(x) = [(k-1)f(x) + b(x)] - [(k-1)f(x_{k-1}) + b(x_{k-1})].
-\end{equation*}\]</span>.</p>
+\end{equation*}\]</span></p>
 <p>Wir rechnen direkt nach, dass <span class="math inline">\(g_k(x)\geq 0\)</span> ist (folgt daraus, dass <span class="math inline">\(x_{k-1}\)</span> optimal für <span class="math inline">\(G_{k-1}\)</span> ist), dass <span class="math inline">\(g_k(x_{k-1})=0\)</span> ist, und dass <span class="math inline">\(G_k(x)-G_k(x_k)=g_{k+1}(x)\)</span> ist (dafür muss ein bisschen umgeformt werden), sodass die Voraussetzungen für AF und SUMMA erfüllt sind.</p>
 <p>Zum Abschluss einige Bemerkungen</p>
 <ul>

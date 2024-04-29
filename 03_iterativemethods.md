@@ -160,11 +160,11 @@ Gradientenabstiegsverfahren zur Berechnung eines Minimums von $f$.
 :::
 
 ::: {.lemma #lem-graddesc-as-fp name="Gradientenabstieg als konvergente Fixpunkt Iteration"}
-Sei $D\subset \mathbb R^{n}$ offen und der Definitionsbereich von $f$. Ist $x^*\in D$ ein Minimum von $f$ und ist $\nabla f\colon D \to \mathbb R^{n}$ *Lipschitz-stetig* mit Konstante $L$, dann definiert \@ref(eq:eqn-grad-desc) mit $\gamma_k \equiv \frac L2$ eine konvergente Fixpunktiteration f&uuml;r $\phi(x) = x-\gamma \nabla f(x)$ mit einem lokalen Minimum $z^*$ von $f$ als Fixpunkt.
+Sei $f\colon D\subset \mathbb R^{n}\to \mathbb R$ konvex und zweimal stetig differenzierbar auf $D$ offen. Ist $z^*\in D$ ein Minimum von $f$ und sei $\overline \lambda$ die *Lipschitz-Konstante* von $\nabla f$, dann definiert \@ref(eq:eqn-grad-desc) mit $\gamma_k \equiv \frac 2{\overline \lambda}$ eine konvergente Fixpunktiteration f&uuml;r $\phi(x) = x-\gamma \nabla f(x)$ mit einem lokalen Minimum $z^*$ von $f$ als Fixpunkt.
 :::
 
 ::: {.proof}
-Einigerma&szlig;en direkt nachzuweisen.
+Vorlesung.
 :::
 
 Die vorhergegangenen &Uuml;berlegungen gingen von $z^*$ innerhalb eines offenen Definitionsbereichs $D$ von $f$ aus, wo ein Minimum durch $\nabla f(x^*)=0$ und $f(x^*)\leq f(x)$ f&uuml;r alle $x$ aus einer Umgebung von $x^*$ gegeben ist. 
@@ -185,7 +185,7 @@ wobei $x^*$ das Minimierungsproblem
 \end{equation*}
 l&ouml;st, wohldefiniert.
 
-Sei ferner $f\colon D \to \mathbb R^{}$, mit $C \subset D$, differenzierbar mit Lipschitz-stetigem Gradienten mit Konstante $L$, dann konvergiert das projizierte Gradientenabstiegsverfahren
+Sei ferner $f\colon D \to \mathbb R^{}$, mit $C \subset D$, konvex und differenzierbar mit Lipschitz-stetigem Gradienten mit Konstante $L$. Dann konvergiert das projizierte Gradientenabstiegsverfahren
 \begin{equation}
 x_{k+1} := P_C(x_k - \gamma_k\nabla f(x_k))
 (\#eq:eqn-prj-grad-desc)
@@ -238,7 +238,7 @@ f(x_{k}) \leq f(x_{k}) + g_k(x_k) = G_k(x_k) \leq G_k(x_{k-1}) = f(x_{k-1}) + g_
 \end{equation*}
 also dass die Folge $\{f(x_k)\}_{k\in \mathbb N}$ monoton fallend ist.
 
-Aus der 2. Annahme folgt dann, dass $f(x_k) \to \beta^*=\inf{x\in c}f(x)$, f&uuml;r $k\to \infty$, was sich wie folgt argumentieren l&auml;&szlig;t:
+Aus der 2. Annahme folgt dann, dass $f(x_k) \to \beta^*=\inf_{x\in c}f(x)$, f&uuml;r $k\to \infty$, was sich wie folgt argumentieren l&auml;&szlig;t:
 
 Angenommen, $f(x_k) \to \beta > \beta^*$, dann existiert ein $z\in C$, sodass $\beta > f(z) \geq \beta^*$. Dann ist, der 2. 2. Annahme nach,
 \begin{equation*}
@@ -265,7 +265,7 @@ G_k(x) = f(x) + g_k(x)
 mit
 \begin{equation*}
 g_k(x) = [(k-1)f(x) + b(x)] - [(k-1)f(x_{k-1}) + b(x_{k-1})].
-\end{equation*}.
+\end{equation*}
 
 Wir rechnen direkt nach, dass $g_k(x)\geq 0$ ist (folgt daraus, dass $x_{k-1}$ optimal f&uuml;r $G_{k-1}$ ist), dass $g_k(x_{k-1})=0$ ist, und dass $G_k(x)-G_k(x_k)=g_{k+1}(x)$ ist (daf&uuml;r muss ein bisschen umgeformt werden), sodass die Voraussetzungen f&uuml;r AF und SUMMA erf&uuml;llt sind.
 
