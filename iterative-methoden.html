@@ -344,10 +344,10 @@ löst, wohldefiniert.</p>
 x_{k+1} := P_C(x_k - \gamma_k\nabla f(x_k))
 \tag{3.3}
 \end{equation}\]</span>
-für jeden Anfangswert <span class="math inline">\(x_0\in D\)</span> und beliebige Wahl von <span class="math inline">\(\gamma_k &lt; \frac L2\)</span> zu einem lokalen Minimum <span class="math inline">\(z^*\in C\)</span> von <span class="math inline">\(f\)</span>.</p>
+für jeden Anfangswert <span class="math inline">\(x_0\in D\)</span> und beliebige Wahl von <span class="math inline">\(\gamma_k &lt; \frac 1L\)</span> zu einem lokalen Minimum <span class="math inline">\(z^*\in C\)</span> von <span class="math inline">\(f\)</span>.</p>
 </div>
 <div class="proof">
-<p><span id="unlabeled-div-4" class="proof"><em>Proof</em>. </span>Siehe Vorlesung.</p>
+<p><span id="unlabeled-div-4" class="proof"><em>Proof</em>. </span>Technisch…</p>
 </div>
 </div>
 <div id="auxiliary-function-methods" class="section level2 hasAnchor" number="3.3">
@@ -367,7 +367,7 @@ B_k(x):=x_1^2+x_2^2 - \frac{1}{k}\log(x_1+x_2-1)\to \inf_C,
 \end{equation}\]</span>
 wobei <span class="math inline">\(C=\{x\,|\,x_1+x_2&gt;0\}\)</span>. Aus dem “0-setzen” der partiellen Ableitungen von <span class="math inline">\(B_k\)</span>, bekommen wir
 <span class="math display">\[\begin{equation*}
-x_{k,1}=x_{k,2} = \frac 14 + \sqrt{\frac 14 + \frac 1k},
+x_{k,1}=x_{k,2} = \frac 14 + \frac 14 \sqrt{1 + \frac 4k},
 \end{equation*}\]</span>
 also eine Folge, die zum Minimum des eigentlichen Problems konvergiert.</p>
 <p>Zur Analyse solcher Verfahren, allgemein geschrieben als

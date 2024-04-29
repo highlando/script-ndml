@@ -810,11 +810,11 @@ Sei ferner \(f\colon D \to \mathbb R^{}\), mit \(C \subset D\), konvex und diffe
 x_{k+1} := P_C(x_k - \gamma_k\nabla f(x_k))
 \label{eq:eqn-prj-grad-desc}
 \end{equation}
-für jeden Anfangswert \(x_0\in D\) und beliebige Wahl von \(\gamma_k < \frac L2\) zu einem lokalen Minimum \(z^*\in C\) von \(f\).
+für jeden Anfangswert \(x_0\in D\) und beliebige Wahl von \(\gamma_k < \frac 1L\) zu einem lokalen Minimum \(z^*\in C\) von \(f\).
 \end{theorem}
 
 \begin{proof}
-Siehe Vorlesung.
+Technisch\ldots{}
 \end{proof}
 
 \hypertarget{auxiliary-function-methods}{%
@@ -838,7 +838,7 @@ B_k(x):=x_1^2+x_2^2 - \frac{1}{k}\log(x_1+x_2-1)\to \inf_C,
 \end{equation}
 wobei \(C=\{x\,|\,x_1+x_2>0\}\). Aus dem ``0-setzen'' der partiellen Ableitungen von \(B_k\), bekommen wir
 \begin{equation*}
-x_{k,1}=x_{k,2} = \frac 14 + \sqrt{\frac 14 + \frac 1k},
+x_{k,1}=x_{k,2} = \frac 14 + \frac 14 \sqrt{1 + \frac 4k},
 \end{equation*}
 also eine Folge, die zum Minimum des eigentlichen Problems konvergiert.
 
