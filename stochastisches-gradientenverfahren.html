@@ -206,7 +206,7 @@ Q(w) = \frac{1}{N}\sum_{i=1}^N Q_i(w)
 eine Rolle, wobei der Parametervektor <span class="math inline">\(w\in \mathbb R^n\)</span>, der
 <span class="math inline">\(Q\)</span> minimiert, gefunden oder geschätzt werden soll.
 Jede der Summandenfunktionen <span class="math inline">\(Q_i\)</span> ist typischerweise assoziiert mit einem <span class="math inline">\(i\)</span>-ten Datenpunkt (einer Beobachtung) beispielsweise aus einer Menge von Trainingsdaten.</p>
-<p>Sei beispielsweise eine parametrisierte nichtlineare Funktion <span class="math inline">\(N\colon \mathbb R^{m}\to \mathbb R^{n}\)</span> gegeben die an Datenpunkte <span class="math inline">\((x_i, y_i)\subset \mathbb R^{n}\times \mathbb R^{m}\)</span>, <span class="math inline">\(i=1, \dotsc, N\)</span>, <em>gefittet</em> werden soll, ist die <em>mittlere quadratische Abweichung</em>
+<p>Sei beispielsweise eine parametrisierte nichtlineare Funktion <span class="math inline">\(T_w\colon \mathbb R^{m}\to \mathbb R^{n}\)</span> gegeben die durch Optimierung eines Parametervektors <span class="math inline">\(w\)</span> an Datenpunkte <span class="math inline">\((x_i, y_i)\subset \mathbb R^{n}\times \mathbb R^{m}\)</span>, <span class="math inline">\(i=1, \dotsc, N\)</span>, <em>gefittet</em> werden soll, ist die <em>mittlere quadratische Abweichung</em>
 <span class="math display">\[\begin{equation*}
 \mathsf{MSE}\,(w) := \frac 1N \sum_{i=1}^N \|N(x_i)-y_i\|_2^2
 \end{equation*}\]</span>
@@ -225,7 +225,7 @@ dem Mittelwert der Gradienten aller <span class="math inline">\(Q_i\)</span>s am
 <p><span class="math display">\[\begin{equation*}
 \frac{1}{N} \sum_{i=1}^N \nabla Q_i(w^k) \approx \frac{1}{|\mathcal J|} \sum_{j\in \mathcal J} \nabla Q_j(w^k),
 \end{equation*}\]</span></p>
-<p>wobei <span class="math inline">\(\mathcal J \subset \{1, \dotsc, N\}\)</span> eine Indexmenge ist, die den <em>batch</em> der zur Approximation gewählten <span class="math inline">\(Q_i\)</span>s beschreibt.</p>
+<p>angenähert werden könnte, wobei <span class="math inline">\(\mathcal J \subset \{1, \dotsc, N\}\)</span> eine Indexmenge ist, die den <em>batch</em> der zur Approximation gewählten <span class="math inline">\(Q_i\)</span>s beschreibt.</p>
 </div>
 <div id="iterative_method" class="section level2 hasAnchor" number="4.2">
 <h2><span class="header-section-number">4.2</span> Stochastisches Abstiegsverfahren<a href="stochastisches-gradientenverfahren.html#iterative_method" class="anchor-section" aria-label="Anchor link to header"></a></h2>

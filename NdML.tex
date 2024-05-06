@@ -947,7 +947,7 @@ eine Rolle, wobei der Parametervektor \(w\in \mathbb R^n\), der
 \(Q\) minimiert, gefunden oder geschätzt werden soll.
 Jede der Summandenfunktionen \(Q_i\) ist typischerweise assoziiert mit einem \(i\)-ten Datenpunkt (einer Beobachtung) beispielsweise aus einer Menge von Trainingsdaten.
 
-Sei beispielsweise eine parametrisierte nichtlineare Funktion \(N\colon \mathbb R^{m}\to \mathbb R^{n}\) gegeben die an Datenpunkte \((x_i, y_i)\subset \mathbb R^{n}\times \mathbb R^{m}\), \(i=1, \dotsc, N\), \emph{gefittet} werden soll, ist die \emph{mittlere quadratische Abweichung}
+Sei beispielsweise eine parametrisierte nichtlineare Funktion \(T_w\colon \mathbb R^{m}\to \mathbb R^{n}\) gegeben die durch Optimierung eines Parametervektors \(w\) an Datenpunkte \((x_i, y_i)\subset \mathbb R^{n}\times \mathbb R^{m}\), \(i=1, \dotsc, N\), \emph{gefittet} werden soll, ist die \emph{mittlere quadratische Abweichung}
 \begin{equation*}
 \mathsf{MSE}\,(w) := \frac 1N \sum_{i=1}^N \|N(x_i)-y_i\|_2^2
 \end{equation*}
@@ -972,7 +972,7 @@ dem Mittelwert der Gradienten aller \(Q_i\)s am Punkt \(w_k\), der durch ein kle
 \frac{1}{N} \sum_{i=1}^N \nabla Q_i(w^k) \approx \frac{1}{|\mathcal J|} \sum_{j\in \mathcal J} \nabla Q_j(w^k),
 \end{equation*}
 
-wobei \(\mathcal J \subset \{1, \dotsc, N\}\) eine Indexmenge ist, die den \emph{batch} der zur Approximation gewählten \(Q_i\)s beschreibt.
+angenähert werden könnte, wobei \(\mathcal J \subset \{1, \dotsc, N\}\) eine Indexmenge ist, die den \emph{batch} der zur Approximation gewählten \(Q_i\)s beschreibt.
 
 \hypertarget{iterative_method}{%
 \section{Stochastisches Abstiegsverfahren}\label{iterative_method}}
