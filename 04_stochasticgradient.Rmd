@@ -17,7 +17,7 @@ eine Rolle, wobei der Parametervektor $w\in \mathbb R^n$, der
 $Q$ minimiert, gefunden oder gesch&auml;tzt werden soll.
 Jede der Summandenfunktionen $Q_i$ ist typischerweise assoziiert mit einem $i$-ten Datenpunkt (einer Beobachtung) beispielsweise aus einer Menge von Trainingsdaten.
 
-Sei beispielsweise eine parametrisierte nichtlineare Funktion  $N\colon \mathbb R^{m}\to \mathbb R^{n}$ gegeben die an Datenpunkte $(x_i, y_i)\subset \mathbb R^{n}\times \mathbb R^{m}$, $i=1, \dotsc, N$, *gefittet* werden soll, ist die *mittlere quadratische Abweichung* 
+Sei beispielsweise eine parametrisierte nichtlineare Funktion  $T_w\colon \mathbb R^{m}\to \mathbb R^{n}$ gegeben die durch Optimierung eines Parametervektors $w$ an Datenpunkte $(x_i, y_i)\subset \mathbb R^{n}\times \mathbb R^{m}$, $i=1, \dotsc, N$, *gefittet* werden soll, ist die *mittlere quadratische Abweichung* 
 \begin{equation*}
 \mathsf{MSE}\,(w) := \frac 1N \sum_{i=1}^N \|N(x_i)-y_i\|_2^2
 \end{equation*}
@@ -42,10 +42,9 @@ dem Mittelwert der Gradienten aller $Q_i$s am Punkt $w_k$, der durch ein kleiner
 \frac{1}{N} \sum_{i=1}^N \nabla Q_i(w^k) \approx \frac{1}{|\mathcal J|} \sum_{j\in \mathcal J} \nabla Q_j(w^k),
 \end{equation*}
 
-wobei $\mathcal J \subset \{1, \dotsc, N\}$ eine Indexmenge ist, die den *batch* der zur Approximation gew&auml;hlten $Q_i$s beschreibt.
+angen&auml;hert werden k&ouml;nnte, wobei $\mathcal J \subset \{1, \dotsc, N\}$ eine Indexmenge ist, die den *batch* der zur Approximation gew&auml;hlten $Q_i$s beschreibt.
 
 ## Stochastisches Abstiegsverfahren  {#iterative_method}
-
 
 Beim stochastischen (oder "Online") Gradientenabstieg wird der wahre Gradient von $Q(w^k)$ durch einen Gradienten bei einer einzelnen Probe angenähert:
 \begin{equation*}
