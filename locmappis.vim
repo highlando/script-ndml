@@ -23,3 +23,6 @@ imap kk \
 imap ,le (\#eq:eqn-)
 imap ,re \@ref(eq:eqn-)
 imap ,def ::: {.definition #def- name="woe"}<CR>:::<esc>
+
+imap gxk g(x_k, \xi)
+imap xkk x_{k+1}

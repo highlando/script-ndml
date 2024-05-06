@@ -275,8 +275,6 @@ Zum Abschluss einige Bemerkungen
  * weitere Methoden der Optimierung, die in die betrachteten (AF) Klassen fallen sind beispielsweise *Majorization Minimization*, *Expectation Maximization*, *Proximal Minimization* oder *Regularized Gradient Descent*.
  * Eine sch&ouml;ne Einf&uuml;hrung und &Uuml;bersicht liefert das Skript *Lecture Notes on Iterative Optimization Algorithms* [@Byr14].
 
-## Stochastisches Gradientenabstiegsverfahren
- 
 ## &Uuml;bungen
 
 1. Bestimmen Sie die Konvergenzordnung und die Rate f&uuml;r das Intervallschachtelungsverfahren zur Nullstellenberechnung.
