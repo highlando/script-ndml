@@ -301,13 +301,52 @@ für alle <span class="math inline">\(z\)</span> und <span class="math inline">\
 <span class="math display">\[\begin{equation*}
 \begin{split}
 \frac 12 \|x_{k+1} - x^* \|^2 &amp;= 
-\frac 12 \|x_{k} - \eta_k \nabla Q_{k_\xi}(x_k) - x^* \|^2 \\
+\frac 12 \|x_{k} - \eta_k \nabla Q_{i(k;\xi)}(x_k) - x^* \|^2 \\
 &amp;=
-\frac 12 \|x_{k} - x^* \|^2 - \eta_k \nabla Q_{k_\xi}(x_k)^T( x_{k} -x^*) + \eta_k^2 \|\nabla Q_{k_\xi}(x_k)\|^2
+\frac 12 \|x_{k} - x^* \|^2 - \eta_k \nabla Q_{i(k;\xi)}(x_k)^T( x_{k} -x^*) + \eta_k^2 \|\nabla Q_{i(k;\xi)}(x_k)\|^2
+\end{split}
+\end{equation*}\]</span></p>
+<p>Im nächsten Schritt nehmen wir den Erwartungswert dieser Terme. Dabei ist zu beachten, dass auch die <span class="math inline">\(x_k\)</span> zufällig (aus der Sequenz der zufällig gezogenen Richtungen) erzeugt wurden. Dementsprechend müssen wir zwischen <span class="math inline">\(\mathbb E\)</span> (als Erwartungswert bezüglich aller bisherigen zufälligen Ereignisse für <span class="math inline">\(\ell=0, 1, \dotsc, k-1\)</span>) und zwischen <span class="math inline">\(\mathbb E_{i(k;\xi)}\)</span> (was wir im <span class="math inline">\(k\)</span>-ten Schritt bezüglich der aktuellen Auswahl der Richtung erwarten können) unterscheiden.</p>
+<p>In jedem Fall ist der Erwartungswert eine lineare Abbildung, sodass wir die einzelnen Terme der Summe separat betrachten können.</p>
+<p>Für den Mischterm erhalten wir
+<span class="math display">\[\begin{equation*}
+\eta_k \mathbb E[ \nabla Q_{i(k;\xi)}(x_k)^T( x_{k} -x^*) ] = 
+\eta_k \mathbb E\bigl [\mathbb E_{i(k;\xi)}[ \nabla Q_{i(k;\xi)}(x_k)^T( x_{k} -x^*)\,|\, x_k ]\bigr ]
+\end{equation*}\]</span>
+wobei der innere Term die Erwartung ist unter der Bedingung das <span class="math inline">\(x_k\)</span> eingetreten ist (folgt aus dem Satz der <em>iterated expectation</em>).
+Da im inneren Term nur noch die Wahl von <span class="math inline">\(i\)</span> zufällig ist und wegen der Linearität des Erwartungswertes bekommen wir
+<span class="math display">\[\begin{equation*}
+\begin{split}
+\mathbb E_{i(k;\xi)}[ \nabla Q_{i(k;\xi)}(x_k)^T( x_{k} -x^*)\,|\, x_k ] &amp;=
+\mathbb E_{i(k;\xi)}[ \nabla Q_{i(k;\xi)}(x_k)^T\,|\, x_k ]( x_{k} -x^*) \\
+&amp; = \nabla Q(x_k)^T(x_k - x^*).
+\end{split}
+\end{equation*}\]</span>
+sodass mit der strengen <span class="math inline">\(m\)</span>-Konvexität gilt dass
+<span class="math display">\[\begin{equation*}
+\mathbb E[ \nabla Q_{i(k;\xi)}(x_k)^T( x_{k} -x^*) ] \geq 2\eta_k \mathbb E[\|x_k - x^*\|^2].
+\end{equation*}\]</span></p>
+<div id="sdg-cnv-independent" class="JHSAYS">
+<p>Diese Manipulation mit den Erwartungswerten ist der formale Ausdruck dafür, dass, egal woher das <span class="math inline">\(x_k\)</span> kam, die zufällige Wahl der aktuellen Richtung führt im statistischen Mittel auf <span class="math inline">\(\nabla Q(x_k)\)</span>.</p>
+</div>
+<p>Mit gleichen Argumenten und der Annahme der Beschränktheit <span class="math inline">\(\|\nabla Q(x)\|^2 &lt; M\)</span>, bekommen wir für die erwartete quadratische Abweichung <span class="math inline">\(a_k\)</span>, dass
+<span class="math display">\[\begin{equation*}
+a_{k+1} \leq (1-2m\eta_k)a_k + \frac 12\eta_k^2M
+\end{equation*}\]</span></p>
+<p>Insbesondere wegen des konstanten Terms in der Fehlerrekursion, bedarf es bis zur <span class="math inline">\(1/k\)</span>-Konvergenz weiterer Abschätzungen. Wir zeigen induktiv, dass für <span class="math inline">\(\eta_k&lt;\frac{1}{km}\)</span> gilt, dass
+<span class="math display">\[\begin{equation*}
+a_{k+1} \leq \frac{c}{2(k+1)}, \quad c = \max\{\| x_1 - x^*\|^2, \frac{M^2}{m^2} \}.
+\end{equation*}\]</span>
+Für <span class="math inline">\(k=0\)</span> gilt die Abschätzung direkt. Für <span class="math inline">\(k\geq 1\)</span> gilt mit <span class="math inline">\(\eta_k &lt; \frac{1}{mk}\)</span>
+<span class="math display">\[\begin{equation*}
+\begin{split}
+a_{k+1} \leq &amp; (1-2m \eta_k)a_k + \frac 12 \eta_k^2 M \\
+\leq&amp;  (1-\frac 2k)a_k + \frac 12 \frac{M}{k^2m^2} \\
+\leq&amp;  (1-\frac 2k)\frac c2 + \frac 12 \frac{1}{k^2} \frac c2\\
+&amp;=  \frac{k^2-1}{k^2}\frac{c}{2(k+1)} \leq \frac {c}{2(k+1)}
 \end{split}
 \end{equation*}\]</span></p>
 </div>
-<p>Im nächsten Schritt nehmen wir den Erwartungswert dieser Terme. Dabei ist zu beachten, dass auch die <span class="math inline">\(x_k\)</span> zufällig (aus der Sequenz der zufällig gezogenen Richtungen) erzeugt wurden. Dementsprechend müssen wir bezüglich <span class="math inline">\(\mathbb E\)</span> (als Erwartungswert bezüglich aller bisherigen zufälligen Ereignisse für <span class="math inline">\(\ell=0, 1, \dotsc, k-1\)</span>) und <span class="math inline">\(\mathbb E_{i(k;\xi)}\)</span></p>
 
 </div>
 </div>

@@ -134,11 +134,57 @@ Zun&auml;chst erhalten wir aus der Definition der 2-norm, dass
 \begin{equation*}
 \begin{split}
 \frac 12 \|x_{k+1} - x^* \|^2 &= 
-\frac 12 \|x_{k} - \eta_k \nabla Q_{k_\xi}(x_k) - x^* \|^2 \\
+\frac 12 \|x_{k} - \eta_k \nabla Q_{i(k;\xi)}(x_k) - x^* \|^2 \\
 &=
-\frac 12 \|x_{k} - x^* \|^2 - \eta_k \nabla Q_{k_\xi}(x_k)^T( x_{k} -x^*) + \eta_k^2 \|\nabla Q_{k_\xi}(x_k)\|^2
+\frac 12 \|x_{k} - x^* \|^2 - \eta_k \nabla Q_{i(k;\xi)}(x_k)^T( x_{k} -x^*) + \eta_k^2 \|\nabla Q_{i(k;\xi)}(x_k)\|^2
 \end{split}
 \end{equation*}
+
+Im n&auml;chsten Schritt nehmen wir den Erwartungswert dieser Terme. Dabei ist zu beachten, dass auch die $x_k$ zuf&auml;llig (aus der Sequenz der zuf&auml;llig gezogenen Richtungen) erzeugt wurden. Dementsprechend m&uuml;ssen wir zwischen $\mathbb E$ (als Erwartungswert bez&uuml;glich aller bisherigen zuf&auml;lligen Ereignisse f&uuml;r $\ell=0, 1, \dotsc, k-1$) und zwischen $\mathbb E_{i(k;\xi)}$ (was wir im $k$-ten Schritt bez&uuml;glich der aktuellen Auswahl der Richtung erwarten k&ouml;nnen) unterscheiden.
+
+In jedem Fall ist der Erwartungswert eine lineare Abbildung, sodass wir die einzelnen Terme der Summe separat betrachten k&ouml;nnen.
+
+F&uuml;r den Mischterm erhalten wir
+\begin{equation*}
+\eta_k \mathbb E[ \nabla Q_{i(k;\xi)}(x_k)^T( x_{k} -x^*) ] = 
+\eta_k \mathbb E\bigl [\mathbb E_{i(k;\xi)}[ \nabla Q_{i(k;\xi)}(x_k)^T( x_{k} -x^*)\,|\, x_k ]\bigr ]
+\end{equation*}
+wobei der innere Term die Erwartung ist unter der Bedingung das $x_k$ eingetreten ist (folgt aus dem Satz der *iterated expectation*).
+Da im inneren Term nur noch die Wahl von $i$ zuf&auml;llig ist und wegen der Linearit&auml;t des Erwartungswertes bekommen wir
+\begin{equation*}
+\begin{split}
+\mathbb E_{i(k;\xi)}[ \nabla Q_{i(k;\xi)}(x_k)^T( x_{k} -x^*)\,|\, x_k ] &=
+\mathbb E_{i(k;\xi)}[ \nabla Q_{i(k;\xi)}(x_k)^T\,|\, x_k ]( x_{k} -x^*) \\
+& = \nabla Q(x_k)^T(x_k - x^*).
+\end{split}
+\end{equation*}
+sodass mit der strengen $m$-Konvexit&auml;t gilt dass 
+\begin{equation*}
+\mathbb E[ \nabla Q_{i(k;\xi)}(x_k)^T( x_{k} -x^*) ] \geq 2\eta_k \mathbb E[\|x_k - x^*\|^2].
+\end{equation*}
+
+::: {#sdg-cnv-independent .JHSAYS data-latex=''}
+Diese Manipulation mit den Erwartungswerten ist der formale Ausdruck daf&uuml;r, dass, egal woher das $x_k$ kam, die zuf&auml;llige Wahl der aktuellen Richtung f&uuml;hrt im statistischen Mittel auf $\nabla Q(x_k)$.
 :::
 
-Im n&auml;chsten Schritt nehmen wir den Erwartungswert dieser Terme. Dabei ist zu beachten, dass auch die $x_k$ zuf&auml;llig (aus der Sequenz der zuf&auml;llig gezogenen Richtungen) erzeugt wurden. Dementsprechend m&uuml;ssen wir bez&uuml;glich $\mathbb E$ (als Erwartungswert bez&uuml;glich aller bisherigen zuf&auml;lligen Ereignisse f&uuml;r $\ell=0, 1, \dotsc, k-1$) und $\mathbb E_{i(k;\xi)}$
+Mit gleichen Argumenten und der Annahme der Beschr&auml;nktheit $\|\nabla Q(x)\|^2 < M$, bekommen wir f&uuml;r die erwartete quadratische Abweichung $a_k$, dass
+\begin{equation*}
+a_{k+1} \leq (1-2m\eta_k)a_k + \frac 12\eta_k^2M
+\end{equation*}
+
+Insbesondere wegen des konstanten Terms in der Fehlerrekursion, bedarf es bis zur $1/k$-Konvergenz weiterer Absch&auml;tzungen. Wir zeigen induktiv, dass f&uuml;r $\eta_k<\frac{1}{km}$ gilt, dass
+\begin{equation*}
+a_{k+1} \leq \frac{c}{2(k+1)}, \quad c = \max\{\| x_1 - x^*\|^2, \frac{M^2}{m^2} \}.
+\end{equation*}
+F&uuml;r $k=0$ gilt die Absch&auml;tzung direkt. F&uuml;r $k\geq 1$ gilt mit $\eta_k < \frac{1}{mk}$
+\begin{equation*}
+\begin{split}
+a_{k+1} \leq & (1-2m \eta_k)a_k + \frac 12 \eta_k^2 M \\
+\leq&  (1-\frac 2k)a_k + \frac 12 \frac{M}{k^2m^2} \\
+\leq&  (1-\frac 2k)\frac c2 + \frac 12 \frac{1}{k^2} \frac c2\\
+&=  \frac{k^2-1}{k^2}\frac{c}{2(k+1)} \leq \frac {c}{2(k+1)}
+\end{split}
+\end{equation*}
+
+
+:::
