@@ -30,7 +30,7 @@
   
   
 <link rel="prev" href="fehler-und-konditionierung.html"/>
-<link rel="next" href="nachklapp.html"/>
+<link rel="next" href="stochastisches-gradientenverfahren.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -160,10 +160,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.1" data-path="iterative-methoden.html"><a href="iterative-methoden.html#iterative-methoden-als-fixpunktiteration"><i class="fa fa-check"></i><b>3.1</b> Iterative Methoden als Fixpunktiteration</a></li>
 <li class="chapter" data-level="3.2" data-path="iterative-methoden.html"><a href="iterative-methoden.html#gradientenabstiegsverfahren"><i class="fa fa-check"></i><b>3.2</b> Gradientenabstiegsverfahren</a></li>
 <li class="chapter" data-level="3.3" data-path="iterative-methoden.html"><a href="iterative-methoden.html#auxiliary-function-methods"><i class="fa fa-check"></i><b>3.3</b> Auxiliary Function Methods</a></li>
-<li class="chapter" data-level="3.4" data-path="iterative-methoden.html"><a href="iterative-methoden.html#stochastisches-gradientenabstiegsverfahren"><i class="fa fa-check"></i><b>3.4</b> Stochastisches Gradientenabstiegsverfahren</a></li>
-<li class="chapter" data-level="3.5" data-path="iterative-methoden.html"><a href="iterative-methoden.html#übungen-2"><i class="fa fa-check"></i><b>3.5</b> Übungen</a></li>
+<li class="chapter" data-level="3.4" data-path="iterative-methoden.html"><a href="iterative-methoden.html#übungen-2"><i class="fa fa-check"></i><b>3.4</b> Übungen</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="nachklapp.html"><a href="nachklapp.html"><i class="fa fa-check"></i><b>4</b> Nachklapp</a></li>
+<li class="chapter" data-level="4" data-path="stochastisches-gradientenverfahren.html"><a href="stochastisches-gradientenverfahren.html"><i class="fa fa-check"></i><b>4</b> Stochastisches Gradientenverfahren</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="stochastisches-gradientenverfahren.html"><a href="stochastisches-gradientenverfahren.html#motivation-und-algorithmus"><i class="fa fa-check"></i><b>4.1</b> Motivation und Algorithmus</a></li>
+<li class="chapter" data-level="4.2" data-path="stochastisches-gradientenverfahren.html"><a href="stochastisches-gradientenverfahren.html#iterative_method"><i class="fa fa-check"></i><b>4.2</b> Stochastisches Abstiegsverfahren</a></li>
+<li class="chapter" data-level="4.3" data-path="stochastisches-gradientenverfahren.html"><a href="stochastisches-gradientenverfahren.html#konvergenzanalyse"><i class="fa fa-check"></i><b>4.3</b> Konvergenzanalyse</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="nachklapp.html"><a href="nachklapp.html"><i class="fa fa-check"></i><b>5</b> Nachklapp</a></li>
 <li class="chapter" data-level="" data-path="referenzen.html"><a href="referenzen.html"><i class="fa fa-check"></i>Referenzen</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -418,11 +423,8 @@ g_k(x) = [(k-1)f(x) + b(x)] - [(k-1)f(x_{k-1}) + b(x_{k-1})].
 <li>Eine schöne Einführung und Übersicht liefert das Skript <em>Lecture Notes on Iterative Optimization Algorithms</em> <span class="citation">(Byrne <a href="#ref-Byr14" role="doc-biblioref">2014</a>)</span>.</li>
 </ul>
 </div>
-<div id="stochastisches-gradientenabstiegsverfahren" class="section level2 hasAnchor" number="3.4">
-<h2><span class="header-section-number">3.4</span> Stochastisches Gradientenabstiegsverfahren<a href="iterative-methoden.html#stochastisches-gradientenabstiegsverfahren" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-</div>
-<div id="übungen-2" class="section level2 hasAnchor" number="3.5">
-<h2><span class="header-section-number">3.5</span> Übungen<a href="iterative-methoden.html#übungen-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="übungen-2" class="section level2 hasAnchor" number="3.4">
+<h2><span class="header-section-number">3.4</span> Übungen<a href="iterative-methoden.html#übungen-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ol style="list-style-type: decimal">
 <li><p>Bestimmen Sie die Konvergenzordnung und die Rate für das Intervallschachtelungsverfahren zur Nullstellenberechnung.</p></li>
 <li><p>Benutzen Sie Satz <a href="iterative-methoden.html#thm:thm-smooth-fp-conv">3.1</a> um zu zeigen, dass aus <span class="math inline">\(f\)</span> zweimal stetig differenzierbar und <span class="math inline">\(f(z)=0\)</span>, <span class="math inline">\(f&#39;(z)\neq 0\)</span> für ein <span class="math inline">\(z\in D(f)\)</span> folgt, dass das Newton-Verfahren zur Berechnung von <span class="math inline">\(z\)</span> lokal quadratisch konvergiert. <em>Hinweis</em>: Hier ist es wichtig zunächst zu verstehen, was die Funktion <span class="math inline">\(f\)</span> ist und was die Verfahrensfunktion <span class="math inline">\(\phi\)</span> ist.</p></li>
@@ -450,7 +452,7 @@ g_k(x) = [(k-1)f(x) + b(x)] - [(k-1)f(x_{k-1}) + b(x_{k-1})].
         </div>
       </div>
 <a href="fehler-und-konditionierung.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="nachklapp.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="stochastisches-gradientenverfahren.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

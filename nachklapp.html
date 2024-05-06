@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>4 Nachklapp | Numerik des Maschinellen Lernens</title>
+  <title>5 Nachklapp | Numerik des Maschinellen Lernens</title>
   <meta name="description" content="Vorlesungsnotizen zu meiner integrierten Vorlesung im SoSe 2024" />
   <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="4 Nachklapp | Numerik des Maschinellen Lernens" />
+  <meta property="og:title" content="5 Nachklapp | Numerik des Maschinellen Lernens" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="Vorlesungsnotizen zu meiner integrierten Vorlesung im SoSe 2024" />
   <meta name="github-repo" content="highlando/script-ndml" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="4 Nachklapp | Numerik des Maschinellen Lernens" />
+  <meta name="twitter:title" content="5 Nachklapp | Numerik des Maschinellen Lernens" />
   
   <meta name="twitter:description" content="Vorlesungsnotizen zu meiner integrierten Vorlesung im SoSe 2024" />
   
@@ -29,7 +29,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="iterative-methoden.html"/>
+<link rel="prev" href="stochastisches-gradientenverfahren.html"/>
 <link rel="next" href="referenzen.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -160,10 +160,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.1" data-path="iterative-methoden.html"><a href="iterative-methoden.html#iterative-methoden-als-fixpunktiteration"><i class="fa fa-check"></i><b>3.1</b> Iterative Methoden als Fixpunktiteration</a></li>
 <li class="chapter" data-level="3.2" data-path="iterative-methoden.html"><a href="iterative-methoden.html#gradientenabstiegsverfahren"><i class="fa fa-check"></i><b>3.2</b> Gradientenabstiegsverfahren</a></li>
 <li class="chapter" data-level="3.3" data-path="iterative-methoden.html"><a href="iterative-methoden.html#auxiliary-function-methods"><i class="fa fa-check"></i><b>3.3</b> Auxiliary Function Methods</a></li>
-<li class="chapter" data-level="3.4" data-path="iterative-methoden.html"><a href="iterative-methoden.html#stochastisches-gradientenabstiegsverfahren"><i class="fa fa-check"></i><b>3.4</b> Stochastisches Gradientenabstiegsverfahren</a></li>
-<li class="chapter" data-level="3.5" data-path="iterative-methoden.html"><a href="iterative-methoden.html#übungen-2"><i class="fa fa-check"></i><b>3.5</b> Übungen</a></li>
+<li class="chapter" data-level="3.4" data-path="iterative-methoden.html"><a href="iterative-methoden.html#übungen-2"><i class="fa fa-check"></i><b>3.4</b> Übungen</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="nachklapp.html"><a href="nachklapp.html"><i class="fa fa-check"></i><b>4</b> Nachklapp</a></li>
+<li class="chapter" data-level="4" data-path="stochastisches-gradientenverfahren.html"><a href="stochastisches-gradientenverfahren.html"><i class="fa fa-check"></i><b>4</b> Stochastisches Gradientenverfahren</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="stochastisches-gradientenverfahren.html"><a href="stochastisches-gradientenverfahren.html#motivation-und-algorithmus"><i class="fa fa-check"></i><b>4.1</b> Motivation und Algorithmus</a></li>
+<li class="chapter" data-level="4.2" data-path="stochastisches-gradientenverfahren.html"><a href="stochastisches-gradientenverfahren.html#iterative_method"><i class="fa fa-check"></i><b>4.2</b> Stochastisches Abstiegsverfahren</a></li>
+<li class="chapter" data-level="4.3" data-path="stochastisches-gradientenverfahren.html"><a href="stochastisches-gradientenverfahren.html#konvergenzanalyse"><i class="fa fa-check"></i><b>4.3</b> Konvergenzanalyse</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="nachklapp.html"><a href="nachklapp.html"><i class="fa fa-check"></i><b>5</b> Nachklapp</a></li>
 <li class="chapter" data-level="" data-path="referenzen.html"><a href="referenzen.html"><i class="fa fa-check"></i>Referenzen</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -185,8 +190,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="nachklapp" class="section level1 hasAnchor" number="4">
-<h1><span class="header-section-number">4</span> Nachklapp<a href="nachklapp.html#nachklapp" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="nachklapp" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">5</span> Nachklapp<a href="nachklapp.html#nachklapp" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>Ein paar lose Beispiele wo Numerik und maschinelles Lernen sich treffen.</p>
 <ul>
 <li><p>Iterative Methoden</p>
@@ -222,7 +227,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="iterative-methoden.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="stochastisches-gradientenverfahren.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="referenzen.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>

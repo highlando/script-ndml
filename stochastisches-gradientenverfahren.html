@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>4 Stochastisches Gradientenverfahren | Numerik des Maschinellen Lernens</title>
+  <meta name="description" content="Vorlesungsnotizen zu meiner integrierten Vorlesung im SoSe 2024" />
+  <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="4 Stochastisches Gradientenverfahren | Numerik des Maschinellen Lernens" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Vorlesungsnotizen zu meiner integrierten Vorlesung im SoSe 2024" />
+  <meta name="github-repo" content="highlando/script-ndml" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="4 Stochastisches Gradientenverfahren | Numerik des Maschinellen Lernens" />
+  
+  <meta name="twitter:description" content="Vorlesungsnotizen zu meiner integrierten Vorlesung im SoSe 2024" />
+  
+
+<meta name="author" content="Jan Heiland" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="iterative-methoden.html"/>
+<link rel="next" href="nachklapp.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">NdML</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Vorwort</a></li>
+<li class="chapter" data-level="1" data-path="einführung.html"><a href="einführung.html"><i class="fa fa-check"></i><b>1</b> Einführung</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="einführung.html"><a href="einführung.html#was-ist-ein-algorithmus"><i class="fa fa-check"></i><b>1.1</b> Was ist ein Algorithmus</a></li>
+<li class="chapter" data-level="1.2" data-path="einführung.html"><a href="einführung.html#konsistenz-stabilität-genauigkeit"><i class="fa fa-check"></i><b>1.2</b> Konsistenz, Stabilität, Genauigkeit</a></li>
+<li class="chapter" data-level="1.3" data-path="einführung.html"><a href="einführung.html#rechenkomplexität"><i class="fa fa-check"></i><b>1.3</b> Rechenkomplexität</a></li>
+<li class="chapter" data-level="1.4" data-path="einführung.html"><a href="einführung.html#literatur"><i class="fa fa-check"></i><b>1.4</b> Literatur</a></li>
+<li class="chapter" data-level="1.5" data-path="einführung.html"><a href="einführung.html#übungen"><i class="fa fa-check"></i><b>1.5</b> Übungen</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="fehler-und-konditionierung.html"><a href="fehler-und-konditionierung.html"><i class="fa fa-check"></i><b>2</b> Fehler und Konditionierung</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="fehler-und-konditionierung.html"><a href="fehler-und-konditionierung.html#fehler"><i class="fa fa-check"></i><b>2.1</b> Fehler</a></li>
+<li class="chapter" data-level="2.2" data-path="fehler-und-konditionierung.html"><a href="fehler-und-konditionierung.html#kondition"><i class="fa fa-check"></i><b>2.2</b> Kondition</a></li>
+<li class="chapter" data-level="2.3" data-path="fehler-und-konditionierung.html"><a href="fehler-und-konditionierung.html#kondition-der-grundrechenarten"><i class="fa fa-check"></i><b>2.3</b> Kondition der Grundrechenarten</a></li>
+<li class="chapter" data-level="2.4" data-path="fehler-und-konditionierung.html"><a href="fehler-und-konditionierung.html#übungen-1"><i class="fa fa-check"></i><b>2.4</b> Übungen</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="iterative-methoden.html"><a href="iterative-methoden.html"><i class="fa fa-check"></i><b>3</b> Iterative Methoden</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="iterative-methoden.html"><a href="iterative-methoden.html#iterative-methoden-als-fixpunktiteration"><i class="fa fa-check"></i><b>3.1</b> Iterative Methoden als Fixpunktiteration</a></li>
+<li class="chapter" data-level="3.2" data-path="iterative-methoden.html"><a href="iterative-methoden.html#gradientenabstiegsverfahren"><i class="fa fa-check"></i><b>3.2</b> Gradientenabstiegsverfahren</a></li>
+<li class="chapter" data-level="3.3" data-path="iterative-methoden.html"><a href="iterative-methoden.html#auxiliary-function-methods"><i class="fa fa-check"></i><b>3.3</b> Auxiliary Function Methods</a></li>
+<li class="chapter" data-level="3.4" data-path="iterative-methoden.html"><a href="iterative-methoden.html#übungen-2"><i class="fa fa-check"></i><b>3.4</b> Übungen</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="stochastisches-gradientenverfahren.html"><a href="stochastisches-gradientenverfahren.html"><i class="fa fa-check"></i><b>4</b> Stochastisches Gradientenverfahren</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="stochastisches-gradientenverfahren.html"><a href="stochastisches-gradientenverfahren.html#motivation-und-algorithmus"><i class="fa fa-check"></i><b>4.1</b> Motivation und Algorithmus</a></li>
+<li class="chapter" data-level="4.2" data-path="stochastisches-gradientenverfahren.html"><a href="stochastisches-gradientenverfahren.html#iterative_method"><i class="fa fa-check"></i><b>4.2</b> Stochastisches Abstiegsverfahren</a></li>
+<li class="chapter" data-level="4.3" data-path="stochastisches-gradientenverfahren.html"><a href="stochastisches-gradientenverfahren.html#konvergenzanalyse"><i class="fa fa-check"></i><b>4.3</b> Konvergenzanalyse</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="nachklapp.html"><a href="nachklapp.html"><i class="fa fa-check"></i><b>5</b> Nachklapp</a></li>
+<li class="chapter" data-level="" data-path="referenzen.html"><a href="referenzen.html"><i class="fa fa-check"></i>Referenzen</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Numerik des Maschinellen Lernens</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="stochastisches-gradientenverfahren" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">4</span> Stochastisches Gradientenverfahren<a href="stochastisches-gradientenverfahren.html#stochastisches-gradientenverfahren" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Das stochastische Gradientenverfahren formuliert den Fall, dass im <span class="math inline">\(k\)</span>-ten Schritt anstelle des eigentlichen Gradienten <span class="math inline">\(\nabla f(x_k)\in \mathbb R^{n}\)</span> eine Schätzung <span class="math inline">\(g(x_k, \xi)\in \mathbb R^{n}\)</span> vorliegt, die eine zufällige Komponente in Form einer Zufallsvariable <span class="math inline">\(\xi\)</span> hat. Dabei wird angenommen, dass <span class="math inline">\(g(x_k, \xi)\)</span> <em>erwartungstreu</em> ist, das heißt
+<span class="math display">\[\begin{equation*}
+\mathbb E_\xi [g(x_k, \xi)] = \nabla f(x_k),
+\end{equation*}\]</span>
+wobei <span class="math inline">\(\mathbb E_\xi\)</span> den Erwartungswert bezüglich der Variablen <span class="math inline">\(\xi\)</span> beschreibt.</p>
+<div id="motivation-und-algorithmus" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> Motivation und Algorithmus<a href="stochastisches-gradientenverfahren.html#motivation-und-algorithmus" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Im <em>Maschinellen Lernen</em> oder allgemeiner in der <em>nichtlinearen Regression</em> spielt die Minimierung von Zielfunktionalen in Summenform
+<span class="math display">\[\begin{equation*}
+Q(w) = \frac{1}{N}\sum_{i=1}^N Q_i(w)
+\end{equation*}\]</span>
+eine Rolle, wobei der Parametervektor <span class="math inline">\(w\in \mathbb R^n\)</span>, der
+<span class="math inline">\(Q\)</span> minimiert, gefunden oder geschätzt werden soll.
+Jede der Summandenfunktionen <span class="math inline">\(Q_i\)</span> ist typischerweise assoziiert mit einem <span class="math inline">\(i\)</span>-ten Datenpunkt (einer Beobachtung) beispielsweise aus einer Menge von Trainingsdaten.</p>
+<p>Sei beispielsweise eine parametrisierte nichtlineare Funktion <span class="math inline">\(N\colon \mathbb R^{m}\to \mathbb R^{n}\)</span> gegeben die an Datenpunkte <span class="math inline">\((x_i, y_i)\subset \mathbb R^{n}\times \mathbb R^{m}\)</span>, <span class="math inline">\(i=1, \dotsc, N\)</span>, <em>gefittet</em> werden soll, ist die <em>mittlere quadratische Abweichung</em>
+<span class="math display">\[\begin{equation*}
+\mathsf{MSE}\,(w) := \frac 1N \sum_{i=1}^N \|N(x_i)-y_i\|_2^2
+\end{equation*}\]</span>
+genannt <em>mean squared error</em>, ein naheliegendes und oft gewähltes Optimierungskriterium.</p>
+<p>Um obige Kriterien zu minimieren, würde ein sogenannter Gradientenabstiegsverfahren den folgenden Minimierungsschritt</p>
+<p><span class="math display">\[\begin{equation*}
+w^{k+1} := w^{k} - \eta \nabla Q(w^k) = w^k - \eta \frac{1}{N} \sum_{i=1}^N \nabla Q_i(w^k),
+\end{equation*}\]</span>
+iterativ anwenden, wobei <span class="math inline">\(\eta\)</span> die Schrittweite ist, die besonders in der <em>ML</em> community oft auch <em>learning rate</em> genannt wird.</p>
+<p>Die Berechnung der Abstiegsrichtung erfordert hier also in jedem Schritt die Bestimmung von <span class="math inline">\(N\)</span> Gradienten <span class="math inline">\(\nabla Q_i(w^k)\)</span> der Summandenfunktionen. Wenn <span class="math inline">\(N\)</span> groß ist, also beispielsweise viele Datenpunkte in einer Regression beachtet werden sollen, dann ist die Berechnung entsprechend aufwändig.</p>
+<p>Andererseits entspricht die Abstiegsrichtung
+<span class="math display">\[\begin{equation*}
+\frac{1}{N} \sum_{i=1}^N \nabla Q_i(w^k)
+\end{equation*}\]</span>
+dem Mittelwert der Gradienten aller <span class="math inline">\(Q_i\)</span>s am Punkt <span class="math inline">\(w_k\)</span>, der durch ein kleineres Sample</p>
+<p><span class="math display">\[\begin{equation*}
+\frac{1}{N} \sum_{i=1}^N \nabla Q_i(w^k) \approx \frac{1}{|\mathcal J|} \sum_{j\in \mathcal J} \nabla Q_j(w^k),
+\end{equation*}\]</span></p>
+<p>wobei <span class="math inline">\(\mathcal J \subset \{1, \dotsc, N\}\)</span> eine Indexmenge ist, die den <em>batch</em> der zur Approximation gewählten <span class="math inline">\(Q_i\)</span>s beschreibt.</p>
+</div>
+<div id="iterative_method" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Stochastisches Abstiegsverfahren<a href="stochastisches-gradientenverfahren.html#iterative_method" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Beim stochastischen (oder “Online”) Gradientenabstieg wird der wahre Gradient von <span class="math inline">\(Q(w^k)\)</span> durch einen Gradienten bei einer einzelnen Probe angenähert:
+<span class="math display">\[\begin{equation*}
+w^{k+1} = w^k-\eta \nabla Q_j(w^k),
+\end{equation*}\]</span>
+mit <span class="math inline">\(j\in \{1,\dotsc, N\}\)</span> zufällig gewählt (ohne zurücklegen).</p>
+<p>Während der Algorithmus den Trainingssatz durchläuft, führt er die obige Aktualisierung für jede Trainingsprobe durch. Es können mehrere Durchgänge (sogenannte <em>epochs</em>) über den Trainingssatz gemacht werden, bis der Algorithmus konvergiert. Wenn dies getan wird, können die Daten für jeden Durchlauf gemischt werden, um Zyklen zu vermeiden. Typische Implementierungen verwenden zudem eine adaptive Lernrate, damit der Algorithmus überhaupt oder schneller konvergiert.</p>
+<p>Die wesentlichen Schritte als Algorithmus sehen wie folgt aus:</p>
+<pre><code>###################################################
+# The basic steps of a stochastic gradient method #
+###################################################
+
+w = ...  # initialize the weight vector
+eta = ... # choose the learning rate
+I = [1, 2, ..., N]  # the full index set
+
+for k in range(number_epochs):
+    J = shuffle(I)  # shuffle the indices
+    for j in J:
+        # compute the gradient of Qj at current w
+        gradjk = nabla(Q(j, w))  
+        # update the w vector
+        w = w - eta*gradjk
+    if convergence_criterion:
+       break
+
+###################################################</code></pre>
+<p>Die Konvergenz des <em>stochastischen Gradientenabstiegsverfahren</em> als Kombination von <em>stochastischer Approximation</em> und <em>numerischer Optimierung</em> ist gut verstanden. Allgemein und unter bestimmten Voraussetzung lässt sich sagen, dass das stochastische Verfahren ähnlich konvergiert wie das <em>exakte Verfahren</em> mit der Einschränkung, dass die Konvergenz <em>fast sicher</em> stattfindet.</p>
+<p>In der Praxis hat sich der Kompromiss etabliert, der anstelle des Gradienten eines einzelnen Punktes <span class="math inline">\(\nabla Q_j(w_k)\)</span>, den Abstieg aus dem Mittelwert über mehrere Samples berechnet, also (wie oben beschrieben)
+<span class="math display">\[\begin{equation*}
+\frac{1}{N} \sum_{i=1}^N \nabla Q_i(w^k) \approx \frac{1}{|\mathcal J|} \sum_{j\in \mathcal J} \nabla Q_j(w^k).
+\end{equation*}\]</span>
+Im Algorithmus wird dann anstelle der zufälligen Indices <span class="math inline">\(j \in \{1, \dotsc, N\}\)</span>, über zufällig zusammengestellte Indexmengen <span class="math inline">\(\mathcal J \subset \{1, \dotsc, N\}\)</span> iteriert.</p>
+<p>Da die einzelnen Gradienten <span class="math inline">\(\nabla Q_j(w^K)\)</span> unabhängig voneinander berechnet werden können, kann so ein <em>batch</em> Verfahren effizient auf Computern mit mehreren Prozessoren realisiert werden. Die Konvergenztheorie ist nicht wesentlich verschieden vom eigentlichen <em>stochastischen Gradientenabstiegsverfahren</em>, allerdings erscheint die beobachte Konvergenz weniger erratisch, da der Mittelwert statistische Ausreißer ausmitteln kann.</p>
+</div>
+<div id="konvergenzanalyse" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> Konvergenzanalyse<a href="stochastisches-gradientenverfahren.html#konvergenzanalyse" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Wir betrachten den einfachsten Fall wie im obigen Algorithmus beschrieben, dass im <span class="math inline">\(k\)</span>-ten Schritt, die Schätzung
+<span class="math display">\[g(x_k, \xi)=g(x_k, i(\xi))=:\nabla Q_{i(\xi)}(x_k)\]</span>
+also dass der Gradient von <span class="math inline">\(\frac 1N \nabla \sum Q_i\)</span> geschätzt wird durch den Gradienten der <span class="math inline">\(i(\xi)\)</span>-ten Komponentenfunktion, wobei <span class="math inline">\(i(\xi)\)</span> zufällig aus der Indexmenge <span class="math inline">\(I=\{1, 2, \dotsc, N\}\)</span> gezogen wird.</p>
+<div id="sdg-put-it-back" class="JHSAYS">
+<p>Im folgenden Beweis wird verwendet werden, dass <em>zurückgelegt</em> wird, also dass im <span class="math inline">\(k\)</span>-ten Schritt alle möglichen Indizes gezogen werden können. Das ist notwendig um zu schlussfolgern, dass
+<span class="math display">\[\begin{equation*}
+\mathbb E_{i(\xi)} [g(x_k, k_\xi)] = \nabla Q(x_k)
+\end{equation*}\]</span>
+In der Praxis (und oben im Algorithmus) wir <strong>nicht</strong> zurückgelegt, es gilt also <span class="math inline">\(I_{k+1} = I_k \setminus \{k_\xi\}\)</span>. Der Grund dafür ist, dass gerne gesichert wird, dass auch in wenig Iterationsschritten alle Datenpunkte <em>besucht</em> werden.</p>
+</div>
+<p>Und die Iteration lautet
+<span class="math display">\[\begin{equation*}
+x_{k+1} = x_k - \eta_k g(x_k, k_\xi).
+\end{equation*}\]</span></p>
+<div class="theorem">
+<p><span id="thm:thm-convergence-stoch-grad" class="theorem"><strong>Theorem 4.1  (Konvergenz des stochastischen Gradientenabstiegsverfahren) </strong></span>Sei <span class="math inline">\(Q:=\frac 1N \sum_{i=1}^NQ_i\)</span> zweimal stetig differenzierbar und <em>streng konvex</em> mit <em>Modulus</em> <span class="math inline">\(m&gt;0\)</span> und es gebe eine Konstante <span class="math inline">\(M\)</span> mit <span class="math inline">\(\frac 1N \sum_{i=1}^N \|\nabla Q_i \|_2^2 \leq M\)</span>. Ferner
+<!-- seien die Funktionen $Q_i$ konvex und es sei -->
+<span class="math inline">\(x^*\)</span> das Minimum von <span class="math inline">\(Q\)</span>. Dann konvergiert das einfache stochastische Gradientenabstiegsverfahren mit <span class="math inline">\(\eta_k \leq \frac{1}{km}\)</span> linear im Erwartungswert des quadrierten Fehlers, d.h. es gilt
+<span class="math display">\[\begin{equation*}
+a_{k+1} := \frac 12 \mathbb E [\| x_{k+1} - x^*\|^2 ] \leq \frac {C}{k+1}
+\end{equation*}\]</span>
+für eine Konstante <span class="math inline">\(C\)</span>.</p>
+</div>
+<div class="proof">
+<p><span id="unlabeled-div-5" class="proof"><em>Proof</em>. </span>Streng konvex mit Modulus <span class="math inline">\(m&gt;0\)</span> bedeutet, dass alle Eigenwerte der Hessematrix <span class="math inline">\(H_Q\)</span> größer als <span class="math inline">\(m\)</span> sind.
+<!--Daraus l&auml;sst sich ableiten, dass f&uuml;r alle *subgradienten* $g$ gilt, dass-->
+Insbesondere gilt, dass
+<span class="math display">\[\begin{equation*}
+Q(z) \leq Q(x) + \nabla Q(x)^T(z-x) + \frac12 m \|z-x\|^2
+\end{equation*}\]</span>
+für alle <span class="math inline">\(z\)</span> und <span class="math inline">\(x\)</span> aus dem Definitionsbereich von <span class="math inline">\(Q\)</span>.</p>
+<!-- Aus $Q_i$ konvex, folgt dass $\nabla Q_k (x_k)$ ein Subgradient ist, sodass wir obige Relation in der folgenden Argumentation verwenden k&ouml;nnen. -->
+<p>Zunächst erhalten wir aus der Definition der 2-norm, dass
+<span class="math display">\[\begin{equation*}
+\begin{split}
+\frac 12 \|x_{k+1} - x^* \|^2 &amp;= 
+\frac 12 \|x_{k} - \eta_k \nabla Q_{k_\xi}(x_k) - x^* \|^2 \\
+&amp;=
+\frac 12 \|x_{k} - x^* \|^2 - \eta_k \nabla Q_{k_\xi}(x_k)^T( x_{k} -x^*) + \eta_k^2 \|\nabla Q_{k_\xi}(x_k)\|^2
+\end{split}
+\end{equation*}\]</span></p>
+</div>
+<p>Im nächsten Schritt nehmen wir den Erwartungswert dieser Terme. Dabei ist zu beachten, dass auch die <span class="math inline">\(x_k\)</span> zufällig (aus der Sequenz der zufällig gezogenen Richtungen) erzeugt wurden. Dementsprechend müssen wir bezüglich <span class="math inline">\(\mathbb E\)</span> (als Erwartungswert bezüglich aller bisherigen zufälligen Ereignisse für <span class="math inline">\(\ell=0, 1, \dotsc, k-1\)</span>) und <span class="math inline">\(\mathbb E_{i(k;\xi)}\)</span></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="iterative-methoden.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="nachklapp.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["NdML.pdf"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -906,9 +906,6 @@ Zum Abschluss einige Bemerkungen
   Eine schöne Einführung und Übersicht liefert das Skript \emph{Lecture Notes on Iterative Optimization Algorithms} (Byrne \protect\hyperlink{ref-Byr14}{2014}).
 \end{itemize}
 
-\hypertarget{stochastisches-gradientenabstiegsverfahren}{%
-\section{Stochastisches Gradientenabstiegsverfahren}\label{stochastisches-gradientenabstiegsverfahren}}
-
 \hypertarget{uxfcbungen-2}{%
 \section{Übungen}\label{uxfcbungen-2}}
 
@@ -929,6 +926,150 @@ Zum Abschluss einige Bemerkungen
 \item
   Implementieren Sie das projizierte Gradientenabstiegsverfahren für \eqref{eq:eqn-exa-cnstrnt-optiprob} und das \emph{nichtprojizierte} aber an \(k\) angepasste Gradientenabstiegsverfahren für \eqref{eq:eqn-exa-relaxed-optiprob}. Vergleichen Sie die Konvergenz für verschiedene Startwerte.
 \end{enumerate}
+
+\hypertarget{stochastisches-gradientenverfahren}{%
+\chapter{Stochastisches Gradientenverfahren}\label{stochastisches-gradientenverfahren}}
+
+Das stochastische Gradientenverfahren formuliert den Fall, dass im \(k\)-ten Schritt anstelle des eigentlichen Gradienten \(\nabla f(x_k)\in \mathbb R^{n}\) eine Schätzung \(g(x_k, \xi)\in \mathbb R^{n}\) vorliegt, die eine zufällige Komponente in Form einer Zufallsvariable \(\xi\) hat. Dabei wird angenommen, dass \(g(x_k, \xi)\) \emph{erwartungstreu} ist, das heißt
+\begin{equation*}
+\mathbb E_\xi [g(x_k, \xi)] = \nabla f(x_k),
+\end{equation*}
+wobei \(\mathbb E_\xi\) den Erwartungswert bezüglich der Variablen \(\xi\) beschreibt.
+
+\hypertarget{motivation-und-algorithmus}{%
+\section{Motivation und Algorithmus}\label{motivation-und-algorithmus}}
+
+Im \emph{Maschinellen Lernen} oder allgemeiner in der \emph{nichtlinearen Regression} spielt die Minimierung von Zielfunktionalen in Summenform
+\begin{equation*}
+Q(w) = \frac{1}{N}\sum_{i=1}^N Q_i(w)
+\end{equation*}
+eine Rolle, wobei der Parametervektor \(w\in \mathbb R^n\), der
+\(Q\) minimiert, gefunden oder geschätzt werden soll.
+Jede der Summandenfunktionen \(Q_i\) ist typischerweise assoziiert mit einem \(i\)-ten Datenpunkt (einer Beobachtung) beispielsweise aus einer Menge von Trainingsdaten.
+
+Sei beispielsweise eine parametrisierte nichtlineare Funktion \(N\colon \mathbb R^{m}\to \mathbb R^{n}\) gegeben die an Datenpunkte \((x_i, y_i)\subset \mathbb R^{n}\times \mathbb R^{m}\), \(i=1, \dotsc, N\), \emph{gefittet} werden soll, ist die \emph{mittlere quadratische Abweichung}
+\begin{equation*}
+\mathsf{MSE}\,(w) := \frac 1N \sum_{i=1}^N \|N(x_i)-y_i\|_2^2
+\end{equation*}
+genannt \emph{mean squared error}, ein naheliegendes und oft gewähltes Optimierungskriterium.
+
+Um obige Kriterien zu minimieren, würde ein sogenannter Gradientenabstiegsverfahren den folgenden Minimierungsschritt
+
+\begin{equation*}
+w^{k+1} := w^{k} - \eta \nabla Q(w^k) = w^k - \eta \frac{1}{N} \sum_{i=1}^N \nabla Q_i(w^k),
+\end{equation*}
+iterativ anwenden, wobei \(\eta\) die Schrittweite ist, die besonders in der \emph{ML} community oft auch \emph{learning rate} genannt wird.
+
+Die Berechnung der Abstiegsrichtung erfordert hier also in jedem Schritt die Bestimmung von \(N\) Gradienten \(\nabla Q_i(w^k)\) der Summandenfunktionen. Wenn \(N\) groß ist, also beispielsweise viele Datenpunkte in einer Regression beachtet werden sollen, dann ist die Berechnung entsprechend aufwändig.
+
+Andererseits entspricht die Abstiegsrichtung
+\begin{equation*}
+\frac{1}{N} \sum_{i=1}^N \nabla Q_i(w^k)
+\end{equation*}
+dem Mittelwert der Gradienten aller \(Q_i\)s am Punkt \(w_k\), der durch ein kleineres Sample
+
+\begin{equation*}
+\frac{1}{N} \sum_{i=1}^N \nabla Q_i(w^k) \approx \frac{1}{|\mathcal J|} \sum_{j\in \mathcal J} \nabla Q_j(w^k),
+\end{equation*}
+
+wobei \(\mathcal J \subset \{1, \dotsc, N\}\) eine Indexmenge ist, die den \emph{batch} der zur Approximation gewählten \(Q_i\)s beschreibt.
+
+\hypertarget{iterative_method}{%
+\section{Stochastisches Abstiegsverfahren}\label{iterative_method}}
+
+Beim stochastischen (oder ``Online'') Gradientenabstieg wird der wahre Gradient von \(Q(w^k)\) durch einen Gradienten bei einer einzelnen Probe angenähert:
+\begin{equation*}
+w^{k+1} = w^k-\eta \nabla Q_j(w^k),
+\end{equation*}
+mit \(j\in \{1,\dotsc, N\}\) zufällig gewählt (ohne zurücklegen).
+
+Während der Algorithmus den Trainingssatz durchläuft, führt er die obige Aktualisierung für jede Trainingsprobe durch. Es können mehrere Durchgänge (sogenannte \emph{epochs}) über den Trainingssatz gemacht werden, bis der Algorithmus konvergiert. Wenn dies getan wird, können die Daten für jeden Durchlauf gemischt werden, um Zyklen zu vermeiden. Typische Implementierungen verwenden zudem eine adaptive Lernrate, damit der Algorithmus überhaupt oder schneller konvergiert.
+
+Die wesentlichen Schritte als Algorithmus sehen wie folgt aus:
+
+\begin{verbatim}
+###################################################
+# The basic steps of a stochastic gradient method #
+###################################################
+
+w = ...  # initialize the weight vector
+eta = ... # choose the learning rate
+I = [1, 2, ..., N]  # the full index set
+
+for k in range(number_epochs):
+    J = shuffle(I)  # shuffle the indices
+    for j in J:
+        # compute the gradient of Qj at current w
+        gradjk = nabla(Q(j, w))  
+        # update the w vector
+        w = w - eta*gradjk
+    if convergence_criterion:
+       break
+
+###################################################
+\end{verbatim}
+
+Die Konvergenz des \emph{stochastischen Gradientenabstiegsverfahren} als Kombination von \emph{stochastischer Approximation} und \emph{numerischer Optimierung} ist gut verstanden. Allgemein und unter bestimmten Voraussetzung lässt sich sagen, dass das stochastische Verfahren ähnlich konvergiert wie das \emph{exakte Verfahren} mit der Einschränkung, dass die Konvergenz \emph{fast sicher} stattfindet.
+
+In der Praxis hat sich der Kompromiss etabliert, der anstelle des Gradienten eines einzelnen Punktes \(\nabla Q_j(w_k)\), den Abstieg aus dem Mittelwert über mehrere Samples berechnet, also (wie oben beschrieben)
+\begin{equation*}
+\frac{1}{N} \sum_{i=1}^N \nabla Q_i(w^k) \approx \frac{1}{|\mathcal J|} \sum_{j\in \mathcal J} \nabla Q_j(w^k).
+\end{equation*}
+Im Algorithmus wird dann anstelle der zufälligen Indices \(j \in \{1, \dotsc, N\}\), über zufällig zusammengestellte Indexmengen \(\mathcal J \subset \{1, \dotsc, N\}\) iteriert.
+
+Da die einzelnen Gradienten \(\nabla Q_j(w^K)\) unabhängig voneinander berechnet werden können, kann so ein \emph{batch} Verfahren effizient auf Computern mit mehreren Prozessoren realisiert werden. Die Konvergenztheorie ist nicht wesentlich verschieden vom eigentlichen \emph{stochastischen Gradientenabstiegsverfahren}, allerdings erscheint die beobachte Konvergenz weniger erratisch, da der Mittelwert statistische Ausreißer ausmitteln kann.
+
+\hypertarget{konvergenzanalyse}{%
+\section{Konvergenzanalyse}\label{konvergenzanalyse}}
+
+Wir betrachten den einfachsten Fall wie im obigen Algorithmus beschrieben, dass im \(k\)-ten Schritt, die Schätzung
+\[g(x_k, \xi)=g(x_k, i(\xi))=:\nabla Q_{i(\xi)}(x_k)\]
+also dass der Gradient von \(\frac 1N \nabla \sum Q_i\) geschätzt wird durch den Gradienten der \(i(\xi)\)-ten Komponentenfunktion, wobei \(i(\xi)\) zufällig aus der Indexmenge \(I=\{1, 2, \dotsc, N\}\) gezogen wird.
+
+\leavevmode\hypertarget{sdg-put-it-back}{}%
+\begin{JHSAYS}
+Im folgenden Beweis wird verwendet werden, dass \emph{zurückgelegt} wird, also dass im \(k\)-ten Schritt alle möglichen Indizes gezogen werden können. Das ist notwendig um zu schlussfolgern, dass
+\begin{equation*}
+\mathbb E_{i(\xi)} [g(x_k, k_\xi)] = \nabla Q(x_k)
+\end{equation*}
+In der Praxis (und oben im Algorithmus) wir \textbf{nicht} zurückgelegt, es gilt also \(I_{k+1} = I_k \setminus \{k_\xi\}\). Der Grund dafür ist, dass gerne gesichert wird, dass auch in wenig Iterationsschritten alle Datenpunkte \emph{besucht} werden.
+
+\end{JHSAYS}
+
+Und die Iteration lautet
+\begin{equation*}
+x_{k+1} = x_k - \eta_k g(x_k, k_\xi).
+\end{equation*}
+
+\begin{theorem}[Konvergenz des stochastischen Gradientenabstiegsverfahren]
+\protect\hypertarget{thm:thm-convergence-stoch-grad}{}\label{thm:thm-convergence-stoch-grad}Sei \(Q:=\frac 1N \sum_{i=1}^NQ_i\) zweimal stetig differenzierbar und \emph{streng konvex} mit \emph{Modulus} \(m>0\) und es gebe eine Konstante \(M\) mit \(\frac 1N \sum_{i=1}^N \|\nabla Q_i \|_2^2 \leq M\). Ferner
+\(x^*\) das Minimum von \(Q\). Dann konvergiert das einfache stochastische Gradientenabstiegsverfahren mit \(\eta_k \leq \frac{1}{km}\) linear im Erwartungswert des quadrierten Fehlers, d.h. es gilt
+\begin{equation*}
+a_{k+1} := \frac 12 \mathbb E [\| x_{k+1} - x^*\|^2 ] \leq \frac {C}{k+1}
+\end{equation*}
+für eine Konstante \(C\).
+\end{theorem}
+
+\begin{proof}
+Streng konvex mit Modulus \(m>0\) bedeutet, dass alle Eigenwerte der Hessematrix \(H_Q\) größer als \(m\) sind.
+Insbesondere gilt, dass
+\begin{equation*}
+Q(z) \leq Q(x) + \nabla Q(x)^T(z-x) + \frac12 m \|z-x\|^2
+\end{equation*}
+für alle \(z\) und \(x\) aus dem Definitionsbereich von \(Q\).
+
+Zunächst erhalten wir aus der Definition der 2-norm, dass
+\begin{equation*}
+\begin{split}
+\frac 12 \|x_{k+1} - x^* \|^2 &= 
+\frac 12 \|x_{k} - \eta_k \nabla Q_{k_\xi}(x_k) - x^* \|^2 \\
+&=
+\frac 12 \|x_{k} - x^* \|^2 - \eta_k \nabla Q_{k_\xi}(x_k)^T( x_{k} -x^*) + \eta_k^2 \|\nabla Q_{k_\xi}(x_k)\|^2
+\end{split}
+\end{equation*}
+\end{proof}
+
+Im nächsten Schritt nehmen wir den Erwartungswert dieser Terme. Dabei ist zu beachten, dass auch die \(x_k\) zufällig (aus der Sequenz der zufällig gezogenen Richtungen) erzeugt wurden. Dementsprechend müssen wir bezüglich \(\mathbb E\) (als Erwartungswert bezüglich aller bisherigen zufälligen Ereignisse für \(\ell=0, 1, \dotsc, k-1\)) und \(\mathbb E_{i(k;\xi)}\)
 
 \hypertarget{nachklapp}{%
 \chapter{Nachklapp}\label{nachklapp}}

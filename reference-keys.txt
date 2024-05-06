@@ -20,6 +20,7 @@ eq:eqn-exa-cnstrnt-optiprob
 eq:eqn-exa-relaxed-optiprob
 eq:eqn-gen-af-method
 eq:eqn-min-barrier
+thm:thm-convergence-stoch-grad
 einführung
 was-ist-ein-algorithmus
 konsistenz-stabilität-genauigkeit
@@ -38,6 +39,9 @@ iterative-methoden
 iterative-methoden-als-fixpunktiteration
 gradientenabstiegsverfahren
 auxiliary-function-methods
-stochastisches-gradientenabstiegsverfahren
 übungen-2
+stochastisches-gradientenverfahren
+motivation-und-algorithmus
+iterative_method
+konvergenzanalyse
 nachklapp
