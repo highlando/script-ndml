@@ -21,6 +21,7 @@ eq:eqn-exa-relaxed-optiprob
 eq:eqn-gen-af-method
 eq:eqn-min-barrier
 thm:thm-convergence-stoch-grad
+eq:eqn-m-konvex-grad-est
 einführung
 was-ist-ein-algorithmus
 konsistenz-stabilität-genauigkeit

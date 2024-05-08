@@ -157,9 +157,12 @@ Da im inneren Term nur noch die Wahl von $i$ zuf&auml;llig ist und wegen der Lin
 \end{split}
 \end{equation*}
 sodass mit der $m$-Konvexit&auml;t gilt dass 
-\begin{equation*}
-\mathbb E[ \nabla Q_{i(k;\xi)}(x_k)^T( x_{k} -x^*) ] \geq m \mathbb E[\|x_k - x^*\|^2].
-\end{equation*}
+\begin{equation}
+\mathbb E[ \nabla Q_{i(k;\xi)}(x_k)^T( x_{k} -x^*) ] \geq m \mathbb E[\|x_k - x^*\|^2];
+(\#eq:eqn-m-konvex-grad-est)
+\end{equation}
+vergleiche die &Uuml;bungsaufgabe unten.
+
 
 ::: {#sdg-cnv-independent .JHSAYS data-latex=''}
 Diese Manipulation mit den Erwartungswerten ist der formale Ausdruck daf&uuml;r, dass, egal woher das $x_k$ kam, die zuf&auml;llige Wahl der aktuellen Richtung f&uuml;hrt im statistischen Mittel auf $\nabla Q(x_k)$.
@@ -207,7 +210,7 @@ sodass der Beweis erbracht ist mit $C:=\frac c2$.
    \begin{equation*}
    \mathbb E_\xi[g(\xi)^T(x-x^*)] \geq Q(x)-Q(x^*) + \frac m2\|x - x^*\|^2  \geq m\|x - x^*\|^2,
    \end{equation*}
-f&uuml;r alle $x$.
+f&uuml;r alle $x$. 
 
 3. ((super)-Quadratische Kovergenz f&uuml;r glatte konvexe Funktionen) Sei $f\colon \mathbb R^{n}\to \mathbb R^{}$ konvex und $L$-glatt und sei
    $x^*$ die L&ouml;sung von $f(x)\to \min$. Zeigen Sie, dass
