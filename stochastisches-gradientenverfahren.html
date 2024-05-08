@@ -372,6 +372,12 @@ Matrizen.</li>
 \mathbb E_\xi[g(\xi)^T(x-x^*)] \geq Q(x)-Q(x^*) + \frac m2\|x - x^*\|^2  \geq m\|x - x^*\|^2,
 \end{equation*}\]</span>
 für alle <span class="math inline">\(x\)</span>.</p></li>
+<li><p>((super)-Quadratische Kovergenz für glatte konvexe Funktionen) Sei <span class="math inline">\(f\colon \mathbb R^{n}\to \mathbb R^{}\)</span> konvex und <span class="math inline">\(L\)</span>-glatt und sei
+<span class="math inline">\(x^*\)</span> die Lösung von <span class="math inline">\(f(x)\to \min\)</span>. Zeigen Sie, dass
+Gradientenverfahren mit der Schrittweite <span class="math inline">\(\frac 1L\)</span> eine Folge <span class="math inline">\(\{x_k\}_{k\in \mathbb N}\subset \mathbb R^{n}\)</span> erzeugt für die gilt
+<span class="math display">\[\begin{equation*}
+f(x_N)-f(x^*) \leq \frac{L}{2T} \|x_0 - x^*\|^2, \quad N=1, 2, \dotsc .
+\end{equation*}\]</span></p></li>
 <li><p>Berechnen sie näherungsweise den Gradienten der Beispielfunktion
 <span class="math display">\[\begin{equation*}
 f(x_1, x_2, x_3) = \sin(x_1) + x_3\cos(x_2) - 2x_2 + x_1^2 + x_2^2 + x_3^2
@@ -383,6 +389,7 @@ indem sie die partiellen Ableitungen durch den Differenzenquotienten, z.B.,
 \end{equation*}\]</span>
 für <span class="math inline">\(h\in\{10^{-3}, 10^{-6}, 10^{-9}, 10^{-12}\}\)</span> berechnen. Berechnen sie auch die Norm der Differenz zum exakten Wert von <span class="math inline">\(\nabla g(1, 1, 1)\)</span> (s.o.) und interpretieren sie die Ergebnisse.</p></li>
 </ol>
+<p>Hier schon mal ein Codegerüst.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="stochastisches-gradientenverfahren.html#cb7-1" aria-hidden="true"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb7-2"><a href="stochastisches-gradientenverfahren.html#cb7-2" aria-hidden="true"></a> </span>
 <span id="cb7-3"><a href="stochastisches-gradientenverfahren.html#cb7-3" aria-hidden="true"></a><span class="kw">def</span> gfun(x):</span>

@@ -209,7 +209,15 @@ sodass der Beweis erbracht ist mit $C:=\frac c2$.
    \end{equation*}
 f&uuml;r alle $x$.
 
-3. Berechnen sie n&auml;herungsweise den Gradienten der Beispielfunktion 
+3. ((super)-Quadratische Kovergenz f&uuml;r glatte konvexe Funktionen) Sei $f\colon \mathbb R^{n}\to \mathbb R^{}$ konvex und $L$-glatt und sei
+   $x^*$ die L&ouml;sung von $f(x)\to \min$. Zeigen Sie, dass
+   Gradientenverfahren mit der Schrittweite $\frac 1L$ eine Folge $\{x_k\}_{k\in
+   \mathbb N}\subset \mathbb R^{n}$ erzeugt f&uuml;r die gilt
+   \begin{equation*}
+   f(x_N)-f(x^*) \leq \frac{L}{2T} \|x_0 - x^*\|^2, \quad N=1, 2, \dotsc .
+   \end{equation*}
+
+4. Berechnen sie n&auml;herungsweise den Gradienten der Beispielfunktion 
 \begin{equation*}
 f(x_1, x_2, x_3) = \sin(x_1) + x_3\cos(x_2) - 2x_2 + x_1^2 + x_2^2 + x_3^2
 \end{equation*}
@@ -219,6 +227,8 @@ indem sie die partiellen Ableitungen durch den Differenzenquotienten, z.B.,
 \frac{\partial g}{\partial x_2}(1, 1, 1) \approx \frac{g(1, 1+h, 1) - g(1, 1,1)}{h}
 \end{equation*}
 f&uuml;r $h\in\{10^{-3}, 10^{-6}, 10^{-9}, 10^{-12}\}$ berechnen. Berechnen sie auch die Norm der Differenz zum exakten Wert von $\nabla g(1, 1, 1)$ (s.o.) und interpretieren sie die Ergebnisse.
+
+Hier schon mal ein Codeger&uuml;st.
 
 
 ```python
