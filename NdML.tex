@@ -987,27 +987,28 @@ Während der Algorithmus den Trainingssatz durchläuft, führt er die obige Aktu
 
 Die wesentlichen Schritte als Algorithmus sehen wie folgt aus:
 
-\begin{verbatim}
-###################################################
-# The basic steps of a stochastic gradient method #
-###################################################
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#}
+\CommentTok{\# The basic steps of a stochastic gradient method \#}
+\CommentTok{\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#}
 
-w = ...  # initialize the weight vector
-eta = ... # choose the learning rate
-I = [1, 2, ..., N]  # the full index set
+\NormalTok{w }\OperatorTok{=}\NormalTok{ ...  }\CommentTok{\# initialize the weight vector}
+\NormalTok{eta }\OperatorTok{=}\NormalTok{ ... }\CommentTok{\# choose the learning rate}
+\NormalTok{I }\OperatorTok{=}\NormalTok{ [}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, ..., N]  }\CommentTok{\# the full index set}
 
-for k in range(number_epochs):
-    J = shuffle(I)  # shuffle the indices
-    for j in J:
-        # compute the gradient of Qj at current w
-        gradjk = nabla(Q(j, w))  
-        # update the w vector
-        w = w - eta*gradjk
-    if convergence_criterion:
-       break
-
-###################################################
-\end{verbatim}
+\ControlFlowTok{for}\NormalTok{ k }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(number\_epochs):}
+\NormalTok{    J }\OperatorTok{=}\NormalTok{ shuffle(I)  }\CommentTok{\# shuffle the indices}
+    \ControlFlowTok{for}\NormalTok{ j }\KeywordTok{in}\NormalTok{ J:}
+        \CommentTok{\# compute the gradient of Qj at current w}
+\NormalTok{        gradjk }\OperatorTok{=}\NormalTok{ nabla(Q(j, w))  }
+        \CommentTok{\# update the w vector}
+\NormalTok{        w }\OperatorTok{=}\NormalTok{ w }\OperatorTok{{-}}\NormalTok{ eta}\OperatorTok{*}\NormalTok{gradjk}
+    \ControlFlowTok{if}\NormalTok{ convergence\_criterion:}
+       \ControlFlowTok{break}
+\CommentTok{\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#}
+\end{Highlighting}
+\end{Shaded}
 
 Die Konvergenz des \emph{stochastischen Gradientenabstiegsverfahren} als Kombination von \emph{stochastischer Approximation} und \emph{numerischer Optimierung} ist gut verstanden. Allgemein und unter bestimmten Voraussetzung lässt sich sagen, dass das stochastische Verfahren ähnlich konvergiert wie das \emph{exakte Verfahren} mit der Einschränkung, dass die Konvergenz \emph{fast sicher} stattfindet.
 
@@ -1038,11 +1039,11 @@ In der Praxis (und oben im Algorithmus) wir \textbf{nicht} zurückgelegt, es gil
 
 Und die Iteration lautet
 \begin{equation*}
-x_{k+1} = x_k - \eta_k g(x_k, k_\xi).
+x_{k+1} = x_k - \eta_k g(x_k, i(\xi)).
 \end{equation*}
 
 \begin{theorem}[Konvergenz des stochastischen Gradientenabstiegsverfahren]
-\protect\hypertarget{thm:thm-convergence-stoch-grad}{}\label{thm:thm-convergence-stoch-grad}Sei \(Q:=\frac 1N \sum_{i=1}^NQ_i\) zweimal stetig differenzierbar und \emph{streng konvex} mit \emph{Modulus} \(m>0\) und es gebe eine Konstante \(M\) mit \(\frac 1N \sum_{i=1}^N \|\nabla Q_i \|_2^2 \leq M\). Ferner
+\protect\hypertarget{thm:thm-convergence-stoch-grad}{}\label{thm:thm-convergence-stoch-grad}Sei \(Q:=\frac 1N \sum_{i=1}^NQ_i\) zweimal stetig differenzierbar und \emph{streng konvex} mit \emph{Modulus} \(m>0\) und es gebe eine Konstante \(M\) mit \(\frac 1N \sum_{i=1}^N \|\nabla Q_i \|_2^2 \leq M\). Ferner sei
 \(x^*\) das Minimum von \(Q\). Dann konvergiert das einfache stochastische Gradientenabstiegsverfahren mit \(\eta_k \leq \frac{1}{km}\) linear im Erwartungswert des quadrierten Fehlers, d.h. es gilt
 \begin{equation*}
 a_{k+1} := \frac 12 \mathbb E [\| x_{k+1} - x^*\|^2 ] \leq \frac {C}{k+1}
@@ -1077,7 +1078,7 @@ Für den Mischterm erhalten wir
 \eta_k \mathbb E[ \nabla Q_{i(k;\xi)}(x_k)^T( x_{k} -x^*) ] = 
 \eta_k \mathbb E\bigl [\mathbb E_{i(k;\xi)}[ \nabla Q_{i(k;\xi)}(x_k)^T( x_{k} -x^*)\,|\, x_k ]\bigr ]
 \end{equation*}
-wobei der innere Term die Erwartung ist unter der Bedingung das \(x_k\) eingetreten ist (folgt aus dem Satz der \emph{iterated expectation}).
+wobei der innere Term die Erwartung ist unter der Bedingung das \(x_k\) eingetreten ist (folgt aus dem Satz der \href{https://en.wikipedia.org/wiki/Law_of_total_expectation}{\emph{iterated expectation}}).
 Da im inneren Term nur noch die Wahl von \(i\) zufällig ist und wegen der Linearität des Erwartungswertes bekommen wir
 \begin{equation*}
 \begin{split}
@@ -1086,9 +1087,9 @@ Da im inneren Term nur noch die Wahl von \(i\) zufällig ist und wegen der Linea
 & = \nabla Q(x_k)^T(x_k - x^*).
 \end{split}
 \end{equation*}
-sodass mit der strengen \(m\)-Konvexität gilt dass
+sodass mit der \(m\)-Konvexität gilt dass
 \begin{equation*}
-\mathbb E[ \nabla Q_{i(k;\xi)}(x_k)^T( x_{k} -x^*) ] \geq 2\eta_k \mathbb E[\|x_k - x^*\|^2].
+\mathbb E[ \nabla Q_{i(k;\xi)}(x_k)^T( x_{k} -x^*) ] \geq m \mathbb E[\|x_k - x^*\|^2].
 \end{equation*}
 
 \leavevmode\hypertarget{sdg-cnv-independent}{}%
@@ -1099,7 +1100,13 @@ Diese Manipulation mit den Erwartungswerten ist der formale Ausdruck dafür, das
 
 Mit gleichen Argumenten und der Annahme der Beschränktheit \(\|\nabla Q(x)\|^2 < M\), bekommen wir für die erwartete quadratische Abweichung \(a_k\), dass
 \begin{equation*}
-a_{k+1} \leq (1-2m\eta_k)a_k + \frac 12\eta_k^2M
+\begin{split}
+\frac 12 \|x_{k+1} - x^* \|^2 \leq (1-2\eta_k m) \frac 12 \|x_{k} - x^*\| + \frac 12 \eta_k^2 M^2
+\end{split}
+\end{equation*}
+beziehungsweise
+\begin{equation*}
+a_{k+1} \leq (1-2\eta_km)a_k + \frac 12\eta_k^2M.
 \end{equation*}
 
 Insbesondere wegen des konstanten Terms in der Fehlerrekursion, bedarf es bis zur \(1/k\)-Konvergenz weiterer Abschätzungen. Wir zeigen induktiv, dass für \(\eta_k<\frac{1}{km}\) gilt, dass
@@ -1115,7 +1122,85 @@ a_{k+1} \leq & (1-2m \eta_k)a_k + \frac 12 \eta_k^2 M \\
 &=  \frac{k^2-1}{k^2}\frac{c}{2(k+1)} \leq \frac {c}{2(k+1)}
 \end{split}
 \end{equation*}
+sodass der Beweis erbracht ist mit \(C:=\frac c2\).
 \end{proof}
+
+\hypertarget{uxfcbungen-3}{%
+\section{Übungen}\label{uxfcbungen-3}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Eine Funktion heißt \(L\)-glatt (\emph{\(L\)-smooth}) wenn sie stetig
+  differenzierbar ist und der Gradient \emph{Lipschitz}-stetig mit Konstante \(L\) ist.
+  Zeigen Sie, dass für ein \(L\)-glatte Funktion, die zweimal differenzierbar ist, gilt:
+
+  \begin{enumerate}
+  \def\labelenumii{\arabic{enumii}.}
+  \tightlist
+  \item
+    \(f(y) \leq f(x) + \nabla f(x)^T(y-x) + \frac L2 \|y-x\|^2\) für alle \(x\) und \(y\) aus dem Definitionsbereich.
+  \item
+    \(-LI \leq H_f(x) \leq LI\) für alle \(x\), für die Hesse-Matrix
+    \(H_f\) und für ``\(\leq\)'' im Sinne der \emph{Loewner-Halbordnung} definiter
+    Matrizen.
+  \end{enumerate}
+\item
+  Zeigen Sie, dass aus \emph{m-Konvexität} von \(Q\colon \mathbb R^{n}\to \mathbb R^{}\) und \(\mathbb E_\xi [g(\xi)] = \nabla Q(x)\) folgt, dass im Minimum \(x^*\) von \(Q\) gilt, dass
+  \begin{equation*}
+  \mathbb E_\xi[g(\xi)^T(x-x^*)] \geq Q(x)-Q(x^*) + \frac m2\|x - x^*\|^2  \geq m\|x - x^*\|^2,
+  \end{equation*}
+  für alle \(x\).
+\item
+  Berechnen sie näherungsweise den Gradienten der Beispielfunktion
+  \begin{equation*}
+  f(x_1, x_2, x_3) = \sin(x_1) + x_3\cos(x_2) - 2x_2 + x_1^2 + x_2^2 + x_3^2
+  \end{equation*}
+  im Punkt \((x_1, x_2, x_3) = (1, 1, 1)\),
+  indem sie die partiellen Ableitungen durch den Differenzenquotienten, z.B.,
+  \begin{equation*}
+  \frac{\partial g}{\partial x_2}(1, 1, 1) \approx \frac{g(1, 1+h, 1) - g(1, 1,1)}{h}
+  \end{equation*}
+  für \(h\in\{10^{-3}, 10^{-6}, 10^{-9}, 10^{-12}\}\) berechnen. Berechnen sie auch die Norm der Differenz zum exakten Wert von \(\nabla g(1, 1, 1)\) (s.o.) und interpretieren sie die Ergebnisse.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ numpy }\ImportTok{as}\NormalTok{ np}
+ 
+\KeywordTok{def}\NormalTok{ gfun(x):}
+    \ControlFlowTok{return}\NormalTok{ np.sin(x[}\DecValTok{0}\NormalTok{]) }\OperatorTok{+}\NormalTok{ x[}\DecValTok{2}\NormalTok{]}\OperatorTok{*}\NormalTok{np.cos(x[}\DecValTok{1}\NormalTok{]) }\OperatorTok{\textbackslash{}}
+        \OperatorTok{{-}} \DecValTok{2}\OperatorTok{*}\NormalTok{x[}\DecValTok{1}\NormalTok{] }\OperatorTok{+}\NormalTok{ x[}\DecValTok{0}\NormalTok{]}\OperatorTok{**}\DecValTok{2} \OperatorTok{+}\NormalTok{ x[}\DecValTok{1}\NormalTok{]}\OperatorTok{**}\DecValTok{2} \OperatorTok{\textbackslash{}}
+        \OperatorTok{+}\NormalTok{ x[}\DecValTok{2}\NormalTok{]}\OperatorTok{**}\DecValTok{2}
+
+\KeywordTok{def}\NormalTok{ gradg(x):}
+    \ControlFlowTok{return}\NormalTok{ np.array([np.NaN,}
+                     \OperatorTok{{-}}\NormalTok{x[}\DecValTok{2}\NormalTok{]}\OperatorTok{*}\NormalTok{np.sin(x[}\DecValTok{1}\NormalTok{]) }\OperatorTok{{-}} \DecValTok{2} \OperatorTok{+} \DecValTok{2}\OperatorTok{*}\NormalTok{x[}\DecValTok{1}\NormalTok{],}
+\NormalTok{                     np.NaN]).reshape((}\DecValTok{3}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+
+\CommentTok{\# Inkrement}
+\NormalTok{h }\OperatorTok{=} \FloatTok{1e{-}3}
+
+\CommentTok{\# der x{-}wert und das h{-}Inkrement in der zweiten Komponente}
+\NormalTok{xzero }\OperatorTok{=}\NormalTok{ np.ones((}\DecValTok{3}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+\NormalTok{xzeroh }\OperatorTok{=}\NormalTok{ xzero }\OperatorTok{+}\NormalTok{ np.array([}\DecValTok{0}\NormalTok{, h, }\DecValTok{0}\NormalTok{]).reshape((}\DecValTok{3}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+
+\CommentTok{\# partieller Differenzenquotient}
+\NormalTok{dgdxtwo }\OperatorTok{=} \DecValTok{1}\OperatorTok{/}\NormalTok{h}\OperatorTok{*}\NormalTok{(gfun(xzeroh) }\OperatorTok{{-}}\NormalTok{ gfun(xzero))}
+\CommentTok{\# Alle partiellen Ableitungen ergeben den Gradienten}
+\NormalTok{hgrad }\OperatorTok{=}\NormalTok{ np.array([np.NaN, dgdxtwo, np.NaN]).reshape((}\DecValTok{3}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+
+\CommentTok{\# Analytisch bestimmter Gradient}
+\NormalTok{gradx }\OperatorTok{=}\NormalTok{ gradg(xzero)}
+
+\CommentTok{\# Die Differenz in der Norm}
+\NormalTok{hdiff }\OperatorTok{=}\NormalTok{ np.linalg.norm((hgrad}\OperatorTok{{-}}\NormalTok{gradx)[}\DecValTok{1}\NormalTok{])}
+\CommentTok{\# bitte alle Kompenenten berechnen}
+\CommentTok{\# und dann die Norm ueber den ganzen Vektor nehmen}
+
+\BuiltInTok{print}\NormalTok{(}\SpecialStringTok{f\textquotesingle{}h=}\SpecialCharTok{\{h:.2e\}}\SpecialStringTok{: diff in gradient }\SpecialCharTok{\{}\NormalTok{hdiff}\SpecialCharTok{.}\NormalTok{flatten()[}\DecValTok{0}\NormalTok{]}\SpecialCharTok{:.2e\}}\SpecialStringTok{\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 
 \hypertarget{nachklapp}{%
 \chapter{Nachklapp}\label{nachklapp}}

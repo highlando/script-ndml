@@ -44,4 +44,5 @@ stochastisches-gradientenverfahren
 motivation-und-algorithmus
 iterative_method
 konvergenzanalyse
+übungen-3
 nachklapp

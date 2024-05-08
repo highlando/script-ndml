@@ -167,6 +167,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.1" data-path="stochastisches-gradientenverfahren.html"><a href="stochastisches-gradientenverfahren.html#motivation-und-algorithmus"><i class="fa fa-check"></i><b>4.1</b> Motivation und Algorithmus</a></li>
 <li class="chapter" data-level="4.2" data-path="stochastisches-gradientenverfahren.html"><a href="stochastisches-gradientenverfahren.html#iterative_method"><i class="fa fa-check"></i><b>4.2</b> Stochastisches Abstiegsverfahren</a></li>
 <li class="chapter" data-level="4.3" data-path="stochastisches-gradientenverfahren.html"><a href="stochastisches-gradientenverfahren.html#konvergenzanalyse"><i class="fa fa-check"></i><b>4.3</b> Konvergenzanalyse</a></li>
+<li class="chapter" data-level="4.4" data-path="stochastisches-gradientenverfahren.html"><a href="stochastisches-gradientenverfahren.html#übungen-3"><i class="fa fa-check"></i><b>4.4</b> Übungen</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="nachklapp.html"><a href="nachklapp.html"><i class="fa fa-check"></i><b>5</b> Nachklapp</a></li>
 <li class="chapter" data-level="" data-path="referenzen.html"><a href="referenzen.html"><i class="fa fa-check"></i>Referenzen</a></li>
@@ -236,25 +237,24 @@ w^{k+1} = w^k-\eta \nabla Q_j(w^k),
 mit <span class="math inline">\(j\in \{1,\dotsc, N\}\)</span> zufällig gewählt (ohne zurücklegen).</p>
 <p>Während der Algorithmus den Trainingssatz durchläuft, führt er die obige Aktualisierung für jede Trainingsprobe durch. Es können mehrere Durchgänge (sogenannte <em>epochs</em>) über den Trainingssatz gemacht werden, bis der Algorithmus konvergiert. Wenn dies getan wird, können die Daten für jeden Durchlauf gemischt werden, um Zyklen zu vermeiden. Typische Implementierungen verwenden zudem eine adaptive Lernrate, damit der Algorithmus überhaupt oder schneller konvergiert.</p>
 <p>Die wesentlichen Schritte als Algorithmus sehen wie folgt aus:</p>
-<pre><code>###################################################
-# The basic steps of a stochastic gradient method #
-###################################################
-
-w = ...  # initialize the weight vector
-eta = ... # choose the learning rate
-I = [1, 2, ..., N]  # the full index set
-
-for k in range(number_epochs):
-    J = shuffle(I)  # shuffle the indices
-    for j in J:
-        # compute the gradient of Qj at current w
-        gradjk = nabla(Q(j, w))  
-        # update the w vector
-        w = w - eta*gradjk
-    if convergence_criterion:
-       break
-
-###################################################</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="stochastisches-gradientenverfahren.html#cb6-1" aria-hidden="true"></a><span class="co">###################################################</span></span>
+<span id="cb6-2"><a href="stochastisches-gradientenverfahren.html#cb6-2" aria-hidden="true"></a><span class="co"># The basic steps of a stochastic gradient method #</span></span>
+<span id="cb6-3"><a href="stochastisches-gradientenverfahren.html#cb6-3" aria-hidden="true"></a><span class="co">###################################################</span></span>
+<span id="cb6-4"><a href="stochastisches-gradientenverfahren.html#cb6-4" aria-hidden="true"></a></span>
+<span id="cb6-5"><a href="stochastisches-gradientenverfahren.html#cb6-5" aria-hidden="true"></a>w <span class="op">=</span> ...  <span class="co"># initialize the weight vector</span></span>
+<span id="cb6-6"><a href="stochastisches-gradientenverfahren.html#cb6-6" aria-hidden="true"></a>eta <span class="op">=</span> ... <span class="co"># choose the learning rate</span></span>
+<span id="cb6-7"><a href="stochastisches-gradientenverfahren.html#cb6-7" aria-hidden="true"></a>I <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, ..., N]  <span class="co"># the full index set</span></span>
+<span id="cb6-8"><a href="stochastisches-gradientenverfahren.html#cb6-8" aria-hidden="true"></a></span>
+<span id="cb6-9"><a href="stochastisches-gradientenverfahren.html#cb6-9" aria-hidden="true"></a><span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(number_epochs):</span>
+<span id="cb6-10"><a href="stochastisches-gradientenverfahren.html#cb6-10" aria-hidden="true"></a>    J <span class="op">=</span> shuffle(I)  <span class="co"># shuffle the indices</span></span>
+<span id="cb6-11"><a href="stochastisches-gradientenverfahren.html#cb6-11" aria-hidden="true"></a>    <span class="cf">for</span> j <span class="kw">in</span> J:</span>
+<span id="cb6-12"><a href="stochastisches-gradientenverfahren.html#cb6-12" aria-hidden="true"></a>        <span class="co"># compute the gradient of Qj at current w</span></span>
+<span id="cb6-13"><a href="stochastisches-gradientenverfahren.html#cb6-13" aria-hidden="true"></a>        gradjk <span class="op">=</span> nabla(Q(j, w))  </span>
+<span id="cb6-14"><a href="stochastisches-gradientenverfahren.html#cb6-14" aria-hidden="true"></a>        <span class="co"># update the w vector</span></span>
+<span id="cb6-15"><a href="stochastisches-gradientenverfahren.html#cb6-15" aria-hidden="true"></a>        w <span class="op">=</span> w <span class="op">-</span> eta<span class="op">*</span>gradjk</span>
+<span id="cb6-16"><a href="stochastisches-gradientenverfahren.html#cb6-16" aria-hidden="true"></a>    <span class="cf">if</span> convergence_criterion:</span>
+<span id="cb6-17"><a href="stochastisches-gradientenverfahren.html#cb6-17" aria-hidden="true"></a>       <span class="cf">break</span></span>
+<span id="cb6-18"><a href="stochastisches-gradientenverfahren.html#cb6-18" aria-hidden="true"></a><span class="co">###################################################</span></span></code></pre></div>
 <p>Die Konvergenz des <em>stochastischen Gradientenabstiegsverfahren</em> als Kombination von <em>stochastischer Approximation</em> und <em>numerischer Optimierung</em> ist gut verstanden. Allgemein und unter bestimmten Voraussetzung lässt sich sagen, dass das stochastische Verfahren ähnlich konvergiert wie das <em>exakte Verfahren</em> mit der Einschränkung, dass die Konvergenz <em>fast sicher</em> stattfindet.</p>
 <p>In der Praxis hat sich der Kompromiss etabliert, der anstelle des Gradienten eines einzelnen Punktes <span class="math inline">\(\nabla Q_j(w_k)\)</span>, den Abstieg aus dem Mittelwert über mehrere Samples berechnet, also (wie oben beschrieben)
 <span class="math display">\[\begin{equation*}
@@ -277,10 +277,10 @@ In der Praxis (und oben im Algorithmus) wir <strong>nicht</strong> zurückgelegt
 </div>
 <p>Und die Iteration lautet
 <span class="math display">\[\begin{equation*}
-x_{k+1} = x_k - \eta_k g(x_k, k_\xi).
+x_{k+1} = x_k - \eta_k g(x_k, i(\xi)).
 \end{equation*}\]</span></p>
 <div class="theorem">
-<p><span id="thm:thm-convergence-stoch-grad" class="theorem"><strong>Theorem 4.1  (Konvergenz des stochastischen Gradientenabstiegsverfahren) </strong></span>Sei <span class="math inline">\(Q:=\frac 1N \sum_{i=1}^NQ_i\)</span> zweimal stetig differenzierbar und <em>streng konvex</em> mit <em>Modulus</em> <span class="math inline">\(m&gt;0\)</span> und es gebe eine Konstante <span class="math inline">\(M\)</span> mit <span class="math inline">\(\frac 1N \sum_{i=1}^N \|\nabla Q_i \|_2^2 \leq M\)</span>. Ferner
+<p><span id="thm:thm-convergence-stoch-grad" class="theorem"><strong>Theorem 4.1  (Konvergenz des stochastischen Gradientenabstiegsverfahren) </strong></span>Sei <span class="math inline">\(Q:=\frac 1N \sum_{i=1}^NQ_i\)</span> zweimal stetig differenzierbar und <em>streng konvex</em> mit <em>Modulus</em> <span class="math inline">\(m&gt;0\)</span> und es gebe eine Konstante <span class="math inline">\(M\)</span> mit <span class="math inline">\(\frac 1N \sum_{i=1}^N \|\nabla Q_i \|_2^2 \leq M\)</span>. Ferner sei
 <!-- seien die Funktionen $Q_i$ konvex und es sei -->
 <span class="math inline">\(x^*\)</span> das Minimum von <span class="math inline">\(Q\)</span>. Dann konvergiert das einfache stochastische Gradientenabstiegsverfahren mit <span class="math inline">\(\eta_k \leq \frac{1}{km}\)</span> linear im Erwartungswert des quadrierten Fehlers, d.h. es gilt
 <span class="math display">\[\begin{equation*}
@@ -313,7 +313,7 @@ für alle <span class="math inline">\(z\)</span> und <span class="math inline">\
 \eta_k \mathbb E[ \nabla Q_{i(k;\xi)}(x_k)^T( x_{k} -x^*) ] = 
 \eta_k \mathbb E\bigl [\mathbb E_{i(k;\xi)}[ \nabla Q_{i(k;\xi)}(x_k)^T( x_{k} -x^*)\,|\, x_k ]\bigr ]
 \end{equation*}\]</span>
-wobei der innere Term die Erwartung ist unter der Bedingung das <span class="math inline">\(x_k\)</span> eingetreten ist (folgt aus dem Satz der <em>iterated expectation</em>).
+wobei der innere Term die Erwartung ist unter der Bedingung das <span class="math inline">\(x_k\)</span> eingetreten ist (folgt aus dem Satz der <a href="https://en.wikipedia.org/wiki/Law_of_total_expectation"><em>iterated expectation</em></a>).
 Da im inneren Term nur noch die Wahl von <span class="math inline">\(i\)</span> zufällig ist und wegen der Linearität des Erwartungswertes bekommen wir
 <span class="math display">\[\begin{equation*}
 \begin{split}
@@ -322,16 +322,22 @@ Da im inneren Term nur noch die Wahl von <span class="math inline">\(i\)</span> 
 &amp; = \nabla Q(x_k)^T(x_k - x^*).
 \end{split}
 \end{equation*}\]</span>
-sodass mit der strengen <span class="math inline">\(m\)</span>-Konvexität gilt dass
+sodass mit der <span class="math inline">\(m\)</span>-Konvexität gilt dass
 <span class="math display">\[\begin{equation*}
-\mathbb E[ \nabla Q_{i(k;\xi)}(x_k)^T( x_{k} -x^*) ] \geq 2\eta_k \mathbb E[\|x_k - x^*\|^2].
+\mathbb E[ \nabla Q_{i(k;\xi)}(x_k)^T( x_{k} -x^*) ] \geq m \mathbb E[\|x_k - x^*\|^2].
 \end{equation*}\]</span></p>
 <div id="sdg-cnv-independent" class="JHSAYS">
 <p>Diese Manipulation mit den Erwartungswerten ist der formale Ausdruck dafür, dass, egal woher das <span class="math inline">\(x_k\)</span> kam, die zufällige Wahl der aktuellen Richtung führt im statistischen Mittel auf <span class="math inline">\(\nabla Q(x_k)\)</span>.</p>
 </div>
 <p>Mit gleichen Argumenten und der Annahme der Beschränktheit <span class="math inline">\(\|\nabla Q(x)\|^2 &lt; M\)</span>, bekommen wir für die erwartete quadratische Abweichung <span class="math inline">\(a_k\)</span>, dass
 <span class="math display">\[\begin{equation*}
-a_{k+1} \leq (1-2m\eta_k)a_k + \frac 12\eta_k^2M
+\begin{split}
+\frac 12 \|x_{k+1} - x^* \|^2 \leq (1-2\eta_k m) \frac 12 \|x_{k} - x^*\| + \frac 12 \eta_k^2 M^2
+\end{split}
+\end{equation*}\]</span>
+beziehungsweise
+<span class="math display">\[\begin{equation*}
+a_{k+1} \leq (1-2\eta_km)a_k + \frac 12\eta_k^2M.
 \end{equation*}\]</span></p>
 <p>Insbesondere wegen des konstanten Terms in der Fehlerrekursion, bedarf es bis zur <span class="math inline">\(1/k\)</span>-Konvergenz weiterer Abschätzungen. Wir zeigen induktiv, dass für <span class="math inline">\(\eta_k&lt;\frac{1}{km}\)</span> gilt, dass
 <span class="math display">\[\begin{equation*}
@@ -345,8 +351,71 @@ a_{k+1} \leq &amp; (1-2m \eta_k)a_k + \frac 12 \eta_k^2 M \\
 \leq&amp;  (1-\frac 2k)\frac c2 + \frac 12 \frac{1}{k^2} \frac c2\\
 &amp;=  \frac{k^2-1}{k^2}\frac{c}{2(k+1)} \leq \frac {c}{2(k+1)}
 \end{split}
-\end{equation*}\]</span></p>
+\end{equation*}\]</span>
+sodass der Beweis erbracht ist mit <span class="math inline">\(C:=\frac c2\)</span>.</p>
 </div>
+</div>
+<div id="übungen-3" class="section level2 hasAnchor" number="4.4">
+<h2><span class="header-section-number">4.4</span> Übungen<a href="stochastisches-gradientenverfahren.html#übungen-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li><p>Eine Funktion heißt <span class="math inline">\(L\)</span>-glatt (<em><span class="math inline">\(L\)</span>-smooth</em>) wenn sie stetig
+differenzierbar ist und der Gradient <em>Lipschitz</em>-stetig mit Konstante <span class="math inline">\(L\)</span> ist.
+Zeigen Sie, dass für ein <span class="math inline">\(L\)</span>-glatte Funktion, die zweimal differenzierbar ist, gilt:</p>
+<ol style="list-style-type: decimal">
+<li><span class="math inline">\(f(y) \leq f(x) + \nabla f(x)^T(y-x) + \frac L2 \|y-x\|^2\)</span> für alle <span class="math inline">\(x\)</span> und <span class="math inline">\(y\)</span> aus dem Definitionsbereich.</li>
+<li><span class="math inline">\(-LI \leq H_f(x) \leq LI\)</span> für alle <span class="math inline">\(x\)</span>, für die Hesse-Matrix
+<span class="math inline">\(H_f\)</span> und für “<span class="math inline">\(\leq\)</span>” im Sinne der <em>Loewner-Halbordnung</em> definiter
+Matrizen.</li>
+</ol></li>
+<li><p>Zeigen Sie, dass aus <em>m-Konvexität</em> von <span class="math inline">\(Q\colon \mathbb R^{n}\to \mathbb R^{}\)</span> und <span class="math inline">\(\mathbb E_\xi [g(\xi)] = \nabla Q(x)\)</span> folgt, dass im Minimum <span class="math inline">\(x^*\)</span> von <span class="math inline">\(Q\)</span> gilt, dass
+<span class="math display">\[\begin{equation*}
+\mathbb E_\xi[g(\xi)^T(x-x^*)] \geq Q(x)-Q(x^*) + \frac m2\|x - x^*\|^2  \geq m\|x - x^*\|^2,
+\end{equation*}\]</span>
+für alle <span class="math inline">\(x\)</span>.</p></li>
+<li><p>Berechnen sie näherungsweise den Gradienten der Beispielfunktion
+<span class="math display">\[\begin{equation*}
+f(x_1, x_2, x_3) = \sin(x_1) + x_3\cos(x_2) - 2x_2 + x_1^2 + x_2^2 + x_3^2
+\end{equation*}\]</span>
+im Punkt <span class="math inline">\((x_1, x_2, x_3) = (1, 1, 1)\)</span>,
+indem sie die partiellen Ableitungen durch den Differenzenquotienten, z.B.,
+<span class="math display">\[\begin{equation*}
+\frac{\partial g}{\partial x_2}(1, 1, 1) \approx \frac{g(1, 1+h, 1) - g(1, 1,1)}{h}
+\end{equation*}\]</span>
+für <span class="math inline">\(h\in\{10^{-3}, 10^{-6}, 10^{-9}, 10^{-12}\}\)</span> berechnen. Berechnen sie auch die Norm der Differenz zum exakten Wert von <span class="math inline">\(\nabla g(1, 1, 1)\)</span> (s.o.) und interpretieren sie die Ergebnisse.</p></li>
+</ol>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="stochastisches-gradientenverfahren.html#cb7-1" aria-hidden="true"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb7-2"><a href="stochastisches-gradientenverfahren.html#cb7-2" aria-hidden="true"></a> </span>
+<span id="cb7-3"><a href="stochastisches-gradientenverfahren.html#cb7-3" aria-hidden="true"></a><span class="kw">def</span> gfun(x):</span>
+<span id="cb7-4"><a href="stochastisches-gradientenverfahren.html#cb7-4" aria-hidden="true"></a>    <span class="cf">return</span> np.sin(x[<span class="dv">0</span>]) <span class="op">+</span> x[<span class="dv">2</span>]<span class="op">*</span>np.cos(x[<span class="dv">1</span>]) <span class="op">\</span></span>
+<span id="cb7-5"><a href="stochastisches-gradientenverfahren.html#cb7-5" aria-hidden="true"></a>        <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>x[<span class="dv">1</span>] <span class="op">+</span> x[<span class="dv">0</span>]<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> x[<span class="dv">1</span>]<span class="op">**</span><span class="dv">2</span> <span class="op">\</span></span>
+<span id="cb7-6"><a href="stochastisches-gradientenverfahren.html#cb7-6" aria-hidden="true"></a>        <span class="op">+</span> x[<span class="dv">2</span>]<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb7-7"><a href="stochastisches-gradientenverfahren.html#cb7-7" aria-hidden="true"></a></span>
+<span id="cb7-8"><a href="stochastisches-gradientenverfahren.html#cb7-8" aria-hidden="true"></a><span class="kw">def</span> gradg(x):</span>
+<span id="cb7-9"><a href="stochastisches-gradientenverfahren.html#cb7-9" aria-hidden="true"></a>    <span class="cf">return</span> np.array([np.NaN,</span>
+<span id="cb7-10"><a href="stochastisches-gradientenverfahren.html#cb7-10" aria-hidden="true"></a>                     <span class="op">-</span>x[<span class="dv">2</span>]<span class="op">*</span>np.sin(x[<span class="dv">1</span>]) <span class="op">-</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>x[<span class="dv">1</span>],</span>
+<span id="cb7-11"><a href="stochastisches-gradientenverfahren.html#cb7-11" aria-hidden="true"></a>                     np.NaN]).reshape((<span class="dv">3</span>, <span class="dv">1</span>))</span>
+<span id="cb7-12"><a href="stochastisches-gradientenverfahren.html#cb7-12" aria-hidden="true"></a></span>
+<span id="cb7-13"><a href="stochastisches-gradientenverfahren.html#cb7-13" aria-hidden="true"></a><span class="co"># Inkrement</span></span>
+<span id="cb7-14"><a href="stochastisches-gradientenverfahren.html#cb7-14" aria-hidden="true"></a>h <span class="op">=</span> <span class="fl">1e-3</span></span>
+<span id="cb7-15"><a href="stochastisches-gradientenverfahren.html#cb7-15" aria-hidden="true"></a></span>
+<span id="cb7-16"><a href="stochastisches-gradientenverfahren.html#cb7-16" aria-hidden="true"></a><span class="co"># der x-wert und das h-Inkrement in der zweiten Komponente</span></span>
+<span id="cb7-17"><a href="stochastisches-gradientenverfahren.html#cb7-17" aria-hidden="true"></a>xzero <span class="op">=</span> np.ones((<span class="dv">3</span>, <span class="dv">1</span>))</span>
+<span id="cb7-18"><a href="stochastisches-gradientenverfahren.html#cb7-18" aria-hidden="true"></a>xzeroh <span class="op">=</span> xzero <span class="op">+</span> np.array([<span class="dv">0</span>, h, <span class="dv">0</span>]).reshape((<span class="dv">3</span>, <span class="dv">1</span>))</span>
+<span id="cb7-19"><a href="stochastisches-gradientenverfahren.html#cb7-19" aria-hidden="true"></a></span>
+<span id="cb7-20"><a href="stochastisches-gradientenverfahren.html#cb7-20" aria-hidden="true"></a><span class="co"># partieller Differenzenquotient</span></span>
+<span id="cb7-21"><a href="stochastisches-gradientenverfahren.html#cb7-21" aria-hidden="true"></a>dgdxtwo <span class="op">=</span> <span class="dv">1</span><span class="op">/</span>h<span class="op">*</span>(gfun(xzeroh) <span class="op">-</span> gfun(xzero))</span>
+<span id="cb7-22"><a href="stochastisches-gradientenverfahren.html#cb7-22" aria-hidden="true"></a><span class="co"># Alle partiellen Ableitungen ergeben den Gradienten</span></span>
+<span id="cb7-23"><a href="stochastisches-gradientenverfahren.html#cb7-23" aria-hidden="true"></a>hgrad <span class="op">=</span> np.array([np.NaN, dgdxtwo, np.NaN]).reshape((<span class="dv">3</span>, <span class="dv">1</span>))</span>
+<span id="cb7-24"><a href="stochastisches-gradientenverfahren.html#cb7-24" aria-hidden="true"></a></span>
+<span id="cb7-25"><a href="stochastisches-gradientenverfahren.html#cb7-25" aria-hidden="true"></a><span class="co"># Analytisch bestimmter Gradient</span></span>
+<span id="cb7-26"><a href="stochastisches-gradientenverfahren.html#cb7-26" aria-hidden="true"></a>gradx <span class="op">=</span> gradg(xzero)</span>
+<span id="cb7-27"><a href="stochastisches-gradientenverfahren.html#cb7-27" aria-hidden="true"></a></span>
+<span id="cb7-28"><a href="stochastisches-gradientenverfahren.html#cb7-28" aria-hidden="true"></a><span class="co"># Die Differenz in der Norm</span></span>
+<span id="cb7-29"><a href="stochastisches-gradientenverfahren.html#cb7-29" aria-hidden="true"></a>hdiff <span class="op">=</span> np.linalg.norm((hgrad<span class="op">-</span>gradx)[<span class="dv">1</span>])</span>
+<span id="cb7-30"><a href="stochastisches-gradientenverfahren.html#cb7-30" aria-hidden="true"></a><span class="co"># bitte alle Kompenenten berechnen</span></span>
+<span id="cb7-31"><a href="stochastisches-gradientenverfahren.html#cb7-31" aria-hidden="true"></a><span class="co"># und dann die Norm ueber den ganzen Vektor nehmen</span></span>
+<span id="cb7-32"><a href="stochastisches-gradientenverfahren.html#cb7-32" aria-hidden="true"></a></span>
+<span id="cb7-33"><a href="stochastisches-gradientenverfahren.html#cb7-33" aria-hidden="true"></a><span class="bu">print</span>(<span class="ss">f&#39;h=</span><span class="sc">{h:.2e}</span><span class="ss">: diff in gradient </span><span class="sc">{</span>hdiff<span class="sc">.</span>flatten()[<span class="dv">0</span>]<span class="sc">:.2e}</span><span class="ss">&#39;</span>)</span></code></pre></div>
 
 </div>
 </div>
