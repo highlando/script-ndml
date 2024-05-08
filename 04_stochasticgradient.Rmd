@@ -1,6 +1,5 @@
 # Stochastisches Gradientenverfahren
 
-
 Das stochastische Gradientenverfahren formuliert den Fall, dass im $k$-ten Schritt anstelle des eigentlichen Gradienten $\nabla f(x_k)\in \mathbb R^{n}$ eine Sch&auml;tzung $g(x_k, \xi)\in \mathbb R^{n}$ vorliegt, die eine zuf&auml;llige Komponente in Form einer Zufallsvariable $\xi$ hat. Dabei wird angenommen, dass $g(x_k, \xi)$ *erwartungstreu* ist, das hei&szlig;t
 \begin{equation*}
 \mathbb E_\xi [g(x_k, \xi)] = \nabla f(x_k),
@@ -56,7 +55,7 @@ Während der Algorithmus den Trainingssatz durchläuft, führt er die obige Aktu
 
 Die wesentlichen Schritte als Algorithmus sehen wie folgt aus:
 
-```
+```{python, eval=FALSE, python.reticulate=FALSE}
 ###################################################
 # The basic steps of a stochastic gradient method #
 ###################################################
@@ -74,7 +73,6 @@ for k in range(number_epochs):
         w = w - eta*gradjk
     if convergence_criterion:
        break
-
 ###################################################
 ```
 
@@ -105,11 +103,11 @@ In der Praxis (und oben im Algorithmus) wir **nicht** zur&uuml;ckgelegt, es gilt
 
 Und die Iteration lautet
 \begin{equation*}
-x_{k+1} = x_k - \eta_k g(x_k, k_\xi).
+x_{k+1} = x_k - \eta_k g(x_k, i(\xi)).
 \end{equation*}
 
 ::: {.theorem #thm-convergence-stoch-grad name="Konvergenz des stochastischen Gradientenabstiegsverfahren"}
-Sei $Q:=\frac 1N \sum_{i=1}^NQ_i$ zweimal stetig differenzierbar und *streng konvex* mit *Modulus* $m>0$ und es gebe eine Konstante $M$ mit $\frac 1N \sum_{i=1}^N \|\nabla Q_i \|_2^2 \leq M$. Ferner 
+Sei $Q:=\frac 1N \sum_{i=1}^NQ_i$ zweimal stetig differenzierbar und *streng konvex* mit *Modulus* $m>0$ und es gebe eine Konstante $M$ mit $\frac 1N \sum_{i=1}^N \|\nabla Q_i \|_2^2 \leq M$. Ferner sei
 <!-- seien die Funktionen $Q_i$ konvex und es sei -->
 $x^*$ das Minimum von $Q$. Dann konvergiert das einfache stochastische Gradientenabstiegsverfahren mit $\eta_k \leq \frac{1}{km}$ linear im Erwartungswert des quadrierten Fehlers, d.h. es gilt
 \begin{equation*}
@@ -148,7 +146,7 @@ F&uuml;r den Mischterm erhalten wir
 \eta_k \mathbb E[ \nabla Q_{i(k;\xi)}(x_k)^T( x_{k} -x^*) ] = 
 \eta_k \mathbb E\bigl [\mathbb E_{i(k;\xi)}[ \nabla Q_{i(k;\xi)}(x_k)^T( x_{k} -x^*)\,|\, x_k ]\bigr ]
 \end{equation*}
-wobei der innere Term die Erwartung ist unter der Bedingung das $x_k$ eingetreten ist (folgt aus dem Satz der *iterated expectation*).
+wobei der innere Term die Erwartung ist unter der Bedingung das $x_k$ eingetreten ist (folgt aus dem Satz der [*iterated expectation*](https://en.wikipedia.org/wiki/Law_of_total_expectation)).
 Da im inneren Term nur noch die Wahl von $i$ zuf&auml;llig ist und wegen der Linearit&auml;t des Erwartungswertes bekommen wir
 \begin{equation*}
 \begin{split}
@@ -157,9 +155,9 @@ Da im inneren Term nur noch die Wahl von $i$ zuf&auml;llig ist und wegen der Lin
 & = \nabla Q(x_k)^T(x_k - x^*).
 \end{split}
 \end{equation*}
-sodass mit der strengen $m$-Konvexit&auml;t gilt dass 
+sodass mit der $m$-Konvexit&auml;t gilt dass 
 \begin{equation*}
-\mathbb E[ \nabla Q_{i(k;\xi)}(x_k)^T( x_{k} -x^*) ] \geq 2\eta_k \mathbb E[\|x_k - x^*\|^2].
+\mathbb E[ \nabla Q_{i(k;\xi)}(x_k)^T( x_{k} -x^*) ] \geq m \mathbb E[\|x_k - x^*\|^2].
 \end{equation*}
 
 ::: {#sdg-cnv-independent .JHSAYS data-latex=''}
@@ -168,7 +166,13 @@ Diese Manipulation mit den Erwartungswerten ist der formale Ausdruck daf&uuml;r,
 
 Mit gleichen Argumenten und der Annahme der Beschr&auml;nktheit $\|\nabla Q(x)\|^2 < M$, bekommen wir f&uuml;r die erwartete quadratische Abweichung $a_k$, dass
 \begin{equation*}
-a_{k+1} \leq (1-2m\eta_k)a_k + \frac 12\eta_k^2M
+\begin{split}
+\frac 12 \|x_{k+1} - x^* \|^2 \leq (1-2\eta_k m) \frac 12 \|x_{k} - x^*\| + \frac 12 \eta_k^2 M^2
+\end{split}
+\end{equation*}
+beziehungsweise
+\begin{equation*}
+a_{k+1} \leq (1-2\eta_km)a_k + \frac 12\eta_k^2M.
 \end{equation*}
 
 Insbesondere wegen des konstanten Terms in der Fehlerrekursion, bedarf es bis zur $1/k$-Konvergenz weiterer Absch&auml;tzungen. Wir zeigen induktiv, dass f&uuml;r $\eta_k<\frac{1}{km}$ gilt, dass
@@ -184,6 +188,69 @@ a_{k+1} \leq & (1-2m \eta_k)a_k + \frac 12 \eta_k^2 M \\
 &=  \frac{k^2-1}{k^2}\frac{c}{2(k+1)} \leq \frac {c}{2(k+1)}
 \end{split}
 \end{equation*}
-
+sodass der Beweis erbracht ist mit $C:=\frac c2$.
 
 :::
+
+## &Uuml;bungen
+
+1. Eine Funktion hei&szlig;t $L$-glatt (*$L$-smooth*) wenn sie stetig
+   differenzierbar ist und der Gradient *Lipschitz*-stetig mit Konstante $L$ ist.
+   Zeigen Sie, dass f&uuml;r ein $L$-glatte Funktion, die zweimal differenzierbar ist, gilt:
+   1. $f(y) \leq f(x) + \nabla f(x)^T(y-x) + \frac L2 \|y-x\|^2$ f&uuml;r alle $x$ und $y$ aus dem Definitionsbereich.
+   2. $-LI \leq H_f(x) \leq LI$ f&uuml;r alle $x$, f&uuml;r die Hesse-Matrix
+      $H_f$ und f&uuml;r "$\leq$" im Sinne der *Loewner-Halbordnung* definiter
+      Matrizen.
+
+2. Zeigen Sie, dass aus *m-Konvexit&auml;t* von $Q\colon \mathbb R^{n}\to \mathbb R^{}$ und $\mathbb E_\xi [g(\xi)] = \nabla Q(x)$ folgt, dass im Minimum $x^*$ von $Q$ gilt, dass
+   \begin{equation*}
+   \mathbb E_\xi[g(\xi)^T(x-x^*)] \geq Q(x)-Q(x^*) + \frac m2\|x - x^*\|^2  \geq m\|x - x^*\|^2,
+   \end{equation*}
+f&uuml;r alle $x$.
+
+3. Berechnen sie n&auml;herungsweise den Gradienten der Beispielfunktion 
+\begin{equation*}
+f(x_1, x_2, x_3) = \sin(x_1) + x_3\cos(x_2) - 2x_2 + x_1^2 + x_2^2 + x_3^2
+\end{equation*}
+im Punkt $(x_1, x_2, x_3) = (1, 1, 1)$, 
+indem sie die partiellen Ableitungen durch den Differenzenquotienten, z.B.,
+\begin{equation*}
+\frac{\partial g}{\partial x_2}(1, 1, 1) \approx \frac{g(1, 1+h, 1) - g(1, 1,1)}{h}
+\end{equation*}
+f&uuml;r $h\in\{10^{-3}, 10^{-6}, 10^{-9}, 10^{-12}\}$ berechnen. Berechnen sie auch die Norm der Differenz zum exakten Wert von $\nabla g(1, 1, 1)$ (s.o.) und interpretieren sie die Ergebnisse.
+
+```{python, eval=FALSE, python.reticulate=FALSE}
+import numpy as np
+ 
+def gfun(x):
+    return np.sin(x[0]) + x[2]*np.cos(x[1]) \
+        - 2*x[1] + x[0]**2 + x[1]**2 \
+        + x[2]**2
+
+def gradg(x):
+    return np.array([np.NaN,
+                     -x[2]*np.sin(x[1]) - 2 + 2*x[1],
+                     np.NaN]).reshape((3, 1))
+
+# Inkrement
+h = 1e-3
+
+# der x-wert und das h-Inkrement in der zweiten Komponente
+xzero = np.ones((3, 1))
+xzeroh = xzero + np.array([0, h, 0]).reshape((3, 1))
+
+# partieller Differenzenquotient
+dgdxtwo = 1/h*(gfun(xzeroh) - gfun(xzero))
+# Alle partiellen Ableitungen ergeben den Gradienten
+hgrad = np.array([np.NaN, dgdxtwo, np.NaN]).reshape((3, 1))
+
+# Analytisch bestimmter Gradient
+gradx = gradg(xzero)
+
+# Die Differenz in der Norm
+hdiff = np.linalg.norm((hgrad-gradx)[1])
+# bitte alle Kompenenten berechnen
+# und dann die Norm ueber den ganzen Vektor nehmen
+
+print(f'h={h:.2e}: diff in gradient {hdiff.flatten()[0]:.2e}')
+```
