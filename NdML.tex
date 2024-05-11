@@ -1127,6 +1127,50 @@ a_{k+1} \leq & (1-2m \eta_k)a_k + \frac 12 \eta_k^2 M \\
 sodass der Beweis erbracht ist mit \(C:=\frac c2\).
 \end{proof}
 
+Zum Abschluss schätzen wir noch aus der erhaltenen Konvergenzart und --rate,
+wie lange iteriert werden muss um den Fehler unter einen vorgegebenen Wert
+\(\epsilon\) zu bekommen.
+
+Dazu sei \(e_{n}\) der Fehler nach der \(n\)-ten Iteration und entsprechend \(e_0\) der
+Fehler zum Startwert.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Für lineare Konvergenz gilt \(e_n \leq qe_{n-1} \leq q^n e_0\) und damit
+  \begin{equation*}
+  q^n e_0 = e_n< \epsilon \quad \leftrightarrow \quad n > \frac{\log \epsilon -
+  \log e_0}{\log q}
+  \end{equation*}
+\item
+  Für quadratische Konvergenz folgt aus \(e_n \leq ae_{n-1}^2 \leq a^n e_0^{2n}\), dass
+  \begin{equation*}
+  a^n e_0^{2n} = e_n< \epsilon \quad \leftrightarrow \quad n > \frac{\log \epsilon}{\log a + 2\log e_0}
+  \end{equation*}
+\item
+  Für ``\(1/k\)'' mit \(e_n\leq \frac {C}{n}\) gilt dann
+  \begin{equation*}
+  e_n < \epsilon \leftrightarrow n > \frac{C}{\epsilon}
+  \end{equation*}
+\end{enumerate}
+
+Wir lesen ab, dass für lineare Konvergenz der Startwert nur entscheidend
+für die Anzahl der Iteration, während für quadratische Konvergenz
+\(\log a + 2 \log e_0 < 0 \leftrightarrow a < \sqrt e_0\) wichtig ist um
+überhaupt Konvergenz zu haben. Abschließend zu bemerken ist dass,
+unter den getätigten Annahmen, für den stochastischen Gradientenabstieg der \textbf{quadratische Fehler} mit ``1/k'' konvergiert. Dementsprechend muss entsprechend von \(n\sim \frac{1}{\epsilon^2}\) ausgegangen werden.
+
+\leavevmode\hypertarget{rem-bad-conv-sdg}{}%
+\begin{JHSAYS}
+Diese schlechte Konvergenz ist auch ein Grund dafür, dass das Lernen von
+neuronalen Netzen sehr rechenintensiv ist. Abhilfe schaffen hier Algorithmen,
+die Richtungsinformationen \emph{2. Ordnung} einbeziehen (z.B. über ein Momentum
+wie im \emph{ADAM} Algorithmus) sowie der Rückgriff auf \emph{low-precision}
+Arithmetik (was naheliegend ist, wenn kleine \(\epsilon\,\)s ohnehin quasi unerreichbar
+sind).
+
+\end{JHSAYS}
+
 \hypertarget{uxfcbungen-3}{%
 \section{Übungen}\label{uxfcbungen-3}}
 

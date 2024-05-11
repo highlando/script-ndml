@@ -356,6 +356,39 @@ a_{k+1} \leq &amp; (1-2m \eta_k)a_k + \frac 12 \eta_k^2 M \\
 \end{equation*}\]</span>
 sodass der Beweis erbracht ist mit <span class="math inline">\(C:=\frac c2\)</span>.</p>
 </div>
+<p>Zum Abschluss schätzen wir noch aus der erhaltenen Konvergenzart und –rate,
+wie lange iteriert werden muss um den Fehler unter einen vorgegebenen Wert
+<span class="math inline">\(\epsilon\)</span> zu bekommen.</p>
+<p>Dazu sei <span class="math inline">\(e_{n}\)</span> der Fehler nach der <span class="math inline">\(n\)</span>-ten Iteration und entsprechend <span class="math inline">\(e_0\)</span> der
+Fehler zum Startwert.</p>
+<ol style="list-style-type: decimal">
+<li><p>Für lineare Konvergenz gilt <span class="math inline">\(e_n \leq qe_{n-1} \leq q^n e_0\)</span> und damit
+<span class="math display">\[\begin{equation*}
+q^n e_0 = e_n&lt; \epsilon \quad \leftrightarrow \quad n &gt; \frac{\log \epsilon -
+\log e_0}{\log q}
+\end{equation*}\]</span></p></li>
+<li><p>Für quadratische Konvergenz folgt aus <span class="math inline">\(e_n \leq ae_{n-1}^2 \leq a^n e_0^{2n}\)</span>, dass
+<span class="math display">\[\begin{equation*}
+a^n e_0^{2n} = e_n&lt; \epsilon \quad \leftrightarrow \quad n &gt; \frac{\log \epsilon}{\log a + 2\log e_0}
+\end{equation*}\]</span></p></li>
+<li><p>Für “<span class="math inline">\(1/k\)</span>” mit <span class="math inline">\(e_n\leq \frac {C}{n}\)</span> gilt dann
+<span class="math display">\[\begin{equation*}
+e_n &lt; \epsilon \leftrightarrow n &gt; \frac{C}{\epsilon}
+\end{equation*}\]</span></p></li>
+</ol>
+<p>Wir lesen ab, dass für lineare Konvergenz der Startwert nur entscheidend
+für die Anzahl der Iteration, während für quadratische Konvergenz
+<span class="math inline">\(\log a + 2 \log e_0 &lt; 0 \leftrightarrow a &lt; \sqrt e_0\)</span> wichtig ist um
+überhaupt Konvergenz zu haben. Abschließend zu bemerken ist dass,
+unter den getätigten Annahmen, für den stochastischen Gradientenabstieg der <strong>quadratische Fehler</strong> mit “1/k” konvergiert. Dementsprechend muss entsprechend von <span class="math inline">\(n\sim \frac{1}{\epsilon^2}\)</span> ausgegangen werden.</p>
+<div id="rem-bad-conv-sdg" class="JHSAYS">
+<p>Diese schlechte Konvergenz ist auch ein Grund dafür, dass das Lernen von
+neuronalen Netzen sehr rechenintensiv ist. Abhilfe schaffen hier Algorithmen,
+die Richtungsinformationen <em>2. Ordnung</em> einbeziehen (z.B. über ein Momentum
+wie im <em>ADAM</em> Algorithmus) sowie der Rückgriff auf <em>low-precision</em>
+Arithmetik (was naheliegend ist, wenn kleine <span class="math inline">\(\epsilon\,\)</span>s ohnehin quasi unerreichbar
+sind).</p>
+</div>
 </div>
 <div id="übungen-3" class="section level2 hasAnchor" number="4.4">
 <h2><span class="header-section-number">4.4</span> Übungen<a href="stochastisches-gradientenverfahren.html#übungen-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
