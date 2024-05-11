@@ -195,6 +195,44 @@ sodass der Beweis erbracht ist mit $C:=\frac c2$.
 
 :::
 
+Zum Abschluss sch&auml;tzen wir noch aus der erhaltenen Konvergenzart und --rate,
+wie lange iteriert werden muss um den Fehler unter einen vorgegebenen Wert
+$\epsilon$ zu bekommen.
+
+Dazu sei $e_{n}$ der Fehler nach der $n$-ten Iteration und entsprechend $e_0$ der
+Fehler zum Startwert.
+
+1. F&uuml;r lineare Konvergenz gilt $e_n \leq qe_{n-1} \leq q^n e_0$ und damit
+   \begin{equation*}
+   q^n e_0 = e_n< \epsilon \quad \leftrightarrow \quad n > \frac{\log \epsilon -
+   \log e_0}{\log q}
+   \end{equation*}
+
+2. F&uuml;r quadratische Konvergenz folgt aus $e_n \leq ae_{n-1}^2 \leq a^n e_0^{2n}$, dass 
+   \begin{equation*}
+   a^n e_0^{2n} = e_n< \epsilon \quad \leftrightarrow \quad n > \frac{\log \epsilon}{\log a + 2\log e_0}
+   \end{equation*}
+
+3. F&uuml;r "$1/k$" mit $e_n\leq \frac {C}{n}$ gilt dann
+   \begin{equation*}
+   e_n < \epsilon \leftrightarrow n > \frac{C}{\epsilon}
+   \end{equation*}
+
+Wir lesen ab, dass f&uuml;r lineare Konvergenz der Startwert nur entscheidend
+f&uuml;r die Anzahl der Iteration, w&auml;hrend f&uuml;r quadratische Konvergenz
+$\log a + 2 \log e_0 < 0 \leftrightarrow a < \sqrt e_0$ wichtig ist um
+&uuml;berhaupt Konvergenz zu haben. Abschlie&szlig;end zu bemerken ist dass,
+unter den get&auml;tigten Annahmen, f&uuml;r den stochastischen Gradientenabstieg der **quadratische Fehler** mit "1/k" konvergiert. Dementsprechend muss entsprechend von $n\sim \frac{1}{\epsilon^2}$ ausgegangen werden.
+
+::: {#rem-bad-conv-sdg .JHSAYS data-latex=''}
+Diese schlechte Konvergenz ist auch ein Grund daf&uuml;r, dass das Lernen von
+neuronalen Netzen sehr rechenintensiv ist. Abhilfe schaffen hier Algorithmen,
+die Richtungsinformationen *2. Ordnung* einbeziehen (z.B. &uuml;ber ein Momentum
+wie im *ADAM* Algorithmus) sowie der R&uuml;ckgriff auf *low-precision*
+Arithmetik (was naheliegend ist, wenn kleine $\epsilon\,$s ohnehin quasi unerreichbar
+sind).
+:::
+
 ## &Uuml;bungen
 
 1. Eine Funktion hei&szlig;t $L$-glatt (*$L$-smooth*) wenn sie stetig
