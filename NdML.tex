@@ -1044,9 +1044,9 @@ x_{k+1} = x_k - \eta_k g(x_k, i(\xi)).
 
 \begin{theorem}[Konvergenz des stochastischen Gradientenabstiegsverfahren]
 \protect\hypertarget{thm:thm-convergence-stoch-grad}{}\label{thm:thm-convergence-stoch-grad}Sei \(Q:=\frac 1N \sum_{i=1}^NQ_i\) zweimal stetig differenzierbar und \emph{streng konvex} mit \emph{Modulus} \(m>0\) und es gebe eine Konstante \(M\) mit \(\frac 1N \sum_{i=1}^N \|\nabla Q_i \|_2^2 \leq M\). Ferner sei
-\(x^*\) das Minimum von \(Q\). Dann konvergiert das einfache stochastische Gradientenabstiegsverfahren mit \(\eta_k \leq \frac{1}{km}\) linear im Erwartungswert des quadrierten Fehlers, d.h. es gilt
+\(x^*\) das Minimum von \(Q\). Dann konvergiert das einfache stochastische Gradientenabstiegsverfahren mit \(\eta_k := \frac{1}{km}\) linear im Erwartungswert des quadrierten Fehlers, d.h. es gilt
 \begin{equation*}
-a_{k+1} := \frac 12 \mathbb E [\| x_{k+1} - x^*\|^2 ] \leq \frac {C}{k+1}
+a_{k+1} := \frac 12 \mathbb E [\| x_{k+1} - x^*\|^2 ] \leq \frac {C}{k}
 \end{equation*}
 für eine Konstante \(C\).
 \end{theorem}
@@ -1111,17 +1111,21 @@ beziehungsweise
 a_{k+1} \leq (1-2\eta_km)a_k + \frac 12\eta_k^2M.
 \end{equation*}
 
-Insbesondere wegen des konstanten Terms in der Fehlerrekursion, bedarf es bis zur \(1/k\)-Konvergenz weiterer Abschätzungen. Wir zeigen induktiv, dass für \(\eta_k<\frac{1}{km}\) gilt, dass
+Insbesondere wegen des konstanten Terms in der Fehlerrekursion, bedarf es bis zur \(1/k\)-Konvergenz weiterer Abschätzungen. Wir zeigen induktiv, dass für \(\eta_k=\frac{1}{km}\) gilt, dass
 \begin{equation*}
-a_{k+1} \leq \frac{c}{2(k+1)}, \quad c = \max\{\| x_1 - x^*\|^2, \frac{M^2}{m^2} \}.
+a_{k+1} \leq \frac{c}{2k}, \quad c = \max\{\| x_1 - x^*\|^2, \frac{M}{m^2} \}.
 \end{equation*}
-Für \(k=0\) gilt die Abschätzung direkt. Für \(k\geq 1\) gilt mit \(\eta_k < \frac{1}{mk}\)
+Für \(k=1\) (und damit \(\eta_k = \frac 1m\)) gilt die Abschätzung da
+\begin{equation*}
+a_2 \leq (1-2)a_1 + \frac 12 \frac{1}{m^2}M = (-1)\frac 12 \|x_i-x^*\|^2 + \frac 12 \frac{M}{m^2} < \frac{M}{2 m^2} \leq \frac c2.
+\end{equation*}
+
+Für \(k\geq 2\) gilt mit \(\eta_k = \frac{1}{mk}\)
 \begin{equation*}
 \begin{split}
-a_{k+1} \leq & (1-2m \eta_k)a_k + \frac 12 \eta_k^2 M \\
-\leq&  (1-\frac 2k)a_k + \frac 12 \frac{M}{k^2m^2} \\
-\leq&  (1-\frac 2k)\frac c2 + \frac 12 \frac{1}{k^2} \frac c2\\
-&=  \frac{k^2-1}{k^2}\frac{c}{2(k+1)} \leq \frac {c}{2(k+1)}
+a_{k+1} \leq & (1-2m \eta_k)a_k + \frac 12 \eta_k^2 M =  (1-\frac 2k)a_k + \frac 12 \frac{1}{k^2m^2}M \\
+\leq&  (1-\frac 2k) \frac c{2k} + \frac c2 \frac{1}{k^2}  =  \frac {k-1}{2k^2}c  = \frac{k^2-1}{k^2}\frac{1}{k+1} \\
+\leq& \frac {c}{2(k+1)} \leq \frac{c}{2k}
 \end{split}
 \end{equation*}
 sodass der Beweis erbracht ist mit \(C:=\frac c2\).
@@ -1320,7 +1324,11 @@ Netzwerk Daten interpretiert, die es noch nicht ``gesehen'' hat.
 \hypertarget{beispiel-implementierung}{%
 \section{Beispiel Implementierung}\label{beispiel-implementierung}}
 
-Fuer ein 2-layer Netzwerk zur Klassifizierung der Pinguine.
+Für ein 2-layer Netzwerk zur Klassifizierung der Pinguine.
+
+Hier ein \href{files/051_sngltarg.py}{python file} oder ein \href{files/051_sngltarg.ipynb}{ipython
+file} sowie die \href{files/penguin-data.json}{Pinguin
+Daten} zum Direktdownload.
 
 \hypertarget{setup}{%
 \subsection{Setup}\label{setup}}

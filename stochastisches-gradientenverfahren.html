@@ -288,9 +288,9 @@ x_{k+1} = x_k - \eta_k g(x_k, i(\xi)).
 <div class="theorem">
 <p><span id="thm:thm-convergence-stoch-grad" class="theorem"><strong>Theorem 4.1  (Konvergenz des stochastischen Gradientenabstiegsverfahren) </strong></span>Sei <span class="math inline">\(Q:=\frac 1N \sum_{i=1}^NQ_i\)</span> zweimal stetig differenzierbar und <em>streng konvex</em> mit <em>Modulus</em> <span class="math inline">\(m&gt;0\)</span> und es gebe eine Konstante <span class="math inline">\(M\)</span> mit <span class="math inline">\(\frac 1N \sum_{i=1}^N \|\nabla Q_i \|_2^2 \leq M\)</span>. Ferner sei
 <!-- seien die Funktionen $Q_i$ konvex und es sei -->
-<span class="math inline">\(x^*\)</span> das Minimum von <span class="math inline">\(Q\)</span>. Dann konvergiert das einfache stochastische Gradientenabstiegsverfahren mit <span class="math inline">\(\eta_k \leq \frac{1}{km}\)</span> linear im Erwartungswert des quadrierten Fehlers, d.h. es gilt
+<span class="math inline">\(x^*\)</span> das Minimum von <span class="math inline">\(Q\)</span>. Dann konvergiert das einfache stochastische Gradientenabstiegsverfahren mit <span class="math inline">\(\eta_k := \frac{1}{km}\)</span> linear im Erwartungswert des quadrierten Fehlers, d.h. es gilt
 <span class="math display">\[\begin{equation*}
-a_{k+1} := \frac 12 \mathbb E [\| x_{k+1} - x^*\|^2 ] \leq \frac {C}{k+1}
+a_{k+1} := \frac 12 \mathbb E [\| x_{k+1} - x^*\|^2 ] \leq \frac {C}{k}
 \end{equation*}\]</span>
 für eine Konstante <span class="math inline">\(C\)</span>.</p>
 </div>
@@ -347,17 +347,20 @@ beziehungsweise
 <span class="math display">\[\begin{equation*}
 a_{k+1} \leq (1-2\eta_km)a_k + \frac 12\eta_k^2M.
 \end{equation*}\]</span></p>
-<p>Insbesondere wegen des konstanten Terms in der Fehlerrekursion, bedarf es bis zur <span class="math inline">\(1/k\)</span>-Konvergenz weiterer Abschätzungen. Wir zeigen induktiv, dass für <span class="math inline">\(\eta_k&lt;\frac{1}{km}\)</span> gilt, dass
+<p>Insbesondere wegen des konstanten Terms in der Fehlerrekursion, bedarf es bis zur <span class="math inline">\(1/k\)</span>-Konvergenz weiterer Abschätzungen. Wir zeigen induktiv, dass für <span class="math inline">\(\eta_k=\frac{1}{km}\)</span> gilt, dass
 <span class="math display">\[\begin{equation*}
-a_{k+1} \leq \frac{c}{2(k+1)}, \quad c = \max\{\| x_1 - x^*\|^2, \frac{M^2}{m^2} \}.
+a_{k+1} \leq \frac{c}{2k}, \quad c = \max\{\| x_1 - x^*\|^2, \frac{M}{m^2} \}.
 \end{equation*}\]</span>
-Für <span class="math inline">\(k=0\)</span> gilt die Abschätzung direkt. Für <span class="math inline">\(k\geq 1\)</span> gilt mit <span class="math inline">\(\eta_k &lt; \frac{1}{mk}\)</span>
+Für <span class="math inline">\(k=1\)</span> (und damit <span class="math inline">\(\eta_k = \frac 1m\)</span>) gilt die Abschätzung da
+<span class="math display">\[\begin{equation*}
+a_2 \leq (1-2)a_1 + \frac 12 \frac{1}{m^2}M = (-1)\frac 12 \|x_i-x^*\|^2 + \frac 12 \frac{M}{m^2} &lt; \frac{M}{2 m^2} \leq \frac c2.
+\end{equation*}\]</span></p>
+<p>Für <span class="math inline">\(k\geq 2\)</span> gilt mit <span class="math inline">\(\eta_k = \frac{1}{mk}\)</span>
 <span class="math display">\[\begin{equation*}
 \begin{split}
-a_{k+1} \leq &amp; (1-2m \eta_k)a_k + \frac 12 \eta_k^2 M \\
-\leq&amp;  (1-\frac 2k)a_k + \frac 12 \frac{M}{k^2m^2} \\
-\leq&amp;  (1-\frac 2k)\frac c2 + \frac 12 \frac{1}{k^2} \frac c2\\
-&amp;=  \frac{k^2-1}{k^2}\frac{c}{2(k+1)} \leq \frac {c}{2(k+1)}
+a_{k+1} \leq &amp; (1-2m \eta_k)a_k + \frac 12 \eta_k^2 M =  (1-\frac 2k)a_k + \frac 12 \frac{1}{k^2m^2}M \\
+\leq&amp;  (1-\frac 2k) \frac c{2k} + \frac c2 \frac{1}{k^2}  =  \frac {k-1}{2k^2}c  = \frac{k^2-1}{k^2}\frac{1}{k+1} \\
+\leq&amp; \frac {c}{2(k+1)} \leq \frac{c}{2k}
 \end{split}
 \end{equation*}\]</span>
 sodass der Beweis erbracht ist mit <span class="math inline">\(C:=\frac c2\)</span>.</p>
