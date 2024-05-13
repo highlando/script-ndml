@@ -1,6 +1,10 @@
 ## Beispiel Implementierung
 
-Fuer ein 2-layer Netzwerk zur Klassifizierung der Pinguine.
+F&uuml;r ein 2-layer Netzwerk zur Klassifizierung der Pinguine.
+
+Hier ein [python file](files/051_sngltarg.py) oder ein [ipython
+file](files/051_sngltarg.ipynb) sowie die [Pinguin
+Daten](files/penguin-data.json) zum Direktdownload.
 
 ### Setup
 
