@@ -169,6 +169,7 @@ plt.xlabel('$k$-th stochastic gradient step')
 plt.legend()
 plt.show()
 ```
+![Beispiel Konvergenz des Stochastischen Gradienten](bilder/051_nnpeng_conv.png)
 
 Wir koennen eine gewisse Konvergenz beobachten (sichtbar an der unteren Kante) aber auch ein typisches stochastisches Verhalten.
 
