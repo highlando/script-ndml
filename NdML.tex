@@ -1257,6 +1257,303 @@ Hier schon mal ein Codegerüst.
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{ein-nn-beispiel}{%
+\chapter{Ein NN Beispiel}\label{ein-nn-beispiel}}
+
+Zur Illustration der Konzepte, betrachten wir ein Beispiel in dem ein einfaches
+\emph{Neuronales Netz} für die Klassifizierung von Pinguinen anhand vierer
+Merkmale aufgesetzt, trainiert und auf Funktion geprüft wird.
+
+\hypertarget{der-penguins-datensatz}{%
+\section{Der PENGUINS Datensatz}\label{der-penguins-datensatz}}
+
+Die Grundlage ist der \href{https://allisonhorst.github.io/palmerpenguins/}{\emph{Pinguin Datensatz}}, der eine gern genommene Grundlage für die Illustration in der Datenanalyse ist. Die Daten wurden von \href{https://www.uaf.edu/cfos/people/faculty/detail/kristen-gorman.php}{Kristen Gorman} erhoben und beinhalten 4 verschiedene Merkmale (engl. \emph{features}) von einer Stichprobe von insgesamt 344\footnote{allerdings mit 2 unvollständigen Datenpunkten, die ich entfernt habe für unsere Beispiele}Pinguinen die 3 verschiedenen Spezies zugeordnet werden können oder sollen (Fachbegriff hier: \emph{targets}). Im Beispiel werden die Klassen mit \texttt{0,\ 1,\ 2} codiert und beschreiben die Unterarten \emph{Adele}, \emph{Gentoo} und \emph{Chinstrap} der Pinguine. Die Merkmale sind gemessene Länge und Höhe des Schnabels (hier \emph{bill}), die Länge der Flosse (\emph{flipper}) sowie das Köpergewicht\footnote{Im Originaldatensatz ist das Gewicht in Gramm angegeben, um die Daten innerhalb einer 10er Skala zu haben, habe ich das Gewicht auf in kg umgerechnet}
+(\emph{body mass}).
+
+Wir stellen uns die Frage:
+
+\begin{quote}
+Können wir aus den Merkmalen (\emph{features}) die Klasse (\emph{target}) erkennen und wie machen wir gegebenenfalls die Zuordnung?
+\end{quote}
+
+In höheren Dimensionen ist schon die graphische Darstellung der Daten ein Problem. Wir können aber alle möglichen 2er Kombinationen der Daten in 2D plots visualisieren.
+
+\begin{figure}
+\hypertarget{fig:05-penguin-allpairs}{%
+\centering
+\includegraphics[width=0.75\textwidth,height=\textheight]{bilder/05-all-pairs.png}
+\caption{Pinguin Datenset 2D plots}\label{fig:05-penguin-allpairs}
+}
+\end{figure}
+
+Ein Blick auf die Diagonale zeigt schon, dass manche Merkmale besser geeignet als andere sind, um die Spezies zu unterscheiden. Allerdings reichen (in dieser linearen Darstellung) zwei Merkmale nicht aus, um eine eindeutige Diskriminierung zu erreichen.
+
+\hypertarget{ein-2-layer-neuronales-netz-zur-klassifizierung}{%
+\section{\texorpdfstring{Ein \emph{2}-Layer Neuronales Netz zur Klassifizierung}{Ein 2-Layer Neuronales Netz zur Klassifizierung}}\label{ein-2-layer-neuronales-netz-zur-klassifizierung}}
+
+Wir definieren ein neuronales Netzes \(\mathcal N\) mit einer \emph{hidden layer} als
+\begin{equation*}
+\eta_i = \mathcal N (x_i):=\tanh \bigl (A_2 \tanh (A_1 x_i + b_1) + b_2\bigr ),
+\end{equation*}
+das für einen Datenpunkt \(x_i \in \mathbb R^{n_0}\) einen Ergebniswert \(\eta_i\in \mathbb R^{n_2}\) liefert.
+Die sogenannten Gewichte \(A_1 \in \mathbb R^{n_1 \times n_0}\), \(b_1 \in \mathbb R^{n_1}\), \(A_2 \in \mathbb R^{n_2, n_1}\), \(b_2 \in \mathbb R^{n_2}\) parametrisieren diese Funktion. Eine Schicht besteht aus der einer affin-linearen Abbildung und einer \emph{Aktivierungsfunktion} die hier als \(\tanh\) gewählt wird und die komponentenweise angewendet wird.
+
+Wir werden \(n_0=4\) (soviele Merkmale als Eingang) und \(n_2=1\) (eine
+Entscheidungsvariable als Ausgang) setzen und das Netzwerk so trainieren, dass
+anhand der gemessenen Daten \(x_i\) die bekannte Pinguin Population
+\href{files/penguin-data.json}{\texttt{penguin-data.json}} in zwei Gruppen aufgeteilt
+werden, wobei in der ersten Gruppe eine Spezies enthalten ist und in der anderen
+die beiden anderen Spezies.
+
+Dazu kann eine Funktion \(\ell \colon X \mapsto \{-1, 1\}\) definiert werden, die die bekannten Pinguine \(x_i\) aus dem Datensatz \(X\) ihrer Gruppe zuordnet. Dann können die Koeffizienten von \(\mathcal N\) über das Optimierungsproblem
+\begin{equation*}
+\frac{1}{|X|}\sum_{x_i \in X} \|\ell(x_i)-\mathcal N(x_i)\|^2 \to \min_{A_1, b_1, A_2, b_2}
+\end{equation*}
+mittels des \emph{stochastischen (batch) Gradientenabstiegs} bestimmt werden.
+
+Zur Optimierung wird typischerweise ein Teil (z.B. 90\%) der Datenpunkte
+verwendet über die mehrfach (in sogenannten \emph{epochs}) iteriert wird.
+
+Danach kann mittels der verbliebenen Datenpunkte getestet werden, wie gut das
+Netzwerk Daten interpretiert, die es noch nicht ``gesehen'' hat.
+
+\hypertarget{beispiel-implementierung}{%
+\section{Beispiel Implementierung}\label{beispiel-implementierung}}
+
+Fuer ein 2-layer Netzwerk zur Klassifizierung der Pinguine.
+
+\hypertarget{setup}{%
+\subsection{Setup}\label{setup}}
+
+Wir importieren die benötigten Module und laden die Daten.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# import the required modules}
+\ImportTok{import}\NormalTok{ json}
+\ImportTok{import}\NormalTok{ numpy }\ImportTok{as}\NormalTok{ np}
+\ImportTok{import}\NormalTok{ matplotlib.pyplot }\ImportTok{as}\NormalTok{ plt}
+\ImportTok{from}\NormalTok{ scipy.optimize }\ImportTok{import}\NormalTok{ approx\_fprime  }\CommentTok{\# we will use this function to compute gradients}
+
+\CommentTok{\# load the data}
+\ControlFlowTok{with} \BuiltInTok{open}\NormalTok{(}\StringTok{\textquotesingle{}penguin{-}data.json\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}r\textquotesingle{}}\NormalTok{) }\ImportTok{as}\NormalTok{ f:}
+\NormalTok{    datadict }\OperatorTok{=}\NormalTok{ json.load(f)}
+\CommentTok{\# turn it into a numpy array}
+\NormalTok{data }\OperatorTok{=}\NormalTok{ np.array(datadict[}\StringTok{\textquotesingle{}data\textquotesingle{}}\NormalTok{])}
+\NormalTok{data }\OperatorTok{=}\NormalTok{ data }\OperatorTok{{-}}\NormalTok{ data.mean(axis}\OperatorTok{=}\DecValTok{0}\NormalTok{)  }\CommentTok{\# center the data}
+\CommentTok{\# extract the labels}
+\NormalTok{lbls }\OperatorTok{=}\NormalTok{ np.array(datadict[}\StringTok{\textquotesingle{}target\textquotesingle{}}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+In diesem Beispiel unterscheiden wir nur zwei Gruppen. Wir teilen die
+ersetzen die eigentlichen \emph{labels} \texttt{{[}0,\ 1,\ 2{]}} durch die zwei \emph{lables} \texttt{{[}-1,\ 1{]}}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# a dictionary that maps the labels(=targets) of the data into labels \{1, {-}1\}}
+\CommentTok{\# that will use for distinction of two groups}
+\NormalTok{mplbldict }\OperatorTok{=}\NormalTok{ \{}\DecValTok{0}\NormalTok{: np.array([}\DecValTok{1}\NormalTok{]),}
+             \DecValTok{1}\NormalTok{: np.array([}\DecValTok{1}\NormalTok{]),}
+             \DecValTok{2}\NormalTok{: np.array([}\OperatorTok{{-}}\DecValTok{1}\NormalTok{])\}}
+\BuiltInTok{print}\NormalTok{(}\StringTok{\textquotesingle{}our two groups: }\CharTok{\textbackslash{}n}\StringTok{\textquotesingle{}}\NormalTok{, [}\SpecialStringTok{f\textquotesingle{}}\SpecialCharTok{\{}\NormalTok{datadict[}\StringTok{"target\_names"}\NormalTok{][lblid]}\SpecialCharTok{\}}\SpecialStringTok{ {-}{-}\textgreater{} }\SpecialCharTok{\{}\NormalTok{mplbldict[lblid]}\SpecialCharTok{.}\NormalTok{item()}\SpecialCharTok{\}}\SpecialStringTok{\textquotesingle{}} \ControlFlowTok{for}\NormalTok{ lblid }\KeywordTok{in}\NormalTok{ [}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{]])}
+\end{Highlighting}
+\end{Shaded}
+
+Als nächstes legen wir die Dimensionen der \emph{layers} fest und damit auch die
+Größe der Gewichtsmatrizen. Bei unserem 2-layer Netzwerk, bleibt uns
+da nur die Größe der mittleren Schicht, da die Eingangsdimension
+durch die Daten und die Ausgangsdimension durch unsere Wahl, wie wir entscheiden
+wollen, bereits festgelegt ist.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# sizes of the layers}
+\NormalTok{sxz, sxo, sxt }\OperatorTok{=}\NormalTok{ data.shape[}\DecValTok{1}\NormalTok{], }\DecValTok{2}\NormalTok{, mplbldict[}\DecValTok{0}\NormalTok{].size}
+\CommentTok{\# defines also the sizes of the weightmatrices}
+\end{Highlighting}
+\end{Shaded}
+
+Zuletzt noch die Parameter, die das \emph{training} definieren.
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{batchsize} -- über wieviele Samples wird der stochastische Gradient
+  bestimmt
+\item
+  \texttt{lr} -- \emph{learning rate} -- die Schrittweite
+\item
+  \texttt{epochs} -- wie oft wird über die Daten iteriert
+\end{itemize}
+
+und dann wie gross der Anteil und was die Indizes der Trainings--
+beziehungsweise Testdaten sind
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# parameters for the training {-}{-} these worked fine for me}
+\NormalTok{batchsize }\OperatorTok{=} \DecValTok{30}  \CommentTok{\# how many samples for the stochastic gradients}
+\NormalTok{lr }\OperatorTok{=} \FloatTok{0.125}  \CommentTok{\# learning rate}
+\NormalTok{epochs }\OperatorTok{=} \DecValTok{1000}  \CommentTok{\# how many gradient steps}
+
+\CommentTok{\# the data}
+\NormalTok{traindataratio }\OperatorTok{=} \FloatTok{.9}     \CommentTok{\# the ratio of training data vs. test data}
+\NormalTok{ndata }\OperatorTok{=}\NormalTok{ data.shape[}\DecValTok{0}\NormalTok{]   }\CommentTok{\# number of datapoints                                       }
+\NormalTok{trnds }\OperatorTok{=} \BuiltInTok{int}\NormalTok{(ndata}\OperatorTok{*}\NormalTok{traindataratio)}
+\NormalTok{allidx }\OperatorTok{=}\NormalTok{ np.arange(ndata)                                   }\CommentTok{\# indices of all data}
+\NormalTok{trnidx }\OperatorTok{=}\NormalTok{ np.random.choice(allidx, trnds, replace}\OperatorTok{=}\VariableTok{False}\NormalTok{)     }\CommentTok{\# training ids}
+\NormalTok{tstidx }\OperatorTok{=}\NormalTok{ np.setdiff1d(allidx, trnidx)                       }\CommentTok{\# test ids}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{neural-network-evaluation-setup}{%
+\subsection{Neural Network Evaluation Setup}\label{neural-network-evaluation-setup}}
+
+Hier definieren wir das Netzwerk als Funktion der Parameter und die \emph{loss function}, die misst wie gut das Netzwerk die Daten wiedergibt und die Grundlage fuer die Optimierung ist.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{def}\NormalTok{ fwdnn(xzero, Aone}\OperatorTok{=}\VariableTok{None}\NormalTok{, bone}\OperatorTok{=}\VariableTok{None}\NormalTok{, Atwo}\OperatorTok{=}\VariableTok{None}\NormalTok{, btwo}\OperatorTok{=}\VariableTok{None}\NormalTok{):}
+    \CommentTok{\textquotesingle{}\textquotesingle{}\textquotesingle{} definition/(forward)evaluation of a neural networks of two layers}
+
+\CommentTok{    \textquotesingle{}\textquotesingle{}\textquotesingle{}}
+\NormalTok{    xone }\OperatorTok{=}\NormalTok{ np.tanh(Aone }\OperatorTok{@}\NormalTok{ xzero }\OperatorTok{+}\NormalTok{ bone)}
+\NormalTok{    xtwo }\OperatorTok{=}\NormalTok{ np.tanh(Atwo }\OperatorTok{@}\NormalTok{ xone }\OperatorTok{+}\NormalTok{ btwo)}
+    \ControlFlowTok{return}\NormalTok{ xtwo}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{def}\NormalTok{ sqrdloss(weightsvector, features}\OperatorTok{=}\VariableTok{None}\NormalTok{, labels}\OperatorTok{=}\VariableTok{None}\NormalTok{):}
+    \CommentTok{\textquotesingle{}\textquotesingle{}\textquotesingle{} compute the sqrd \textasciigrave{}loss\textasciigrave{}}
+
+\CommentTok{    || NN(x\_i) {-} y\_i ||\^{}2}
+
+\CommentTok{    given the vector of weights for a given data point (features)}
+\CommentTok{    and the corresponding label}
+\CommentTok{    \textquotesingle{}\textquotesingle{}\textquotesingle{}}
+
+\NormalTok{    Aone, bone, Atwo, btwo }\OperatorTok{=}\NormalTok{ wvec\_to\_wmats(weightsvector)}
+    \CommentTok{\# compute the prediction}
+\NormalTok{    nnpred }\OperatorTok{=}\NormalTok{ fwdnn(features, Aone}\OperatorTok{=}\NormalTok{Aone, bone}\OperatorTok{=}\NormalTok{bone, Atwo}\OperatorTok{=}\NormalTok{Atwo, btwo}\OperatorTok{=}\NormalTok{btwo)}
+    \ControlFlowTok{return}\NormalTok{ np.linalg.norm(nnpred }\OperatorTok{{-}}\NormalTok{ labels)}\OperatorTok{**}\DecValTok{2}
+\end{Highlighting}
+\end{Shaded}
+
+An sich liegen die Parameter als Matrizen vor. Da jedoch die Theorie (und auch die praktische Implementierung) einen Parameter\textbf{vektor} voraussetzt, entrollen wir die Matrizen und stecken sie in einen grossen Vektor. Dann muessen wir noch an der richtigen Stelle wieder die Matrizen aus dem Vektor extrahieren; was die folgende Funktion realisiert.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{def}\NormalTok{ wvec\_to\_wmats(wvec):}
+    \CommentTok{\textquotesingle{}\textquotesingle{}\textquotesingle{} helper to turn the vector of weights into the system matrices}
+
+\CommentTok{    \textquotesingle{}\textquotesingle{}\textquotesingle{}}
+\NormalTok{    Aone }\OperatorTok{=}\NormalTok{ wvec[:sxz}\OperatorTok{*}\NormalTok{sxo].reshape((sxo, sxz))}
+\NormalTok{    cidx }\OperatorTok{=}\NormalTok{ sxz}\OperatorTok{*}\NormalTok{sxo}
+\NormalTok{    bone }\OperatorTok{=}\NormalTok{ wvec[cidx:cidx}\OperatorTok{+}\NormalTok{sxo]}
+\NormalTok{    cidx }\OperatorTok{=}\NormalTok{ cidx }\OperatorTok{+}\NormalTok{ sxo}
+\NormalTok{    Atwo }\OperatorTok{=}\NormalTok{ wvec[cidx:cidx}\OperatorTok{+}\NormalTok{sxo}\OperatorTok{*}\NormalTok{sxt].reshape((sxt, sxo))}
+\NormalTok{    cidx }\OperatorTok{=}\NormalTok{ cidx }\OperatorTok{+}\NormalTok{ sxo}\OperatorTok{*}\NormalTok{sxt}
+\NormalTok{    btwo }\OperatorTok{=}\NormalTok{ wvec[cidx:]}
+    \ControlFlowTok{if}\NormalTok{ Aone.size }\OperatorTok{+}\NormalTok{ bone.size }\OperatorTok{+}\NormalTok{ Atwo.size }\OperatorTok{+}\NormalTok{ btwo.size }\OperatorTok{==}\NormalTok{ wvec.size:}
+        \ControlFlowTok{return}\NormalTok{ Aone, bone, Atwo, btwo}
+    \ControlFlowTok{else}\NormalTok{:}
+        \ControlFlowTok{raise} \PreprocessorTok{UserWarning}\NormalTok{(}\StringTok{\textquotesingle{}mismatch weightsvector/matrices\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{das-training}{%
+\subsection{Das Training}\label{das-training}}
+
+Der Parametervektor (``die Gewichte'') werden zufällig initialisiert und dann mit dem stochastischen Gradienten in mehreren Epochen optimiert.
+
+\textbf{Bemerkung}: Hier benutzen wir \texttt{scipy.optimize.approx\_fprime} um den
+Gradienten numerisch zu bestimmen. Das ist hochgradig ineffizient. ``Richtige''
+Implementierungen von \emph{Machine Learning} Bibliotheken benutzen anstelle
+\emph{Automatisches Differenzieren} für eine sowohl schnelle und als auch akkurate Berechnung des Gradienten.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# initialization of the weights}
+\NormalTok{wini }\OperatorTok{=}\NormalTok{ np.random.randn(sxo}\OperatorTok{*}\NormalTok{sxz }\OperatorTok{+}\NormalTok{ sxo }\OperatorTok{+}\NormalTok{ sxt}\OperatorTok{*}\NormalTok{sxo }\OperatorTok{+}\NormalTok{ sxt)}
+\NormalTok{gradnrml }\OperatorTok{=}\NormalTok{ []  }\CommentTok{\# list of norm of grads for plotting later}
+
+\NormalTok{cwghts }\OperatorTok{=}\NormalTok{ wini  }\CommentTok{\# the current state of the weight vector}
+\ControlFlowTok{for}\NormalTok{ kkk }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(epochs):}
+\NormalTok{    cids }\OperatorTok{=}\NormalTok{ np.random.choice(trnidx, batchsize, replace}\OperatorTok{=}\VariableTok{False}\NormalTok{)}
+\NormalTok{    cgrad }\OperatorTok{=}\NormalTok{ np.zeros(wini.shape)}
+    \ControlFlowTok{for}\NormalTok{ cid }\KeywordTok{in}\NormalTok{ cids:}
+\NormalTok{        itrgts }\OperatorTok{=}\NormalTok{ data[cid, :]}
+\NormalTok{        ilabls }\OperatorTok{=}\NormalTok{ mplbldict[lbls[cid]]}
+\NormalTok{        cgrad }\OperatorTok{=}\NormalTok{ cgrad }\OperatorTok{+}\NormalTok{ approx\_fprime(cwghts, sqrdloss, }\FloatTok{1e{-}8}\NormalTok{,}
+\NormalTok{                                      itrgts, ilabls)}
+\NormalTok{    cwghts }\OperatorTok{=}\NormalTok{ cwghts }\OperatorTok{{-}}\NormalTok{ lr}\OperatorTok{*}\DecValTok{1}\OperatorTok{/}\NormalTok{batchsize}\OperatorTok{*}\NormalTok{cgrad  }\CommentTok{\# the upgrade}
+\NormalTok{    gradnrml.append(}\DecValTok{1}\OperatorTok{/}\NormalTok{batchsize}\OperatorTok{*}\NormalTok{np.linalg.norm(cgrad))}
+    \ControlFlowTok{if}\NormalTok{ np.mod(kkk, }\DecValTok{50}\NormalTok{) }\OperatorTok{==} \DecValTok{0}\NormalTok{:}
+        \BuiltInTok{print}\NormalTok{(}\SpecialStringTok{f\textquotesingle{}k=}\SpecialCharTok{\{}\NormalTok{kkk}\SpecialCharTok{\}}\SpecialStringTok{: norm of gradient: }\SpecialCharTok{\{np.}\NormalTok{linalg}\SpecialCharTok{.}\NormalTok{norm(cgrad)}\SpecialCharTok{\}}\SpecialStringTok{\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{plt.figure()}
+\NormalTok{plt.semilogy(gradnrml, label}\OperatorTok{=}\StringTok{\textquotesingle{}norm of gradient estimate\textquotesingle{}}\NormalTok{)}
+\NormalTok{plt.xlabel(}\StringTok{\textquotesingle{}$k${-}th stochastic gradient step\textquotesingle{}}\NormalTok{)}
+\NormalTok{plt.legend()}
+\NormalTok{plt.show()}
+\end{Highlighting}
+\end{Shaded}
+
+Wir koennen eine gewisse Konvergenz beobachten (sichtbar an der unteren Kante) aber auch ein typisches stochastisches Verhalten.
+
+\hypertarget{das-auswerten}{%
+\subsection{Das Auswerten}\label{das-auswerten}}
+
+Wir nehmen das Ergebnis der letzten Iteration als \emph{beste Parameter}, definieren damit das Neuronale Netz, und testen auf den übriggebliebenen Daten das Ergebnis.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{optwghts }\OperatorTok{=}\NormalTok{ cwghts  }\CommentTok{\# the optimal weights}
+\NormalTok{Aonex, bonex, Atwox, btwox }\OperatorTok{=}\NormalTok{ wvec\_to\_wmats(optwghts)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{print}\NormalTok{(}\StringTok{\textquotesingle{}***** testing the classification *****\textquotesingle{}}\NormalTok{)}
+\NormalTok{faillst }\OperatorTok{=}\NormalTok{ []}
+\ControlFlowTok{for}\NormalTok{ cti }\KeywordTok{in}\NormalTok{ tstidx:  }\CommentTok{\# iteration over the test data points}
+\NormalTok{    itrgt }\OperatorTok{=}\NormalTok{ data[cti, :]}
+\NormalTok{    ilbl }\OperatorTok{=}\NormalTok{ mplbldict[lbls[cti]]}
+    \CommentTok{\# the prediction of the neural network}
+\NormalTok{    nnlbl }\OperatorTok{=}\NormalTok{ fwdnn(itrgt, Aone}\OperatorTok{=}\NormalTok{Aonex, bone}\OperatorTok{=}\NormalTok{bonex, Atwo}\OperatorTok{=}\NormalTok{Atwox, btwo}\OperatorTok{=}\NormalTok{btwox)}
+\NormalTok{    sccs }\OperatorTok{=}\NormalTok{ np.sign(ilbl) }\OperatorTok{==}\NormalTok{ np.sign(nnlbl)}
+    \BuiltInTok{print}\NormalTok{(}\SpecialStringTok{f\textquotesingle{}label: }\SpecialCharTok{\{}\NormalTok{ilbl}\SpecialCharTok{.}\NormalTok{item()}\SpecialCharTok{\}}\SpecialStringTok{ {-}{-} nn: }\SpecialCharTok{\{}\NormalTok{nnlbl}\SpecialCharTok{.}\NormalTok{item()}\SpecialCharTok{:.4f\}}\SpecialStringTok{ {-}{-} success: }\SpecialCharTok{\{}\NormalTok{sccs}\SpecialCharTok{\}}\SpecialStringTok{\textquotesingle{}}\NormalTok{)}
+    \ControlFlowTok{if} \KeywordTok{not}\NormalTok{ sccs:}
+\NormalTok{        faillst.append((cti, ilbl.item(), nnlbl.item(),}
+\NormalTok{                        datadict[}\StringTok{\textquotesingle{}target\_names\textquotesingle{}}\NormalTok{][lbls[cti]]))}
+    \ControlFlowTok{else}\NormalTok{:}
+        \ControlFlowTok{pass}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{print}\NormalTok{(}\StringTok{\textquotesingle{}}\CharTok{\textbackslash{}n}\StringTok{***** Results *****\textquotesingle{}}\NormalTok{)}
+\BuiltInTok{print}\NormalTok{(}\SpecialStringTok{f\textquotesingle{}}\SpecialCharTok{\{}\DecValTok{100}\OperatorTok{{-}}\BuiltInTok{len}\NormalTok{(faillst)}\OperatorTok{/}\NormalTok{tstidx}\SpecialCharTok{.}\NormalTok{size}\OperatorTok{*}\DecValTok{100}\SpecialCharTok{:.0f\}}\SpecialStringTok{\% was classified correctly\textquotesingle{}}\NormalTok{)}
+\BuiltInTok{print}\NormalTok{(}\StringTok{\textquotesingle{}***** Misses *****\textquotesingle{}}\NormalTok{)}
+\ControlFlowTok{if} \BuiltInTok{len}\NormalTok{(faillst) }\OperatorTok{==} \DecValTok{0}\NormalTok{:}
+    \BuiltInTok{print}\NormalTok{(}\StringTok{\textquotesingle{}None\textquotesingle{}}\NormalTok{)}
+\ControlFlowTok{else}\NormalTok{:}
+    \ControlFlowTok{for}\NormalTok{ cfl }\KeywordTok{in}\NormalTok{ faillst:}
+\NormalTok{        cid, lbl, nnlbl, name }\OperatorTok{=}\NormalTok{ cfl}
+        \BuiltInTok{print}\NormalTok{(}\SpecialStringTok{f\textquotesingle{}ID: }\SpecialCharTok{\{}\NormalTok{cid}\SpecialCharTok{\}}\SpecialStringTok{ (}\SpecialCharTok{\{}\NormalTok{name}\SpecialCharTok{\}}\SpecialStringTok{ pinguin) was missclassified \textquotesingle{}} \OperatorTok{+}
+              \SpecialStringTok{f\textquotesingle{}with score }\SpecialCharTok{\{}\NormalTok{nnlbl}\SpecialCharTok{:.4f\}}\SpecialStringTok{ vs. }\SpecialCharTok{\{}\NormalTok{lbl}\SpecialCharTok{\}}\SpecialStringTok{\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
 \hypertarget{nachklapp}{%
 \chapter{Nachklapp}\label{nachklapp}}
 

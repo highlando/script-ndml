@@ -46,4 +46,12 @@ motivation-und-algorithmus
 iterative_method
 konvergenzanalyse
 übungen-3
+ein-nn-beispiel
+der-penguins-datensatz
+ein-2-layer-neuronales-netz-zur-klassifizierung
+beispiel-implementierung
+setup
+neural-network-evaluation-setup
+das-training
+das-auswerten
 nachklapp
