@@ -22,6 +22,7 @@ eq:eqn-gen-af-method
 eq:eqn-min-barrier
 thm:thm-convergence-stoch-grad
 eq:eqn-m-konvex-grad-est
+thm:SVD
 einführung
 was-ist-ein-algorithmus
 konsistenz-stabilität-genauigkeit
@@ -54,4 +55,13 @@ setup
 neural-network-evaluation-setup
 das-training
 das-auswerten
+singulärwert-zerlegung
+aufgaben
+norm-und-orthogonale-transformation
+kleinste-quadrate-und-mittelwert
+qr-zerlegung-und-kleinstes-quadrate-problem
+eigenwerte-symmetrischer-matrizen
+singulärwertzerlegung-und-eigenwerte-1
+singulärwertzerlegung-und-eigenwerte-2
+truncated-svd
 nachklapp

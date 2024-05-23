@@ -11,7 +11,7 @@ Daten](files/penguin-data.json) zum Direktdownload.
 Wir importieren die ben&ouml;tigten Module und laden die Daten.
 
 
-```python
+``` python
 # import the required modules
 import json
 import numpy as np
@@ -33,7 +33,7 @@ ersetzen die eigentlichen *labels* `[0, 1, 2]` durch die zwei *lables* `[-1,
 1]`.
 
 
-```python
+``` python
 # a dictionary that maps the labels(=targets) of the data into labels {1, -1}
 # that will use for distinction of two groups
 mplbldict = {0: np.array([1]),
@@ -49,7 +49,7 @@ durch die Daten und die Ausgangsdimension durch unsere Wahl, wie wir entscheiden
 wollen, bereits festgelegt ist.
 
 
-```python
+``` python
 # sizes of the layers
 sxz, sxo, sxt = data.shape[1], 2, mplbldict[0].size
 # defines also the sizes of the weightmatrices
@@ -66,7 +66,7 @@ und dann wie gross der Anteil und was die Indizes der Trainings--
 beziehungsweise Testdaten sind
 
 
-```python
+``` python
 # parameters for the training -- these worked fine for me
 batchsize = 30  # how many samples for the stochastic gradients
 lr = 0.125  # learning rate
@@ -87,7 +87,7 @@ Hier definieren wir das Netzwerk als Funktion der Parameter und die *loss functi
 
 
 
-```python
+``` python
 def fwdnn(xzero, Aone=None, bone=None, Atwo=None, btwo=None):
     ''' definition/(forward)evaluation of a neural networks of two layers
 
@@ -98,7 +98,7 @@ def fwdnn(xzero, Aone=None, bone=None, Atwo=None, btwo=None):
 ```
 
 
-```python
+``` python
 def sqrdloss(weightsvector, features=None, labels=None):
     ''' compute the sqrd `loss`
 
@@ -117,7 +117,7 @@ def sqrdloss(weightsvector, features=None, labels=None):
 An sich liegen die Parameter als Matrizen vor. Da jedoch die Theorie (und auch die praktische Implementierung) einen Parameter**vektor** voraussetzt, entrollen wir die Matrizen und stecken sie in einen grossen Vektor. Dann muessen wir noch an der richtigen Stelle wieder die Matrizen aus dem Vektor extrahieren; was die folgende Funktion realisiert.
 
 
-```python
+``` python
 def wvec_to_wmats(wvec):
     ''' helper to turn the vector of weights into the system matrices
 
@@ -145,7 +145,7 @@ Implementierungen von *Machine Learning* Bibliotheken benutzen anstelle
 *Automatisches Differenzieren* f&uuml;r eine sowohl schnelle und als auch akkurate Berechnung des Gradienten.
 
 
-```python
+``` python
 # initialization of the weights
 wini = np.random.randn(sxo*sxz + sxo + sxt*sxo + sxt)
 gradnrml = []  # list of norm of grads for plotting later
@@ -166,7 +166,7 @@ for kkk in range(epochs):
 ```
 
 
-```python
+``` python
 plt.figure()
 plt.semilogy(gradnrml, label='norm of gradient estimate')
 plt.xlabel('$k$-th stochastic gradient step')
@@ -183,13 +183,13 @@ Wir koennen eine gewisse Konvergenz beobachten (sichtbar an der unteren Kante) a
 Wir nehmen das Ergebnis der letzten Iteration als *beste Parameter*, definieren damit das Neuronale Netz, und testen auf den &uuml;briggebliebenen Daten das Ergebnis.
 
 
-```python
+``` python
 optwghts = cwghts  # the optimal weights
 Aonex, bonex, Atwox, btwox = wvec_to_wmats(optwghts)
 ```
 
 
-```python
+``` python
 print('***** testing the classification *****')
 faillst = []
 for cti in tstidx:  # iteration over the test data points
@@ -207,7 +207,7 @@ for cti in tstidx:  # iteration over the test data points
 ```
 
 
-```python
+``` python
 print('\n***** Results *****')
 print(f'{100-len(faillst)/tstidx.size*100:.0f}% was classified correctly')
 print('***** Misses *****')

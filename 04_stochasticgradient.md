@@ -56,7 +56,7 @@ Während der Algorithmus den Trainingssatz durchläuft, führt er die obige Aktu
 Die wesentlichen Schritte als Algorithmus sehen wie folgt aus:
 
 
-```python
+``` python
 ###################################################
 # The basic steps of a stochastic gradient method #
 ###################################################
@@ -277,7 +277,7 @@ f&uuml;r $h\in\{10^{-3}, 10^{-6}, 10^{-9}, 10^{-12}\}$ berechnen. Berechnen sie 
 Hier schon mal ein Codeger&uuml;st.
 
 
-```python
+``` python
 import numpy as np
  
 def gfun(x):

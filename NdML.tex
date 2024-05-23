@@ -1568,6 +1568,267 @@ Wir nehmen das Ergebnis der letzten Iteration als \emph{beste Parameter}, defini
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{singuluxe4rwert-zerlegung}{%
+\chapter{Singulärwert Zerlegung}\label{singuluxe4rwert-zerlegung}}
+
+Die Singulärwertzerlegung ist ein Universalwerkzeug der Datenanalyse und
+Modellsynthese.
+Die wesentliche Eigenschaft ist die Quantifizierung
+wesentlicher und redundanter Anteile in Daten oder Operatoren.
+
+Die direkte Anwendung ist die \emph{Principal Component Analysis}, die orthogonale Dimensionen in multivariablen Daten identifiziert, die nach der Stärke der Varianz sortiert sind. So kann diese erste \emph{principal component} als die \emph{reichhaltigste} Datenrichtung interpretiert werden und die letzten Richtungen (insbesondere wenn die Varianz komplett verschwindet) als wenig aussagekräftig (und insbesondere redundant) identifiziert werden.
+
+Andere Anwendungen ist die Lösung von überbestimmten
+Gleichungssystemen (wie sie in der linearen Regression vorkommen) oder das
+Entfernen von \emph{Rauschen} aus Daten.
+
+\begin{theorem}[Singulärwertzerlegung (SVD)]
+\protect\hypertarget{thm:SVD}{}\label{thm:SVD}Sei \(A\in \mathbb C^{m\times n}\), \(m\geq n\). Dann existieren orthogonale Matrizen \(U \in \mathbb C^{m\times m}\) und \(V\in \mathbb C^{n\times n}\) und eine Matrix \(\Sigma \in \mathbb R^{m\times n}\) der Form
+\begin{equation*}
+\Sigma = 
+\begin{bmatrix}
+\sigma_1 & 0 & \dots & 0\\
+0 & \sigma_2 &\ddots & \vdots\\
+0 & \ddots & \ddots &0\\
+  0 & \dots&0 & \sigma_n \\
+  0 & 0 & \dots & 0 \\
+  \vdots & \ddots &  & \vdots\\
+  0 & 0 & \dots & 0
+\end{bmatrix}
+\end{equation*}
+mit reellen sogenannten \emph{Singulärwerten}
+\begin{equation*}
+\sigma_1 \geq \sigma_2 \geq \dots \geq \sigma_n \geq 0
+\end{equation*}
+sodass gilt
+\begin{equation*}
+A = U \Sigma V^*
+\end{equation*}
+wobei gilt \(V^* = \overline{V^T}\) (transponiert und komplex konjugiert).
+\end{theorem}
+
+Ein paar Bemerkungen.
+
+\begin{itemize}
+\tightlist
+\item
+  Ist \(A\) reell, können auch \(U\) und \(V\) reell gewählt werden.
+\item
+  Die Annahme \(m \geq n\) war nur nötig um für die Matrix \(\Sigma\) keine Fallunterscheidung zu machen. (Für \(m\leq n\) ``steht der Nullblock rechts von den Singulärwerten''). Insbesondere gilt \(A^* = V\Sigma U^*\) ist eine SVD von \(A^*\).
+\item
+  Eine Illustration der Zerlegung ist \href{@fig-SVD}{hier} zu sehen.
+\end{itemize}
+
+Wir machen einige Überlegungen im Hinblick auf große Matrizen. Sei dazu \(m>n\), \(A\in \mathbb C^{m\times n}\) und \(A=U\Sigma V^*\) eine SVD wie in Theorem \ref{thm:SVD}. Sei nun
+\begin{equation*}
+U = \begin{bmatrix}
+U_1 & U_2
+\end{bmatrix}
+% = \begin{bmatrix} V_1^* & V_2^*
+\end{equation*}
+partitioniert sodass \(U_1\) die ersten \(n\) Spalten von \(U\) enthält.
+
+Dann gilt (nach der Matrix-Multiplikations Regel \emph{Zeile mal Spalte} die Teile \(U_2\) und \(V_2\) immer mit dem Nullblock in \(\Sigma\) multipliziert werden) dass
+\begin{equation*}
+A = U\Sigma V = 
+\begin{bmatrix}
+U_1 & U_2
+\end{bmatrix}
+\begin{bmatrix}
+\hat \Sigma \\ 0
+\end{bmatrix}
+V^*
+% \begin{bmatrix} V_1^* \\ V_2^* \end{bmatrix}
+=
+U_1 
+\hat \Sigma
+V^*
+% \begin{bmatrix} V_1^* \\ V_2^* \end{bmatrix}
+\end{equation*}
+Es genügt also nur die ersten \(m\) Spalten von \(U\) zu berechnen. Das ist die sogenannte \textbf{slim SVD}.
+
+Hat, darüberhinaus, die Matrix \(A\) keinen vollen Rang, also \(\operatorname{Rg}(A) = r < n\), dann:
+
+\begin{itemize}
+\tightlist
+\item
+  ist \(\sigma_i=0\), für alle \(i=r+1, \dotsc, n\), (wir erinnern uns, dass die Singulärwerte nach Größe sortiert sind)
+\item
+  die Matrix \(\hat \Sigma\) hat \(n-r\) Nullzeilen
+\item
+  für die Zerlegung sind nur die ersten \(r\) Spalten von \(U\) und \(V\) relevant -- die sogenannte \textbf{Kompakte SVD}.
+\end{itemize}
+
+In der Datenapproximation ist außerdem die \textbf{truncated SVD} von Interesse. Dazu sei \(\hat r<r\) ein beliebig gewählter Index. Dann werden alle Singulärwerte, \(\sigma_i=0\), für alle \(i=\hat r+1, \dotsc, n\), abgeschnitten -- das heißt null gesetzt und die entsprechende \emph{kompakte SVD} berechnet.
+
+Hier gilt nun nicht mehr die Gleichheit in der Zerlegung. Vielmehr gilt
+\begin{equation*}
+A \approx A_{\hat r}
+\end{equation*}
+wobei \(A_{\hat r}\) aus der \emph{truncated SVD} von \(A\) erzeugt wurde. Allerdings ist diese Approximation von \(A\) durch optimal in dem Sinne, dass es keine Matrix vom Rang \(\hat r \geq r=\operatorname{Rg}(A)\) gibt, die \(A\) (in der \emph{induzierten} euklidischen Norm\footnote{Auf Matrixnormen kommen wir noch in der Vorlesung zu sprechen.}) besser approximiert. Es gilt
+\begin{equation*}
+\min_{B\in \mathbb C^{m\times n}, \operatorname{Rg}(B)=\hat r} \|A-B\|_2 = \|A-A_{\hat r}\|_2 = \sigma_{\hat r + 1};
+\end{equation*}
+(vgl. Satz 14.15, Bollhöfer and Mehrmann \protect\hyperlink{ref-BolM04}{2004}).
+
+Zum Abschluss noch der Zusammenhang zur \emph{linearen Ausgleichsrechnung}.
+Die Lösung \(w\) des Problems der \emph{linearen Ausgleichsrechnung} war entweder als Lösung eines Optimierungsproblems
+\begin{equation*}
+\min_{w} \| Aw - y \|^2
+\end{equation*}
+oder als Lösung des linearen Gleichungssystems
+\begin{equation*}
+A^TAw=y.
+\end{equation*}
+Ist \(A=U\Sigma V^*=U_1\hat \Sigma V^*\) (slim) ``SV-zerlegt'', dann gilt
+\begin{equation*}
+A^*Aw = V\hat \Sigma^*U_1^*U_1\hat \Sigma V^*w = V\hat \Sigma^2 V^* w
+\end{equation*}
+und damit
+\begin{equation*}
+A^*Aw = A^*y \quad \Leftrightarrow \quad V\hat \Sigma^2 V^*w  = V\hat \Sigma^*U_1^*y \quad \Leftrightarrow \quad w = V\hat \Sigma^{-1} U_1^*y
+\end{equation*}
+was wir (mit den Matrizen der vollen SVD) als
+\begin{equation*}
+w = V \Sigma^+ U^*y
+\end{equation*}
+schreiben, wobei
+\begin{equation*}
+\Sigma^+ = \begin{bmatrix}
+\hat \Sigma^{-1} \\ 0_{m-n \times n}
+\end{bmatrix}
+\end{equation*}
+.
+
+\textbf{Bemerkung}: \(\Sigma^+\) kann auch definiert werden, wenn \(\hat \Sigma\) nicht invertierbar ist (weil manche Diagonaleinträge null sind). Dann wird \(\hat \Sigma^+\) betrachtet, bei welcher nur die \(\sigma_i>0\) invertiert werden und die anderen \(\sigma_i=0\) belassen werden. Das definiert eine sogenannte \emph{verallgemeinerte Inverse} und löst auch das Optimierungsproblem falls \(A\) keinen vollen Rang hat.
+
+\begin{figure}
+\hypertarget{fig-SVD}{%
+\centering
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/06_412px-Singular_value_decomposition_visualisation.svg.png}
+\caption{Illustration der SVD. Bitte beachten der \(*\) bedeutet hier transponiert und komplex konjugiert. By Cmglee - Own work, CC BY-SA 4.0, \url{https://commons.wikimedia.org/w/index.php?curid=67853297}}\label{fig-SVD}
+}
+\end{figure}
+
+\hypertarget{aufgaben}{%
+\section{Aufgaben}\label{aufgaben}}
+
+\hypertarget{norm-und-orthogonale-transformation}{%
+\subsection{Norm und Orthogonale Transformation}\label{norm-und-orthogonale-transformation}}
+
+Sei \(Q\in \mathbb R^{n\times n}\) eine orthogonale Matrix und sei \(y\in \mathbb R^{n}\). Zeigen Sie, dass
+\begin{equation*}
+\|y\|^2 = \|Qy \|^2
+\end{equation*}
+gilt. (2 Punkte)
+
+\hypertarget{kleinste-quadrate-und-mittelwert}{%
+\subsection{Kleinste Quadrate und Mittelwert}\label{kleinste-quadrate-und-mittelwert}}
+
+Zeigen sie, dass der \emph{kleinste Quadrate} Ansatz zur Approximation einer Datenwolke
+\begin{equation*}
+(x_i, y_i), \quad i=1,2,\dotsc,N,
+\end{equation*}
+mittels einer konstanten Funktion \(f(x)=w_1\) auf \(w_1\) auf den Mittelwert der \(y_i\) führt. (6 Punkte)
+
+\hypertarget{qr-zerlegung-und-kleinstes-quadrate-problem}{%
+\subsection{QR Zerlegung und Kleinstes Quadrate Problem}\label{qr-zerlegung-und-kleinstes-quadrate-problem}}
+
+Sei \(A\in \mathbb R^{m,n}\), \(m>n\), \(A\) hat vollen Rank und sei
+\begin{equation*}
+\begin{bmatrix}
+Q_1 & Q_2
+\end{bmatrix}
+\begin{bmatrix}
+\hat R \\ 0
+\end{bmatrix} = A
+\end{equation*}
+eine QR-Zerlegung von \(A\) (d.h., dass \(Q\) unitär ist und \(\hat R\) eine (im
+Falle, dass \(A\) vollen Rang hat invertierbare) obere Dreiecksmatrix. Zeigen sie, dass die Lösung von
+\begin{equation*}
+\hat R w = Q_1^T y
+\end{equation*}
+ein kritischer Punkt (d.h. der Gradient \(\nabla_w\) verschwindet) von
+\begin{equation*}
+w \mapsto \frac 12 \| Aw - y \|^2
+\end{equation*}
+ist, also \(w=\hat R^{-1}Q_1^T y\) eine Lösung des Optimierungsproblems
+darstellt. Vergleichen Sie mit der SVD Lösung aus der Vorlesung.
+
+\hypertarget{eigenwerte-symmetrischer-matrizen}{%
+\subsection{Eigenwerte Symmetrischer Matrizen}\label{eigenwerte-symmetrischer-matrizen}}
+
+Zeigen Sie, dass Eigenwerte symmetrischer reeller Matrizen \(A\in \mathbb R^{n\times n}\) immer reell sind.
+
+\hypertarget{singuluxe4rwertzerlegung-und-eigenwerte-1}{%
+\subsection{Singulärwertzerlegung und Eigenwerte -- 1}\label{singuluxe4rwertzerlegung-und-eigenwerte-1}}
+
+Zeigen Sie, dass die quadrierten Singulärwerte einer Matrix \(A\in \mathbb R^{m\times n}\), \(m>n\), genau die Eigenwerte der Matrix \(A^TA\) sind und beschreiben Sie in welcher Beziehung sie mit den Eigenwerten von \(AA^T\) stehen. \textbf{Hinweis}: hier ist ``\(m>n\)'' wichtig.
+
+\hypertarget{singuluxe4rwertzerlegung-und-eigenwerte-2}{%
+\subsection{Singulärwertzerlegung und Eigenwerte -- 2}\label{singuluxe4rwertzerlegung-und-eigenwerte-2}}
+
+Weisen Sie nach, dass die positiven Eigenwerte von
+\begin{equation*}
+\begin{bmatrix}
+0 & A^T \\ A & 0
+\end{bmatrix}
+\end{equation*}
+genau die \emph{nicht-null} Singulärwerte von \(A\) sind.
+
+\hypertarget{truncated-svd}{%
+\subsection{Truncated SVD}\label{truncated-svd}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Berechnen und plotten sie die Singulärwerte einer \(4000\times 1000\) Matrix mit zufälligen Einträgen und die einer Matrix mit ``echten'' Daten (hier Simulationsdaten einer Stroemungssimulation)\footnote{ \href{https://owncloud.gwdg.de/index.php/s/sAjEy9B8kIbzoYj}{Download bitte hier} -- Achtung das sind 370MB}. Berechnen sie den Fehler der \emph{truncated SVD} \(\|A-A_{\hat r}\|\) für \(\hat r = 10, 20, 40\) für beide Matrizen.
+\item
+  Was lässt sich bezüglich einer Kompression der Daten mittels SVD für die beiden Matrizen sagen. (Vergleichen sie die plots der Singulärwerte und beziehen sie sich auf die gegebene Formel für die Differenz).
+\item
+  Für die ``echten'' Daten: Speichern sie die Faktoren der bei \(\hat r=40\) abgeschnittenen SVD und vergleichen Sie den Speicherbedarf der Faktoren und der eigentlichen Matrix.
+\end{enumerate}
+
+Beispielcode:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ numpy }\ImportTok{as}\NormalTok{ np}
+\ImportTok{import}\NormalTok{ scipy.linalg }\ImportTok{as}\NormalTok{ spla}
+\ImportTok{import}\NormalTok{ matplotlib.pyplot }\ImportTok{as}\NormalTok{ plt}
+
+\NormalTok{randmat }\OperatorTok{=}\NormalTok{ np.random.randn(}\DecValTok{4000}\NormalTok{, }\DecValTok{1000}\NormalTok{)}
+
+\NormalTok{rndU, rndS, rndV }\OperatorTok{=}\NormalTok{ spla.svd(randmat)}
+
+\BuiltInTok{print}\NormalTok{(}\StringTok{\textquotesingle{}U{-}dims: \textquotesingle{}}\NormalTok{, rndU.shape)}
+\BuiltInTok{print}\NormalTok{(}\StringTok{\textquotesingle{}V{-}dims: \textquotesingle{}}\NormalTok{, rndV.shape)}
+\BuiltInTok{print}\NormalTok{(}\StringTok{\textquotesingle{}S{-}dims: \textquotesingle{}}\NormalTok{, rndS.shape)}
+
+\NormalTok{plt.figure(}\DecValTok{1}\NormalTok{)}
+\NormalTok{plt.semilogy(rndS, }\StringTok{\textquotesingle{}.\textquotesingle{}}\NormalTok{, label}\OperatorTok{=}\StringTok{\textquotesingle{}Singulaerwerte (random Matrix)\textquotesingle{}}\NormalTok{)}
+
+\NormalTok{realdatamat }\OperatorTok{=}\NormalTok{ np.load(}\StringTok{\textquotesingle{}velfielddata.npy\textquotesingle{}}\NormalTok{)}
+
+\CommentTok{\# \# Das hier ist eine aufwaendige Operation}
+\NormalTok{rlU, rlS, rlV }\OperatorTok{=}\NormalTok{ spla.svd(realdatamat, full\_matrices}\OperatorTok{=}\VariableTok{False}\NormalTok{)}
+\CommentTok{\# \# auf keinen Fall \textasciigrave{}full\_matrices=False\textasciigrave{} vergessen}
+
+\BuiltInTok{print}\NormalTok{(}\StringTok{\textquotesingle{}U{-}dims: \textquotesingle{}}\NormalTok{, rlU.shape)}
+\BuiltInTok{print}\NormalTok{(}\StringTok{\textquotesingle{}V{-}dims: \textquotesingle{}}\NormalTok{, rlV.shape)}
+\BuiltInTok{print}\NormalTok{(}\StringTok{\textquotesingle{}S{-}dims: \textquotesingle{}}\NormalTok{, rlS.shape)}
+
+\NormalTok{plt.figure(}\DecValTok{1}\NormalTok{)}
+\NormalTok{plt.semilogy(rlS, }\StringTok{\textquotesingle{}.\textquotesingle{}}\NormalTok{, label}\OperatorTok{=}\StringTok{\textquotesingle{}Singulaerwerte (Daten Matrix)\textquotesingle{}}\NormalTok{)}
+
+\NormalTok{plt.legend()}
+\NormalTok{plt.show()}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Hinweis}: Es gibt viele verschiedene Normen für Vektoren und Matrizen. Sie dürfen einfach mit \texttt{np.linalg.norm} arbeiten. Gerne aber mal in die Dokumentation schauen \emph{welche} Norm berechnet wird.
+
 \hypertarget{nachklapp}{%
 \chapter{Nachklapp}\label{nachklapp}}
 
@@ -1634,6 +1895,9 @@ Ein paar lose Beispiele wo Numerik und maschinelles Lernen sich treffen.
 
 \hypertarget{refs}{}
 \begin{cslreferences}
+\leavevmode\hypertarget{ref-BolM04}{}%
+Bollhöfer, M., Mehrmann, V.: Numerische Mathematik. Eine projektorientierte Einführung für Ingenieure, Mathematiker und Naturwissenschaftler. Vieweg (2004)
+
 \leavevmode\hypertarget{ref-Byr14}{}%
 Byrne, C.L.: Lecture notes on iterative optimization algorithms, \url{https://faculty.uml.edu/cbyrne/IOIPNotesOct2014.pdf}, (2014)
 

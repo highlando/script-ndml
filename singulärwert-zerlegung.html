@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>6 Singulärwert Zerlegung | Numerik des Maschinellen Lernens</title>
+  <meta name="description" content="Vorlesungsnotizen zu meiner integrierten Vorlesung im SoSe 2024" />
+  <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="6 Singulärwert Zerlegung | Numerik des Maschinellen Lernens" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Vorlesungsnotizen zu meiner integrierten Vorlesung im SoSe 2024" />
+  <meta name="github-repo" content="highlando/script-ndml" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="6 Singulärwert Zerlegung | Numerik des Maschinellen Lernens" />
+  
+  <meta name="twitter:description" content="Vorlesungsnotizen zu meiner integrierten Vorlesung im SoSe 2024" />
+  
+
+<meta name="author" content="Jan Heiland" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="ein-nn-beispiel.html"/>
+<link rel="next" href="nachklapp.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">NdML</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Vorwort</a></li>
+<li class="chapter" data-level="1" data-path="einführung.html"><a href="einführung.html"><i class="fa fa-check"></i><b>1</b> Einführung</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="einführung.html"><a href="einführung.html#was-ist-ein-algorithmus"><i class="fa fa-check"></i><b>1.1</b> Was ist ein Algorithmus</a></li>
+<li class="chapter" data-level="1.2" data-path="einführung.html"><a href="einführung.html#konsistenz-stabilität-genauigkeit"><i class="fa fa-check"></i><b>1.2</b> Konsistenz, Stabilität, Genauigkeit</a></li>
+<li class="chapter" data-level="1.3" data-path="einführung.html"><a href="einführung.html#rechenkomplexität"><i class="fa fa-check"></i><b>1.3</b> Rechenkomplexität</a></li>
+<li class="chapter" data-level="1.4" data-path="einführung.html"><a href="einführung.html#literatur"><i class="fa fa-check"></i><b>1.4</b> Literatur</a></li>
+<li class="chapter" data-level="1.5" data-path="einführung.html"><a href="einführung.html#übungen"><i class="fa fa-check"></i><b>1.5</b> Übungen</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="fehler-und-konditionierung.html"><a href="fehler-und-konditionierung.html"><i class="fa fa-check"></i><b>2</b> Fehler und Konditionierung</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="fehler-und-konditionierung.html"><a href="fehler-und-konditionierung.html#fehler"><i class="fa fa-check"></i><b>2.1</b> Fehler</a></li>
+<li class="chapter" data-level="2.2" data-path="fehler-und-konditionierung.html"><a href="fehler-und-konditionierung.html#kondition"><i class="fa fa-check"></i><b>2.2</b> Kondition</a></li>
+<li class="chapter" data-level="2.3" data-path="fehler-und-konditionierung.html"><a href="fehler-und-konditionierung.html#kondition-der-grundrechenarten"><i class="fa fa-check"></i><b>2.3</b> Kondition der Grundrechenarten</a></li>
+<li class="chapter" data-level="2.4" data-path="fehler-und-konditionierung.html"><a href="fehler-und-konditionierung.html#übungen-1"><i class="fa fa-check"></i><b>2.4</b> Übungen</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="iterative-methoden.html"><a href="iterative-methoden.html"><i class="fa fa-check"></i><b>3</b> Iterative Methoden</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="iterative-methoden.html"><a href="iterative-methoden.html#iterative-methoden-als-fixpunktiteration"><i class="fa fa-check"></i><b>3.1</b> Iterative Methoden als Fixpunktiteration</a></li>
+<li class="chapter" data-level="3.2" data-path="iterative-methoden.html"><a href="iterative-methoden.html#gradientenabstiegsverfahren"><i class="fa fa-check"></i><b>3.2</b> Gradientenabstiegsverfahren</a></li>
+<li class="chapter" data-level="3.3" data-path="iterative-methoden.html"><a href="iterative-methoden.html#auxiliary-function-methods"><i class="fa fa-check"></i><b>3.3</b> Auxiliary Function Methods</a></li>
+<li class="chapter" data-level="3.4" data-path="iterative-methoden.html"><a href="iterative-methoden.html#übungen-2"><i class="fa fa-check"></i><b>3.4</b> Übungen</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="stochastisches-gradientenverfahren.html"><a href="stochastisches-gradientenverfahren.html"><i class="fa fa-check"></i><b>4</b> Stochastisches Gradientenverfahren</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="stochastisches-gradientenverfahren.html"><a href="stochastisches-gradientenverfahren.html#motivation-und-algorithmus"><i class="fa fa-check"></i><b>4.1</b> Motivation und Algorithmus</a></li>
+<li class="chapter" data-level="4.2" data-path="stochastisches-gradientenverfahren.html"><a href="stochastisches-gradientenverfahren.html#iterative_method"><i class="fa fa-check"></i><b>4.2</b> Stochastisches Abstiegsverfahren</a></li>
+<li class="chapter" data-level="4.3" data-path="stochastisches-gradientenverfahren.html"><a href="stochastisches-gradientenverfahren.html#konvergenzanalyse"><i class="fa fa-check"></i><b>4.3</b> Konvergenzanalyse</a></li>
+<li class="chapter" data-level="4.4" data-path="stochastisches-gradientenverfahren.html"><a href="stochastisches-gradientenverfahren.html#übungen-3"><i class="fa fa-check"></i><b>4.4</b> Übungen</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="ein-nn-beispiel.html"><a href="ein-nn-beispiel.html"><i class="fa fa-check"></i><b>5</b> Ein NN Beispiel</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="ein-nn-beispiel.html"><a href="ein-nn-beispiel.html#der-penguins-datensatz"><i class="fa fa-check"></i><b>5.1</b> Der PENGUINS Datensatz</a></li>
+<li class="chapter" data-level="5.2" data-path="ein-nn-beispiel.html"><a href="ein-nn-beispiel.html#ein-2-layer-neuronales-netz-zur-klassifizierung"><i class="fa fa-check"></i><b>5.2</b> Ein <em>2</em>-Layer Neuronales Netz zur Klassifizierung</a></li>
+<li class="chapter" data-level="5.3" data-path="ein-nn-beispiel.html"><a href="ein-nn-beispiel.html#beispiel-implementierung"><i class="fa fa-check"></i><b>5.3</b> Beispiel Implementierung</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="singulärwert-zerlegung.html"><a href="singulärwert-zerlegung.html"><i class="fa fa-check"></i><b>6</b> Singulärwert Zerlegung</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="singulärwert-zerlegung.html"><a href="singulärwert-zerlegung.html#aufgaben"><i class="fa fa-check"></i><b>6.1</b> Aufgaben</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="nachklapp.html"><a href="nachklapp.html"><i class="fa fa-check"></i><b>7</b> Nachklapp</a></li>
+<li class="chapter" data-level="" data-path="referenzen.html"><a href="referenzen.html"><i class="fa fa-check"></i>Referenzen</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Numerik des Maschinellen Lernens</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="singulärwert-zerlegung" class="section level1 hasAnchor" number="6">
+<h1><span class="header-section-number">6</span> Singulärwert Zerlegung<a href="singulärwert-zerlegung.html#singulärwert-zerlegung" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Die Singulärwertzerlegung ist ein Universalwerkzeug der Datenanalyse und
+Modellsynthese.
+Die wesentliche Eigenschaft ist die Quantifizierung
+wesentlicher und redundanter Anteile in Daten oder Operatoren.</p>
+<p>Die direkte Anwendung ist die <em>Principal Component Analysis</em>, die orthogonale Dimensionen in multivariablen Daten identifiziert, die nach der Stärke der Varianz sortiert sind. So kann diese erste <em>principal component</em> als die <em>reichhaltigste</em> Datenrichtung interpretiert werden und die letzten Richtungen (insbesondere wenn die Varianz komplett verschwindet) als wenig aussagekräftig (und insbesondere redundant) identifiziert werden.</p>
+<p>Andere Anwendungen ist die Lösung von überbestimmten
+Gleichungssystemen (wie sie in der linearen Regression vorkommen) oder das
+Entfernen von <em>Rauschen</em> aus Daten.</p>
+<div class="theorem">
+<p><span id="thm:SVD" class="theorem"><strong>Theorem 6.1  (Singulärwertzerlegung (SVD)) </strong></span>Sei <span class="math inline">\(A\in \mathbb C^{m\times n}\)</span>, <span class="math inline">\(m\geq n\)</span>. Dann existieren orthogonale Matrizen <span class="math inline">\(U \in \mathbb C^{m\times m}\)</span> und <span class="math inline">\(V\in \mathbb C^{n\times n}\)</span> und eine Matrix <span class="math inline">\(\Sigma \in \mathbb R^{m\times n}\)</span> der Form
+<span class="math display">\[\begin{equation*}
+\Sigma = 
+\begin{bmatrix}
+\sigma_1 &amp; 0 &amp; \dots &amp; 0\\
+0 &amp; \sigma_2 &amp;\ddots &amp; \vdots\\
+0 &amp; \ddots &amp; \ddots &amp;0\\
+  0 &amp; \dots&amp;0 &amp; \sigma_n \\
+  0 &amp; 0 &amp; \dots &amp; 0 \\
+  \vdots &amp; \ddots &amp;  &amp; \vdots\\
+  0 &amp; 0 &amp; \dots &amp; 0
+\end{bmatrix}
+\end{equation*}\]</span>
+mit reellen sogenannten <em>Singulärwerten</em>
+<span class="math display">\[\begin{equation*}
+\sigma_1 \geq \sigma_2 \geq \dots \geq \sigma_n \geq 0
+\end{equation*}\]</span>
+sodass gilt
+<span class="math display">\[\begin{equation*}
+A = U \Sigma V^*
+\end{equation*}\]</span>
+wobei gilt <span class="math inline">\(V^* = \overline{V^T}\)</span> (transponiert und komplex konjugiert).</p>
+</div>
+<p>Ein paar Bemerkungen.</p>
+<ul>
+<li>Ist <span class="math inline">\(A\)</span> reell, können auch <span class="math inline">\(U\)</span> und <span class="math inline">\(V\)</span> reell gewählt werden.</li>
+<li>Die Annahme <span class="math inline">\(m \geq n\)</span> war nur nötig um für die Matrix <span class="math inline">\(\Sigma\)</span> keine Fallunterscheidung zu machen. (Für <span class="math inline">\(m\leq n\)</span> “steht der Nullblock rechts von den Singulärwerten”). Insbesondere gilt <span class="math inline">\(A^* = V\Sigma U^*\)</span> ist eine SVD von <span class="math inline">\(A^*\)</span>.</li>
+<li>Eine Illustration der Zerlegung ist <a href="@fig-SVD">hier</a> zu sehen.</li>
+</ul>
+<p>Wir machen einige Überlegungen im Hinblick auf große Matrizen. Sei dazu <span class="math inline">\(m&gt;n\)</span>, <span class="math inline">\(A\in \mathbb C^{m\times n}\)</span> und <span class="math inline">\(A=U\Sigma V^*\)</span> eine SVD wie in Theorem <a href="singulärwert-zerlegung.html#thm:SVD">6.1</a>. Sei nun
+<span class="math display">\[\begin{equation*}
+U = \begin{bmatrix}
+U_1 &amp; U_2
+\end{bmatrix}
+% = \begin{bmatrix} V_1^* &amp; V_2^*
+\end{equation*}\]</span>
+partitioniert sodass <span class="math inline">\(U_1\)</span> die ersten <span class="math inline">\(n\)</span> Spalten von <span class="math inline">\(U\)</span> enthält.</p>
+<p>Dann gilt (nach der Matrix-Multiplikations Regel <em>Zeile mal Spalte</em> die Teile <span class="math inline">\(U_2\)</span> und <span class="math inline">\(V_2\)</span> immer mit dem Nullblock in <span class="math inline">\(\Sigma\)</span> multipliziert werden) dass
+<span class="math display">\[\begin{equation*}
+A = U\Sigma V = 
+\begin{bmatrix}
+U_1 &amp; U_2
+\end{bmatrix}
+\begin{bmatrix}
+\hat \Sigma \\ 0
+\end{bmatrix}
+V^*
+% \begin{bmatrix} V_1^* \\ V_2^* \end{bmatrix}
+=
+U_1 
+\hat \Sigma
+V^*
+% \begin{bmatrix} V_1^* \\ V_2^* \end{bmatrix}
+\end{equation*}\]</span>
+Es genügt also nur die ersten <span class="math inline">\(m\)</span> Spalten von <span class="math inline">\(U\)</span> zu berechnen. Das ist die sogenannte <strong>slim SVD</strong>.</p>
+<p>Hat, darüberhinaus, die Matrix <span class="math inline">\(A\)</span> keinen vollen Rang, also <span class="math inline">\(\operatorname{Rg}(A) = r &lt; n\)</span>, dann:</p>
+<ul>
+<li>ist <span class="math inline">\(\sigma_i=0\)</span>, für alle <span class="math inline">\(i=r+1, \dotsc, n\)</span>, (wir erinnern uns, dass die Singulärwerte nach Größe sortiert sind)</li>
+<li>die Matrix <span class="math inline">\(\hat \Sigma\)</span> hat <span class="math inline">\(n-r\)</span> Nullzeilen</li>
+<li>für die Zerlegung sind nur die ersten <span class="math inline">\(r\)</span> Spalten von <span class="math inline">\(U\)</span> und <span class="math inline">\(V\)</span> relevant – die sogenannte <strong>Kompakte SVD</strong>.</li>
+</ul>
+<p>In der Datenapproximation ist außerdem die <strong>truncated SVD</strong> von Interesse. Dazu sei <span class="math inline">\(\hat r&lt;r\)</span> ein beliebig gewählter Index. Dann werden alle Singulärwerte, <span class="math inline">\(\sigma_i=0\)</span>, für alle <span class="math inline">\(i=\hat r+1, \dotsc, n\)</span>, abgeschnitten – das heißt null gesetzt und die entsprechende <em>kompakte SVD</em> berechnet.</p>
+<p>Hier gilt nun nicht mehr die Gleichheit in der Zerlegung. Vielmehr gilt
+<span class="math display">\[\begin{equation*}
+A \approx A_{\hat r}
+\end{equation*}\]</span>
+wobei <span class="math inline">\(A_{\hat r}\)</span> aus der <em>truncated SVD</em> von <span class="math inline">\(A\)</span> erzeugt wurde. Allerdings ist diese Approximation von <span class="math inline">\(A\)</span> durch optimal in dem Sinne, dass es keine Matrix vom Rang <span class="math inline">\(\hat r \geq r=\operatorname{Rg}(A)\)</span> gibt, die <span class="math inline">\(A\)</span> (in der <em>induzierten</em> euklidischen Norm<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>) besser approximiert. Es gilt
+<span class="math display">\[\begin{equation*}
+\min_{B\in \mathbb C^{m\times n}, \operatorname{Rg}(B)=\hat r} \|A-B\|_2 = \|A-A_{\hat r}\|_2 = \sigma_{\hat r + 1};
+\end{equation*}\]</span>
+<span class="citation">(vgl. Satz 14.15, Bollhöfer and Mehrmann <a href="#ref-BolM04" role="doc-biblioref">2004</a>)</span>.</p>
+<p>Zum Abschluss noch der Zusammenhang zur <em>linearen Ausgleichsrechnung</em>.
+Die Lösung <span class="math inline">\(w\)</span> des Problems der <em>linearen Ausgleichsrechnung</em> war entweder als Lösung eines Optimierungsproblems
+<span class="math display">\[\begin{equation*}
+\min_{w} \| Aw - y \|^2
+\end{equation*}\]</span>
+oder als Lösung des linearen Gleichungssystems
+<span class="math display">\[\begin{equation*}
+A^TAw=y.
+\end{equation*}\]</span>
+Ist <span class="math inline">\(A=U\Sigma V^*=U_1\hat \Sigma V^*\)</span> (slim) “SV-zerlegt”, dann gilt
+<span class="math display">\[\begin{equation*}
+A^*Aw = V\hat \Sigma^*U_1^*U_1\hat \Sigma V^*w = V\hat \Sigma^2 V^* w
+\end{equation*}\]</span>
+und damit
+<span class="math display">\[\begin{equation*}
+A^*Aw = A^*y \quad \Leftrightarrow \quad V\hat \Sigma^2 V^*w  = V\hat \Sigma^*U_1^*y \quad \Leftrightarrow \quad w = V\hat \Sigma^{-1} U_1^*y
+\end{equation*}\]</span>
+was wir (mit den Matrizen der vollen SVD) als
+<span class="math display">\[\begin{equation*}
+w = V \Sigma^+ U^*y
+\end{equation*}\]</span>
+schreiben, wobei
+<span class="math display">\[\begin{equation*}
+\Sigma^+ = \begin{bmatrix}
+\hat \Sigma^{-1} \\ 0_{m-n \times n}
+\end{bmatrix}
+\end{equation*}\]</span>
+.</p>
+<p><strong>Bemerkung</strong>: <span class="math inline">\(\Sigma^+\)</span> kann auch definiert werden, wenn <span class="math inline">\(\hat \Sigma\)</span> nicht invertierbar ist (weil manche Diagonaleinträge null sind). Dann wird <span class="math inline">\(\hat \Sigma^+\)</span> betrachtet, bei welcher nur die <span class="math inline">\(\sigma_i&gt;0\)</span> invertiert werden und die anderen <span class="math inline">\(\sigma_i=0\)</span> belassen werden. Das definiert eine sogenannte <em>verallgemeinerte Inverse</em> und löst auch das Optimierungsproblem falls <span class="math inline">\(A\)</span> keinen vollen Rang hat.</p>
+<div class="figure">
+<img src="bilder/06_412px-Singular_value_decomposition_visualisation.svg.png" id="fig-SVD" style="width:50.0%" alt="" />
+<p class="caption">Illustration der SVD. Bitte beachten der <span class="math inline">\(*\)</span> bedeutet hier transponiert und komplex konjugiert. By Cmglee - Own work, CC BY-SA 4.0, <a href="https://commons.wikimedia.org/w/index.php?curid=67853297" class="uri">https://commons.wikimedia.org/w/index.php?curid=67853297</a></p>
+</div>
+<div id="aufgaben" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> Aufgaben<a href="singulärwert-zerlegung.html#aufgaben" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="norm-und-orthogonale-transformation" class="section level3 hasAnchor" number="6.1.1">
+<h3><span class="header-section-number">6.1.1</span> Norm und Orthogonale Transformation<a href="singulärwert-zerlegung.html#norm-und-orthogonale-transformation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Sei <span class="math inline">\(Q\in \mathbb R^{n\times n}\)</span> eine orthogonale Matrix und sei <span class="math inline">\(y\in \mathbb R^{n}\)</span>. Zeigen Sie, dass
+<span class="math display">\[\begin{equation*}
+\|y\|^2 = \|Qy \|^2
+\end{equation*}\]</span>
+gilt. (2 Punkte)</p>
+</div>
+<div id="kleinste-quadrate-und-mittelwert" class="section level3 hasAnchor" number="6.1.2">
+<h3><span class="header-section-number">6.1.2</span> Kleinste Quadrate und Mittelwert<a href="singulärwert-zerlegung.html#kleinste-quadrate-und-mittelwert" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Zeigen sie, dass der <em>kleinste Quadrate</em> Ansatz zur Approximation einer Datenwolke
+<span class="math display">\[\begin{equation*}
+(x_i, y_i), \quad i=1,2,\dotsc,N,
+\end{equation*}\]</span>
+mittels einer konstanten Funktion <span class="math inline">\(f(x)=w_1\)</span> auf <span class="math inline">\(w_1\)</span> auf den Mittelwert der <span class="math inline">\(y_i\)</span> führt. (6 Punkte)</p>
+</div>
+<div id="qr-zerlegung-und-kleinstes-quadrate-problem" class="section level3 hasAnchor" number="6.1.3">
+<h3><span class="header-section-number">6.1.3</span> QR Zerlegung und Kleinstes Quadrate Problem<a href="singulärwert-zerlegung.html#qr-zerlegung-und-kleinstes-quadrate-problem" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Sei <span class="math inline">\(A\in \mathbb R^{m,n}\)</span>, <span class="math inline">\(m&gt;n\)</span>, <span class="math inline">\(A\)</span> hat vollen Rank und sei
+<span class="math display">\[\begin{equation*}
+\begin{bmatrix}
+Q_1 &amp; Q_2
+\end{bmatrix}
+\begin{bmatrix}
+\hat R \\ 0
+\end{bmatrix} = A
+\end{equation*}\]</span>
+eine QR-Zerlegung von <span class="math inline">\(A\)</span> (d.h., dass <span class="math inline">\(Q\)</span> unitär ist und <span class="math inline">\(\hat R\)</span> eine (im
+Falle, dass <span class="math inline">\(A\)</span> vollen Rang hat invertierbare) obere Dreiecksmatrix. Zeigen sie, dass die Lösung von
+<span class="math display">\[\begin{equation*}
+\hat R w = Q_1^T y
+\end{equation*}\]</span>
+ein kritischer Punkt (d.h. der Gradient <span class="math inline">\(\nabla_w\)</span> verschwindet) von
+<span class="math display">\[\begin{equation*}
+w \mapsto \frac 12 \| Aw - y \|^2
+\end{equation*}\]</span>
+ist, also <span class="math inline">\(w=\hat R^{-1}Q_1^T y\)</span> eine Lösung des Optimierungsproblems
+darstellt. Vergleichen Sie mit der SVD Lösung aus der Vorlesung.</p>
+</div>
+<div id="eigenwerte-symmetrischer-matrizen" class="section level3 hasAnchor" number="6.1.4">
+<h3><span class="header-section-number">6.1.4</span> Eigenwerte Symmetrischer Matrizen<a href="singulärwert-zerlegung.html#eigenwerte-symmetrischer-matrizen" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Zeigen Sie, dass Eigenwerte symmetrischer reeller Matrizen <span class="math inline">\(A\in \mathbb R^{n\times n}\)</span> immer reell sind.</p>
+</div>
+<div id="singulärwertzerlegung-und-eigenwerte-1" class="section level3 hasAnchor" number="6.1.5">
+<h3><span class="header-section-number">6.1.5</span> Singulärwertzerlegung und Eigenwerte – 1<a href="singulärwert-zerlegung.html#singulärwertzerlegung-und-eigenwerte-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Zeigen Sie, dass die quadrierten Singulärwerte einer Matrix <span class="math inline">\(A\in \mathbb R^{m\times n}\)</span>, <span class="math inline">\(m&gt;n\)</span>, genau die Eigenwerte der Matrix <span class="math inline">\(A^TA\)</span> sind und beschreiben Sie in welcher Beziehung sie mit den Eigenwerten von <span class="math inline">\(AA^T\)</span> stehen. <strong>Hinweis</strong>: hier ist “<span class="math inline">\(m&gt;n\)</span>” wichtig.</p>
+</div>
+<div id="singulärwertzerlegung-und-eigenwerte-2" class="section level3 hasAnchor" number="6.1.6">
+<h3><span class="header-section-number">6.1.6</span> Singulärwertzerlegung und Eigenwerte – 2<a href="singulärwert-zerlegung.html#singulärwertzerlegung-und-eigenwerte-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Weisen Sie nach, dass die positiven Eigenwerte von
+<span class="math display">\[\begin{equation*}
+\begin{bmatrix}
+0 &amp; A^T \\ A &amp; 0
+\end{bmatrix}
+\end{equation*}\]</span>
+genau die <em>nicht-null</em> Singulärwerte von <span class="math inline">\(A\)</span> sind.</p>
+</div>
+<div id="truncated-svd" class="section level3 hasAnchor" number="6.1.7">
+<h3><span class="header-section-number">6.1.7</span> Truncated SVD<a href="singulärwert-zerlegung.html#truncated-svd" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li>Berechnen und plotten sie die Singulärwerte einer <span class="math inline">\(4000\times 1000\)</span> Matrix mit zufälligen Einträgen und die einer Matrix mit “echten” Daten (hier Simulationsdaten einer Stroemungssimulation)<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>. Berechnen sie den Fehler der <em>truncated SVD</em> <span class="math inline">\(\|A-A_{\hat r}\|\)</span> für <span class="math inline">\(\hat r = 10, 20, 40\)</span> für beide Matrizen.</li>
+<li>Was lässt sich bezüglich einer Kompression der Daten mittels SVD für die beiden Matrizen sagen. (Vergleichen sie die plots der Singulärwerte und beziehen sie sich auf die gegebene Formel für die Differenz).</li>
+<li>Für die “echten” Daten: Speichern sie die Faktoren der bei <span class="math inline">\(\hat r=40\)</span> abgeschnittenen SVD und vergleichen Sie den Speicherbedarf der Faktoren und der eigentlichen Matrix.</li>
+</ol>
+<p>Beispielcode:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb20-1"><a href="singulärwert-zerlegung.html#cb20-1" aria-hidden="true"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb20-2"><a href="singulärwert-zerlegung.html#cb20-2" aria-hidden="true"></a><span class="im">import</span> scipy.linalg <span class="im">as</span> spla</span>
+<span id="cb20-3"><a href="singulärwert-zerlegung.html#cb20-3" aria-hidden="true"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb20-4"><a href="singulärwert-zerlegung.html#cb20-4" aria-hidden="true"></a></span>
+<span id="cb20-5"><a href="singulärwert-zerlegung.html#cb20-5" aria-hidden="true"></a>randmat <span class="op">=</span> np.random.randn(<span class="dv">4000</span>, <span class="dv">1000</span>)</span>
+<span id="cb20-6"><a href="singulärwert-zerlegung.html#cb20-6" aria-hidden="true"></a></span>
+<span id="cb20-7"><a href="singulärwert-zerlegung.html#cb20-7" aria-hidden="true"></a>rndU, rndS, rndV <span class="op">=</span> spla.svd(randmat)</span>
+<span id="cb20-8"><a href="singulärwert-zerlegung.html#cb20-8" aria-hidden="true"></a></span>
+<span id="cb20-9"><a href="singulärwert-zerlegung.html#cb20-9" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&#39;U-dims: &#39;</span>, rndU.shape)</span>
+<span id="cb20-10"><a href="singulärwert-zerlegung.html#cb20-10" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&#39;V-dims: &#39;</span>, rndV.shape)</span>
+<span id="cb20-11"><a href="singulärwert-zerlegung.html#cb20-11" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&#39;S-dims: &#39;</span>, rndS.shape)</span>
+<span id="cb20-12"><a href="singulärwert-zerlegung.html#cb20-12" aria-hidden="true"></a></span>
+<span id="cb20-13"><a href="singulärwert-zerlegung.html#cb20-13" aria-hidden="true"></a>plt.figure(<span class="dv">1</span>)</span>
+<span id="cb20-14"><a href="singulärwert-zerlegung.html#cb20-14" aria-hidden="true"></a>plt.semilogy(rndS, <span class="st">&#39;.&#39;</span>, label<span class="op">=</span><span class="st">&#39;Singulaerwerte (random Matrix)&#39;</span>)</span>
+<span id="cb20-15"><a href="singulärwert-zerlegung.html#cb20-15" aria-hidden="true"></a></span>
+<span id="cb20-16"><a href="singulärwert-zerlegung.html#cb20-16" aria-hidden="true"></a>realdatamat <span class="op">=</span> np.load(<span class="st">&#39;velfielddata.npy&#39;</span>)</span>
+<span id="cb20-17"><a href="singulärwert-zerlegung.html#cb20-17" aria-hidden="true"></a></span>
+<span id="cb20-18"><a href="singulärwert-zerlegung.html#cb20-18" aria-hidden="true"></a><span class="co"># # Das hier ist eine aufwaendige Operation</span></span>
+<span id="cb20-19"><a href="singulärwert-zerlegung.html#cb20-19" aria-hidden="true"></a>rlU, rlS, rlV <span class="op">=</span> spla.svd(realdatamat, full_matrices<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb20-20"><a href="singulärwert-zerlegung.html#cb20-20" aria-hidden="true"></a><span class="co"># # auf keinen Fall `full_matrices=False` vergessen</span></span>
+<span id="cb20-21"><a href="singulärwert-zerlegung.html#cb20-21" aria-hidden="true"></a></span>
+<span id="cb20-22"><a href="singulärwert-zerlegung.html#cb20-22" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&#39;U-dims: &#39;</span>, rlU.shape)</span>
+<span id="cb20-23"><a href="singulärwert-zerlegung.html#cb20-23" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&#39;V-dims: &#39;</span>, rlV.shape)</span>
+<span id="cb20-24"><a href="singulärwert-zerlegung.html#cb20-24" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&#39;S-dims: &#39;</span>, rlS.shape)</span>
+<span id="cb20-25"><a href="singulärwert-zerlegung.html#cb20-25" aria-hidden="true"></a></span>
+<span id="cb20-26"><a href="singulärwert-zerlegung.html#cb20-26" aria-hidden="true"></a>plt.figure(<span class="dv">1</span>)</span>
+<span id="cb20-27"><a href="singulärwert-zerlegung.html#cb20-27" aria-hidden="true"></a>plt.semilogy(rlS, <span class="st">&#39;.&#39;</span>, label<span class="op">=</span><span class="st">&#39;Singulaerwerte (Daten Matrix)&#39;</span>)</span>
+<span id="cb20-28"><a href="singulärwert-zerlegung.html#cb20-28" aria-hidden="true"></a></span>
+<span id="cb20-29"><a href="singulärwert-zerlegung.html#cb20-29" aria-hidden="true"></a>plt.legend()</span>
+<span id="cb20-30"><a href="singulärwert-zerlegung.html#cb20-30" aria-hidden="true"></a>plt.show()</span></code></pre></div>
+<p><strong>Hinweis</strong>: Es gibt viele verschiedene Normen für Vektoren und Matrizen. Sie dürfen einfach mit <code>np.linalg.norm</code> arbeiten. Gerne aber mal in die Dokumentation schauen <em>welche</em> Norm berechnet wird.</p>
+
+</div>
+</div>
+</div>
+<h3>Referenzen<a href="referenzen.html#referenzen" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references">
+<div id="ref-BolM04">
+<p> Bollhöfer, M., Mehrmann, V.: Numerische Mathematik. Eine projektorientierte Einführung für Ingenieure, Mathematiker und Naturwissenschaftler. Vieweg (2004)</p>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="3">
+<li id="fn3"><p>Auf Matrixnormen kommen wir noch in der Vorlesung zu sprechen.<a href="singulärwert-zerlegung.html#fnref3" class="footnote-back">↩︎</a></p></li>
+<li id="fn4"><p> <a href="https://owncloud.gwdg.de/index.php/s/sAjEy9B8kIbzoYj">Download bitte hier</a> – Achtung das sind 370MB<a href="singulärwert-zerlegung.html#fnref4" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="ein-nn-beispiel.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="nachklapp.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["NdML.pdf"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
