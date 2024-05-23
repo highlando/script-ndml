@@ -239,7 +239,7 @@ wobei gilt <span class="math inline">\(V^* = \overline{V^T}\)</span> (transponie
 <ul>
 <li>Ist <span class="math inline">\(A\)</span> reell, können auch <span class="math inline">\(U\)</span> und <span class="math inline">\(V\)</span> reell gewählt werden.</li>
 <li>Die Annahme <span class="math inline">\(m \geq n\)</span> war nur nötig um für die Matrix <span class="math inline">\(\Sigma\)</span> keine Fallunterscheidung zu machen. (Für <span class="math inline">\(m\leq n\)</span> “steht der Nullblock rechts von den Singulärwerten”). Insbesondere gilt <span class="math inline">\(A^* = V\Sigma U^*\)</span> ist eine SVD von <span class="math inline">\(A^*\)</span>.</li>
-<li>Eine Illustration der Zerlegung ist <a href="@fig-SVD">hier</a> zu sehen.</li>
+<li>Eine Illustration der Zerlegung ist Abbildung <a href="singulärwert-zerlegung.html#fig:fig-SVD">6.1</a> zu sehen.</li>
 </ul>
 <p>Wir machen einige Überlegungen im Hinblick auf große Matrizen. Sei dazu <span class="math inline">\(m&gt;n\)</span>, <span class="math inline">\(A\in \mathbb C^{m\times n}\)</span> und <span class="math inline">\(A=U\Sigma V^*\)</span> eine SVD wie in Theorem <a href="singulärwert-zerlegung.html#thm:SVD">6.1</a>. Sei nun
 <span class="math display">\[\begin{equation*}
@@ -312,9 +312,11 @@ schreiben, wobei
 \end{equation*}\]</span>
 .</p>
 <p><strong>Bemerkung</strong>: <span class="math inline">\(\Sigma^+\)</span> kann auch definiert werden, wenn <span class="math inline">\(\hat \Sigma\)</span> nicht invertierbar ist (weil manche Diagonaleinträge null sind). Dann wird <span class="math inline">\(\hat \Sigma^+\)</span> betrachtet, bei welcher nur die <span class="math inline">\(\sigma_i&gt;0\)</span> invertiert werden und die anderen <span class="math inline">\(\sigma_i=0\)</span> belassen werden. Das definiert eine sogenannte <em>verallgemeinerte Inverse</em> und löst auch das Optimierungsproblem falls <span class="math inline">\(A\)</span> keinen vollen Rang hat.</p>
-<div class="figure">
-<img src="bilder/06_412px-Singular_value_decomposition_visualisation.svg.png" id="fig-SVD" style="width:50.0%" alt="" />
-<p class="caption">Illustration der SVD. Bitte beachten der <span class="math inline">\(*\)</span> bedeutet hier transponiert und komplex konjugiert. By Cmglee - Own work, CC BY-SA 4.0, <a href="https://commons.wikimedia.org/w/index.php?curid=67853297" class="uri">https://commons.wikimedia.org/w/index.php?curid=67853297</a></p>
+<div class="figure"><span style="display:block;" id="fig:fig-SVD"></span>
+<img src="bilder/06_412px-Singular_value_decomposition_visualisation.svg.png" alt="Illustration der SVD. Bitte beachten, der $*$ bedeutet hier transponiert und komplex konjugiert. By Cmglee - Own work, CC BY-SA 4.0, https://commons.wikimedia.org/w/index.php?curid=67853297" width="50%" />
+<p class="caption">
+Figure 6.1: Illustration der SVD. Bitte beachten, der <span class="math inline">\(*\)</span> bedeutet hier transponiert und komplex konjugiert. By Cmglee - Own work, CC BY-SA 4.0, <a href="https://commons.wikimedia.org/w/index.php?curid=67853297" class="uri">https://commons.wikimedia.org/w/index.php?curid=67853297</a>
+</p>
 </div>
 <div id="aufgaben" class="section level2 hasAnchor" number="6.1">
 <h2><span class="header-section-number">6.1</span> Aufgaben<a href="singulärwert-zerlegung.html#aufgaben" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -324,7 +326,7 @@ schreiben, wobei
 <span class="math display">\[\begin{equation*}
 \|y\|^2 = \|Qy \|^2
 \end{equation*}\]</span>
-gilt. (2 Punkte)</p>
+gilt.</p>
 </div>
 <div id="kleinste-quadrate-und-mittelwert" class="section level3 hasAnchor" number="6.1.2">
 <h3><span class="header-section-number">6.1.2</span> Kleinste Quadrate und Mittelwert<a href="singulärwert-zerlegung.html#kleinste-quadrate-und-mittelwert" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -332,7 +334,7 @@ gilt. (2 Punkte)</p>
 <span class="math display">\[\begin{equation*}
 (x_i, y_i), \quad i=1,2,\dotsc,N,
 \end{equation*}\]</span>
-mittels einer konstanten Funktion <span class="math inline">\(f(x)=w_1\)</span> auf <span class="math inline">\(w_1\)</span> auf den Mittelwert der <span class="math inline">\(y_i\)</span> führt. (6 Punkte)</p>
+mittels einer konstanten Funktion <span class="math inline">\(f(x)=w_1\)</span> auf <span class="math inline">\(w_1\)</span> auf den Mittelwert der <span class="math inline">\(y_i\)</span> führt.</p>
 </div>
 <div id="qr-zerlegung-und-kleinstes-quadrate-problem" class="section level3 hasAnchor" number="6.1.3">
 <h3><span class="header-section-number">6.1.3</span> QR Zerlegung und Kleinstes Quadrate Problem<a href="singulärwert-zerlegung.html#qr-zerlegung-und-kleinstes-quadrate-problem" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -361,12 +363,12 @@ darstellt. Vergleichen Sie mit der SVD Lösung aus der Vorlesung.</p>
 <h3><span class="header-section-number">6.1.4</span> Eigenwerte Symmetrischer Matrizen<a href="singulärwert-zerlegung.html#eigenwerte-symmetrischer-matrizen" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Zeigen Sie, dass Eigenwerte symmetrischer reeller Matrizen <span class="math inline">\(A\in \mathbb R^{n\times n}\)</span> immer reell sind.</p>
 </div>
-<div id="singulärwertzerlegung-und-eigenwerte-1" class="section level3 hasAnchor" number="6.1.5">
-<h3><span class="header-section-number">6.1.5</span> Singulärwertzerlegung und Eigenwerte – 1<a href="singulärwert-zerlegung.html#singulärwertzerlegung-und-eigenwerte-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="singulärwertzerlegung-und-eigenwerte-i" class="section level3 hasAnchor" number="6.1.5">
+<h3><span class="header-section-number">6.1.5</span> Singulärwertzerlegung und Eigenwerte I<a href="singulärwert-zerlegung.html#singulärwertzerlegung-und-eigenwerte-i" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Zeigen Sie, dass die quadrierten Singulärwerte einer Matrix <span class="math inline">\(A\in \mathbb R^{m\times n}\)</span>, <span class="math inline">\(m&gt;n\)</span>, genau die Eigenwerte der Matrix <span class="math inline">\(A^TA\)</span> sind und beschreiben Sie in welcher Beziehung sie mit den Eigenwerten von <span class="math inline">\(AA^T\)</span> stehen. <strong>Hinweis</strong>: hier ist “<span class="math inline">\(m&gt;n\)</span>” wichtig.</p>
 </div>
-<div id="singulärwertzerlegung-und-eigenwerte-2" class="section level3 hasAnchor" number="6.1.6">
-<h3><span class="header-section-number">6.1.6</span> Singulärwertzerlegung und Eigenwerte – 2<a href="singulärwert-zerlegung.html#singulärwertzerlegung-und-eigenwerte-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="singulärwertzerlegung-und-eigenwerte-ii" class="section level3 hasAnchor" number="6.1.6">
+<h3><span class="header-section-number">6.1.6</span> Singulärwertzerlegung und Eigenwerte II<a href="singulärwert-zerlegung.html#singulärwertzerlegung-und-eigenwerte-ii" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Weisen Sie nach, dass die positiven Eigenwerte von
 <span class="math display">\[\begin{equation*}
 \begin{bmatrix}

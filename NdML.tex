@@ -1616,7 +1616,7 @@ Ein paar Bemerkungen.
 \item
   Die Annahme \(m \geq n\) war nur nötig um für die Matrix \(\Sigma\) keine Fallunterscheidung zu machen. (Für \(m\leq n\) ``steht der Nullblock rechts von den Singulärwerten''). Insbesondere gilt \(A^* = V\Sigma U^*\) ist eine SVD von \(A^*\).
 \item
-  Eine Illustration der Zerlegung ist \href{@fig-SVD}{hier} zu sehen.
+  Eine Illustration der Zerlegung ist Abbildung \ref{fig:fig-SVD} zu sehen.
 \end{itemize}
 
 Wir machen einige Überlegungen im Hinblick auf große Matrizen. Sei dazu \(m>n\), \(A\in \mathbb C^{m\times n}\) und \(A=U\Sigma V^*\) eine SVD wie in Theorem \ref{thm:SVD}. Sei nun
@@ -1703,11 +1703,7 @@ schreiben, wobei
 \textbf{Bemerkung}: \(\Sigma^+\) kann auch definiert werden, wenn \(\hat \Sigma\) nicht invertierbar ist (weil manche Diagonaleinträge null sind). Dann wird \(\hat \Sigma^+\) betrachtet, bei welcher nur die \(\sigma_i>0\) invertiert werden und die anderen \(\sigma_i=0\) belassen werden. Das definiert eine sogenannte \emph{verallgemeinerte Inverse} und löst auch das Optimierungsproblem falls \(A\) keinen vollen Rang hat.
 
 \begin{figure}
-\hypertarget{fig-SVD}{%
-\centering
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/06_412px-Singular_value_decomposition_visualisation.svg.png}
-\caption{Illustration der SVD. Bitte beachten der \(*\) bedeutet hier transponiert und komplex konjugiert. By Cmglee - Own work, CC BY-SA 4.0, \url{https://commons.wikimedia.org/w/index.php?curid=67853297}}\label{fig-SVD}
-}
+\includegraphics[width=0.5\linewidth]{bilder/06_412px-Singular_value_decomposition_visualisation.svg} \caption{Illustration der SVD. Bitte beachten, der $*$ bedeutet hier transponiert und komplex konjugiert. By Cmglee - Own work, CC BY-SA 4.0, https://commons.wikimedia.org/w/index.php?curid=67853297}\label{fig:fig-SVD}
 \end{figure}
 
 \hypertarget{aufgaben}{%
@@ -1720,7 +1716,7 @@ Sei \(Q\in \mathbb R^{n\times n}\) eine orthogonale Matrix und sei \(y\in \mathb
 \begin{equation*}
 \|y\|^2 = \|Qy \|^2
 \end{equation*}
-gilt. (2 Punkte)
+gilt.
 
 \hypertarget{kleinste-quadrate-und-mittelwert}{%
 \subsection{Kleinste Quadrate und Mittelwert}\label{kleinste-quadrate-und-mittelwert}}
@@ -1729,7 +1725,7 @@ Zeigen sie, dass der \emph{kleinste Quadrate} Ansatz zur Approximation einer Dat
 \begin{equation*}
 (x_i, y_i), \quad i=1,2,\dotsc,N,
 \end{equation*}
-mittels einer konstanten Funktion \(f(x)=w_1\) auf \(w_1\) auf den Mittelwert der \(y_i\) führt. (6 Punkte)
+mittels einer konstanten Funktion \(f(x)=w_1\) auf \(w_1\) auf den Mittelwert der \(y_i\) führt.
 
 \hypertarget{qr-zerlegung-und-kleinstes-quadrate-problem}{%
 \subsection{QR Zerlegung und Kleinstes Quadrate Problem}\label{qr-zerlegung-und-kleinstes-quadrate-problem}}
@@ -1760,13 +1756,13 @@ darstellt. Vergleichen Sie mit der SVD Lösung aus der Vorlesung.
 
 Zeigen Sie, dass Eigenwerte symmetrischer reeller Matrizen \(A\in \mathbb R^{n\times n}\) immer reell sind.
 
-\hypertarget{singuluxe4rwertzerlegung-und-eigenwerte-1}{%
-\subsection{Singulärwertzerlegung und Eigenwerte -- 1}\label{singuluxe4rwertzerlegung-und-eigenwerte-1}}
+\hypertarget{singuluxe4rwertzerlegung-und-eigenwerte-i}{%
+\subsection{Singulärwertzerlegung und Eigenwerte I}\label{singuluxe4rwertzerlegung-und-eigenwerte-i}}
 
 Zeigen Sie, dass die quadrierten Singulärwerte einer Matrix \(A\in \mathbb R^{m\times n}\), \(m>n\), genau die Eigenwerte der Matrix \(A^TA\) sind und beschreiben Sie in welcher Beziehung sie mit den Eigenwerten von \(AA^T\) stehen. \textbf{Hinweis}: hier ist ``\(m>n\)'' wichtig.
 
-\hypertarget{singuluxe4rwertzerlegung-und-eigenwerte-2}{%
-\subsection{Singulärwertzerlegung und Eigenwerte -- 2}\label{singuluxe4rwertzerlegung-und-eigenwerte-2}}
+\hypertarget{singuluxe4rwertzerlegung-und-eigenwerte-ii}{%
+\subsection{Singulärwertzerlegung und Eigenwerte II}\label{singuluxe4rwertzerlegung-und-eigenwerte-ii}}
 
 Weisen Sie nach, dass die positiven Eigenwerte von
 \begin{equation*}

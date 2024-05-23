@@ -23,6 +23,7 @@ eq:eqn-min-barrier
 thm:thm-convergence-stoch-grad
 eq:eqn-m-konvex-grad-est
 thm:SVD
+fig:fig-SVD
 einführung
 was-ist-ein-algorithmus
 konsistenz-stabilität-genauigkeit
@@ -61,7 +62,7 @@ norm-und-orthogonale-transformation
 kleinste-quadrate-und-mittelwert
 qr-zerlegung-und-kleinstes-quadrate-problem
 eigenwerte-symmetrischer-matrizen
-singulärwertzerlegung-und-eigenwerte-1
-singulärwertzerlegung-und-eigenwerte-2
+singulärwertzerlegung-und-eigenwerte-i
+singulärwertzerlegung-und-eigenwerte-ii
 truncated-svd
 nachklapp

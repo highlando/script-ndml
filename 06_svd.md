@@ -40,7 +40,7 @@ Ein paar Bemerkungen.
 
  * Ist $A$ reell, k&ouml;nnen auch $U$ und $V$ reell gew&auml;hlt werden.
  * Die Annahme $m \geq n$ war nur n&ouml;tig um f&uuml;r die Matrix $\Sigma$ keine Fallunterscheidung zu machen. (F&uuml;r $m\leq n$ "steht der Nullblock rechts von den Singul&auml;rwerten"). Insbesondere gilt $A^* = V\Sigma U^*$ ist eine SVD von $A^*$.
- * Eine Illustration der Zerlegung ist [hier](@fig-SVD) zu sehen.
+ * Eine Illustration der Zerlegung ist Abbildung \@ref(fig:fig-SVD) zu sehen.
 
 Wir machen einige &Uuml;berlegungen im Hinblick auf gro&szlig;e Matrizen. Sei dazu $m>n$, $A\in \mathbb C^{m\times n}$ und $A=U\Sigma V^*$ eine SVD wie in Theorem \@ref(thm:SVD). Sei nun
 \begin{equation*}
@@ -119,8 +119,10 @@ schreiben, wobei
 
 **Bemerkung**: $\Sigma^+$ kann auch definiert werden, wenn $\hat \Sigma$ nicht invertierbar ist (weil manche Diagonaleintr&auml;ge null sind). Dann wird $\hat \Sigma^+$ betrachtet, bei welcher nur die $\sigma_i>0$ invertiert werden und die anderen $\sigma_i=0$ belassen werden. Das definiert eine sogenannte *verallgemeinerte Inverse* und l&ouml;st auch das Optimierungsproblem falls $A$ keinen vollen Rang hat.
 
-
-![Illustration der SVD. Bitte beachten der $*$ bedeutet hier transponiert und komplex konjugiert. By Cmglee - Own work, CC BY-SA 4.0, https://commons.wikimedia.org/w/index.php?curid=67853297](bilder/06_412px-Singular_value_decomposition_visualisation.svg.png){width=50% #fig-SVD}
+<div class="figure">
+<img src="bilder/06_412px-Singular_value_decomposition_visualisation.svg.png" alt="Illustration der SVD. Bitte beachten, der $*$ bedeutet hier transponiert und komplex konjugiert. By Cmglee - Own work, CC BY-SA 4.0, https://commons.wikimedia.org/w/index.php?curid=67853297" width="50%" />
+<p class="caption">(\#fig:fig-SVD)Illustration der SVD. Bitte beachten, der $*$ bedeutet hier transponiert und komplex konjugiert. By Cmglee - Own work, CC BY-SA 4.0, https://commons.wikimedia.org/w/index.php?curid=67853297</p>
+</div>
 
 ## Aufgaben
 
@@ -130,7 +132,7 @@ Sei $Q\in \mathbb R^{n\times n}$ eine orthogonale Matrix und sei $y\in \mathbb R
 \begin{equation*}
 \|y\|^2 = \|Qy \|^2
 \end{equation*}
-gilt. (2 Punkte)
+gilt.
 
 ### Kleinste Quadrate und Mittelwert
 
@@ -138,7 +140,7 @@ Zeigen sie, dass der *kleinste Quadrate* Ansatz zur Approximation einer Datenwol
 \begin{equation*}
 (x_i, y_i), \quad i=1,2,\dotsc,N,
 \end{equation*}
-mittels einer konstanten Funktion $f(x)=w_1$ auf $w_1$ auf den Mittelwert der $y_i$ f&uuml;hrt. (6 Punkte)
+mittels einer konstanten Funktion $f(x)=w_1$ auf $w_1$ auf den Mittelwert der $y_i$ f&uuml;hrt.
 
 ### QR Zerlegung und Kleinstes Quadrate Problem 
 
@@ -167,11 +169,11 @@ darstellt. Vergleichen Sie mit der SVD L&ouml;sung aus der Vorlesung.
 
 Zeigen Sie, dass Eigenwerte symmetrischer reeller Matrizen $A\in \mathbb R^{n\times n}$ immer reell sind.
 
-### Singul&auml;rwertzerlegung und Eigenwerte -- 1
+### Singul&auml;rwertzerlegung und Eigenwerte I
 
 Zeigen Sie, dass die quadrierten Singul&auml;rwerte einer Matrix $A\in \mathbb R^{m\times n}$, $m>n$, genau die Eigenwerte der Matrix $A^TA$ sind und beschreiben Sie in welcher Beziehung sie mit den Eigenwerten von $AA^T$ stehen. **Hinweis**: hier ist "$m>n$" wichtig.
 
-### Singul&auml;rwertzerlegung und Eigenwerte -- 2
+### Singul&auml;rwertzerlegung und Eigenwerte II
 
 Weisen Sie nach, dass die positiven Eigenwerte von 
 \begin{equation*}
