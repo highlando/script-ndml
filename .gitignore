@@ -1,2 +1,8 @@
 docs/
 NdML.rds
+
+.DS_Store
+.RData
+.Rhistory
+NdML.log
+files/sngltarg_bu.py
