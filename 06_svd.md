@@ -11,6 +11,8 @@ Andere Anwendungen ist die L&ouml;sung von &uuml;berbestimmten
 Gleichungssystemen (wie sie in der linearen Regression vorkommen) oder das
 Entfernen von *Rauschen* aus Daten.
 
+## Definition und Eigenschaften
+
 ::: {.theorem #SVD name="Singul&auml;rwertzerlegung (SVD)"}
 Sei $A\in \mathbb C^{m\times n}$, $m\geq n$. Dann existieren orthogonale Matrizen $U \in \mathbb C^{m\times m}$ und $V\in \mathbb C^{n\times n}$ und eine Matrix $\Sigma \in \mathbb R^{m\times n}$ der Form
 \begin{equation*}
@@ -123,6 +125,59 @@ schreiben, wobei
 <img src="bilder/06_412px-Singular_value_decomposition_visualisation.svg.png" alt="Illustration der SVD. Bitte beachten, der $*$ bedeutet hier transponiert und komplex konjugiert. By Cmglee - Own work, CC BY-SA 4.0, https://commons.wikimedia.org/w/index.php?curid=67853297" width="50%" />
 <p class="caption">(\#fig:fig-SVD)Illustration der SVD. Bitte beachten, der $*$ bedeutet hier transponiert und komplex konjugiert. By Cmglee - Own work, CC BY-SA 4.0, https://commons.wikimedia.org/w/index.php?curid=67853297</p>
 </div>
+
+## Numerische Berechnung
+
+Die praktische Berechnung der Singul&auml;rwertzerlegung einer Matrix $A\in
+\mathbb R^{m\times n}$ verlangt einen gesamten Grundkurs in *numerischer
+Mathematik*. 
+
+In direkter Weise k&ouml;nnten die Singul&auml;rwerte und --vektoren &uuml;ber
+das Eigenwertproblem f&uuml;r $AA^T$ oder $A^TA$ bestimmt werden. 
+Das ist nicht so schlecht, wie mit dem Argument, *dass sich mit dem
+quadrieren der Matrizen auch die Konditionszahl quadriert*, gerne nahegelegt wird
+^[denn die Kondition des Eigenwertproblems ist direkt proportional zur Kondition der Matrix; vgl.
+Richter/Wick], da
+
+ * wenn $n\ll m$ oder $m\ll n$, dann ist $A^TA$ oder $AA^T$ wesentlich kleiner
+   als $A$
+ * das Eigenwertproblem symmetrisch ist, was gut ausgenutzt werden kann
+ * wenn $A$ sehr gross aber *d&uuml;nnbesetzt* (engl. *sparse*) ist, dann k&ouml;nnen die
+   Eigenwerte durch effiziente *sparse matrix-vector* Multiplikationen
+   angen&auml;hert werden
+ * es k&ouml;nnen ohne weiteres nur eine Anzahl von Singul&auml;rwerten
+   berechnet werden
+
+sodass f&uuml;r *sparse* Matrizen diese Methode der de-facto Standard ist^[und
+beispielsweise die Methode, die in
+[`scipy.sparse.linalg.svd`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.svds.html)
+implementiert ist].
+
+F&uuml;r normale Matrizen kommt jedoch der folgende Algorithmus, der mehrere
+wunderbar effiziente Algorithmen elegant kombiniert besser in Betracht:
+
+1. Betrachte 
+   $$M=\begin{bmatrix} 0 & A \\ A^T & 0 \end{bmatrix} \in \mathbb R^{n+m \times n+m},$$
+   deren positiven Eigenwerte mit
+   den (positiven) Singul&auml;rwerten von $A$ &uuml;bereinstimmen.
+2. Bringe $M$ durch *Householder transformationen* in *Hessenberg*-Form, also 
+   $$ H = QMQ^T $$
+   mit $Q$ orthogonal. Wegen Orthogonalit&auml;t ist das eine
+   &Auml;hnlichkeitstransformation ($H$ hat die gleichen Eigenwerte wie $M$) und
+   wegen Symmetrie von $M$ ist auch $H$ symmetrisch und damit *tridiagonal*.
+3. Berechne die positiven Eigenwerte von $H$ mittels der *QR-Iteration*, die
+   f&uuml;r *Hessenbergmatrizen* sehr effizient implementiert werden kann.
+
+
+**Der Standard**^[z.B. die
+[LAPACK routinen](https://www.netlib.org/lapack/lug/node53.html#3465), die die Basis bspw. von [`numpy.linalg.svd`](https://numpy.org/doc/stable/reference/generated/numpy.linalg.svd.html) aber auch von
+Matlab's SVD ist] funktioniert wie folgt:
+
+1. Berechne eine orthogonale Transformation auf eine *bidiagonale*
+   $B=U_A^TAV_A$.
+2. Berechne eine SVD von $B=U_B\Sigma V_B^T$ (das wird effizient mit einem
+   [*divide and conquer* Algorithmus von Gu und Eisenstat](https://dl.acm.org/doi/10.1137/S0895479892241287) getan)
+3. Erhalte die gesuchte SVD als $A=(U_AU_B)\Sigma (V_AV_B)^T$.
 
 ## Aufgaben
 

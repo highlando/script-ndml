@@ -177,7 +177,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="6" data-path="singulärwert-zerlegung.html"><a href="singulärwert-zerlegung.html"><i class="fa fa-check"></i><b>6</b> Singulärwert Zerlegung</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="singulärwert-zerlegung.html"><a href="singulärwert-zerlegung.html#aufgaben"><i class="fa fa-check"></i><b>6.1</b> Aufgaben</a></li>
+<li class="chapter" data-level="6.1" data-path="singulärwert-zerlegung.html"><a href="singulärwert-zerlegung.html#definition-und-eigenschaften"><i class="fa fa-check"></i><b>6.1</b> Definition und Eigenschaften</a></li>
+<li class="chapter" data-level="6.2" data-path="singulärwert-zerlegung.html"><a href="singulärwert-zerlegung.html#numerische-berechnung"><i class="fa fa-check"></i><b>6.2</b> Numerische Berechnung</a></li>
+<li class="chapter" data-level="6.3" data-path="singulärwert-zerlegung.html"><a href="singulärwert-zerlegung.html#aufgaben"><i class="fa fa-check"></i><b>6.3</b> Aufgaben</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="nachklapp.html"><a href="nachklapp.html"><i class="fa fa-check"></i><b>7</b> Nachklapp</a></li>
 <li class="chapter" data-level="" data-path="referenzen.html"><a href="referenzen.html"><i class="fa fa-check"></i>Referenzen</a></li>
@@ -211,6 +213,8 @@ wesentlicher und redundanter Anteile in Daten oder Operatoren.</p>
 <p>Andere Anwendungen ist die Lösung von überbestimmten
 Gleichungssystemen (wie sie in der linearen Regression vorkommen) oder das
 Entfernen von <em>Rauschen</em> aus Daten.</p>
+<div id="definition-und-eigenschaften" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> Definition und Eigenschaften<a href="singulärwert-zerlegung.html#definition-und-eigenschaften" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div class="theorem">
 <p><span id="thm:SVD" class="theorem"><strong>Theorem 6.1  (Singulärwertzerlegung (SVD)) </strong></span>Sei <span class="math inline">\(A\in \mathbb C^{m\times n}\)</span>, <span class="math inline">\(m\geq n\)</span>. Dann existieren orthogonale Matrizen <span class="math inline">\(U \in \mathbb C^{m\times m}\)</span> und <span class="math inline">\(V\in \mathbb C^{n\times n}\)</span> und eine Matrix <span class="math inline">\(\Sigma \in \mathbb R^{m\times n}\)</span> der Form
 <span class="math display">\[\begin{equation*}
@@ -318,26 +322,70 @@ schreiben, wobei
 Figure 6.1: Illustration der SVD. Bitte beachten, der <span class="math inline">\(*\)</span> bedeutet hier transponiert und komplex konjugiert. By Cmglee - Own work, CC BY-SA 4.0, <a href="https://commons.wikimedia.org/w/index.php?curid=67853297" class="uri">https://commons.wikimedia.org/w/index.php?curid=67853297</a>
 </p>
 </div>
-<div id="aufgaben" class="section level2 hasAnchor" number="6.1">
-<h2><span class="header-section-number">6.1</span> Aufgaben<a href="singulärwert-zerlegung.html#aufgaben" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div id="norm-und-orthogonale-transformation" class="section level3 hasAnchor" number="6.1.1">
-<h3><span class="header-section-number">6.1.1</span> Norm und Orthogonale Transformation<a href="singulärwert-zerlegung.html#norm-und-orthogonale-transformation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+</div>
+<div id="numerische-berechnung" class="section level2 hasAnchor" number="6.2">
+<h2><span class="header-section-number">6.2</span> Numerische Berechnung<a href="singulärwert-zerlegung.html#numerische-berechnung" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Die praktische Berechnung der Singulärwertzerlegung einer Matrix <span class="math inline">\(A\in \mathbb R^{m\times n}\)</span> verlangt einen gesamten Grundkurs in <em>numerischer
+Mathematik</em>.</p>
+<p>In direkter Weise könnten die Singulärwerte und –vektoren über
+das Eigenwertproblem für <span class="math inline">\(AA^T\)</span> oder <span class="math inline">\(A^TA\)</span> bestimmt werden.
+Das ist nicht so schlecht, wie mit dem Argument, <em>dass sich mit dem
+quadrieren der Matrizen auch die Konditionszahl quadriert</em>, gerne nahegelegt wird,<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> da</p>
+<ul>
+<li>wenn <span class="math inline">\(n\ll m\)</span> oder <span class="math inline">\(m\ll n\)</span>, dann ist <span class="math inline">\(A^TA\)</span> oder <span class="math inline">\(AA^T\)</span> wesentlich kleiner
+als <span class="math inline">\(A\)</span></li>
+<li>das Eigenwertproblem symmetrisch ist, was gut ausgenutzt werden kann</li>
+<li>wenn <span class="math inline">\(A\)</span> sehr gross aber <em>dünnbesetzt</em> (engl. <em>sparse</em>) ist, dann können die
+Eigenwerte durch effiziente <em>sparse matrix-vector</em> Multiplikationen
+angenähert werden</li>
+<li>es können ohne weiteres nur eine Anzahl von Singulärwerten
+berechnet werden</li>
+</ul>
+<p>sodass für <em>sparse</em> Matrizen diese Methode der de-facto Standard ist<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a>.</p>
+<p>Für normale Matrizen kommt jedoch der folgende Algorithmus, der mehrere
+wunderbar effiziente Algorithmen elegant kombiniert besser in Betracht:</p>
+<ol style="list-style-type: decimal">
+<li>Betrachte
+<span class="math display">\[M=\begin{bmatrix} 0 &amp; A \\ A^T &amp; 0 \end{bmatrix} \in \mathbb R^{n+m \times n+m},\]</span>
+deren positiven Eigenwerte mit
+den (positiven) Singulärwerten von <span class="math inline">\(A\)</span> übereinstimmen.</li>
+<li>Bringe <span class="math inline">\(M\)</span> durch <em>Householder transformationen</em> in <em>Hessenberg</em>-Form, also
+<span class="math display">\[ H = QMQ^T \]</span>
+mit <span class="math inline">\(Q\)</span> orthogonal. Wegen Orthogonalität ist das eine
+Ähnlichkeitstransformation (<span class="math inline">\(H\)</span> hat die gleichen Eigenwerte wie <span class="math inline">\(M\)</span>) und
+wegen Symmetrie von <span class="math inline">\(M\)</span> ist auch <span class="math inline">\(H\)</span> symmetrisch und damit <em>tridiagonal</em>.</li>
+<li>Berechne die positiven Eigenwerte von <span class="math inline">\(H\)</span> mittels der <em>QR-Iteration</em>, die
+für <em>Hessenbergmatrizen</em> sehr effizient implementiert werden kann.</li>
+</ol>
+<p><strong>Der Standard</strong><a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a> funktioniert wie folgt:</p>
+<ol style="list-style-type: decimal">
+<li>Berechne eine orthogonale Transformation auf eine <em>bidiagonale</em>
+<span class="math inline">\(B=U_A^TAV_A\)</span>.</li>
+<li>Berechne eine SVD von <span class="math inline">\(B=U_B\Sigma V_B^T\)</span> (das wird effizient mit einem
+<a href="https://dl.acm.org/doi/10.1137/S0895479892241287"><em>divide and conquer</em> Algorithmus von Gu und Eisenstat</a> getan)</li>
+<li>Erhalte die gesuchte SVD als <span class="math inline">\(A=(U_AU_B)\Sigma (V_AV_B)^T\)</span>.</li>
+</ol>
+</div>
+<div id="aufgaben" class="section level2 hasAnchor" number="6.3">
+<h2><span class="header-section-number">6.3</span> Aufgaben<a href="singulärwert-zerlegung.html#aufgaben" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="norm-und-orthogonale-transformation" class="section level3 hasAnchor" number="6.3.1">
+<h3><span class="header-section-number">6.3.1</span> Norm und Orthogonale Transformation<a href="singulärwert-zerlegung.html#norm-und-orthogonale-transformation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Sei <span class="math inline">\(Q\in \mathbb R^{n\times n}\)</span> eine orthogonale Matrix und sei <span class="math inline">\(y\in \mathbb R^{n}\)</span>. Zeigen Sie, dass
 <span class="math display">\[\begin{equation*}
 \|y\|^2 = \|Qy \|^2
 \end{equation*}\]</span>
 gilt.</p>
 </div>
-<div id="kleinste-quadrate-und-mittelwert" class="section level3 hasAnchor" number="6.1.2">
-<h3><span class="header-section-number">6.1.2</span> Kleinste Quadrate und Mittelwert<a href="singulärwert-zerlegung.html#kleinste-quadrate-und-mittelwert" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="kleinste-quadrate-und-mittelwert" class="section level3 hasAnchor" number="6.3.2">
+<h3><span class="header-section-number">6.3.2</span> Kleinste Quadrate und Mittelwert<a href="singulärwert-zerlegung.html#kleinste-quadrate-und-mittelwert" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Zeigen sie, dass der <em>kleinste Quadrate</em> Ansatz zur Approximation einer Datenwolke
 <span class="math display">\[\begin{equation*}
 (x_i, y_i), \quad i=1,2,\dotsc,N,
 \end{equation*}\]</span>
 mittels einer konstanten Funktion <span class="math inline">\(f(x)=w_1\)</span> auf <span class="math inline">\(w_1\)</span> auf den Mittelwert der <span class="math inline">\(y_i\)</span> führt.</p>
 </div>
-<div id="qr-zerlegung-und-kleinstes-quadrate-problem" class="section level3 hasAnchor" number="6.1.3">
-<h3><span class="header-section-number">6.1.3</span> QR Zerlegung und Kleinstes Quadrate Problem<a href="singulärwert-zerlegung.html#qr-zerlegung-und-kleinstes-quadrate-problem" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="qr-zerlegung-und-kleinstes-quadrate-problem" class="section level3 hasAnchor" number="6.3.3">
+<h3><span class="header-section-number">6.3.3</span> QR Zerlegung und Kleinstes Quadrate Problem<a href="singulärwert-zerlegung.html#qr-zerlegung-und-kleinstes-quadrate-problem" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Sei <span class="math inline">\(A\in \mathbb R^{m,n}\)</span>, <span class="math inline">\(m&gt;n\)</span>, <span class="math inline">\(A\)</span> hat vollen Rank und sei
 <span class="math display">\[\begin{equation*}
 \begin{bmatrix}
@@ -359,16 +407,16 @@ w \mapsto \frac 12 \| Aw - y \|^2
 ist, also <span class="math inline">\(w=\hat R^{-1}Q_1^T y\)</span> eine Lösung des Optimierungsproblems
 darstellt. Vergleichen Sie mit der SVD Lösung aus der Vorlesung.</p>
 </div>
-<div id="eigenwerte-symmetrischer-matrizen" class="section level3 hasAnchor" number="6.1.4">
-<h3><span class="header-section-number">6.1.4</span> Eigenwerte Symmetrischer Matrizen<a href="singulärwert-zerlegung.html#eigenwerte-symmetrischer-matrizen" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="eigenwerte-symmetrischer-matrizen" class="section level3 hasAnchor" number="6.3.4">
+<h3><span class="header-section-number">6.3.4</span> Eigenwerte Symmetrischer Matrizen<a href="singulärwert-zerlegung.html#eigenwerte-symmetrischer-matrizen" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Zeigen Sie, dass Eigenwerte symmetrischer reeller Matrizen <span class="math inline">\(A\in \mathbb R^{n\times n}\)</span> immer reell sind.</p>
 </div>
-<div id="singulärwertzerlegung-und-eigenwerte-i" class="section level3 hasAnchor" number="6.1.5">
-<h3><span class="header-section-number">6.1.5</span> Singulärwertzerlegung und Eigenwerte I<a href="singulärwert-zerlegung.html#singulärwertzerlegung-und-eigenwerte-i" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="singulärwertzerlegung-und-eigenwerte-i" class="section level3 hasAnchor" number="6.3.5">
+<h3><span class="header-section-number">6.3.5</span> Singulärwertzerlegung und Eigenwerte I<a href="singulärwert-zerlegung.html#singulärwertzerlegung-und-eigenwerte-i" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Zeigen Sie, dass die quadrierten Singulärwerte einer Matrix <span class="math inline">\(A\in \mathbb R^{m\times n}\)</span>, <span class="math inline">\(m&gt;n\)</span>, genau die Eigenwerte der Matrix <span class="math inline">\(A^TA\)</span> sind und beschreiben Sie in welcher Beziehung sie mit den Eigenwerten von <span class="math inline">\(AA^T\)</span> stehen. <strong>Hinweis</strong>: hier ist “<span class="math inline">\(m&gt;n\)</span>” wichtig.</p>
 </div>
-<div id="singulärwertzerlegung-und-eigenwerte-ii" class="section level3 hasAnchor" number="6.1.6">
-<h3><span class="header-section-number">6.1.6</span> Singulärwertzerlegung und Eigenwerte II<a href="singulärwert-zerlegung.html#singulärwertzerlegung-und-eigenwerte-ii" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="singulärwertzerlegung-und-eigenwerte-ii" class="section level3 hasAnchor" number="6.3.6">
+<h3><span class="header-section-number">6.3.6</span> Singulärwertzerlegung und Eigenwerte II<a href="singulärwert-zerlegung.html#singulärwertzerlegung-und-eigenwerte-ii" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Weisen Sie nach, dass die positiven Eigenwerte von
 <span class="math display">\[\begin{equation*}
 \begin{bmatrix}
@@ -377,10 +425,10 @@ darstellt. Vergleichen Sie mit der SVD Lösung aus der Vorlesung.</p>
 \end{equation*}\]</span>
 genau die <em>nicht-null</em> Singulärwerte von <span class="math inline">\(A\)</span> sind.</p>
 </div>
-<div id="truncated-svd" class="section level3 hasAnchor" number="6.1.7">
-<h3><span class="header-section-number">6.1.7</span> Truncated SVD<a href="singulärwert-zerlegung.html#truncated-svd" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="truncated-svd" class="section level3 hasAnchor" number="6.3.7">
+<h3><span class="header-section-number">6.3.7</span> Truncated SVD<a href="singulärwert-zerlegung.html#truncated-svd" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ol style="list-style-type: decimal">
-<li>Berechnen und plotten sie die Singulärwerte einer <span class="math inline">\(4000\times 1000\)</span> Matrix mit zufälligen Einträgen und die einer Matrix mit “echten” Daten (hier Simulationsdaten einer Stroemungssimulation)<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>. Berechnen sie den Fehler der <em>truncated SVD</em> <span class="math inline">\(\|A-A_{\hat r}\|\)</span> für <span class="math inline">\(\hat r = 10, 20, 40\)</span> für beide Matrizen.</li>
+<li>Berechnen und plotten sie die Singulärwerte einer <span class="math inline">\(4000\times 1000\)</span> Matrix mit zufälligen Einträgen und die einer Matrix mit “echten” Daten (hier Simulationsdaten einer Stroemungssimulation)<a href="#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a>. Berechnen sie den Fehler der <em>truncated SVD</em> <span class="math inline">\(\|A-A_{\hat r}\|\)</span> für <span class="math inline">\(\hat r = 10, 20, 40\)</span> für beide Matrizen.</li>
 <li>Was lässt sich bezüglich einer Kompression der Daten mittels SVD für die beiden Matrizen sagen. (Vergleichen sie die plots der Singulärwerte und beziehen sie sich auf die gegebene Formel für die Differenz).</li>
 <li>Für die “echten” Daten: Speichern sie die Faktoren der bei <span class="math inline">\(\hat r=40\)</span> abgeschnittenen SVD und vergleichen Sie den Speicherbedarf der Faktoren und der eigentlichen Matrix.</li>
 </ol>
@@ -430,7 +478,16 @@ genau die <em>nicht-null</em> Singulärwerte von <span class="math inline">\(A\)
 <hr />
 <ol start="3">
 <li id="fn3"><p>Auf Matrixnormen kommen wir noch in der Vorlesung zu sprechen.<a href="singulärwert-zerlegung.html#fnref3" class="footnote-back">↩︎</a></p></li>
-<li id="fn4"><p> <a href="https://cloud.tu-ilmenau.de/s/pAMyTmK5YA5t9dg">Download bitte hier</a> – Achtung das sind 370MB<a href="singulärwert-zerlegung.html#fnref4" class="footnote-back">↩︎</a></p></li>
+<li id="fn4"><p>denn die Kondition des Eigenwertproblems ist direkt proportional zur Kondition der Matrix; vgl.
+Richter/Wick<a href="singulärwert-zerlegung.html#fnref4" class="footnote-back">↩︎</a></p></li>
+<li id="fn5"><p>und
+beispielsweise die Methode, die in
+<a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.svds.html"><code>scipy.sparse.linalg.svd</code></a>
+implementiert ist<a href="singulärwert-zerlegung.html#fnref5" class="footnote-back">↩︎</a></p></li>
+<li id="fn6"><p>z.B. die
+<a href="https://www.netlib.org/lapack/lug/node53.html#3465">LAPACK routinen</a>, die die Basis bspw. von <a href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.svd.html"><code>numpy.linalg.svd</code></a> aber auch von
+Matlab’s SVD ist<a href="singulärwert-zerlegung.html#fnref6" class="footnote-back">↩︎</a></p></li>
+<li id="fn7"><p> <a href="https://cloud.tu-ilmenau.de/s/pAMyTmK5YA5t9dg">Download bitte hier</a> – Achtung das sind 370MB<a href="singulärwert-zerlegung.html#fnref7" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>

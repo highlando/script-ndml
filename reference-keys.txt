@@ -57,6 +57,8 @@ neural-network-evaluation-setup
 das-training
 das-auswerten
 singulärwert-zerlegung
+definition-und-eigenschaften
+numerische-berechnung
 aufgaben
 norm-und-orthogonale-transformation
 kleinste-quadrate-und-mittelwert

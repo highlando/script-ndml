@@ -1582,6 +1582,9 @@ Andere Anwendungen ist die Lösung von überbestimmten
 Gleichungssystemen (wie sie in der linearen Regression vorkommen) oder das
 Entfernen von \emph{Rauschen} aus Daten.
 
+\hypertarget{definition-und-eigenschaften}{%
+\section{Definition und Eigenschaften}\label{definition-und-eigenschaften}}
+
 \begin{theorem}[Singulärwertzerlegung (SVD)]
 \protect\hypertarget{thm:SVD}{}\label{thm:SVD}Sei \(A\in \mathbb C^{m\times n}\), \(m\geq n\). Dann existieren orthogonale Matrizen \(U \in \mathbb C^{m\times m}\) und \(V\in \mathbb C^{n\times n}\) und eine Matrix \(\Sigma \in \mathbb R^{m\times n}\) der Form
 \begin{equation*}
@@ -1705,6 +1708,78 @@ schreiben, wobei
 \begin{figure}
 \includegraphics[width=0.5\linewidth]{bilder/06_412px-Singular_value_decomposition_visualisation.svg} \caption{Illustration der SVD. Bitte beachten, der $*$ bedeutet hier transponiert und komplex konjugiert. By Cmglee - Own work, CC BY-SA 4.0, https://commons.wikimedia.org/w/index.php?curid=67853297}\label{fig:fig-SVD}
 \end{figure}
+
+\hypertarget{numerische-berechnung}{%
+\section{Numerische Berechnung}\label{numerische-berechnung}}
+
+Die praktische Berechnung der Singulärwertzerlegung einer Matrix \(A\in \mathbb R^{m\times n}\) verlangt einen gesamten Grundkurs in \emph{numerischer
+Mathematik}.
+
+In direkter Weise könnten die Singulärwerte und --vektoren über
+das Eigenwertproblem für \(AA^T\) oder \(A^TA\) bestimmt werden.
+Das ist nicht so schlecht, wie mit dem Argument, \emph{dass sich mit dem
+quadrieren der Matrizen auch die Konditionszahl quadriert}, gerne nahegelegt wird,\footnote{denn die Kondition des Eigenwertproblems ist direkt proportional zur Kondition der Matrix; vgl.
+  Richter/Wick} da
+
+\begin{itemize}
+\tightlist
+\item
+  wenn \(n\ll m\) oder \(m\ll n\), dann ist \(A^TA\) oder \(AA^T\) wesentlich kleiner
+  als \(A\)
+\item
+  das Eigenwertproblem symmetrisch ist, was gut ausgenutzt werden kann
+\item
+  wenn \(A\) sehr gross aber \emph{dünnbesetzt} (engl. \emph{sparse}) ist, dann können die
+  Eigenwerte durch effiziente \emph{sparse matrix-vector} Multiplikationen
+  angenähert werden
+\item
+  es können ohne weiteres nur eine Anzahl von Singulärwerten
+  berechnet werden
+\end{itemize}
+
+sodass für \emph{sparse} Matrizen diese Methode der de-facto Standard ist\footnote{und
+  beispielsweise die Methode, die in
+  \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.svds.html}{\texttt{scipy.sparse.linalg.svd}}
+  implementiert ist}.
+
+Für normale Matrizen kommt jedoch der folgende Algorithmus, der mehrere
+wunderbar effiziente Algorithmen elegant kombiniert besser in Betracht:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Betrachte
+  \[M=\begin{bmatrix} 0 & A \\ A^T & 0 \end{bmatrix} \in \mathbb R^{n+m \times n+m},\]
+  deren positiven Eigenwerte mit
+  den (positiven) Singulärwerten von \(A\) übereinstimmen.
+\item
+  Bringe \(M\) durch \emph{Householder transformationen} in \emph{Hessenberg}-Form, also
+  \[ H = QMQ^T \]
+  mit \(Q\) orthogonal. Wegen Orthogonalität ist das eine
+  Ähnlichkeitstransformation (\(H\) hat die gleichen Eigenwerte wie \(M\)) und
+  wegen Symmetrie von \(M\) ist auch \(H\) symmetrisch und damit \emph{tridiagonal}.
+\item
+  Berechne die positiven Eigenwerte von \(H\) mittels der \emph{QR-Iteration}, die
+  für \emph{Hessenbergmatrizen} sehr effizient implementiert werden kann.
+\end{enumerate}
+
+\textbf{Der Standard}\footnote{z.B. die
+  \href{https://www.netlib.org/lapack/lug/node53.html\#3465}{LAPACK routinen}, die die Basis bspw. von \href{https://numpy.org/doc/stable/reference/generated/numpy.linalg.svd.html}{\texttt{numpy.linalg.svd}} aber auch von
+  Matlab's SVD ist} funktioniert wie folgt:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Berechne eine orthogonale Transformation auf eine \emph{bidiagonale}
+  \(B=U_A^TAV_A\).
+\item
+  Berechne eine SVD von \(B=U_B\Sigma V_B^T\) (das wird effizient mit einem
+  \href{https://dl.acm.org/doi/10.1137/S0895479892241287}{\emph{divide and conquer} Algorithmus von Gu und Eisenstat} getan)
+\item
+  Erhalte die gesuchte SVD als \(A=(U_AU_B)\Sigma (V_AV_B)^T\).
+\end{enumerate}
 
 \hypertarget{aufgaben}{%
 \section{Aufgaben}\label{aufgaben}}
