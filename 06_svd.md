@@ -185,7 +185,7 @@ genau die *nicht-null* Singul&auml;rwerte von $A$ sind.
 
 ### Truncated SVD
 
- 1. Berechnen und plotten sie die Singul&auml;rwerte einer $4000\times 1000$ Matrix mit zuf&auml;lligen Eintr&auml;gen und die einer Matrix mit "echten" Daten (hier Simulationsdaten einer Stroemungssimulation)^[ [Download bitte hier](https://owncloud.gwdg.de/index.php/s/sAjEy9B8kIbzoYj) -- Achtung das sind 370MB].  Berechnen sie den Fehler der *truncated SVD* $\|A-A_{\hat r}\|$ f&uuml;r $\hat r = 10, 20, 40$ f&uuml;r beide Matrizen.
+ 1. Berechnen und plotten sie die Singul&auml;rwerte einer $4000\times 1000$ Matrix mit zuf&auml;lligen Eintr&auml;gen und die einer Matrix mit "echten" Daten (hier Simulationsdaten einer Stroemungssimulation)^[ [Download bitte hier](https://cloud.tu-ilmenau.de/s/pAMyTmK5YA5t9dg) -- Achtung das sind 370MB].  Berechnen sie den Fehler der *truncated SVD* $\|A-A_{\hat r}\|$ f&uuml;r $\hat r = 10, 20, 40$ f&uuml;r beide Matrizen.
  1. Was l&auml;sst sich bez&uuml;glich einer Kompression der Daten mittels SVD f&uuml;r die beiden Matrizen sagen. (Vergleichen sie die plots der Singul&auml;rwerte und beziehen sie sich auf die gegebene Formel f&uuml;r die Differenz).
  1. F&uuml;r die "echten" Daten: Speichern sie die Faktoren der bei $\hat r=40$ abgeschnittenen SVD und vergleichen Sie den Speicherbedarf der Faktoren und der eigentlichen Matrix.
 
