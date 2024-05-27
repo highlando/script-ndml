@@ -242,6 +242,7 @@ wobei gilt <span class="math inline">\(V^* = \overline{V^T}\)</span> (transponie
 <p>Ein paar Bemerkungen.</p>
 <ul>
 <li>Ist <span class="math inline">\(A\)</span> reell, können auch <span class="math inline">\(U\)</span> und <span class="math inline">\(V\)</span> reell gewählt werden.</li>
+<li>Ein Beweis ist in <span class="citation">(Bollhöfer and Mehrmann <a href="#ref-BolM04" role="doc-biblioref">2004</a>, Satz 14.14)</span> zu finden.</li>
 <li>Die Annahme <span class="math inline">\(m \geq n\)</span> war nur nötig um für die Matrix <span class="math inline">\(\Sigma\)</span> keine Fallunterscheidung zu machen. (Für <span class="math inline">\(m\leq n\)</span> “steht der Nullblock rechts von den Singulärwerten”). Insbesondere gilt <span class="math inline">\(A^* = V\Sigma U^*\)</span> ist eine SVD von <span class="math inline">\(A^*\)</span>.</li>
 <li>Eine Illustration der Zerlegung ist Abbildung <a href="singulärwert-zerlegung.html#fig:fig-SVD">6.1</a> zu sehen.</li>
 </ul>
@@ -282,7 +283,7 @@ Es genügt also nur die ersten <span class="math inline">\(m\)</span> Spalten vo
 <span class="math display">\[\begin{equation*}
 A \approx A_{\hat r}
 \end{equation*}\]</span>
-wobei <span class="math inline">\(A_{\hat r}\)</span> aus der <em>truncated SVD</em> von <span class="math inline">\(A\)</span> erzeugt wurde. Allerdings ist diese Approximation von <span class="math inline">\(A\)</span> durch optimal in dem Sinne, dass es keine Matrix vom Rang <span class="math inline">\(\hat r \geq r=\operatorname{Rg}(A)\)</span> gibt, die <span class="math inline">\(A\)</span> (in der <em>induzierten</em> euklidischen Norm<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>) besser approximiert. Es gilt
+wobei <span class="math inline">\(A_{\hat r}\)</span> aus der <em>truncated SVD</em> von <span class="math inline">\(A\)</span> erzeugt wurde. Allerdings ist diese Approximation von <span class="math inline">\(A\)</span> durch optimal in dem Sinne, dass es keine Matrix vom Rang <span class="math inline">\(\hat r \geq r=\operatorname{Rg}(A)\)</span> gibt, die <span class="math inline">\(A\)</span> (in der <em>induzierten</em> euklidischen Norm) besser approximiert. Es gilt
 <span class="math display">\[\begin{equation*}
 \min_{B\in \mathbb C^{m\times n}, \operatorname{Rg}(B)=\hat r} \|A-B\|_2 = \|A-A_{\hat r}\|_2 = \sigma_{\hat r + 1};
 \end{equation*}\]</span>
@@ -330,7 +331,7 @@ Mathematik</em>.</p>
 <p>In direkter Weise könnten die Singulärwerte und –vektoren über
 das Eigenwertproblem für <span class="math inline">\(AA^T\)</span> oder <span class="math inline">\(A^TA\)</span> bestimmt werden.
 Das ist nicht so schlecht, wie mit dem Argument, <em>dass sich mit dem
-quadrieren der Matrizen auch die Konditionszahl quadriert</em>, gerne nahegelegt wird,<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> da</p>
+quadrieren der Matrizen auch die Konditionszahl quadriert</em>, gerne nahegelegt wird,<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> da</p>
 <ul>
 <li>wenn <span class="math inline">\(n\ll m\)</span> oder <span class="math inline">\(m\ll n\)</span>, dann ist <span class="math inline">\(A^TA\)</span> oder <span class="math inline">\(AA^T\)</span> wesentlich kleiner
 als <span class="math inline">\(A\)</span></li>
@@ -341,7 +342,7 @@ angenähert werden</li>
 <li>es können ohne weiteres nur eine Anzahl von Singulärwerten
 berechnet werden</li>
 </ul>
-<p>sodass für <em>sparse</em> Matrizen diese Methode der de-facto Standard ist<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a>.</p>
+<p>sodass für <em>sparse</em> Matrizen diese Methode der de-facto Standard ist<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>.</p>
 <p>Für normale Matrizen kommt jedoch der folgende Algorithmus, der mehrere
 wunderbar effiziente Algorithmen elegant kombiniert besser in Betracht:</p>
 <ol style="list-style-type: decimal">
@@ -357,7 +358,7 @@ wegen Symmetrie von <span class="math inline">\(M\)</span> ist auch <span class=
 <li>Berechne die positiven Eigenwerte von <span class="math inline">\(H\)</span> mittels der <em>QR-Iteration</em>, die
 für <em>Hessenbergmatrizen</em> sehr effizient implementiert werden kann.</li>
 </ol>
-<p><strong>Der Standard</strong><a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a> funktioniert wie folgt:</p>
+<p><strong>Der Standard</strong><a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a> funktioniert wie folgt:</p>
 <ol style="list-style-type: decimal">
 <li>Berechne eine orthogonale Transformation auf eine <em>bidiagonale</em>
 <span class="math inline">\(B=U_A^TAV_A\)</span>.</li>
@@ -428,7 +429,7 @@ genau die <em>nicht-null</em> Singulärwerte von <span class="math inline">\(A\)
 <div id="truncated-svd" class="section level3 hasAnchor" number="6.3.7">
 <h3><span class="header-section-number">6.3.7</span> Truncated SVD<a href="singulärwert-zerlegung.html#truncated-svd" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ol style="list-style-type: decimal">
-<li>Berechnen und plotten sie die Singulärwerte einer <span class="math inline">\(4000\times 1000\)</span> Matrix mit zufälligen Einträgen und die einer Matrix mit “echten” Daten (hier Simulationsdaten einer Stroemungssimulation)<a href="#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a>. Berechnen sie den Fehler der <em>truncated SVD</em> <span class="math inline">\(\|A-A_{\hat r}\|\)</span> für <span class="math inline">\(\hat r = 10, 20, 40\)</span> für beide Matrizen.</li>
+<li>Berechnen und plotten sie die Singulärwerte einer <span class="math inline">\(4000\times 1000\)</span> Matrix mit zufälligen Einträgen und die einer Matrix mit “echten” Daten (hier Simulationsdaten einer Stroemungssimulation)<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a>. Berechnen sie den Fehler der <em>truncated SVD</em> <span class="math inline">\(\|A-A_{\hat r}\|\)</span> für <span class="math inline">\(\hat r = 10, 20, 40\)</span> für beide Matrizen.</li>
 <li>Was lässt sich bezüglich einer Kompression der Daten mittels SVD für die beiden Matrizen sagen. (Vergleichen sie die plots der Singulärwerte und beziehen sie sich auf die gegebene Formel für die Differenz).</li>
 <li>Für die “echten” Daten: Speichern sie die Faktoren der bei <span class="math inline">\(\hat r=40\)</span> abgeschnittenen SVD und vergleichen Sie den Speicherbedarf der Faktoren und der eigentlichen Matrix.</li>
 </ol>
@@ -473,21 +474,23 @@ genau die <em>nicht-null</em> Singulärwerte von <span class="math inline">\(A\)
 <div id="ref-BolM04">
 <p> Bollhöfer, M., Mehrmann, V.: Numerische Mathematik. Eine projektorientierte Einführung für Ingenieure, Mathematiker und Naturwissenschaftler. Vieweg (2004)</p>
 </div>
+<div id="ref-RicW17">
+<p> Richter, T., Wick, T.: Einführung in die numerische Mathematik. Begriffe, Konzepte und zahlreiche Anwendungsbeispiele. Heidelberg: Springer Spektrum (2017)</p>
+</div>
 </div>
 <div class="footnotes">
 <hr />
 <ol start="3">
-<li id="fn3"><p>Auf Matrixnormen kommen wir noch in der Vorlesung zu sprechen.<a href="singulärwert-zerlegung.html#fnref3" class="footnote-back">↩︎</a></p></li>
-<li id="fn4"><p>denn die Kondition des Eigenwertproblems ist direkt proportional zur Kondition der Matrix; vgl.
-Richter/Wick<a href="singulärwert-zerlegung.html#fnref4" class="footnote-back">↩︎</a></p></li>
-<li id="fn5"><p>und
+<li id="fn3"><p>denn die Kondition des Eigenwertproblems ist direkt proportional zur Kondition der Matrix; vgl.
+<span class="citation">(Satz 5.9, Richter and Wick <a href="#ref-RicW17" role="doc-biblioref">2017</a>)</span><a href="singulärwert-zerlegung.html#fnref3" class="footnote-back">↩︎</a></p></li>
+<li id="fn4"><p>und
 beispielsweise die Methode, die in
 <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.svds.html"><code>scipy.sparse.linalg.svd</code></a>
-implementiert ist<a href="singulärwert-zerlegung.html#fnref5" class="footnote-back">↩︎</a></p></li>
-<li id="fn6"><p>z.B. die
+implementiert ist<a href="singulärwert-zerlegung.html#fnref4" class="footnote-back">↩︎</a></p></li>
+<li id="fn5"><p>z.B. die
 <a href="https://www.netlib.org/lapack/lug/node53.html#3465">LAPACK routinen</a>, die die Basis bspw. von <a href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.svd.html"><code>numpy.linalg.svd</code></a> aber auch von
-Matlab’s SVD ist<a href="singulärwert-zerlegung.html#fnref6" class="footnote-back">↩︎</a></p></li>
-<li id="fn7"><p> <a href="https://cloud.tu-ilmenau.de/s/pAMyTmK5YA5t9dg">Download bitte hier</a> – Achtung das sind 370MB<a href="singulärwert-zerlegung.html#fnref7" class="footnote-back">↩︎</a></p></li>
+Matlab’s SVD ist<a href="singulärwert-zerlegung.html#fnref5" class="footnote-back">↩︎</a></p></li>
+<li id="fn6"><p> <a href="https://cloud.tu-ilmenau.de/s/pAMyTmK5YA5t9dg">Download bitte hier</a> – Achtung das sind 370MB<a href="singulärwert-zerlegung.html#fnref6" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>

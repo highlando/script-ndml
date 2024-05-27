@@ -44,7 +44,7 @@ Somit könnte eine informelle, gute Praxisdefinition eines Algorithmus sein
 Ein Verfahren aus endlich vielen Anweisungen wird als *Algorithmus* bezeichnet, wenn es eine bestimmte Lösung -- falls sie existiert -- zu einem Problem in endlich vielen Schritten berechnet.
 :::
 
-::: {#rem-coors .JHSAYS data-latex=''}
+::: {#rem-algo-annahmen .JHSAYS data-latex=''}
 Beachten Sie, wie einige Eigenschaften (wie endlich viele Anweisungen) a priori angenommen werden.
 :::
 
@@ -69,7 +69,7 @@ Wenn die Ausgabe eines Algorithmus kontinuierlich von Unterschieden in der Einga
 
 Die *Unterschiede in den Anweisungen* sind typischerweise auf Rundungsfehler zurückzuführen, wie sie in *ungenauer Arithmetik* (oft auch als *Gleitkommaarithmetik* bezeichnet) auftreten.
 
-::: {#rem-coors .JHSAYS data-latex=''}
+::: {#rem-algo-kons-stab .JHSAYS data-latex=''}
 Man könnte sagen, dass ein Algorithmus konsistent ist, wenn *er das Richtige tut* und dass er stabil ist, *wenn er trotz beliebiger kleiner Ungenauigkeiten funktioniert*. Wenn ein Algorithmus konsistent und stabil ist, wird er oft als *konvergent* bezeichnet, um auszudrücken, dass er schließlich die Lösung auch in ungenauer Arithmetik berechnen wird.
 :::
 

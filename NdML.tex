@@ -223,7 +223,7 @@ Somit könnte eine informelle, gute Praxisdefinition eines Algorithmus sein
 \protect\hypertarget{def:info-algorithm}{}\label{def:info-algorithm}Ein Verfahren aus endlich vielen Anweisungen wird als \emph{Algorithmus} bezeichnet, wenn es eine bestimmte Lösung -- falls sie existiert -- zu einem Problem in endlich vielen Schritten berechnet.
 \end{definition}
 
-\leavevmode\hypertarget{rem-coors}{}%
+\leavevmode\hypertarget{rem-algo-annahmen}{}%
 \begin{JHSAYS}
 Beachten Sie, wie einige Eigenschaften (wie endlich viele Anweisungen) a priori angenommen werden.
 
@@ -256,7 +256,7 @@ Für die Analyse numerischer Methoden werden allgemein die folgenden Begriffe ve
 
 Die \emph{Unterschiede in den Anweisungen} sind typischerweise auf Rundungsfehler zurückzuführen, wie sie in \emph{ungenauer Arithmetik} (oft auch als \emph{Gleitkommaarithmetik} bezeichnet) auftreten.
 
-\leavevmode\hypertarget{rem-coors}{}%
+\leavevmode\hypertarget{rem-algo-kons-stab}{}%
 \begin{JHSAYS}
 Man könnte sagen, dass ein Algorithmus konsistent ist, wenn \emph{er das Richtige tut} und dass er stabil ist, \emph{wenn er trotz beliebiger kleiner Ungenauigkeiten funktioniert}. Wenn ein Algorithmus konsistent und stabil ist, wird er oft als \emph{konvergent} bezeichnet, um auszudrücken, dass er schließlich die Lösung auch in ungenauer Arithmetik berechnen wird.
 
@@ -534,7 +534,7 @@ Für die Konditionszahl der Addition \(A_y\colon x \to y+x\) gilt:
 
 Diese Konditionszahl kann offenbar beliebig groß werden, wenn \(x\) nah an \(-y\) liegt. Jan spricht von Auslöschung und tatsächlich lässt sich nachvollziehen, dass in diesem Fall die vorderen (korrekten) Stellen einer Zahl von einander abgezogen werden und die hinteren (möglicherweise inkorrekten) Stellen übrig bleiben.
 
-\leavevmode\hypertarget{rem-accu-iter}{}%
+\leavevmode\hypertarget{rem-kons-addition}{}%
 \begin{JHSAYS}
 Praktisch gesagt: Hantiert Jan mit Addition großer Zahlen um ein kleines Ergebnis erzielen ist das numerisch sehr ungünstig.
 
@@ -1617,6 +1617,8 @@ Ein paar Bemerkungen.
 \item
   Ist \(A\) reell, können auch \(U\) und \(V\) reell gewählt werden.
 \item
+  Ein Beweis ist in (Bollhöfer and Mehrmann \protect\hyperlink{ref-BolM04}{2004}, Satz 14.14) zu finden.
+\item
   Die Annahme \(m \geq n\) war nur nötig um für die Matrix \(\Sigma\) keine Fallunterscheidung zu machen. (Für \(m\leq n\) ``steht der Nullblock rechts von den Singulärwerten''). Insbesondere gilt \(A^* = V\Sigma U^*\) ist eine SVD von \(A^*\).
 \item
   Eine Illustration der Zerlegung ist Abbildung \ref{fig:fig-SVD} zu sehen.
@@ -1668,7 +1670,7 @@ Hier gilt nun nicht mehr die Gleichheit in der Zerlegung. Vielmehr gilt
 \begin{equation*}
 A \approx A_{\hat r}
 \end{equation*}
-wobei \(A_{\hat r}\) aus der \emph{truncated SVD} von \(A\) erzeugt wurde. Allerdings ist diese Approximation von \(A\) durch optimal in dem Sinne, dass es keine Matrix vom Rang \(\hat r \geq r=\operatorname{Rg}(A)\) gibt, die \(A\) (in der \emph{induzierten} euklidischen Norm\footnote{Auf Matrixnormen kommen wir noch in der Vorlesung zu sprechen.}) besser approximiert. Es gilt
+wobei \(A_{\hat r}\) aus der \emph{truncated SVD} von \(A\) erzeugt wurde. Allerdings ist diese Approximation von \(A\) durch optimal in dem Sinne, dass es keine Matrix vom Rang \(\hat r \geq r=\operatorname{Rg}(A)\) gibt, die \(A\) (in der \emph{induzierten} euklidischen Norm) besser approximiert. Es gilt
 \begin{equation*}
 \min_{B\in \mathbb C^{m\times n}, \operatorname{Rg}(B)=\hat r} \|A-B\|_2 = \|A-A_{\hat r}\|_2 = \sigma_{\hat r + 1};
 \end{equation*}
@@ -1719,7 +1721,7 @@ In direkter Weise könnten die Singulärwerte und --vektoren über
 das Eigenwertproblem für \(AA^T\) oder \(A^TA\) bestimmt werden.
 Das ist nicht so schlecht, wie mit dem Argument, \emph{dass sich mit dem
 quadrieren der Matrizen auch die Konditionszahl quadriert}, gerne nahegelegt wird,\footnote{denn die Kondition des Eigenwertproblems ist direkt proportional zur Kondition der Matrix; vgl.
-  Richter/Wick} da
+  (Satz 5.9, Richter and Wick \protect\hyperlink{ref-RicW17}{2017})} da
 
 \begin{itemize}
 \tightlist
