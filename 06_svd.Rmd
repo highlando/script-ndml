@@ -41,6 +41,7 @@ wobei gilt $V^* = \overline{V^T}$ (transponiert und komplex konjugiert).
 Ein paar Bemerkungen. 
 
  * Ist $A$ reell, k&ouml;nnen auch $U$ und $V$ reell gew&auml;hlt werden.
+ * Ein Beweis ist in [@BolM04, Satz 14.14] zu finden.
  * Die Annahme $m \geq n$ war nur n&ouml;tig um f&uuml;r die Matrix $\Sigma$ keine Fallunterscheidung zu machen. (F&uuml;r $m\leq n$ "steht der Nullblock rechts von den Singul&auml;rwerten"). Insbesondere gilt $A^* = V\Sigma U^*$ ist eine SVD von $A^*$.
  * Eine Illustration der Zerlegung ist Abbildung \@ref(fig:fig-SVD) zu sehen.
 
@@ -84,7 +85,7 @@ Hier gilt nun nicht mehr die Gleichheit in der Zerlegung. Vielmehr gilt
 \begin{equation*}
 A \approx A_{\hat r}
 \end{equation*}
-wobei $A_{\hat r}$ aus der *truncated SVD* von $A$ erzeugt wurde. Allerdings ist diese Approximation von $A$ durch optimal in dem Sinne, dass es keine Matrix vom Rang $\hat r \geq r=\operatorname{Rg}(A)$ gibt, die $A$ (in der *induzierten* euklidischen Norm^[Auf Matrixnormen kommen wir noch in der Vorlesung zu sprechen.]) besser approximiert. Es gilt
+wobei $A_{\hat r}$ aus der *truncated SVD* von $A$ erzeugt wurde. Allerdings ist diese Approximation von $A$ durch optimal in dem Sinne, dass es keine Matrix vom Rang $\hat r \geq r=\operatorname{Rg}(A)$ gibt, die $A$ (in der *induzierten* euklidischen Norm) besser approximiert. Es gilt
 \begin{equation*}
 \min_{B\in \mathbb C^{m\times n}, \operatorname{Rg}(B)=\hat r} \|A-B\|_2 = \|A-A_{\hat r}\|_2 = \sigma_{\hat r + 1};
 \end{equation*}
@@ -136,7 +137,7 @@ das Eigenwertproblem f&uuml;r $AA^T$ oder $A^TA$ bestimmt werden.
 Das ist nicht so schlecht, wie mit dem Argument, *dass sich mit dem
 quadrieren der Matrizen auch die Konditionszahl quadriert*, gerne nahegelegt wird
 ^[denn die Kondition des Eigenwertproblems ist direkt proportional zur Kondition der Matrix; vgl.
-Richter/Wick], da
+[Satz 5.9, @RicW17]], da
 
  * wenn $n\ll m$ oder $m\ll n$, dann ist $A^TA$ oder $AA^T$ wesentlich kleiner
    als $A$

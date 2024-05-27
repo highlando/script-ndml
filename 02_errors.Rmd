@@ -92,7 +92,7 @@ F&uuml;r die Konditionszahl der Addition $A_y\colon x \to y+x$ gilt:
 Diese Konditionszahl kann offenbar beliebig gro&szlig; werden, wenn $x$ nah an $-y$ liegt. Jan spricht von Ausl&ouml;schung und tats&auml;chlich l&auml;sst sich nachvollziehen, dass in diesem Fall die vorderen (korrekten) Stellen einer Zahl von einander abgezogen werden und die hinteren (m&ouml;glicherweise inkorrekten) Stellen &uuml;brig bleiben.
 
 
-::: {#rem-accu-iter .JHSAYS data-latex=''}
+::: {#rem-kons-addition .JHSAYS data-latex=''}
 Praktisch gesagt: Hantiert Jan mit Addition gro&szlig;er Zahlen um ein kleines Ergebnis erzielen ist das numerisch sehr ung&uuml;nstig. 
 :::
 
