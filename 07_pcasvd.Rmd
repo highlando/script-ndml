@@ -144,15 +144,15 @@ in der neuen Basis darstellen mit eindeutig bestimmten Koeffizienten $\alpha_{i1
 \end{equation*}
 F&uuml;r orthogonale Basen sind die Koeffizienten durch *testen* mit dem Basisvektor einfach zu berechnen:
 \begin{align*}
-b_1^T\mathbb x_i = b_1^T(\alpha_{i1}b_1 + \alpha_{i2}b_2) = \alpha_{i1}b_1^Tb_1 + \alpha_{i2}b_1^Tb_2 = \alpha_{i1}\cdot 1 + \alpha_{i2} \cdot 0 = \alpha_{i1},\\
-b_2^T\mathbb x_i = b_2^T(\alpha_{i1}b_1 + \alpha_{i2}b_2) = \alpha_{i1}b_1^Tb_2 + \alpha_{i2}b_2^Tb_2 = \alpha_{i1}\cdot 0 + \alpha_{i2}\cdot 1 = \alpha_{i2}.
+b_1^T\mathbf x_i = b_1^T(\alpha_{i1}b_1 + \alpha_{i2}b_2) = \alpha_{i1}b_1^Tb_1 + \alpha_{i2}b_1^Tb_2 = \alpha_{i1}\cdot 1 + \alpha_{i2} \cdot 0 = \alpha_{i1},\\
+b_2^T\mathbf x_i = b_2^T(\alpha_{i1}b_1 + \alpha_{i2}b_2) = \alpha_{i1}b_1^Tb_2 + \alpha_{i2}b_2^Tb_2 = \alpha_{i1}\cdot 0 + \alpha_{i2}\cdot 1 = \alpha_{i2}.
 \end{align*}
 Es gilt also
 \begin{equation*}
-\alpha_{i1} = b_1^T\mathbb x = b_1^T\begin{bmatrix}
+\alpha_{i1} = b_1^T\mathbf x = b_1^T\begin{bmatrix}
 x_i \\ y_i
 \end{bmatrix}, \quad
-\alpha_{i2} = b_2^T\mathbb x = b_2^T\begin{bmatrix}
+\alpha_{i2} = b_2^T\mathbf x_i = b_2^T\begin{bmatrix}
 x_i \\ y_i
 \end{bmatrix}.
 \end{equation*}
@@ -161,7 +161,7 @@ Damit, k&ouml;nnen wir jeden Datenpunkt $\mathbf x_i=(x_i, y_i)$ in den neuen Ko
 
 Zun&auml;chst halten wir fest, dass auch in den neuen Koordinaten die Daten zentriert sind. Es gilt n&auml;mlich, dass
 \begin{align*}
-\frac 1N \sum_{i=1}^N \alpha_{ji}=\frac 1N \sum_{i=1}^N b_j^T\mathbb x_i 
+\frac 1N \sum_{i=1}^N \alpha_{ji}=\frac 1N \sum_{i=1}^N b_j^T\mathbf x_i 
 =\frac 1N b_j^T \sum_{i=1}^N \begin{bmatrix} x_i \\ y_i \end{bmatrix}
 =& \frac 1N b_j^T \begin{bmatrix} \sum_{i=1}^N x_i \\ \sum_{i=1}^N y_i \end{bmatrix}\\
 &=b_j^T \begin{bmatrix} \frac 1N \sum_{i=1}^N x_i \\ \frac 1N \sum_{i=1}^N y_i \end{bmatrix}
@@ -171,9 +171,9 @@ f&uuml;r $j=1,2$.
 
 Desweiteren gilt wegen der Orthogonalit&auml;t von $B=[b_1~b_2]\in \mathbb R^{2\times 2}$, dass 
 \begin{equation*}
-x_{i}^2 + y_{i}^2 = \|\mathbb x_i\|^2 = \|B^T\mathbb x_i\|^2 
-= \|\begin{bmatrix} b_1^T \\ b_2^T \end{bmatrix} \mathbb x_i\|^2
-= \|\begin{bmatrix} b_1^T\mathbb x \\ b_2^T\mathbb x \end{bmatrix}\|^2
+x_{i}^2 + y_{i}^2 = \|\mathbf x_i\|^2 = \|B^T\mathbf x_i\|^2 
+= \|\begin{bmatrix} b_1^T \\ b_2^T \end{bmatrix} \mathbf x_i\|^2
+= \|\begin{bmatrix} b_1^T\mathbf x \\ b_2^T\mathbf x \end{bmatrix}\|^2
 = \|\begin{bmatrix} \alpha_{i1} \\ \alpha_{i2} \end{bmatrix}\|^2
 = \alpha_{i1}^2 + \alpha_{i2}^2
 \end{equation*}
@@ -235,7 +235,7 @@ Wir sind also ein weiteres mal bei einem Optimierungsproblem (diesmal mit Nebenb
 \end{equation}
 
 ```{lemma, varianz-maximization, name="Maximale Varianz"}
-Die L&ouml;sung des Varianz-Maximierungsproblem (\#eq:eqn-max-varianz) ist mit $b=v_1$ gegeben, wobei $v_1$ der erste (rechte) Singul&auml;rvektor von $\mathbf X$ ist:
+Die L&ouml;sung des Varianz-Maximierungsproblem \@ref(eq:eqn-max-varianz) ist mit $b=v_1$ gegeben, wobei $v_1$ der erste (rechte) Singul&auml;rvektor von $\mathbf X$ ist:
 \begin{equation*}
 \mathbf X = U \Sigma V^T = U \Sigma \begin{bmatrix}
 v_1^T \\ v_2^T
@@ -243,7 +243,13 @@ v_1^T \\ v_2^T
 \end{equation*}
 ```
 
-Und damit rechnen wir auch direkt nach, dass im neuen Koordinatensystem $\{b_1, b_2\}=\{v_1, v_2\}$ die Varianzen $s_1^2$ und $s_2^2$ (bis auf einen Faktor von $\frac{1}{N-1}$) genau die quadrierten Singul&auml;rwerte von $\mathbf X$ sind:
+```{proof}
+Ein etwas indirekter Beweis basiert auf der Feststellung dass in
+\@ref(eq:eqn-max-varianz) genau die 2-Norm der Matrix $X$ gesucht ist und dass
+bei $v_1$ das Maximum realisiert wird.
+```
+
+Damit rechnen wir auch direkt nach, dass im neuen Koordinatensystem $\{b_1, b_2\}=\{v_1, v_2\}$ die Varianzen $s_1^2$ und $s_2^2$ (bis auf einen Faktor von $\frac{1}{N-1}$) genau die quadrierten Singul&auml;rwerte von $\mathbf X$ sind:
 \begin{align*}
 (N-1)s_1^2 
 = \|\mathbf X v_1 \|^2 = \|U \Sigma \begin{bmatrix} v_1^T \\ v_2^T \end{bmatrix}v_1\|^2
@@ -281,7 +287,7 @@ s_1^2 \approx 0.85, \quad s_2^2 \approx 0.04,
 \end{equation*}
 was bereits eine deutliche Dominanz der $v_1$-Richtung -- genannt *Hauptachse* -- zeigt.
 
-Im Hinblick auf die n&auml;chste Vorlesung, in der wir Anwendungen und Eigenschaften der PCA untersuchen werden, noch ein Plot der Daten mit der $v_1$-Richtung als Linie eingezeichnet.
+Im Hinblick auf Anwendungen und Eigenschaften der PCA untersuchen werden, noch ein Plot der Daten mit der $v_1$-Richtung als Linie eingezeichnet.
 
 
 ![Fallzahlen von Sars-CoV-2 in Bayern im Oktober
