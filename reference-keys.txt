@@ -24,6 +24,8 @@ thm:thm-convergence-stoch-grad
 eq:eqn-m-konvex-grad-est
 thm:SVD
 fig:fig-SVD
+eq:eqn-max-varianz
+lem:varianz-maximization
 einführung
 was-ist-ein-algorithmus
 konsistenz-stabilität-genauigkeit
@@ -67,4 +69,11 @@ eigenwerte-symmetrischer-matrizen
 singulärwertzerlegung-und-eigenwerte-i
 singulärwertzerlegung-und-eigenwerte-ii
 truncated-svd
+pca-und-weitere-svd-anwendungen
+proper-orthogonal-decomposition-pod
+simultane-diagonalisierung
+pca
+variationskoeffizienten
+koordinatenwechsel
+sec-pca-maximierung
 nachklapp

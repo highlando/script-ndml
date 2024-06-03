@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>7 PCA und weitere SVD Anwendungen | Numerik des Maschinellen Lernens</title>
+  <meta name="description" content="Vorlesungsnotizen zu meiner integrierten Vorlesung im SoSe 2024" />
+  <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="7 PCA und weitere SVD Anwendungen | Numerik des Maschinellen Lernens" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Vorlesungsnotizen zu meiner integrierten Vorlesung im SoSe 2024" />
+  <meta name="github-repo" content="highlando/script-ndml" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="7 PCA und weitere SVD Anwendungen | Numerik des Maschinellen Lernens" />
+  
+  <meta name="twitter:description" content="Vorlesungsnotizen zu meiner integrierten Vorlesung im SoSe 2024" />
+  
+
+<meta name="author" content="Jan Heiland" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="singulärwert-zerlegung.html"/>
+<link rel="next" href="nachklapp.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">NdML</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Vorwort</a></li>
+<li class="chapter" data-level="1" data-path="einführung.html"><a href="einführung.html"><i class="fa fa-check"></i><b>1</b> Einführung</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="einführung.html"><a href="einführung.html#was-ist-ein-algorithmus"><i class="fa fa-check"></i><b>1.1</b> Was ist ein Algorithmus</a></li>
+<li class="chapter" data-level="1.2" data-path="einführung.html"><a href="einführung.html#konsistenz-stabilität-genauigkeit"><i class="fa fa-check"></i><b>1.2</b> Konsistenz, Stabilität, Genauigkeit</a></li>
+<li class="chapter" data-level="1.3" data-path="einführung.html"><a href="einführung.html#rechenkomplexität"><i class="fa fa-check"></i><b>1.3</b> Rechenkomplexität</a></li>
+<li class="chapter" data-level="1.4" data-path="einführung.html"><a href="einführung.html#literatur"><i class="fa fa-check"></i><b>1.4</b> Literatur</a></li>
+<li class="chapter" data-level="1.5" data-path="einführung.html"><a href="einführung.html#übungen"><i class="fa fa-check"></i><b>1.5</b> Übungen</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="fehler-und-konditionierung.html"><a href="fehler-und-konditionierung.html"><i class="fa fa-check"></i><b>2</b> Fehler und Konditionierung</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="fehler-und-konditionierung.html"><a href="fehler-und-konditionierung.html#fehler"><i class="fa fa-check"></i><b>2.1</b> Fehler</a></li>
+<li class="chapter" data-level="2.2" data-path="fehler-und-konditionierung.html"><a href="fehler-und-konditionierung.html#kondition"><i class="fa fa-check"></i><b>2.2</b> Kondition</a></li>
+<li class="chapter" data-level="2.3" data-path="fehler-und-konditionierung.html"><a href="fehler-und-konditionierung.html#kondition-der-grundrechenarten"><i class="fa fa-check"></i><b>2.3</b> Kondition der Grundrechenarten</a></li>
+<li class="chapter" data-level="2.4" data-path="fehler-und-konditionierung.html"><a href="fehler-und-konditionierung.html#übungen-1"><i class="fa fa-check"></i><b>2.4</b> Übungen</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="iterative-methoden.html"><a href="iterative-methoden.html"><i class="fa fa-check"></i><b>3</b> Iterative Methoden</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="iterative-methoden.html"><a href="iterative-methoden.html#iterative-methoden-als-fixpunktiteration"><i class="fa fa-check"></i><b>3.1</b> Iterative Methoden als Fixpunktiteration</a></li>
+<li class="chapter" data-level="3.2" data-path="iterative-methoden.html"><a href="iterative-methoden.html#gradientenabstiegsverfahren"><i class="fa fa-check"></i><b>3.2</b> Gradientenabstiegsverfahren</a></li>
+<li class="chapter" data-level="3.3" data-path="iterative-methoden.html"><a href="iterative-methoden.html#auxiliary-function-methods"><i class="fa fa-check"></i><b>3.3</b> Auxiliary Function Methods</a></li>
+<li class="chapter" data-level="3.4" data-path="iterative-methoden.html"><a href="iterative-methoden.html#übungen-2"><i class="fa fa-check"></i><b>3.4</b> Übungen</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="stochastisches-gradientenverfahren.html"><a href="stochastisches-gradientenverfahren.html"><i class="fa fa-check"></i><b>4</b> Stochastisches Gradientenverfahren</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="stochastisches-gradientenverfahren.html"><a href="stochastisches-gradientenverfahren.html#motivation-und-algorithmus"><i class="fa fa-check"></i><b>4.1</b> Motivation und Algorithmus</a></li>
+<li class="chapter" data-level="4.2" data-path="stochastisches-gradientenverfahren.html"><a href="stochastisches-gradientenverfahren.html#iterative_method"><i class="fa fa-check"></i><b>4.2</b> Stochastisches Abstiegsverfahren</a></li>
+<li class="chapter" data-level="4.3" data-path="stochastisches-gradientenverfahren.html"><a href="stochastisches-gradientenverfahren.html#konvergenzanalyse"><i class="fa fa-check"></i><b>4.3</b> Konvergenzanalyse</a></li>
+<li class="chapter" data-level="4.4" data-path="stochastisches-gradientenverfahren.html"><a href="stochastisches-gradientenverfahren.html#übungen-3"><i class="fa fa-check"></i><b>4.4</b> Übungen</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="ein-nn-beispiel.html"><a href="ein-nn-beispiel.html"><i class="fa fa-check"></i><b>5</b> Ein NN Beispiel</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="ein-nn-beispiel.html"><a href="ein-nn-beispiel.html#der-penguins-datensatz"><i class="fa fa-check"></i><b>5.1</b> Der PENGUINS Datensatz</a></li>
+<li class="chapter" data-level="5.2" data-path="ein-nn-beispiel.html"><a href="ein-nn-beispiel.html#ein-2-layer-neuronales-netz-zur-klassifizierung"><i class="fa fa-check"></i><b>5.2</b> Ein <em>2</em>-Layer Neuronales Netz zur Klassifizierung</a></li>
+<li class="chapter" data-level="5.3" data-path="ein-nn-beispiel.html"><a href="ein-nn-beispiel.html#beispiel-implementierung"><i class="fa fa-check"></i><b>5.3</b> Beispiel Implementierung</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="singulärwert-zerlegung.html"><a href="singulärwert-zerlegung.html"><i class="fa fa-check"></i><b>6</b> Singulärwert Zerlegung</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="singulärwert-zerlegung.html"><a href="singulärwert-zerlegung.html#definition-und-eigenschaften"><i class="fa fa-check"></i><b>6.1</b> Definition und Eigenschaften</a></li>
+<li class="chapter" data-level="6.2" data-path="singulärwert-zerlegung.html"><a href="singulärwert-zerlegung.html#numerische-berechnung"><i class="fa fa-check"></i><b>6.2</b> Numerische Berechnung</a></li>
+<li class="chapter" data-level="6.3" data-path="singulärwert-zerlegung.html"><a href="singulärwert-zerlegung.html#aufgaben"><i class="fa fa-check"></i><b>6.3</b> Aufgaben</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="pca-und-weitere-svd-anwendungen.html"><a href="pca-und-weitere-svd-anwendungen.html"><i class="fa fa-check"></i><b>7</b> PCA und weitere SVD Anwendungen</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="pca-und-weitere-svd-anwendungen.html"><a href="pca-und-weitere-svd-anwendungen.html#proper-orthogonal-decomposition-pod"><i class="fa fa-check"></i><b>7.1</b> Proper-Orthogonal Decomposition – POD</a></li>
+<li class="chapter" data-level="7.2" data-path="pca-und-weitere-svd-anwendungen.html"><a href="pca-und-weitere-svd-anwendungen.html#simultane-diagonalisierung"><i class="fa fa-check"></i><b>7.2</b> Simultane Diagonalisierung</a></li>
+<li class="chapter" data-level="7.3" data-path="pca-und-weitere-svd-anwendungen.html"><a href="pca-und-weitere-svd-anwendungen.html#pca"><i class="fa fa-check"></i><b>7.3</b> PCA</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="nachklapp.html"><a href="nachklapp.html"><i class="fa fa-check"></i><b>8</b> Nachklapp</a></li>
+<li class="chapter" data-level="" data-path="referenzen.html"><a href="referenzen.html"><i class="fa fa-check"></i>Referenzen</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Numerik des Maschinellen Lernens</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="pca-und-weitere-svd-anwendungen" class="section level1 hasAnchor" number="7">
+<h1><span class="header-section-number">7</span> PCA und weitere SVD Anwendungen<a href="pca-und-weitere-svd-anwendungen.html#pca-und-weitere-svd-anwendungen" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="proper-orthogonal-decomposition-pod" class="section level2 hasAnchor" number="7.1">
+<h2><span class="header-section-number">7.1</span> Proper-Orthogonal Decomposition – POD<a href="pca-und-weitere-svd-anwendungen.html#proper-orthogonal-decomposition-pod" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Die POD Methode ist ein Ansatz um den hohen Rechen– und Speicheraufwand in der
+Simulation von hochdimensionalen (d.h. viele Variable umfassenden) Simulationen
+von dynamischen Systemen abzumildern.
+Grob gesagt funktioniert POD wie folgt.</p>
+<p>Es sei ein dynamisches System
+<span class="math display">\[\begin{equation*}
+\dot y(t) = f(t, y(t)), \quad y(0)=y_0 \in \mathbb R^{m}
+\end{equation*}\]</span>
+gegeben, das die Entwicklung eines Zustandes <span class="math inline">\(y(t)\in \mathbb R^{m}\)</span> über
+die Zeit <span class="math inline">\(t&gt;0\)</span> beschreibt. Je größer die Dimension <span class="math inline">\(m\)</span> ist, desto
+aufwändiger ist das numerische berechnen (bzw. approximieren) der Werte von <span class="math inline">\(y\)</span>.</p>
+<p>Die Idee von POD ist</p>
+<ol style="list-style-type: decimal">
+<li><p>anzunehmen, dass die Zustände <span class="math inline">\(y(t)\)</span> mit weniger
+als <span class="math inline">\(m\)</span> Koordinaten beschrieben werden können, also
+<span class="math display">\[\begin{equation*}
+y(t) \approx V\hat y(t)
+\end{equation*}\]</span>
+mit einer Basismatrix <span class="math inline">\(U_r\in \mathbb R^{m\times r}\)</span>, <span class="math inline">\(r\leq m\)</span>, und reduzierten
+Koordinaten <span class="math inline">\(\hat y(t)\in \mathbb R^{r}\)</span></p></li>
+<li><p>die Matrix <span class="math inline">\(U_r\)</span> aus der Rang-<span class="math inline">\(r\)</span>-Bestapproximation<a href="#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a>
+der Datenmatrix
+<span class="math display">\[\begin{equation*}
+Y = \begin{bmatrix}
+y(t_1) &amp; y(t_2) &amp; \hdots &amp; y(t_k)
+\end{bmatrix},
+\end{equation*}\]</span>
+als die Matrix der ersten <span class="math inline">\(r\)</span> Singulärvektoren zu bestimmen.</p></li>
+<li><p>und dann das System auf den Spann von <span class="math inline">\(U_r\)</span> (also auf <span class="math inline">\(r\)</span> Dimensionen) zu
+projizieren.</p></li>
+</ol>
+</div>
+<div id="simultane-diagonalisierung" class="section level2 hasAnchor" number="7.2">
+<h2><span class="header-section-number">7.2</span> Simultane Diagonalisierung<a href="pca-und-weitere-svd-anwendungen.html#simultane-diagonalisierung" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Sind zwei symmetrische positiv definite Matrizen <span class="math inline">\(P \in \mathbb R^{n\times n}\)</span>
+und <span class="math inline">\(Q\in \mathbb R^{n\times n}\)</span> gegeben, so gibt es immer eine invertierbare
+Matrix <span class="math inline">\(T\in \mathbb R^{n\times n}\)</span>, sodass die transformierten Matrizen
+<span class="math display">\[\begin{equation*}
+\tilde P := TPT^*=: D, \quad \tilde Q := T^{-*}QT^{-1} = D
+\end{equation*}\]</span>
+identisch und diagonal sind.
+Eine Möglichkeit, die Existenz von <span class="math inline">\(T\)</span> zu
+beweisen (und auch eine numerisch zu berechnen) funktioniert über die SVD
+(vgl. die bald erscheinende Übungsaufgabe).</p>
+</div>
+<div id="pca" class="section level2 hasAnchor" number="7.3">
+<h2><span class="header-section-number">7.3</span> PCA<a href="pca-und-weitere-svd-anwendungen.html#pca" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><em>Principal Component Analysis</em> ist ein Ansatz aus der Statistik, multivariate Daten so zu
+transformieren, dass</p>
+<ul>
+<li>die einzelnen Komponenten (empirisch)<a href="#fn8" class="footnote-ref" id="fnref8"><sup>8</sup></a> nicht mehr korreliert sind</li>
+<li>die Varianz sich hierarchisch absteigend in den ersten Komponenten konzentriert.</li>
+</ul>
+<p>Weil ich den Ansatz gerne <em>ad hoc</em> also am Problem entlang motivieren und einführen will, vorweg schon mal die bevorstehenden Schritte</p>
+<ol style="list-style-type: decimal">
+<li>Zentrierung/Skalierung der Daten.</li>
+<li>Berechnung der Varianzen im Standard Koordinatensystem.</li>
+<li>Überlegung, dass Daten in einem anderen Koordinatensystem eventuell besser dargestellt werden.</li>
+<li>Berechnung eines optimalen Koordinatenvektors mittels SVD.</li>
+</ol>
+<p>Wir nehmen noch einmal die Covid-Daten her, vergessen kurz, dass es sich um eine Zeitreihe handelt und betrachten sie als Datenpunkte <span class="math inline">\((x_i, y_i)\)</span>, <span class="math inline">\(i=1,\dotsc,N\)</span>, im zweidimensionalen Raum mit Koordinaten <span class="math inline">\(x\)</span> und <span class="math inline">\(y\)</span>.</p>
+<p>Als erstes werden die Daten <strong>zentriert</strong> indem in jeder Komponente der Mittelwert
+<span class="math display">\[\begin{equation*}
+x_c = \frac 1N \sum_{i=1}^N x_i,
+\quad
+y_c = \frac 1N \sum_{i=1}^N y_i.
+\end{equation*}\]</span>
+abgezogen wird und dann noch mit dem inversen des Mittelwerts skaliert.</p>
+<p>Also, die Daten werden durch <span class="math inline">\((\frac{x_i-\bar x}{\bar x},\, \frac{y_i-\bar y}{\bar y})\)</span> ersetzt.</p>
+<div class="figure">
+<img src="bilder/07-covid-cntrd.png" id="fig:cases-cntrd" style="width:65.0%" alt="" />
+<p class="caption">Fallzahlen von Sars-CoV-2 in Bayern im Oktober
+2020 – zentriert</p>
+</div>
+<div id="variationskoeffizienten" class="section level3 hasAnchor" number="7.3.1">
+<h3><span class="header-section-number">7.3.1</span> Variationskoeffizienten<a href="pca-und-weitere-svd-anwendungen.html#variationskoeffizienten" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Als nächstes kann Jan sich fragen, wie gut die Daten durch ihren Mittelwert beschrieben werden und die Varianzen berechnen, die für zentrierte Daten so aussehen</p>
+<p><span class="math display">\[\begin{equation*}
+s_x^2 = \frac {1}{N-1} \sum_{i=1}^N x_i^2,
+\quad
+s_y^2 = \frac {1}{N-1} \sum_{i=1}^N y_i^2.
+\end{equation*}\]</span></p>
+<p>Im gegebenen Fall bekommen wir
+<span class="math display">\[\begin{equation*}
+s_x^2 \approx 0.32
+\quad
+s_y^2 \approx  0.57
+\end{equation*}\]</span>
+<!--Da der grosse Unterschied eventuell durch die verschiedene Skalierung der Daten herr&uuml;hrt berechnen wir besser die Variationskoeffizienten mittels
+\begin{equation*}
+\operatorname {VarK}(x) = \frac{\sqrt{s_x^2} }{x_c} \approx 0.56
+\quad
+\operatorname {VarK}(y) = \frac{\sqrt{s_y^2} }{y_c} \approx 0.76
+\end{equation*}-->
+und schließen daraus, dass in <span class="math inline">\(y\)</span> Richtung <em>viel passiert</em> und in <span class="math inline">\(x\)</span> Richtung <em>nicht ganz so viel</em>. Das ist jeder Hinsicht nicht befriedigend, wir können weder</p>
+<ul>
+<li>Redundanzen ausmachen (eine Dimension der Daten vielleicht weniger wichtig?) noch</li>
+<li>dominierende Richtungen feststellen (obwohl dem Bild nach so eine offenbar existiert)</li>
+</ul>
+<p>und müssen konstatieren, dass die Repräsentation der Daten im <span class="math inline">\((x,y)\)</span> Koordinatensystem nicht optimal ist.</p>
+<p>Die Frage ist also, ob es ein Koordinatensystem gibt, dass die Daten besser darstellt.</p>
+<div id="rem-coors" class="JHSAYS">
+<p>Ein Koordinatensystem ist nichts anderes als eine Basis. Und die Koordinaten eines Datenpunktes sind die Komponenten des entsprechenden Vektors in dieser Basis. Typischerweise sind Koordinatensysteme orthogonal (das heißt eine Orthogonalbasis) und häufig noch orientiert (die Basisvektoren haben eine bestimmte Reihenfolge und eine bestimmte Richtung).</p>
+</div>
+</div>
+<div id="koordinatenwechsel" class="section level3 hasAnchor" number="7.3.2">
+<h3><span class="header-section-number">7.3.2</span> Koordinatenwechsel<a href="pca-und-weitere-svd-anwendungen.html#koordinatenwechsel" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Sei nun also <span class="math inline">\(\{b_1,b_2\}\subset \mathbb R^{2}\)</span> eine orthogonale Basis.</p>
+<div id="rem-ortho-bas" class="JHSAYS">
+<p>Wie allgemein gebräuchlich, sagen wir <em>orthogonal</em>, meinen aber <em>orthonormal</em>. In jedem Falle soll gelten
+<span class="math display">\[\begin{equation*}
+b_1^T b_1=1, \quad b_2^Tb_2=1, \quad b_1^Tb_2 = b_2^Tb_1 = 0.
+\end{equation*}\]</span></p>
+</div>
+<p>Wir können also alle Datenpunkte
+<span class="math inline">\(\mathbf x_i = \begin{bmatrix} x_i \\ y_i \end{bmatrix}\)</span>
+in der neuen Basis darstellen mit eindeutig bestimmten Koeffizienten <span class="math inline">\(\alpha_{i1}\)</span> und <span class="math inline">\(\alpha_{i2}\)</span> mittels
+<span class="math display">\[\begin{equation*}
+\mathbf x_i = \alpha_{i1}b_1 + \alpha_{i2}b_2.
+\end{equation*}\]</span>
+Für orthogonale Basen sind die Koeffizienten durch <em>testen</em> mit dem Basisvektor einfach zu berechnen:
+<span class="math display">\[\begin{align*}
+b_1^T\mathbf x_i = b_1^T(\alpha_{i1}b_1 + \alpha_{i2}b_2) = \alpha_{i1}b_1^Tb_1 + \alpha_{i2}b_1^Tb_2 = \alpha_{i1}\cdot 1 + \alpha_{i2} \cdot 0 = \alpha_{i1},\\
+b_2^T\mathbf x_i = b_2^T(\alpha_{i1}b_1 + \alpha_{i2}b_2) = \alpha_{i1}b_1^Tb_2 + \alpha_{i2}b_2^Tb_2 = \alpha_{i1}\cdot 0 + \alpha_{i2}\cdot 1 = \alpha_{i2}.
+\end{align*}\]</span>
+Es gilt also
+<span class="math display">\[\begin{equation*}
+\alpha_{i1} = b_1^T\mathbf x = b_1^T\begin{bmatrix}
+x_i \\ y_i
+\end{bmatrix}, \quad
+\alpha_{i2} = b_2^T\mathbf x_i = b_2^T\begin{bmatrix}
+x_i \\ y_i
+\end{bmatrix}.
+\end{equation*}\]</span></p>
+<p>Damit, können wir jeden Datenpunkt <span class="math inline">\(\mathbf x_i=(x_i, y_i)\)</span> in den neuen Koordinaten <span class="math inline">\((\alpha_{i1}, \alpha_{i2})\)</span> ausdrücken.</p>
+<p>Zunächst halten wir fest, dass auch in den neuen Koordinaten die Daten zentriert sind. Es gilt nämlich, dass
+<span class="math display">\[\begin{align*}
+\frac 1N \sum_{i=1}^N \alpha_{ji}=\frac 1N \sum_{i=1}^N b_j^T\mathbf x_i 
+=\frac 1N b_j^T \sum_{i=1}^N \begin{bmatrix} x_i \\ y_i \end{bmatrix}
+=&amp; \frac 1N b_j^T \begin{bmatrix} \sum_{i=1}^N x_i \\ \sum_{i=1}^N y_i \end{bmatrix}\\
+&amp;=b_j^T \begin{bmatrix} \frac 1N \sum_{i=1}^N x_i \\ \frac 1N \sum_{i=1}^N y_i \end{bmatrix}
+=b_j^T \begin{bmatrix} 0 \\ 0 \end{bmatrix} = 0,
+\end{align*}\]</span>
+für <span class="math inline">\(j=1,2\)</span>.</p>
+<p>Desweiteren gilt wegen der Orthogonalität von <span class="math inline">\(B=[b_1~b_2]\in \mathbb R^{2\times 2}\)</span>, dass
+<span class="math display">\[\begin{equation*}
+x_{i}^2 + y_{i}^2 = \|\mathbf x_i\|^2 = \|B^T\mathbf x_i\|^2 
+= \|\begin{bmatrix} b_1^T \\ b_2^T \end{bmatrix} \mathbf x_i\|^2
+= \|\begin{bmatrix} b_1^T\mathbf x \\ b_2^T\mathbf x \end{bmatrix}\|^2
+= \|\begin{bmatrix} \alpha_{i1} \\ \alpha_{i2} \end{bmatrix}\|^2
+= \alpha_{i1}^2 + \alpha_{i2}^2
+\end{equation*}\]</span>
+woraus wir folgern, dass in jedem orthogonalen Koordinatensystem, die Summe der beiden Varianzen die gleiche ist:
+<span class="math display">\[\begin{equation*}
+s_x^2 + s_y^2 = \frac{1}{N-1}\sum_{i=1}^N(x_i^2 + y_i^2) = \frac{1}{N-1}\sum_{i=1}^N(\alpha_{i1}^2 + \alpha_{i2}^2) =: s_1^2 + s_2^2.
+\end{equation*}\]</span></p>
+<p>Das bedeutet, dass durch die Wahl des Koordinatensystems die Varianz als Summe nicht verändert wird. Allerdings können wir das System so wählen, dass eine der Varianzen in Achsenrichtung maximal wird (und die übrige(n) entsprechend klein).</p>
+<p>Analog gilt für den eigentlichen Mittelwert der (nichtzentrierten) Daten, dass die Norm gleich bleibt. In der Tat, für die <em>neuen</em> Koordinaten des Mittelwerts gilt in der Norm
+<span class="math display">\[\begin{equation*}
+\|
+\begin{bmatrix}
+\alpha_{c1} \\ \alpha_{c2}
+\end{bmatrix}
+\|
+=
+\|
+B^T
+\begin{bmatrix}
+x_c \\ y_c
+\end{bmatrix}
+\|
+=
+\|
+\begin{bmatrix}
+x_c \\ y_c
+\end{bmatrix}
+\|.
+\end{equation*}\]</span></p>
+</div>
+<div id="sec-pca-maximierung" class="section level3 hasAnchor" number="7.3.3">
+<h3><span class="header-section-number">7.3.3</span> Maximierung der Varianz in (Haupt)-Achsenrichtung<a href="pca-und-weitere-svd-anwendungen.html#sec-pca-maximierung" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Wir wollen nun also <span class="math inline">\(b_1\in \mathbb R^{2}\)</span>, mit <span class="math inline">\(\|b_1\|=1\)</span> so wählen, dass
+<span class="math display">\[\begin{equation*}
+s_1^2 = \frac{1}{N-1}\sum_{i=1}^n \alpha_{i1}^2
+\end{equation*}\]</span>
+maximal wird. Mit der Matrix <span class="math inline">\(\mathbf X\)</span> aller Daten
+<span class="math display">\[\begin{equation*}
+\mathbf X = \begin{bmatrix}
+x_1 &amp; y_1 \\ x_2 &amp; y_2 \\ \vdots &amp; \vdots \\ x_N &amp; y_N
+\end{bmatrix} = 
+\begin{bmatrix}
+\mathbf x_1^T\\ \mathbf x_2^T  \\  \vdots \\ \mathbf x_N^T
+\end{bmatrix} 
+\in \mathbb R^{N\times 2}
+\end{equation*}\]</span>
+können wir die Varianz in <span class="math inline">\(b_1\)</span>-Richtung kompakt schreiben als
+<span class="math display">\[\begin{equation*}
+s_1^2 = \frac{1}{N-1}\sum_{i=1}^n \alpha_{i1}^2
+= \frac{1}{N-1}\sum_{i=1}^n (b_1^T\mathbf x_i)^2
+= \frac{1}{N-1}\sum_{i=1}^n (\mathbf x_i^Tb_1)^2
+= \frac{1}{N-1}\| \mathbf X b_1 \|^2
+\end{equation*}\]</span>
+Wir sind also ein weiteres mal bei einem Optimierungsproblem (diesmal mit Nebenbedingung) angelangt:
+<span class="math display" id="eq:eqn-max-var\tag{7.1}on}(#eq:eqn-max-varianz)
+\max_{b\in \mathbb R^{2},\, \|b\|=1} \|\mathbf X b\|^2
+\end{equation}\]</span></p>
+<div class="lemma">
+<p><span id="lem:varianz-maximization" class="lemma"><strong>Lemma 7.1  (Maximale Varianz) </strong></span>Die Lösung des Varianz-Maximierungsproblem <a href="#eq:eqn-max-varianz">(7.1)</a> ist mit <span class="math inline">\(b=v_1\)</span> gegeben, wobei <span class="math inline">\(v_1\)</span> der erste (rechte) Singulärvektor von <span class="math inline">\(\mathbf X\)</span> ist:
+<span class="math display">\[\begin{equation*}
+\mathbf X = U \Sigma V^T = U \Sigma \begin{bmatrix}
+v_1^T \\ v_2^T
+\end{bmatrix}.
+\end{equation*}\]</span></p>
+</div>
+<div class="proof">
+<p><span id="unlabeled-div-6" class="proof"><em>Proof</em>. </span>Ein etwas indirekter Beweis basiert auf der Feststellung dass in
+<a href="#eq:eqn-max-varianz">(7.1)</a> genau die 2-Norm der Matrix <span class="math inline">\(X\)</span> gesucht ist und dass
+bei <span class="math inline">\(v_1\)</span> das Maximum realisiert wird.</p>
+</div>
+<p>Damit rechnen wir auch direkt nach, dass im neuen Koordinatensystem <span class="math inline">\(\{b_1, b_2\}=\{v_1, v_2\}\)</span> die Varianzen <span class="math inline">\(s_1^2\)</span> und <span class="math inline">\(s_2^2\)</span> (bis auf einen Faktor von <span class="math inline">\(\frac{1}{N-1}\)</span>) genau die quadrierten Singulärwerte von <span class="math inline">\(\mathbf X\)</span> sind:
+<span class="math display">\[\begin{align*}
+(N-1)s_1^2 
+= \|\mathbf X v_1 \|^2 = \|U \Sigma \begin{bmatrix} v_1^T \\ v_2^T \end{bmatrix}v_1\|^2
+= \|\Sigma \begin{bmatrix} v_1^Tv_1 \\ v_2^T v_1\end{bmatrix}\|^2
+=  \|\Sigma \begin{bmatrix} 1 \\  0\end{bmatrix}\|^2
+=\sigma_1^2,\\
+(N-1)s_2^2 
+= \|\mathbf X v_2 \|^2 = \|U \Sigma \begin{bmatrix} v_1^T \\ v_2^T \end{bmatrix}v_2\|^2
+= \|\Sigma \begin{bmatrix} v_1^Tv_2 \\ v_2^T v_2\end{bmatrix}\|^2
+=  \|\Sigma \begin{bmatrix} 0 \\  1\end{bmatrix}\|^2
+=\sigma_2^2
+\end{align*}\]</span></p>
+<p>Für unser Covid Beispiel ergibt sich
+<span class="math display">\[\begin{equation*}
+V^T \approx
+\begin{bmatrix}
+0.5848 &amp;  0.8111 \\
+0.8111 &amp; -0.5848
+\end{bmatrix}
+\end{equation*}\]</span>
+also
+<span class="math display">\[\begin{equation*}
+b_1 = v_1 = \begin{bmatrix}
+0.5848 \\  0.8111 
+\end{bmatrix}
+\quad
+b_2 = v_2 = \begin{bmatrix}
+0.8111 \\ -0.5848
+\end{bmatrix}
+\end{equation*}\]</span>
+als neue Koordinatenrichtungen mit
+<span class="math display">\[\begin{equation*}
+s_1^2 \approx 0.85, \quad s_2^2 \approx 0.04,
+\end{equation*}\]</span>
+was bereits eine deutliche Dominanz der <span class="math inline">\(v_1\)</span>-Richtung – genannt <em>Hauptachse</em> – zeigt.</p>
+<p>Im Hinblick auf Anwendungen und Eigenschaften der PCA untersuchen werden, noch ein Plot der Daten mit der <span class="math inline">\(v_1\)</span>-Richtung als Linie eingezeichnet.</p>
+<div class="figure">
+<img src="bilder/07-covid-cntrd-HA.png" id="fig:cases-cntrd-HA" style="width:65.0%" alt="" />
+<p class="caption">Fallzahlen von Sars-CoV-2 in Bayern im Oktober
+2020 – zentriert/skaliert/Hauptachse</p>
+</div>
+
+</div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="7">
+<li id="fn7"><p>Die <em>truncated</em> SVD
+ergibt auch die optimale Approximation in der <em>Frobenius</em>-norm, was hier die
+naheliegende Norm ist, da die einzelnen Einträge (also die Daten selbst)
+verglichen werden (und nicht irgendwelche Eigenwerte)<a href="pca-und-weitere-svd-anwendungen.html#fnref7" class="footnote-back">↩︎</a></p></li>
+<li id="fn8"><p>Die Zufallsvariable die hinter den
+Daten steckt wird dabei <strong>nicht</strong> notwendigerweise dekorreliert – insbesondere, wenn
+neue Daten hinzu kommen, muss die PCA wiederholt werden. Allerdings gibt es
+auch entsprechende asymptotische statistische Aussagen und Methoden, eine PCA
+<em>aufzudatieren</em>.<a href="pca-und-weitere-svd-anwendungen.html#fnref8" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="singulärwert-zerlegung.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="nachklapp.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["NdML.pdf"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
