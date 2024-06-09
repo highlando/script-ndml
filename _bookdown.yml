@@ -11,7 +11,7 @@ rmd_files: ["index.Rmd",
             "051_sngltarg.Rmd",
             "06_svd.Rmd",
             "07_pcasvd.Rmd",
-            # "vl_08.Rmd",
+            "08_svm.Rmd",
             # "vl_09.Rmd",
             # "vl_1010.Rmd",
             "xxx_lastpage.Rmd"]
