@@ -76,4 +76,5 @@ pca
 variationskoeffizienten
 koordinatenwechsel
 sec-pca-maximierung
+support-vector-machines
 nachklapp
