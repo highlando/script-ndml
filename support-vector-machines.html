@@ -244,7 +244,7 @@ zugehörige Label.</p></li>
 <li><p>Eine <em>Hyperebene</em> <span class="math inline">\(H\subset \mathbb R^{n}\)</span>, definiert durch den
 Stützvektor <span class="math inline">\(b\subset \mathbb R^{n}\)</span> und den Normalenvektor <span class="math inline">\(w\in \mathbb R^{n}\)</span>, heißt <strong>trennend</strong>, falls
 <span class="math display" id="eq:eqn-trennen\tag{8.1}on}(#eq:eqn-trennende-hyperebene)
-y_i\bigl ( x_i-b, \, w\bigr)  &gt;0, \quad i=1,\dotsc,N
+y_i\bigl \langle x_i-b, \, w\bigr\rangle  &gt;0, \quad i=1,\dotsc,N
 \end{equation}\]</span></p></li>
 <li><p>Die Hyperebene <span class="math inline">\(H\)</span> heißt <em>Support Vector Machine</em> falls, <span class="math inline">\(H\)</span> die
 Hyperebene ist, für die der <strong>kleinste</strong> Abstand
@@ -257,15 +257,15 @@ Hyperebene ist, für die der <strong>kleinste</strong> Abstand
 <li>Dass die Labels mit <span class="math inline">\(\pm 1\)</span> gewählt werden hat ganz praktische
 Gründe:</li>
 <li>Zunächst lässt sich anhand des Vorzeichen des inneren Produktes
-<span class="math inline">\(\bigl ( x-b, \, w\bigr) \)</span> entscheiden, auf <em>welcher Seite</em> von <span class="math inline">\(H\)</span> ein Punkt <span class="math inline">\(x\)</span> liegt.
+<span class="math inline">\(\bigl \langle x-b, \, w\bigr\rangle \)</span> entscheiden, auf <em>welcher Seite</em> von <span class="math inline">\(H\)</span> ein Punkt <span class="math inline">\(x\)</span> liegt.
 (Punkte auf der gleichen Seite haben das gleiche Vorzeichen). Mit der Wahl
 der labels als <span class="math inline">\(\pm 1\)</span> kann das kompakt in einer einzigen Gleichung wie
 in <a href="#eq:eqn-trennende-hyperebene">(8.1)</a>
 in der Definition geschrieben werden.</li>
 <li>Ist die Hyperebene bekannt, können neue Datenpunkte <span class="math inline">\(x\)</span> über das
-Vorzeichen von <span class="math inline">\(\bigl ( x-b, \, w\bigr) \)</span> gelabelt werden – das ist die eigentliche
+Vorzeichen von <span class="math inline">\(\bigl \langle x-b, \, w\bigr\rangle \)</span> gelabelt werden – das ist die eigentliche
 Motivation, diese Hyperebene möglichst gut zu bestimmen.</li>
-<li>Es gilt <span class="math inline">\(\bigl ( x-b, \, w\bigr) =\bigl ( x, \, w\bigr) -\bigl ( b, \, w\bigr) :=\bigl ( x, \, w\bigr)  -\beta\)</span>. Und damit
+<li>Es gilt <span class="math inline">\(\bigl \langle x-b, \, w\bigr\rangle =\bigl \langle x, \, w\bigr\rangle -\bigl \langle b, \, w\bigr\rangle :=\bigl \langle x, \, w\bigr\rangle  -\beta\)</span>. Und damit
 genügt es zur Definition (und zum Einsatz in der Klassifizierung), nur
 den Vektor <span class="math inline">\(w\in \mathbb R^{n}\)</span> und den <em>bias</em> <span class="math inline">\(\beta \in \mathbb R^{}\)</span> zu
 bestimmen (beziehungsweise zu kennen).</li>
@@ -297,24 +297,24 @@ und <span class="math inline">\(x\)</span> enthält</li>
 <p>Da auch <span class="math inline">\(w\)</span> der Normalenvektor von <span class="math inline">\(H_x\)</span> ist, gilt für den Abstand <span class="math inline">\(h&#39;\)</span>,
 dass
 <span class="math display">\[\begin{equation*}
-h_x = \|x\|_2\cos(\phi(w,x))=\|x\|_2 \frac{\bigl ( w, \, x\bigr)  }{\|w\|_2\|x\|_2} = \frac{\bigl ( w, \, x\bigr) }{\|w\|_2}
+h_x = \|x\|_2\cos(\phi(w,x))=\|x\|_2 \frac{\bigl \langle w, \, x\bigr\rangle  }{\|w\|_2\|x\|_2} = \frac{\bigl \langle w, \, x\bigr\rangle }{\|w\|_2}
 \end{equation*}\]</span>
 wobei
 <span class="math inline">\(\cos(\phi(w, x))\)</span>
 aus dem Winkel zwischen <span class="math inline">\(x\)</span> und <span class="math inline">\(w\)</span> herrührt.</p>
 <p>Mit dieser Formel und mit <span class="math inline">\(b=hw\)</span>, erkennen wir, dass der Test auf das Vorzeichen
 <span class="math display">\[\begin{equation*}
-\bigl ( x-b, \, w\bigr)  = \bigl ( x-\frac{h}{\|w\|_2} w, \, w\bigr)  = \bigl ( x, \, w\bigr)  - h\|w\|_2
-= \|w\|_2 (\frac{\bigl ( x, \, w\bigr)  }{\|w\|_2} - h) = \|w\|_2(h_x - h)
+\bigl \langle x-b, \, w\bigr\rangle  = \bigl \langle x-\frac{h}{\|w\|_2} w, \, w\bigr\rangle  = \bigl \langle x, \, w\bigr\rangle  - h\|w\|_2
+= \|w\|_2 (\frac{\bigl \langle x, \, w\bigr\rangle  }{\|w\|_2} - h) = \|w\|_2(h_x - h)
 \end{equation*}\]</span>
 den mit <span class="math inline">\(\|w\|_2\)</span> skalierten Abstand (inklusive dem Vorzeichen) enthält,
 beziehungsweise, dass der Abstand als
 <span class="math display">\[\begin{equation*}
-y_i\frac{\bigl ( x_i-b, \, w\bigr) }{\|w\|_2} = y_i\frac{\bigl ( x_i, \, w\bigr) -\beta}{\|w\|_2}
+y_i\frac{\bigl \langle x_i-b, \, w\bigr\rangle }{\|w\|_2} = y_i\frac{\bigl \langle x_i, \, w\bigr\rangle -\beta}{\|w\|_2}
 \end{equation*}\]</span>
 (für eine trennende Hyperebene <span class="math inline">\((w, \beta)\)</span>) auch immer das richtige Vorzeichen erhält (da <span class="math inline">\(\|w\|_2&gt;0\)</span>. Dementsprechend kann das SVM Problem als
 <span class="math display">\[\begin{equation*}
-\max_{w\in \mathbb R^{n}, \, \beta \in \mathbb R^{}} \min_{x_i \in \mathbb X} y_i\frac{\bigl ( x_i, \, w\bigr) -\beta}{\|w\|_2}
+\max_{w\in \mathbb R^{n}, \, \beta \in \mathbb R^{}} \min_{x_i \in \mathbb X} y_i\frac{\bigl \langle x_i, \, w\bigr\rangle -\beta}{\|w\|_2}
 \end{equation*}\]</span>
 formuliert werden.</p>
 <p>So ein <span class="math inline">\(\min \max\)</span> Problem ist generell schwierig zu analysieren und zu
@@ -322,12 +322,47 @@ berechnen. Aber wir können direkt sagen, dass die <em>Zulässigkeit</em> der Op
 ist, da “der <span class="math inline">\(\max\)</span>-imierer” nach Möglichkeit eine trennende Hyperebene
 wählt und so schon mal sicherstellt, dass “der <span class="math inline">\(\min\)</span>-inimierer” nur
 über positive Zahlen minimiert.</p>
+<p>Darüberhinaus, wenn eine trennendes Hyperebene existiert, sodass
+<span class="math display">\[\begin{equation*}
+y_i(\bigl \langle x_i, \, w\bigr\rangle -\beta) = y_i(\bigl \langle x_i, \, w\bigr\rangle  -h \|w\|_2) \geq q &gt; 0
+\end{equation*}\]</span>
+dann können wir durch die Wahl von <span class="math inline">\(\tilde w =\frac 1q w\)</span>, immer
+erreichen, dass das Minimum <span class="math inline">\(\min_{ x_i \in \mathbb X} y_i \bigl \langle x_i, \, w\bigr\rangle -\beta=1\)</span> ist und das Max-Min durch ein Maximierungsproblem unter Zulässigkeitsnebenbedingungen
+<span class="math display">\[\begin{equation*}
+\min_{w,\beta} \frac 12 \|w\|_2^2, \quad{s.t.}\quad y_i(\bigl \langle x_i, \, w\bigr\rangle -\beta) \geq 0, \,
+i=1,\dotsc, N
+\end{equation*}\]</span>
+ersetzen. Dabei haben wir noch ausgenutzt, dass <span class="math inline">\(\max_w \frac 1{\|w\|}\leftrightarrow \min_w \frac 12 \|w\|^2\)</span> entspricht, um die Standardform
+eines <em>quadratischen Optimierungsproblems</em> unter (affin) <em>linearen
+Ungleichungsnebenbedingungen</em> zu erhalten.</p>
+<p>Für solche Optimierungsprobleme kann das <em>duale Problem</em> direkt hergeleitet
+werden, was sich in diesem Fall als die Suche eines Vektors <span class="math inline">\(a\in \mathbb R^{n}\)</span>
+über das restringierte Minimierungsproblem
+<span class="math display">\[\begin{equation*}
+\min_{a} \left(\frac 12 \sum_{i=1}^N\sum_{k=1}^Na_ia_k y_i y_k \bigl \langle x_i, \, x_k\bigr\rangle  -
+\sum_{i=1}^N a_i\right) \quad{s.t.}\quad a\geq0, \, \sum_{i=1}^Na_iy_i=0
+\end{equation*}\]</span>
+ergibt.</p>
+<p>Aus der KKT Theorie kann abgeleitet werden, dass <span class="math inline">\(a_i&gt;0\)</span>, genau dann wenn <span class="math inline">\(x_i\)</span>
+die Gleichheit <span class="math inline">\(y_i(\bigl \langle x_i, \, w\bigr\rangle -\beta)=1\)</span> erfüllt ist, also <span class="math inline">\(x_i\)</span> ein
+sogenannter <em>support vector</em> ist. Ist <span class="math inline">\(S\)</span> die Menge aller Indices, die die
+<em>support vectors</em> indizieren, so kann die Klassifikation eines neuen
+Datenpunktes <span class="math inline">\(x\)</span> mittels
+<span class="math display">\[\begin{equation*}
+y(x) = \sum_{i\in S}a_iy_i\bigl \langle x, \, x_i\bigr\rangle +\gamma
+\end{equation*}\]</span>
+vorgenommen werden, wobei der <em>bias</em> als
+<span class="math display">\[\begin{equation*}
+\gamma = \sum_{i\in S}(y_i - \sum_{k\in S}a_ky_k\bigl \langle x_i, \, x_k\bigr\rangle )
+\end{equation*}\]</span>
+vorberechnet werden kann.</p>
 </div>
 <div id="aufgaben-1" class="section level2 hasAnchor" number="8.3">
 <h2><span class="header-section-number">8.3</span> Aufgaben<a href="support-vector-machines.html#aufgaben-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ol style="list-style-type: decimal">
-<li>Sei die Hyperebene über <span class="math inline">\(w\)</span> und <span class="math inline">\(b\)</span> gegeben. Bestimmen Sie den Abstand
-<span class="math inline">\(h\in \mathbb R^{}\)</span>, sodass <span class="math inline">\(-hw\in H\)</span>.</li>
+<li>Sei die Hyperebene über <span class="math inline">\(w\)</span> und <span class="math inline">\(b\)</span> gegeben. Bestimmen Sie den
+(möglicherweise negativen) Abstand
+<span class="math inline">\(h\in \mathbb R^{}\)</span>, sodass <span class="math inline">\(hw\in H\)</span>.</li>
 </ol>
 
 </div>

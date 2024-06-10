@@ -2235,7 +2235,7 @@ Im Hinblick auf Anwendungen und Eigenschaften der PCA untersuchen werden, noch e
 \hypertarget{support-vector-machines}{%
 \chapter{Support Vector Machines}\label{support-vector-machines}}
 
-\newcommand\ipro[2]{\bigl ( #1, \, #2\bigr) }
+\newcommand\ipro[2]{\bigl \langle #1, \, #2\bigr\rangle }
 
 In diesem Kapitel betrachten wir, wie das Klassifizierungsproblem (erstmal
 bezüglich zweier Merkmale) durch eine optimale Wahl einer trennenden
@@ -2279,7 +2279,7 @@ und blau) und verschiedener trennender Hyperebenen}\label{fig:cases-cntrd-HA}
   Eine \emph{Hyperebene} \(H\subset \mathbb R^{n}\), definiert durch den
   Stützvektor \(b\subset \mathbb R^{n}\) und den Normalenvektor \(w\in \mathbb R^{n}\), heißt \textbf{trennend}, falls
   \begin{equation}\label{eq:eqn-trennende-hyperebene}
-  y_i\bigl ( x_i-b, \, w\bigr)  >0, \quad i=1,\dotsc,N
+  y_i\bigl \langle x_i-b, \, w\bigr\rangle  >0, \quad i=1,\dotsc,N
   \end{equation}
 \item
   Die Hyperebene \(H\) heißt \emph{Support Vector Machine} falls, \(H\) die
@@ -2300,17 +2300,17 @@ Ein Paar Bemerkungen dazu.
   Gründe:
 \item
   Zunächst lässt sich anhand des Vorzeichen des inneren Produktes
-  \(\bigl ( x-b, \, w\bigr) \) entscheiden, auf \emph{welcher Seite} von \(H\) ein Punkt \(x\) liegt.
+  \(\bigl \langle x-b, \, w\bigr\rangle \) entscheiden, auf \emph{welcher Seite} von \(H\) ein Punkt \(x\) liegt.
   (Punkte auf der gleichen Seite haben das gleiche Vorzeichen). Mit der Wahl
   der labels als \(\pm 1\) kann das kompakt in einer einzigen Gleichung wie
   in \eqref{eq:eqn-trennende-hyperebene}
   in der Definition geschrieben werden.
 \item
   Ist die Hyperebene bekannt, können neue Datenpunkte \(x\) über das
-  Vorzeichen von \(\bigl ( x-b, \, w\bigr) \) gelabelt werden -- das ist die eigentliche
+  Vorzeichen von \(\bigl \langle x-b, \, w\bigr\rangle \) gelabelt werden -- das ist die eigentliche
   Motivation, diese Hyperebene möglichst gut zu bestimmen.
 \item
-  Es gilt \(\bigl ( x-b, \, w\bigr) =\bigl ( x, \, w\bigr) -\bigl ( b, \, w\bigr) :=\bigl ( x, \, w\bigr)  -\beta\). Und damit
+  Es gilt \(\bigl \langle x-b, \, w\bigr\rangle =\bigl \langle x, \, w\bigr\rangle -\bigl \langle b, \, w\bigr\rangle :=\bigl \langle x, \, w\bigr\rangle  -\beta\). Und damit
   genügt es zur Definition (und zum Einsatz in der Klassifizierung), nur
   den Vektor \(w\in \mathbb R^{n}\) und den \emph{bias} \(\beta \in \mathbb R^{}\) zu
   bestimmen (beziehungsweise zu kennen).
@@ -2352,7 +2352,7 @@ als
 Da auch \(w\) der Normalenvektor von \(H_x\) ist, gilt für den Abstand \(h'\),
 dass
 \begin{equation*}
-h_x = \|x\|_2\cos(\phi(w,x))=\|x\|_2 \frac{\bigl ( w, \, x\bigr)  }{\|w\|_2\|x\|_2} = \frac{\bigl ( w, \, x\bigr) }{\|w\|_2}
+h_x = \|x\|_2\cos(\phi(w,x))=\|x\|_2 \frac{\bigl \langle w, \, x\bigr\rangle  }{\|w\|_2\|x\|_2} = \frac{\bigl \langle w, \, x\bigr\rangle }{\|w\|_2}
 \end{equation*}
 wobei
 \(\cos(\phi(w, x))\)
@@ -2360,17 +2360,17 @@ aus dem Winkel zwischen \(x\) und \(w\) herrührt.
 
 Mit dieser Formel und mit \(b=hw\), erkennen wir, dass der Test auf das Vorzeichen
 \begin{equation*}
-\bigl ( x-b, \, w\bigr)  = \bigl ( x-\frac{h}{\|w\|_2} w, \, w\bigr)  = \bigl ( x, \, w\bigr)  - h\|w\|_2
-= \|w\|_2 (\frac{\bigl ( x, \, w\bigr)  }{\|w\|_2} - h) = \|w\|_2(h_x - h)
+\bigl \langle x-b, \, w\bigr\rangle  = \bigl \langle x-\frac{h}{\|w\|_2} w, \, w\bigr\rangle  = \bigl \langle x, \, w\bigr\rangle  - h\|w\|_2
+= \|w\|_2 (\frac{\bigl \langle x, \, w\bigr\rangle  }{\|w\|_2} - h) = \|w\|_2(h_x - h)
 \end{equation*}
 den mit \(\|w\|_2\) skalierten Abstand (inklusive dem Vorzeichen) enthält,
 beziehungsweise, dass der Abstand als
 \begin{equation*}
-y_i\frac{\bigl ( x_i-b, \, w\bigr) }{\|w\|_2} = y_i\frac{\bigl ( x_i, \, w\bigr) -\beta}{\|w\|_2}
+y_i\frac{\bigl \langle x_i-b, \, w\bigr\rangle }{\|w\|_2} = y_i\frac{\bigl \langle x_i, \, w\bigr\rangle -\beta}{\|w\|_2}
 \end{equation*}
 (für eine trennende Hyperebene \((w, \beta)\)) auch immer das richtige Vorzeichen erhält (da \(\|w\|_2>0\). Dementsprechend kann das SVM Problem als
 \begin{equation*}
-\max_{w\in \mathbb R^{n}, \, \beta \in \mathbb R^{}} \min_{x_i \in \mathbb X} y_i\frac{\bigl ( x_i, \, w\bigr) -\beta}{\|w\|_2}
+\max_{w\in \mathbb R^{n}, \, \beta \in \mathbb R^{}} \min_{x_i \in \mathbb X} y_i\frac{\bigl \langle x_i, \, w\bigr\rangle -\beta}{\|w\|_2}
 \end{equation*}
 formuliert werden.
 
@@ -2380,6 +2380,43 @@ ist, da ``der \(\max\)-imierer'' nach Möglichkeit eine trennende Hyperebene
 wählt und so schon mal sicherstellt, dass ``der \(\min\)-inimierer'' nur
 über positive Zahlen minimiert.
 
+Darüberhinaus, wenn eine trennendes Hyperebene existiert, sodass
+\begin{equation*}
+y_i(\bigl \langle x_i, \, w\bigr\rangle -\beta) = y_i(\bigl \langle x_i, \, w\bigr\rangle  -h \|w\|_2) \geq q > 0
+\end{equation*}
+dann können wir durch die Wahl von \(\tilde w =\frac 1q w\), immer
+erreichen, dass das Minimum \(\min_{ x_i \in \mathbb X} y_i \bigl \langle x_i, \, w\bigr\rangle -\beta=1\) ist und das Max-Min durch ein Maximierungsproblem unter Zulässigkeitsnebenbedingungen
+\begin{equation*}
+\min_{w,\beta} \frac 12 \|w\|_2^2, \quad{s.t.}\quad y_i(\bigl \langle x_i, \, w\bigr\rangle -\beta) \geq 0, \,
+i=1,\dotsc, N
+\end{equation*}
+ersetzen. Dabei haben wir noch ausgenutzt, dass \(\max_w \frac 1{\|w\|}\leftrightarrow \min_w \frac 12 \|w\|^2\) entspricht, um die Standardform
+eines \emph{quadratischen Optimierungsproblems} unter (affin) \emph{linearen
+Ungleichungsnebenbedingungen} zu erhalten.
+
+Für solche Optimierungsprobleme kann das \emph{duale Problem} direkt hergeleitet
+werden, was sich in diesem Fall als die Suche eines Vektors \(a\in \mathbb R^{n}\)
+über das restringierte Minimierungsproblem
+\begin{equation*}
+\min_{a} \left(\frac 12 \sum_{i=1}^N\sum_{k=1}^Na_ia_k y_i y_k \bigl \langle x_i, \, x_k\bigr\rangle  -
+\sum_{i=1}^N a_i\right) \quad{s.t.}\quad a\geq0, \, \sum_{i=1}^Na_iy_i=0
+\end{equation*}
+ergibt.
+
+Aus der KKT Theorie kann abgeleitet werden, dass \(a_i>0\), genau dann wenn \(x_i\)
+die Gleichheit \(y_i(\bigl \langle x_i, \, w\bigr\rangle -\beta)=1\) erfüllt ist, also \(x_i\) ein
+sogenannter \emph{support vector} ist. Ist \(S\) die Menge aller Indices, die die
+\emph{support vectors} indizieren, so kann die Klassifikation eines neuen
+Datenpunktes \(x\) mittels
+\begin{equation*}
+y(x) = \sum_{i\in S}a_iy_i\bigl \langle x, \, x_i\bigr\rangle +\gamma
+\end{equation*}
+vorgenommen werden, wobei der \emph{bias} als
+\begin{equation*}
+\gamma = \sum_{i\in S}(y_i - \sum_{k\in S}a_ky_k\bigl \langle x_i, \, x_k\bigr\rangle )
+\end{equation*}
+vorberechnet werden kann.
+
 \hypertarget{aufgaben-1}{%
 \section{Aufgaben}\label{aufgaben-1}}
 
@@ -2387,8 +2424,9 @@ wählt und so schon mal sicherstellt, dass ``der \(\min\)-inimierer'' nur
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  Sei die Hyperebene über \(w\) und \(b\) gegeben. Bestimmen Sie den Abstand
-  \(h\in \mathbb R^{}\), sodass \(-hw\in H\).
+  Sei die Hyperebene über \(w\) und \(b\) gegeben. Bestimmen Sie den
+  (möglicherweise negativen) Abstand
+  \(h\in \mathbb R^{}\), sodass \(hw\in H\).
 \end{enumerate}
 
 \hypertarget{nachklapp}{%
