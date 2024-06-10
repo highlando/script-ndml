@@ -1,6 +1,6 @@
 # Support Vector Machines
 
-\newcommand\ipro[2]{\bigl ( #1, \, #2\bigr) }
+\newcommand\ipro[2]{\bigl \langle #1, \, #2\bigr\rangle }
 
 In diesem Kapitel betrachten wir, wie das Klassifizierungsproblem (erstmal
 bez&uuml;glich zweier Merkmale) durch eine optimale Wahl einer trennenden
@@ -112,8 +112,46 @@ ist, da "der $\max$-imierer" nach M&ouml;glichkeit eine trennende Hyperebene
 w&auml;hlt und so schon mal sicherstellt, dass "der $\min$-inimierer" nur
 &uuml;ber positive Zahlen minimiert.
 
+Dar&uuml;berhinaus, wenn eine trennendes Hyperebene existiert, sodass 
+\begin{equation*}
+y_i(\ipro{x_i}{w}-\beta) = y_i(\ipro{x_i}{w} -h \|w\|_2) \geq q > 0
+\end{equation*}
+dann k&ouml;nnen wir durch die Wahl von $\tilde w =\frac 1q w$, immer
+erreichen, dass das Minimum $\min_{ x_i \in \mathbb X} y_i \ipro{x_i}{w}-\beta=1$ ist und das Max-Min durch ein Maximierungsproblem unter Zul&auml;ssigkeitsnebenbedingungen
+\begin{equation*}
+\min_{w,\beta} \frac 12 \|w\|_2^2, \quad{s.t.}\quad y_i(\ipro{x_i}{w}-\beta) \geq 0, \,
+i=1,\dotsc, N
+\end{equation*}
+ersetzen. Dabei haben wir noch ausgenutzt, dass $\max_w \frac
+1{\|w\|}\leftrightarrow \min_w \frac 12 \|w\|^2$ entspricht, um die Standardform
+eines *quadratischen Optimierungsproblems* unter (affin) *linearen
+Ungleichungsnebenbedingungen* zu erhalten.
+
+F&uuml;r solche Optimierungsprobleme kann das *duale Problem* direkt hergeleitet
+werden, was sich in diesem Fall als die Suche eines Vektors $a\in \mathbb R^{n}$
+&uuml;ber das restringierte Minimierungsproblem
+\begin{equation*}
+\min_{a} \left(\frac 12 \sum_{i=1}^N\sum_{k=1}^Na_ia_k y_i y_k \ipro{x_i}{x_k} -
+\sum_{i=1}^N a_i\right) \quad{s.t.}\quad a\geq0, \, \sum_{i=1}^Na_iy_i=0
+\end{equation*}
+ergibt. 
+
+Aus der KKT Theorie kann abgeleitet werden, dass $a_i>0$, genau dann wenn $x_i$
+die Gleichheit $y_i(\ipro{x_i}{w}-\beta)=1$ erf&uuml;llt ist, also $x_i$ ein
+sogenannter *support vector* ist. Ist $S$ die Menge aller Indices, die die
+*support vectors* indizieren, so kann die Klassifikation eines neuen
+Datenpunktes $x$ mittels
+\begin{equation*}
+y(x) = \sum_{i\in S}a_iy_i\ipro{x}{x_i}+\gamma
+\end{equation*}
+vorgenommen werden, wobei der *bias* als
+\begin{equation*}
+\gamma = \sum_{i\in S}(y_i - \sum_{k\in S}a_ky_k\ipro{x_i}{x_k})
+\end{equation*}
+vorberechnet werden kann.
 
 ## Aufgaben
 
-1. Sei die Hyperebene &uuml;ber $w$ und $b$ gegeben. Bestimmen Sie den Abstand
-   $h\in \mathbb R^{}$, sodass $-hw\in H$.
+1. Sei die Hyperebene &uuml;ber $w$ und $b$ gegeben. Bestimmen Sie den
+   (m&ouml;glicherweise negativen) Abstand
+   $h\in \mathbb R^{}$, sodass $hw\in H$.
