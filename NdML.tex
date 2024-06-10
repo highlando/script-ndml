@@ -2235,9 +2235,90 @@ Im Hinblick auf Anwendungen und Eigenschaften der PCA untersuchen werden, noch e
 \hypertarget{support-vector-machines}{%
 \chapter{Support Vector Machines}\label{support-vector-machines}}
 
+\newcommand\ipro[2]{\bigl ( #1, \, #2\bigr) }
+
 In diesem Kapitel betrachten wir, wie das Klassifizierungsproblem (erstmal
 bezüglich zweier Merkmale) durch eine optimale Wahl einer trennenden
 Hyperebene gelöst werden kann.
+In der Tat sind die Merkmale der SVM
+
+\begin{itemize}
+\tightlist
+\item
+  dass die \emph{beste} Hyperebene
+\item
+  effizient berechnet wird
+\item
+  und das sogar für möglicherweise nichtlineare Einbettungen in
+  höhere Dimensionen (\emph{kernel-SVM})
+\end{itemize}
+
+\begin{figure}
+\hypertarget{fig:cases-cntrd-HA}{%
+\centering
+\includegraphics[width=0.65\textwidth,height=\textheight]{bilder/08_hyperebene-punkte-bsp.png}
+\caption{Beispiel Illustration von Punktwolken mit zwei verschiedenen Labels (hier rot
+und blau) und verschiedener trennender Hyperebenen}\label{fig:cases-cntrd-HA}
+}
+\end{figure}
+
+\begin{definition}[Problemstellung für die SVM]
+\protect\hypertarget{def:def-svm-problem}{}\label{def:def-svm-problem}\leavevmode
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Gegeben sei eine Wolke im \(\mathbb R^{n}\) von \(N\) Datenpunkten \[\mathbb X :=
+  \bigl \{(x_i,y_i)\colon x_i \in \mathbb R^{n}, \, y_i\in \{-1,+1\}, \,
+  i=1,\dotsc, N\bigr \}\] wobei \(x_i\) der Datenpunkt ist und \(y_i\) das
+  zugehörige Label.
+\item
+  Eine \emph{Hyperebene} \(H\subset \mathbb R^{n}\), definiert durch den
+  Stützvektor \(b\subset \mathbb R^{n}\) und den Normalenvektor \(w\in \mathbb R^{n}\), heißt \textbf{trennend}, falls
+  \[
+  y_i\bigl ( x_i-b, \, w\bigr)  >0, \quad i=1,\dotsc,N
+  \]
+\item
+  Die Hyperebene \(H\) heißt \emph{Support Vector Machine} falls, \(H\) die
+  Hyperebene ist, für die der \textbf{kleinste} Abstand
+  \[d(H, \mathbb X) = \min_{s\in H, i=1, \dotsc, N}\{\|s-x_i\|_2\}\]
+  \textbf{maximal} wird.
+\end{enumerate}
+
+\end{definition}
+
+Ein Paar Bemerkungen dazu.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Dass die Labels mit \(\pm 1\) gewählt werden hat ganz praktische
+  Gründe:
+\item
+  Zunächst lässt sich anhand des Vorzeichen des inneren Produktes
+  \(\bigl ( x-b, \, w\bigr) \) entscheiden, auf \emph{welcher Seite} von \(H\) ein Punkt \(x\) liegt.
+  (Punkte auf der gleichen Seite haben das gleiche Vorzeichen). Mit der Wahl
+  der labels als \(\pm 1\) kann das kompakt in einer Gleichung wie in der
+  Definition geschrieben werden.
+\item
+  Ist die Hyperebene bekannt, können neue Datenpunkte \(x\) über das
+  Vorzeichen von \(\bigl ( x-b, \, w\bigr) \) gelabelt werden -- das ist die eigentliche
+  Motivation, diese Hyperebene möglichst gut zu bestimmen.
+\item
+  Es gilt \(\bigl ( x-b, \, w\bigr) =\bigl ( x, \, w\bigr) -\bigl ( b, \, w\bigr) :=\bigl ( x, \, w\bigr)  -\beta\). Und damit
+  genügt es zur Definition (und zum Einsatz in der Klassifizierung), nur
+  den Vektor \(w\in \mathbb R^{n}\) und den \emph{bias} \(\beta \in \mathbb R^{}\) zu
+  bestimmen (beziehungsweise zu kennen).
+\item
+  Klassischere Methoden zur Klassifizierung mittels Hyperebene benutzen
+  beispielsweise einfache neuronale Netze um ein passendes \((w, \beta)\) zu bestimmen.
+\item
+  Eine solche Hyperebene kann durchaus auch \textbf{nicht existieren}, dann
+  heißen die Daten \emph{nicht linear trennbar}. Existiert eine solche Ebene,
+  dann existieren unendlich viele -- ein weiterer Grund, die Ebene optimal (und
+  damit hoffentlich eindeutig) zu wählen.
+\end{enumerate}
 
 \hypertarget{nachklapp}{%
 \chapter{Nachklapp}\label{nachklapp}}

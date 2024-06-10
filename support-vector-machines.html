@@ -214,7 +214,60 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">8</span> Support Vector Machines<a href="support-vector-machines.html#support-vector-machines" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>In diesem Kapitel betrachten wir, wie das Klassifizierungsproblem (erstmal
 bezüglich zweier Merkmale) durch eine optimale Wahl einer trennenden
-Hyperebene gelöst werden kann.</p>
+Hyperebene gelöst werden kann.
+In der Tat sind die Merkmale der SVM</p>
+<ul>
+<li>dass die <em>beste</em> Hyperebene</li>
+<li>effizient berechnet wird</li>
+<li>und das sogar für möglicherweise nichtlineare Einbettungen in
+höhere Dimensionen (<em>kernel-SVM</em>)</li>
+</ul>
+<div class="figure">
+<img src="bilder/08_hyperebene-punkte-bsp.png" id="fig:cases-cntrd-HA" style="width:65.0%" alt="" />
+<p class="caption">Beispiel Illustration von Punktwolken mit zwei verschiedenen Labels (hier rot
+und blau) und verschiedener trennender Hyperebenen</p>
+</div>
+<div class="definition">
+<p><span id="def:def-svm-problem" class="definition"><strong>Definition 8.1  (Problemstellung für die SVM) </strong></span></p>
+<ol style="list-style-type: decimal">
+<li><p>Gegeben sei eine Wolke im <span class="math inline">\(\mathbb R^{n}\)</span> von <span class="math inline">\(N\)</span> Datenpunkten <span class="math display">\[\mathbb X :=
+\bigl \{(x_i,y_i)\colon x_i \in \mathbb R^{n}, \, y_i\in \{-1,+1\}, \,
+i=1,\dotsc, N\bigr \}\]</span> wobei <span class="math inline">\(x_i\)</span> der Datenpunkt ist und <span class="math inline">\(y_i\)</span> das
+zugehörige Label.</p></li>
+<li><p>Eine <em>Hyperebene</em> <span class="math inline">\(H\subset \mathbb R^{n}\)</span>, definiert durch den
+Stützvektor <span class="math inline">\(b\subset \mathbb R^{n}\)</span> und den Normalenvektor <span class="math inline">\(w\in \mathbb R^{n}\)</span>, heißt <strong>trennend</strong>, falls
+<span class="math display">\[
+y_i\bigl ( x_i-b, \, w\bigr)  &gt;0, \quad i=1,\dotsc,N
+\]</span></p></li>
+<li><p>Die Hyperebene <span class="math inline">\(H\)</span> heißt <em>Support Vector Machine</em> falls, <span class="math inline">\(H\)</span> die
+Hyperebene ist, für die der <strong>kleinste</strong> Abstand
+<span class="math display">\[d(H, \mathbb X) = \min_{s\in H, i=1, \dotsc, N}\{\|s-x_i\|_2\}\]</span>
+<strong>maximal</strong> wird.</p></li>
+</ol>
+</div>
+<p>Ein Paar Bemerkungen dazu.</p>
+<ol style="list-style-type: decimal">
+<li>Dass die Labels mit <span class="math inline">\(\pm 1\)</span> gewählt werden hat ganz praktische
+Gründe:</li>
+<li>Zunächst lässt sich anhand des Vorzeichen des inneren Produktes
+<span class="math inline">\(\bigl ( x-b, \, w\bigr) \)</span> entscheiden, auf <em>welcher Seite</em> von <span class="math inline">\(H\)</span> ein Punkt <span class="math inline">\(x\)</span> liegt.
+(Punkte auf der gleichen Seite haben das gleiche Vorzeichen). Mit der Wahl
+der labels als <span class="math inline">\(\pm 1\)</span> kann das kompakt in einer Gleichung wie in der
+Definition geschrieben werden.</li>
+<li>Ist die Hyperebene bekannt, können neue Datenpunkte <span class="math inline">\(x\)</span> über das
+Vorzeichen von <span class="math inline">\(\bigl ( x-b, \, w\bigr) \)</span> gelabelt werden – das ist die eigentliche
+Motivation, diese Hyperebene möglichst gut zu bestimmen.</li>
+<li>Es gilt <span class="math inline">\(\bigl ( x-b, \, w\bigr) =\bigl ( x, \, w\bigr) -\bigl ( b, \, w\bigr) :=\bigl ( x, \, w\bigr)  -\beta\)</span>. Und damit
+genügt es zur Definition (und zum Einsatz in der Klassifizierung), nur
+den Vektor <span class="math inline">\(w\in \mathbb R^{n}\)</span> und den <em>bias</em> <span class="math inline">\(\beta \in \mathbb R^{}\)</span> zu
+bestimmen (beziehungsweise zu kennen).</li>
+<li>Klassischere Methoden zur Klassifizierung mittels Hyperebene benutzen
+beispielsweise einfache neuronale Netze um ein passendes <span class="math inline">\((w, \beta)\)</span> zu bestimmen.</li>
+<li>Eine solche Hyperebene kann durchaus auch <strong>nicht existieren</strong>, dann
+heißen die Daten <em>nicht linear trennbar</em>. Existiert eine solche Ebene,
+dann existieren unendlich viele – ein weiterer Grund, die Ebene optimal (und
+damit hoffentlich eindeutig) zu wählen.</li>
+</ol>
 
 </div>
             </section>

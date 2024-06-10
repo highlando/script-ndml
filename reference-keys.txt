@@ -26,6 +26,7 @@ thm:SVD
 fig:fig-SVD
 eq:eqn-max-varianz
 lem:varianz-maximization
+def:def-svm-problem
 einführung
 was-ist-ein-algorithmus
 konsistenz-stabilität-genauigkeit
