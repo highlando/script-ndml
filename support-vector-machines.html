@@ -187,7 +187,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.2" data-path="pca-und-weitere-svd-anwendungen.html"><a href="pca-und-weitere-svd-anwendungen.html#simultane-diagonalisierung"><i class="fa fa-check"></i><b>7.2</b> Simultane Diagonalisierung</a></li>
 <li class="chapter" data-level="7.3" data-path="pca-und-weitere-svd-anwendungen.html"><a href="pca-und-weitere-svd-anwendungen.html#pca"><i class="fa fa-check"></i><b>7.3</b> PCA</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="support-vector-machines.html"><a href="support-vector-machines.html"><i class="fa fa-check"></i><b>8</b> Support Vector Machines</a></li>
+<li class="chapter" data-level="8" data-path="support-vector-machines.html"><a href="support-vector-machines.html"><i class="fa fa-check"></i><b>8</b> Support Vector Machines</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="support-vector-machines.html"><a href="support-vector-machines.html#problemstellung"><i class="fa fa-check"></i><b>8.1</b> Problemstellung</a></li>
+<li class="chapter" data-level="8.2" data-path="support-vector-machines.html"><a href="support-vector-machines.html#maximierung-des-minimalen-abstands"><i class="fa fa-check"></i><b>8.2</b> Maximierung des Minimalen Abstands</a></li>
+<li class="chapter" data-level="8.3" data-path="support-vector-machines.html"><a href="support-vector-machines.html#aufgaben-1"><i class="fa fa-check"></i><b>8.3</b> Aufgaben</a></li>
+</ul></li>
 <li class="chapter" data-level="9" data-path="nachklapp.html"><a href="nachklapp.html"><i class="fa fa-check"></i><b>9</b> Nachklapp</a></li>
 <li class="chapter" data-level="" data-path="referenzen.html"><a href="referenzen.html"><i class="fa fa-check"></i>Referenzen</a></li>
 <li class="divider"></li>
@@ -227,6 +232,8 @@ höhere Dimensionen (<em>kernel-SVM</em>)</li>
 <p class="caption">Beispiel Illustration von Punktwolken mit zwei verschiedenen Labels (hier rot
 und blau) und verschiedener trennender Hyperebenen</p>
 </div>
+<div id="problemstellung" class="section level2 hasAnchor" number="8.1">
+<h2><span class="header-section-number">8.1</span> Problemstellung<a href="support-vector-machines.html#problemstellung" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div class="definition">
 <p><span id="def:def-svm-problem" class="definition"><strong>Definition 8.1  (Problemstellung für die SVM) </strong></span></p>
 <ol style="list-style-type: decimal">
@@ -236,9 +243,9 @@ i=1,\dotsc, N\bigr \}\]</span> wobei <span class="math inline">\(x_i\)</span> de
 zugehörige Label.</p></li>
 <li><p>Eine <em>Hyperebene</em> <span class="math inline">\(H\subset \mathbb R^{n}\)</span>, definiert durch den
 Stützvektor <span class="math inline">\(b\subset \mathbb R^{n}\)</span> und den Normalenvektor <span class="math inline">\(w\in \mathbb R^{n}\)</span>, heißt <strong>trennend</strong>, falls
-<span class="math display">\[
+<span class="math display" id="eq:eqn-trennen\tag{8.1}on}(#eq:eqn-trennende-hyperebene)
 y_i\bigl ( x_i-b, \, w\bigr)  &gt;0, \quad i=1,\dotsc,N
-\]</span></p></li>
+\end{equation}\]</span></p></li>
 <li><p>Die Hyperebene <span class="math inline">\(H\)</span> heißt <em>Support Vector Machine</em> falls, <span class="math inline">\(H\)</span> die
 Hyperebene ist, für die der <strong>kleinste</strong> Abstand
 <span class="math display">\[d(H, \mathbb X) = \min_{s\in H, i=1, \dotsc, N}\{\|s-x_i\|_2\}\]</span>
@@ -252,8 +259,9 @@ Gründe:</li>
 <li>Zunächst lässt sich anhand des Vorzeichen des inneren Produktes
 <span class="math inline">\(\bigl ( x-b, \, w\bigr) \)</span> entscheiden, auf <em>welcher Seite</em> von <span class="math inline">\(H\)</span> ein Punkt <span class="math inline">\(x\)</span> liegt.
 (Punkte auf der gleichen Seite haben das gleiche Vorzeichen). Mit der Wahl
-der labels als <span class="math inline">\(\pm 1\)</span> kann das kompakt in einer Gleichung wie in der
-Definition geschrieben werden.</li>
+der labels als <span class="math inline">\(\pm 1\)</span> kann das kompakt in einer einzigen Gleichung wie
+in <a href="#eq:eqn-trennende-hyperebene">(8.1)</a>
+in der Definition geschrieben werden.</li>
 <li>Ist die Hyperebene bekannt, können neue Datenpunkte <span class="math inline">\(x\)</span> über das
 Vorzeichen von <span class="math inline">\(\bigl ( x-b, \, w\bigr) \)</span> gelabelt werden – das ist die eigentliche
 Motivation, diese Hyperebene möglichst gut zu bestimmen.</li>
@@ -268,7 +276,61 @@ heißen die Daten <em>nicht linear trennbar</em>. Existiert eine solche Ebene,
 dann existieren unendlich viele – ein weiterer Grund, die Ebene optimal (und
 damit hoffentlich eindeutig) zu wählen.</li>
 </ol>
+</div>
+<div id="maximierung-des-minimalen-abstands" class="section level2 hasAnchor" number="8.2">
+<h2><span class="header-section-number">8.2</span> Maximierung des Minimalen Abstands<a href="support-vector-machines.html#maximierung-des-minimalen-abstands" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Um den Abstand maximieren zu können leiten wir eine Formel her.</p>
+<p>Dazu sei <span class="math inline">\(w\in \mathbb R^{n}\)</span> der Normalenvektor von <span class="math inline">\(H\)</span> sei <span class="math inline">\(h\in \mathbb R^{}\)</span>
+so, dass <span class="math inline">\(b=\frac{h}{\|w\|}w\)</span> ein Stützvektor ist. (Insbesondere kann Jan eine
+Hyperebene auch über den Normalenvektor und den Abstand von <span class="math inline">\(H\)</span> zum
+Ursprung charakterisieren). Damit bekommen wir den Abstand von <span class="math inline">\(H\)</span> zum Ursprung
+als <span class="math inline">\(h\)</span> (Achtung: das <span class="math inline">\(h\)</span> kann auch negativ sein – es sagt uns wie weit
+müssen wir den normalisierten Vektor <span class="math inline">\(w\)</span> entlanglaufen, bis wir zu Ebene
+<span class="math inline">\(H\)</span> gelangen).</p>
+<p>Zu einem beliebigen Punkt <span class="math inline">\(x\in \mathbb R^{n}\)</span> bekommen wir den Abstand zu <span class="math inline">\(H\)</span>
+als</p>
+<ul>
+<li>den Abstand der Ebene <span class="math inline">\(H\)</span> zur Ebene <span class="math inline">\(H_x\)</span>, die parallel zu <span class="math inline">\(H\)</span> verläuft
+und <span class="math inline">\(x\)</span> enthält</li>
+<li>beziehungsweise als die Differenz der Abstände von <span class="math inline">\(H_x\)</span> und <span class="math inline">\(H\)</span> zum Ursprung</li>
+</ul>
+<p>Da auch <span class="math inline">\(w\)</span> der Normalenvektor von <span class="math inline">\(H_x\)</span> ist, gilt für den Abstand <span class="math inline">\(h&#39;\)</span>,
+dass
+<span class="math display">\[\begin{equation*}
+h_x = \|x\|_2\cos(\phi(w,x))=\|x\|_2 \frac{\bigl ( w, \, x\bigr)  }{\|w\|_2\|x\|_2} = \frac{\bigl ( w, \, x\bigr) }{\|w\|_2}
+\end{equation*}\]</span>
+wobei
+<span class="math inline">\(\cos(\phi(w, x))\)</span>
+aus dem Winkel zwischen <span class="math inline">\(x\)</span> und <span class="math inline">\(w\)</span> herrührt.</p>
+<p>Mit dieser Formel und mit <span class="math inline">\(b=hw\)</span>, erkennen wir, dass der Test auf das Vorzeichen
+<span class="math display">\[\begin{equation*}
+\bigl ( x-b, \, w\bigr)  = \bigl ( x-\frac{h}{\|w\|_2} w, \, w\bigr)  = \bigl ( x, \, w\bigr)  - h\|w\|_2
+= \|w\|_2 (\frac{\bigl ( x, \, w\bigr)  }{\|w\|_2} - h) = \|w\|_2(h_x - h)
+\end{equation*}\]</span>
+den mit <span class="math inline">\(\|w\|_2\)</span> skalierten Abstand (inklusive dem Vorzeichen) enthält,
+beziehungsweise, dass der Abstand als
+<span class="math display">\[\begin{equation*}
+y_i\frac{\bigl ( x_i-b, \, w\bigr) }{\|w\|_2} = y_i\frac{\bigl ( x_i, \, w\bigr) -\beta}{\|w\|_2}
+\end{equation*}\]</span>
+(für eine trennende Hyperebene <span class="math inline">\((w, \beta)\)</span>) auch immer das richtige Vorzeichen erhält (da <span class="math inline">\(\|w\|_2&gt;0\)</span>. Dementsprechend kann das SVM Problem als
+<span class="math display">\[\begin{equation*}
+\max_{w\in \mathbb R^{n}, \, \beta \in \mathbb R^{}} \min_{x_i \in \mathbb X} y_i\frac{\bigl ( x_i, \, w\bigr) -\beta}{\|w\|_2}
+\end{equation*}\]</span>
+formuliert werden.</p>
+<p>So ein <span class="math inline">\(\min \max\)</span> Problem ist generell schwierig zu analysieren und zu
+berechnen. Aber wir können direkt sagen, dass die <em>Zulässigkeit</em> der Optimierung gesichert
+ist, da “der <span class="math inline">\(\max\)</span>-imierer” nach Möglichkeit eine trennende Hyperebene
+wählt und so schon mal sicherstellt, dass “der <span class="math inline">\(\min\)</span>-inimierer” nur
+über positive Zahlen minimiert.</p>
+</div>
+<div id="aufgaben-1" class="section level2 hasAnchor" number="8.3">
+<h2><span class="header-section-number">8.3</span> Aufgaben<a href="support-vector-machines.html#aufgaben-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li>Sei die Hyperebene über <span class="math inline">\(w\)</span> und <span class="math inline">\(b\)</span> gegeben. Bestimmen Sie den Abstand
+<span class="math inline">\(h\in \mathbb R^{}\)</span>, sodass <span class="math inline">\(-hw\in H\)</span>.</li>
+</ol>
 
+</div>
 </div>
             </section>
 

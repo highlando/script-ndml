@@ -27,6 +27,7 @@ fig:fig-SVD
 eq:eqn-max-varianz
 lem:varianz-maximization
 def:def-svm-problem
+eq:eqn-trennende-hyperebene
 einführung
 was-ist-ein-algorithmus
 konsistenz-stabilität-genauigkeit
@@ -78,4 +79,7 @@ variationskoeffizienten
 koordinatenwechsel
 sec-pca-maximierung
 support-vector-machines
+problemstellung
+maximierung-des-minimalen-abstands
+aufgaben-1
 nachklapp

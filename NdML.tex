@@ -2262,6 +2262,9 @@ und blau) und verschiedener trennender Hyperebenen}\label{fig:cases-cntrd-HA}
 }
 \end{figure}
 
+\hypertarget{problemstellung}{%
+\section{Problemstellung}\label{problemstellung}}
+
 \begin{definition}[Problemstellung für die SVM]
 \protect\hypertarget{def:def-svm-problem}{}\label{def:def-svm-problem}\leavevmode
 
@@ -2275,9 +2278,9 @@ und blau) und verschiedener trennender Hyperebenen}\label{fig:cases-cntrd-HA}
 \item
   Eine \emph{Hyperebene} \(H\subset \mathbb R^{n}\), definiert durch den
   Stützvektor \(b\subset \mathbb R^{n}\) und den Normalenvektor \(w\in \mathbb R^{n}\), heißt \textbf{trennend}, falls
-  \[
+  \begin{equation}\label{eq:eqn-trennende-hyperebene}
   y_i\bigl ( x_i-b, \, w\bigr)  >0, \quad i=1,\dotsc,N
-  \]
+  \end{equation}
 \item
   Die Hyperebene \(H\) heißt \emph{Support Vector Machine} falls, \(H\) die
   Hyperebene ist, für die der \textbf{kleinste} Abstand
@@ -2299,8 +2302,9 @@ Ein Paar Bemerkungen dazu.
   Zunächst lässt sich anhand des Vorzeichen des inneren Produktes
   \(\bigl ( x-b, \, w\bigr) \) entscheiden, auf \emph{welcher Seite} von \(H\) ein Punkt \(x\) liegt.
   (Punkte auf der gleichen Seite haben das gleiche Vorzeichen). Mit der Wahl
-  der labels als \(\pm 1\) kann das kompakt in einer Gleichung wie in der
-  Definition geschrieben werden.
+  der labels als \(\pm 1\) kann das kompakt in einer einzigen Gleichung wie
+  in \eqref{eq:eqn-trennende-hyperebene}
+  in der Definition geschrieben werden.
 \item
   Ist die Hyperebene bekannt, können neue Datenpunkte \(x\) über das
   Vorzeichen von \(\bigl ( x-b, \, w\bigr) \) gelabelt werden -- das ist die eigentliche
@@ -2318,6 +2322,73 @@ Ein Paar Bemerkungen dazu.
   heißen die Daten \emph{nicht linear trennbar}. Existiert eine solche Ebene,
   dann existieren unendlich viele -- ein weiterer Grund, die Ebene optimal (und
   damit hoffentlich eindeutig) zu wählen.
+\end{enumerate}
+
+\hypertarget{maximierung-des-minimalen-abstands}{%
+\section{Maximierung des Minimalen Abstands}\label{maximierung-des-minimalen-abstands}}
+
+Um den Abstand maximieren zu können leiten wir eine Formel her.
+
+Dazu sei \(w\in \mathbb R^{n}\) der Normalenvektor von \(H\) sei \(h\in \mathbb R^{}\)
+so, dass \(b=\frac{h}{\|w\|}w\) ein Stützvektor ist. (Insbesondere kann Jan eine
+Hyperebene auch über den Normalenvektor und den Abstand von \(H\) zum
+Ursprung charakterisieren). Damit bekommen wir den Abstand von \(H\) zum Ursprung
+als \(h\) (Achtung: das \(h\) kann auch negativ sein -- es sagt uns wie weit
+müssen wir den normalisierten Vektor \(w\) entlanglaufen, bis wir zu Ebene
+\(H\) gelangen).
+
+Zu einem beliebigen Punkt \(x\in \mathbb R^{n}\) bekommen wir den Abstand zu \(H\)
+als
+
+\begin{itemize}
+\tightlist
+\item
+  den Abstand der Ebene \(H\) zur Ebene \(H_x\), die parallel zu \(H\) verläuft
+  und \(x\) enthält
+\item
+  beziehungsweise als die Differenz der Abstände von \(H_x\) und \(H\) zum Ursprung
+\end{itemize}
+
+Da auch \(w\) der Normalenvektor von \(H_x\) ist, gilt für den Abstand \(h'\),
+dass
+\begin{equation*}
+h_x = \|x\|_2\cos(\phi(w,x))=\|x\|_2 \frac{\bigl ( w, \, x\bigr)  }{\|w\|_2\|x\|_2} = \frac{\bigl ( w, \, x\bigr) }{\|w\|_2}
+\end{equation*}
+wobei
+\(\cos(\phi(w, x))\)
+aus dem Winkel zwischen \(x\) und \(w\) herrührt.
+
+Mit dieser Formel und mit \(b=hw\), erkennen wir, dass der Test auf das Vorzeichen
+\begin{equation*}
+\bigl ( x-b, \, w\bigr)  = \bigl ( x-\frac{h}{\|w\|_2} w, \, w\bigr)  = \bigl ( x, \, w\bigr)  - h\|w\|_2
+= \|w\|_2 (\frac{\bigl ( x, \, w\bigr)  }{\|w\|_2} - h) = \|w\|_2(h_x - h)
+\end{equation*}
+den mit \(\|w\|_2\) skalierten Abstand (inklusive dem Vorzeichen) enthält,
+beziehungsweise, dass der Abstand als
+\begin{equation*}
+y_i\frac{\bigl ( x_i-b, \, w\bigr) }{\|w\|_2} = y_i\frac{\bigl ( x_i, \, w\bigr) -\beta}{\|w\|_2}
+\end{equation*}
+(für eine trennende Hyperebene \((w, \beta)\)) auch immer das richtige Vorzeichen erhält (da \(\|w\|_2>0\). Dementsprechend kann das SVM Problem als
+\begin{equation*}
+\max_{w\in \mathbb R^{n}, \, \beta \in \mathbb R^{}} \min_{x_i \in \mathbb X} y_i\frac{\bigl ( x_i, \, w\bigr) -\beta}{\|w\|_2}
+\end{equation*}
+formuliert werden.
+
+So ein \(\min \max\) Problem ist generell schwierig zu analysieren und zu
+berechnen. Aber wir können direkt sagen, dass die \emph{Zulässigkeit} der Optimierung gesichert
+ist, da ``der \(\max\)-imierer'' nach Möglichkeit eine trennende Hyperebene
+wählt und so schon mal sicherstellt, dass ``der \(\min\)-inimierer'' nur
+über positive Zahlen minimiert.
+
+\hypertarget{aufgaben-1}{%
+\section{Aufgaben}\label{aufgaben-1}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Sei die Hyperebene über \(w\) und \(b\) gegeben. Bestimmen Sie den Abstand
+  \(h\in \mathbb R^{}\), sodass \(-hw\in H\).
 \end{enumerate}
 
 \hypertarget{nachklapp}{%
