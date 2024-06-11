@@ -157,7 +157,7 @@ k&ouml;nnen die Daten in h&ouml;here Dimensionen nichtlinear eingebettet werden
 und dort separiert werden.
 
 \begin{equation*}
-\Psi \colon \mathbb R^{d} \to \mathbb R^{N}
+\Psi \colon \mathbb R^{n} \to \mathbb R^{M}
 \end{equation*}
 
 Beispiel von gestern
