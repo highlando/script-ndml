@@ -150,6 +150,49 @@ vorgenommen werden, wobei der *bias* als
 \end{equation*}
 vorberechnet werden kann.
 
+### Nichtlineare Separation
+
+Existiert auf den Originaldaten keine separierende Hyperebene (oder ist sie schwer zu berechnen) dann
+k&ouml;nnen die Daten in h&ouml;here Dimensionen nichtlinear eingebettet werden
+und dort separiert werden.
+
+\begin{equation*}
+\Psi \colon \mathbb R^{d} \to \mathbb R^{N}
+\end{equation*}
+
+Beispiel von gestern
+\begin{equation*}
+\Psi\colon \mathbb R^{} \to \mathbb R^{2}\colon x \to \Psi(x) = (x, (x-2)^2)
+\end{equation*}
+
+Mit der erh&ouml;hten Dimension kommen zwei Aufgaben mit einer L&ouml;sung
+
+1. Die transformierten Daten m&uuml;ssen separiert und neue Daten m&uuml;ssen
+   klassifiziert werden -- das ist schwierig und aufw&auml;ndig f&uuml;r $N\gg
+   1$.
+
+2. Wie soll $\Psi$ gew&auml;hlt werden?
+
+Die L&ouml;sung zu beidem ist, dass
+
+1. in der dualen Formulierung nur Skalarprodukte $\ipro{x_i}{x_j}$
+   beziehungsweise $\ipro{\Psi(x_i)}{\Psi(x_j)}$ ben&ouml;tigt werden
+2. die bestenfalls durch *kernel* Funktionen einfach berechnet werden
+   k&ouml;nnen (ohne das Lifting in den hochdimensionalen Raum)
+
+Beispiele:
+
+* $\Psi(x, y) = (x^2, \sqrt(2)xy, y^2)$ hat die *kernel* Funktion
+  $k(x,y)=(x+y)^2$
+
+Damit wird zun&auml;chst das Berechnungsproblem gel&ouml;st. Das Problem, welche
+Funktionen gew&auml;hlt werden, wird nebenbei dadurch gelindert,
+dass
+
+1. die Effizienz in der Auswertung *try and error* m&ouml;glich macht
+2. Jan letztlich gar keine $\Psi$s mehr sucht, sondern nur noch $k$s mit
+   bekannten Eigenschaften.
+
 ## Aufgaben
 
 1. Sei die Hyperebene &uuml;ber $w$ und $b$ gegeben. Bestimmen Sie den

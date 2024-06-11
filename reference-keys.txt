@@ -81,5 +81,6 @@ sec-pca-maximierung
 support-vector-machines
 problemstellung
 maximierung-des-minimalen-abstands
+nichtlineare-separation
 aufgaben-1
 nachklapp

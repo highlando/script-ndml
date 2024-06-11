@@ -356,6 +356,45 @@ vorgenommen werden, wobei der <em>bias</em> als
 \gamma = \sum_{i\in S}(y_i - \sum_{k\in S}a_ky_k\bigl \langle x_i, \, x_k\bigr\rangle )
 \end{equation*}\]</span>
 vorberechnet werden kann.</p>
+<div id="nichtlineare-separation" class="section level3 hasAnchor" number="8.2.1">
+<h3><span class="header-section-number">8.2.1</span> Nichtlineare Separation<a href="support-vector-machines.html#nichtlineare-separation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Existiert auf den Originaldaten keine separierende Hyperebene (oder ist sie schwer zu berechnen) dann
+können die Daten in höhere Dimensionen nichtlinear eingebettet werden
+und dort separiert werden.</p>
+<p><span class="math display">\[\begin{equation*}
+\Psi \colon \mathbb R^{d} \to \mathbb R^{N}
+\end{equation*}\]</span></p>
+<p>Beispiel von gestern
+<span class="math display">\[\begin{equation*}
+\Psi\colon \mathbb R^{} \to \mathbb R^{2}\colon x \to \Psi(x) = (x, (x-2)^2)
+\end{equation*}\]</span></p>
+<p>Mit der erhöhten Dimension kommen zwei Aufgaben mit einer Lösung</p>
+<ol style="list-style-type: decimal">
+<li><p>Die transformierten Daten müssen separiert und neue Daten müssen
+klassifiziert werden – das ist schwierig und aufwändig für <span class="math inline">\(N\gg 1\)</span>.</p></li>
+<li><p>Wie soll <span class="math inline">\(\Psi\)</span> gewählt werden?</p></li>
+</ol>
+<p>Die Lösung zu beidem ist, dass</p>
+<ol style="list-style-type: decimal">
+<li>in der dualen Formulierung nur Skalarprodukte <span class="math inline">\(\bigl \langle x_i, \, x_j\bigr\rangle \)</span>
+beziehungsweise <span class="math inline">\(\bigl \langle \Psi(x_i), \, \Psi(x_j)\bigr\rangle \)</span> benötigt werden</li>
+<li>die bestenfalls durch <em>kernel</em> Funktionen einfach berechnet werden
+können (ohne das Lifting in den hochdimensionalen Raum)</li>
+</ol>
+<p>Beispiele:</p>
+<ul>
+<li><span class="math inline">\(\Psi(x, y) = (x^2, \sqrt(2)xy, y^2)\)</span> hat die <em>kernel</em> Funktion
+<span class="math inline">\(k(x,y)=(x+y)^2\)</span></li>
+</ul>
+<p>Damit wird zunächst das Berechnungsproblem gelöst. Das Problem, welche
+Funktionen gewählt werden, wird nebenbei dadurch gelindert,
+dass</p>
+<ol style="list-style-type: decimal">
+<li>die Effizienz in der Auswertung <em>try and error</em> möglich macht</li>
+<li>Jan letztlich gar keine <span class="math inline">\(\Psi\)</span>s mehr sucht, sondern nur noch <span class="math inline">\(k\)</span>s mit
+bekannten Eigenschaften.</li>
+</ol>
+</div>
 </div>
 <div id="aufgaben-1" class="section level2 hasAnchor" number="8.3">
 <h2><span class="header-section-number">8.3</span> Aufgaben<a href="support-vector-machines.html#aufgaben-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
