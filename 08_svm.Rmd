@@ -182,8 +182,8 @@ Die L&ouml;sung zu beidem ist, dass
 
 Beispiele:
 
-* $\Psi(x, y) = (x^2, \sqrt(2)xy, y^2)$ hat die *kernel* Funktion
-  $k(x,y)=(x+y)^2$
+* $\Psi(x, y) = (x^2, \sqrt{2}xy, y^2)$ hat die *kernel* Funktion
+  $k(x,y)=(x^2+y^2)^2$
 
 Damit wird zun&auml;chst das Berechnungsproblem gel&ouml;st. Das Problem, welche
 Funktionen gew&auml;hlt werden, wird nebenbei dadurch gelindert,
