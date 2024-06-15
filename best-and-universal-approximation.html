@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Numerik des Maschinellen Lernens</title>
+  <title>9 Best and Universal Approximation | Numerik des Maschinellen Lernens</title>
   <meta name="description" content="Vorlesungsnotizen zu meiner integrierten Vorlesung im SoSe 2024" />
   <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Numerik des Maschinellen Lernens" />
+  <meta property="og:title" content="9 Best and Universal Approximation | Numerik des Maschinellen Lernens" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="Vorlesungsnotizen zu meiner integrierten Vorlesung im SoSe 2024" />
   <meta name="github-repo" content="highlando/script-ndml" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Numerik des Maschinellen Lernens" />
+  <meta name="twitter:title" content="9 Best and Universal Approximation | Numerik des Maschinellen Lernens" />
   
   <meta name="twitter:description" content="Vorlesungsnotizen zu meiner integrierten Vorlesung im SoSe 2024" />
   
@@ -29,8 +29,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-<link rel="next" href="einführung.html"/>
+<link rel="prev" href="support-vector-machines.html"/>
+<link rel="next" href="nachklapp.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -216,24 +216,115 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Numerik des Maschinellen Lernens</h1>
-<p class="author"><em>Jan Heiland</em></p>
-<p class="date"><em>TU Ilmenau – Sommersemester 2024</em></p>
+<div id="best-and-universal-approximation" class="section level1 hasAnchor" number="9">
+<h1><span class="header-section-number">9</span> Best and Universal Approximation<a href="best-and-universal-approximation.html#best-and-universal-approximation" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Alle bisher betrachteten Approximationsprobleme waren in Bezug auf eine <em>2-norm</em>
+(“least squares”) formuliert. Die für die Berechnung unmittelbaren Vorteile
+sind die</p>
+<ol style="list-style-type: decimal">
+<li>Differenzierbarkeit der Norm und die</li>
+<li>Charakterisierung der Optimallösung über Orthogonalität.</li>
+</ol>
+<p>Ein gängiges Optimierungsproblem, eine Bestapproximation zu einer stetigen
+Funktion <span class="math inline">\(f\colon [a, b]\to \mathbb R^{}\)</span> in einer passenden Menge von Funktionen
+<span class="math inline">\(\mathcal G\)</span> bezüglich der <em>Supremumsnorm</em><a href="#fn9" class="footnote-ref" id="fnref9"><sup>9</sup></a> zu finden
+<span class="math display">\[\begin{equation*}
+\min_{g\in \mathcal G} \|f-g\|_\infty = 
+\min_{g \in \mathcal G}\bigl (\max_{x\in [a, b]}|f(x)-g(x)|\bigr )
+\end{equation*}\]</span>
+fällt nicht darunter.
+Die entstehenden Schwierigkeiten und theoretische und praktische Ansätze
+zur möglichen Lösung dieses sogenannten
+<em>Tschebyscheff-Approximation</em>-Problem, sind in <span class="citation">(Kapitel 8.7.2, Richter and Wick <a href="#ref-RicW17" role="doc-biblioref">2017</a>)</span> gut
+nachzulesen.</p>
+<p>Wir wollen hier nachvollziehen, dass klassische neuronale Netze, dieses Problem
+approximativ aber mit beliebiger Genauigkeit <span class="math inline">\(\epsilon\)</span> lösen könnten. Die
+Schritte da hin sind wie folgt</p>
+<ol style="list-style-type: decimal">
+<li><p>Zu einem gegebenen <span class="math inline">\(f\in \mathcal C[a, b]\)</span> (einer reellwertigen, stetigen Funktion
+auf einem
+endlichen und abgeschlossenen Intervall) existiert immer eine stückweise
+Stetige Funktion <span class="math inline">\(f_N\)</span> mit endlich vielen <em>Sprungstellen</em>, sodass
+<span class="math display">\[\begin{equation*}
+\|f-f_N\|_\infty &lt; \frac \epsilon2
+\end{equation*}\]</span></p></li>
+<li><p>Zu diesem <span class="math inline">\(f_N\)</span> können wir immer eine Funktion
+<span class="math display">\[\begin{equation*}
+s_M(x) = c_0 + \sum_{i=1}c_i \tanh (a_ix + b_i)
+\end{equation*}\]</span>
+konstruieren (durch Anpassung der Parameter <span class="math inline">\(c_0\)</span>, <span class="math inline">\(c_i\)</span>, <span class="math inline">\(b_i\)</span>, <span class="math inline">\(a_i\)</span>,
+<span class="math inline">\(i=1,\dotsc, M\)</span>) sodass
+<span class="math display">\[\begin{equation*}
+\|f_N-s_M\| &lt; \frac \epsilon2.
+\end{equation*}\]</span></p></li>
+<li><p>Wir interpretieren <span class="math inline">\(s_M\)</span> als ein neuronales Netz mit einer <em>hidden layer</em> und
+können konstatieren dass
+<span class="math display">\[\begin{equation*}
+\|f-s_M\|_\infty \leq \|f-f_N\|_\infty + \|f_N-s_M\|_\infty &lt; \frac \epsilon2
++ \frac \epsilon2 = \epsilon.
+\end{equation*}\]</span></p></li>
+</ol>
+<p>Einige Fragen werden wir unbeantwortet lassen müssen, vor allem</p>
+<ul>
+<li>wie wählen wir <span class="math inline">\(M\)</span> (das Resultat sagt nur <span class="math inline">\(M\)</span> muss groß genug
+sein)</li>
+</ul>
+<p>und</p>
+<ul>
+<li>wie wirkt sich in der Praxis die approximative Berechnung von <span class="math inline">\(a_i\)</span>–<span class="math inline">\(c_i\)</span>
+auf die Approximation aus?</li>
+</ul>
+<p>Dennoch gibt dieses Beispiel einen Einblick in die Funktionsweise der
+Approximation und das referenzierte <em>universal
+approximation theorem</em> ist Grundlage vieler Analyseansätze für
+neuronale Netzwerke.</p>
+<p>In Schritt 1, wird die stückweise stetige Funktion <span class="math inline">\(f_N\)</span> definiert. Die
+Existenz folgt aus dem Satz</p>
+<div class="theorem">
+<p><span id="thm:thm-pl-dense-C" class="theorem"><strong>Theorem 9.1  (Stückweise stetige Funktion liegen dicht) </strong></span>Sei <span class="math inline">\([a, b]\subset \mathbb R^{}\)</span> ein abgeschlossenes endliches Intervall.
+Die Menge <span class="math inline">\(\operatorname{pl}[a, b]\)</span> aller stückweise stetigen Funktionen auf <span class="math inline">\([a, b]\)</span> <em>liegt dicht</em>
+in <span class="math inline">\(\mathcal C[a, b]\)</span> sodass für ein beliebiges <span class="math inline">\(f\in \mathcal C[a, b]\)</span> und <span class="math inline">\(\varepsilon &gt; 0\)</span>, immer ein <span class="math inline">\(g\in \operatorname{pl}[a, b]\)</span> existiert mit <span class="math inline">\(\|f-g\|_\infty&lt;\varepsilon\)</span>.</p>
 </div>
-<div id="vorwort" class="section level1 unnumbered hasAnchor" number="">
-<h1>Vorwort<a href="index.html#vorwort" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>Das ist ein Aufschrieb der parallel zur Vorlesung erweitert wird.</p>
-<p>Korrekturen und Wünsche immer gerne als <em>issues</em> oder <em>pull requests</em> ans <a href="https://github.com/highlando/script-ndml">github-repo</a>.</p>
+<div class="proof">
+<p><span id="unlabeled-div-7" class="proof"><em>Proof</em>. </span>Der Beweis ist klassisch – hier nur die relevanten und konstruktiven Elemente.</p>
+<p>An sich muss für Dichtheit gezeigt werden, dass es zu jeder Funktion <span class="math inline">\(f\in \mathcal C[a, b]\)</span> als eine Folge in <span class="math inline">\(\operatorname{PL}[a, b]\)</span> gibt, mit <span class="math inline">\(f\)</span> als Grenzwert. Wir
+zeigen nur die Konstruktion eines potentiellen Folgengliedes.</p>
+<p>Sei <span class="math inline">\(f\in \mathcal{C}[a, b]\)</span> beliebig. Da stetige Funktionen auf kompakten Mengen
+gleichmäßig stetig sind, gibt es zu jedem <span class="math inline">\(\varepsilon&gt;0\)</span> ein <span class="math inline">\(\delta&gt;0\)</span>, sodass
+<span class="math display">\[\begin{equation*}
+|f(x\pm h) - f(x)| &lt; \epsilon
+\end{equation*}\]</span>
+für alle <span class="math inline">\(h&lt;\delta\)</span>. Damit können wir zu jedem <span class="math inline">\(\varepsilon\)</span> eine
+Unterteilung von <span class="math inline">\((a, b]\)</span> in <span class="math inline">\(N(\delta)\)</span> halboffene disjunkte Intervalle <span class="math inline">\(I_j\)</span>,
+<span class="math inline">\(j=1, \dotsc, N(\delta)\)</span> finden, sodass
+<span class="math display">\[\begin{equation*}
+f_N(x) = \sum_{j=1}^N\max_{x\in I_j}f(x)\Chi_{I_j}
+\end{equation*}\]</span></p>
+</div>
+<p>eine Funktion aus <span class="math inline">\(\operatorname{PL}[a, b]\)</span> darstellt, die um maximal <span class="math inline">\(\varepsilon\)</span> von <span class="math inline">\(f\)</span>
+abweicht.</p>
 
+</div>
+<h3>Referenzen<a href="referenzen.html#referenzen" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references">
+<div id="ref-RicW17">
+<p> Richter, T., Wick, T.: Einführung in die numerische Mathematik. Begriffe, Konzepte und zahlreiche Anwendungsbeispiele. Heidelberg: Springer Spektrum (2017)</p>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="9">
+<li id="fn9"><p>für ein kompaktes
+Intervall wird das zur <em>Maximumsnorm</em><a href="best-and-universal-approximation.html#fnref9" class="footnote-back">↩︎</a></p></li>
+</ol>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="einführung.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="support-vector-machines.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="nachklapp.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

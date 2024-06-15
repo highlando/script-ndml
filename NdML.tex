@@ -2492,6 +2492,126 @@ dass
   \(h\in \mathbb R^{}\), sodass \(hw\in H\).
 \end{enumerate}
 
+\hypertarget{best-and-universal-approximation}{%
+\chapter{Best and Universal Approximation}\label{best-and-universal-approximation}}
+
+\def\PLab{\operatorname{PL}[a, b]}
+\def\Cab{\mathcal{C}[a, b]}
+
+Alle bisher betrachteten Approximationsprobleme waren in Bezug auf eine \emph{2-norm}
+(``least squares'') formuliert. Die für die Berechnung unmittelbaren Vorteile
+sind die
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Differenzierbarkeit der Norm und die
+\item
+  Charakterisierung der Optimallösung über Orthogonalität.
+\end{enumerate}
+
+Ein gängiges Optimierungsproblem, eine Bestapproximation zu einer stetigen
+Funktion \(f\colon [a, b]\to \mathbb R^{}\) in einer passenden Menge von Funktionen
+\(\mathcal G\) bezüglich der \emph{Supremumsnorm}\footnote{für ein kompaktes
+  Intervall wird das zur \emph{Maximumsnorm}} zu finden
+\begin{equation*}
+\min_{g\in \mathcal G} \|f-g\|_\infty = 
+\min_{g \in \mathcal G}\bigl (\max_{x\in [a, b]}|f(x)-g(x)|\bigr )
+\end{equation*}
+fällt nicht darunter.
+Die entstehenden Schwierigkeiten und theoretische und praktische Ansätze
+zur möglichen Lösung dieses sogenannten
+\emph{Tschebyscheff-Approximation}-Problem, sind in (Kapitel 8.7.2, Richter and Wick \protect\hyperlink{ref-RicW17}{2017}) gut
+nachzulesen.
+
+Wir wollen hier nachvollziehen, dass klassische neuronale Netze, dieses Problem
+approximativ aber mit beliebiger Genauigkeit \(\epsilon\) lösen könnten. Die
+Schritte da hin sind wie folgt
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Zu einem gegebenen \(f\in \mathcal C[a, b]\) (einer reellwertigen, stetigen Funktion
+  auf einem
+  endlichen und abgeschlossenen Intervall) existiert immer eine stückweise
+  Stetige Funktion \(f_N\) mit endlich vielen \emph{Sprungstellen}, sodass
+  \begin{equation*}
+  \|f-f_N\|_\infty < \frac \epsilon2
+  \end{equation*}
+\item
+  Zu diesem \(f_N\) können wir immer eine Funktion
+  \begin{equation*}
+  s_M(x) = c_0 + \sum_{i=1}c_i \tanh (a_ix + b_i)
+  \end{equation*}
+  konstruieren (durch Anpassung der Parameter \(c_0\), \(c_i\), \(b_i\), \(a_i\),
+  \(i=1,\dotsc, M\)) sodass
+  \begin{equation*}
+  \|f_N-s_M\| < \frac \epsilon2.
+  \end{equation*}
+\item
+  Wir interpretieren \(s_M\) als ein neuronales Netz mit einer \emph{hidden layer} und
+  können konstatieren dass
+  \begin{equation*}
+  \|f-s_M\|_\infty \leq \|f-f_N\|_\infty + \|f_N-s_M\|_\infty < \frac \epsilon2
+  + \frac \epsilon2 = \epsilon.
+  \end{equation*}
+\end{enumerate}
+
+Einige Fragen werden wir unbeantwortet lassen müssen, vor allem
+
+\begin{itemize}
+\tightlist
+\item
+  wie wählen wir \(M\) (das Resultat sagt nur \(M\) muss groß genug
+  sein)
+\end{itemize}
+
+und
+
+\begin{itemize}
+\tightlist
+\item
+  wie wirkt sich in der Praxis die approximative Berechnung von \(a_i\)--\(c_i\)
+  auf die Approximation aus?
+\end{itemize}
+
+Dennoch gibt dieses Beispiel einen Einblick in die Funktionsweise der
+Approximation und das referenzierte \emph{universal
+approximation theorem} ist Grundlage vieler Analyseansätze für
+neuronale Netzwerke.
+
+In Schritt 1, wird die stückweise stetige Funktion \(f_N\) definiert. Die
+Existenz folgt aus dem Satz
+
+\begin{theorem}[Stückweise stetige Funktion liegen dicht]
+\protect\hypertarget{thm:thm-pl-dense-C}{}\label{thm:thm-pl-dense-C}Sei \([a, b]\subset \mathbb R^{}\) ein abgeschlossenes endliches Intervall.
+Die Menge \(\operatorname{pl}[a, b]\) aller stückweise stetigen Funktionen auf \([a, b]\) \emph{liegt dicht}
+in \(\mathcal C[a, b]\) sodass für ein beliebiges \(f\in \mathcal C[a, b]\) und \(\varepsilon > 0\), immer ein \(g\in \operatorname{pl}[a, b]\) existiert mit \(\|f-g\|_\infty<\varepsilon\).
+\end{theorem}
+
+\begin{proof}
+Der Beweis ist klassisch -- hier nur die relevanten und konstruktiven Elemente.
+
+An sich muss für Dichtheit gezeigt werden, dass es zu jeder Funktion \(f\in \mathcal C[a, b]\) als eine Folge in \(\operatorname{PL}[a, b]\) gibt, mit \(f\) als Grenzwert. Wir
+zeigen nur die Konstruktion eines potentiellen Folgengliedes.
+
+Sei \(f\in \mathcal{C}[a, b]\) beliebig. Da stetige Funktionen auf kompakten Mengen
+gleichmäßig stetig sind, gibt es zu jedem \(\varepsilon>0\) ein \(\delta>0\), sodass
+\begin{equation*}
+|f(x\pm h) - f(x)| < \epsilon
+\end{equation*}
+für alle \(h<\delta\). Damit können wir zu jedem \(\varepsilon\) eine
+Unterteilung von \((a, b]\) in \(N(\delta)\) halboffene disjunkte Intervalle \(I_j\),
+\(j=1, \dotsc, N(\delta)\) finden, sodass
+\begin{equation*}
+f_N(x) = \sum_{j=1}^N\max_{x\in I_j}f(x)\Chi_{I_j}
+\end{equation*}
+\end{proof}
+
+eine Funktion aus \(\operatorname{PL}[a, b]\) darstellt, die um maximal \(\varepsilon\) von \(f\)
+abweicht.
+
 \hypertarget{nachklapp}{%
 \chapter{Nachklapp}\label{nachklapp}}
 

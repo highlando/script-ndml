@@ -28,6 +28,7 @@ eq:eqn-max-varianz
 lem:varianz-maximization
 def:def-svm-problem
 eq:eqn-trennende-hyperebene
+thm:thm-pl-dense-C
 einführung
 was-ist-ein-algorithmus
 konsistenz-stabilität-genauigkeit
@@ -83,4 +84,5 @@ problemstellung
 maximierung-des-minimalen-abstands
 nichtlineare-separation
 aufgaben-1
+best-and-universal-approximation
 nachklapp
