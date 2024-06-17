@@ -250,7 +250,7 @@ Stetige Funktion <span class="math inline">\(f_N\)</span> mit endlich vielen <em
 \end{equation*}\]</span></p></li>
 <li><p>Zu diesem <span class="math inline">\(f_N\)</span> können wir immer eine Funktion
 <span class="math display">\[\begin{equation*}
-s_M(x) = c_0 + \sum_{i=1}c_i \tanh (a_ix + b_i)
+s_M(x) = c_0 + \sum_{i=1}^Mc_i \tanh (a_i(x - b_i))
 \end{equation*}\]</span>
 konstruieren (durch Anpassung der Parameter <span class="math inline">\(c_0\)</span>, <span class="math inline">\(c_i\)</span>, <span class="math inline">\(b_i\)</span>, <span class="math inline">\(a_i\)</span>,
 <span class="math inline">\(i=1,\dotsc, M\)</span>) sodass
@@ -292,17 +292,61 @@ zeigen nur die Konstruktion eines potentiellen Folgengliedes.</p>
 <p>Sei <span class="math inline">\(f\in \mathcal{C}[a, b]\)</span> beliebig. Da stetige Funktionen auf kompakten Mengen
 gleichmäßig stetig sind, gibt es zu jedem <span class="math inline">\(\varepsilon&gt;0\)</span> ein <span class="math inline">\(\delta&gt;0\)</span>, sodass
 <span class="math display">\[\begin{equation*}
-|f(x\pm h) - f(x)| &lt; \epsilon
+|f(x\pm h) - f(x)| &lt; \varepsilon
 \end{equation*}\]</span>
 für alle <span class="math inline">\(h&lt;\delta\)</span>. Damit können wir zu jedem <span class="math inline">\(\varepsilon\)</span> eine
 Unterteilung von <span class="math inline">\((a, b]\)</span> in <span class="math inline">\(N(\delta)\)</span> halboffene disjunkte Intervalle <span class="math inline">\(I_j\)</span>,
 <span class="math inline">\(j=1, \dotsc, N(\delta)\)</span> finden, sodass
 <span class="math display">\[\begin{equation*}
-f_N(x) = \sum_{j=1}^N\max_{x\in I_j}f(x)\Chi_{I_j}
+f_N(x) = \sum_{j=1}^N\chi_{I_j}(x)
 \end{equation*}\]</span></p>
 </div>
-<p>eine Funktion aus <span class="math inline">\(\operatorname{PL}[a, b]\)</span> darstellt, die um maximal <span class="math inline">\(\varepsilon\)</span> von <span class="math inline">\(f\)</span>
-abweicht.</p>
+<p>mit den Indikatorfunktionen <span class="math inline">\(\chi_{I_j}\)</span> und mit
+<span class="math display">\[\begin{equation*}
+f_j = \frac 12 (\max_{\xi\in I_j}\{f(\xi)\}+\min_{\eta \in I_j}\{f(\eta)\})
+\end{equation*}\]</span>
+eine Funktion aus <span class="math inline">\(\operatorname{PL}[a, b]\)</span> darstellt, die um maximal <span class="math inline">\(\varepsilon\)</span> von <span class="math inline">\(f\)</span>
+abweicht. Außerdem können wir damit sicherstellen, dass
+<span class="math display" id="eq:eqn-fj-fjp-\tag{9.1}on}(#eq:eqn-fj-fjp-se)
+|f_{j} - f_{j+1}| &lt; \varepsilon,
+\end{equation}\]</span>
+für alle <span class="math inline">\(j=1, \dotsc, N-1\)</span> gilt, was im nächsten Schritt
+relevant wird.</p>
+<p>In Schritt 2 wird nun die Funktion <span class="math inline">\(f_N\)</span> durch Linearkombinationen von
+transformierten <span class="math inline">\(\tanh\)</span> Funktionen approximiert:
+<span class="math display" id="eq:eqn-fj-fjp-se">\[\begin{equation*}
+f_N(x) \approx g_M(x) := c_0 + \sum_{i=1}^Mc_i\tanh(a_i(x-b_i))
+\end{equation*}\]</span></p>
+<div class="figure">
+<img src="bilder/09-sumtanhs.png" id="fig:sum-tanhs" style="width:95.0%" alt="" />
+<p class="caption">Beispiel Illustration wie eine Linearkombination von skalierten <span class="math inline">\(\tanh\)</span> Funktionen eine Treppenfunktion approximiert</p>
+</div>
+<p>Die Konstruktion und der Nachweis, dass für jedes <span class="math inline">\(\varepsilon&lt;0\)</span> (mit <span class="math inline">\(f_N\)</span> bereits entsprechend konstruiert) eine Differenz <span class="math inline">\(\|f_N - g_M\|_\infty &lt; \varepsilon\)</span> möglich ist, basiert auf folgenden Argumenten:</p>
+<ul>
+<li><p>Allgemein gilt für die Funktion <span class="math inline">\(\tanh\)</span>, dass sie <em>streng monoton</em> ist,
+dass <span class="math inline">\(\tanh(0)=0\)</span> und dass <span class="math inline">\(\lim_{x\to \pm \infty} \tanh(x) = \pm 1\)</span>.</p></li>
+<li><p>Durch eine Skalierung von <span class="math inline">\(x\leftarrow ax\)</span> mit <span class="math inline">\(a\to \infty\)</span>, passiert der übergang von <span class="math inline">\(-1\)</span> zu <span class="math inline">\(1\)</span>
+beliebig schnell – <span class="math inline">\(\tanh\)</span> entspricht zunehmend der Treppenfunktion, die
+bei <span class="math inline">\(0\)</span> von <span class="math inline">\(-1\)</span> auf <span class="math inline">\(+1\)</span> springt. (Jan bemerke, dass diese “Konvergenz”
+<strong>nicht</strong> bezüglich der <em>Supremumsnorm</em> stattfindet.)</p></li>
+<li><p>Durch einen Shift <span class="math inline">\(x \leftarrow x-b\)</span> kann der Sprung von <span class="math inline">\(x=0\)</span> zu <span class="math inline">\(x=b\)</span>
+verschoben werden.</p></li>
+<li><p>Durch Skalierung <span class="math inline">\(\tanh \leftarrow c\tanh\)</span> kann die Höhe des Sprungs
+angepasst werden.</p></li>
+</ul>
+<p>Damit (und insbesondere mit <span class="math inline">\(b_i\)</span> als die Sprungstellen von <span class="math inline">\(f_N\)</span> gewählt
+und <span class="math inline">\(c_i\)</span> als die Differenz zwischen den Werten an diesem Sprung), kann direkt
+ein <span class="math inline">\(g_M\)</span> konstruiert werden, das bis auf beliebig kleine, offene Umgebungen um die
+Sprungstellen dem <span class="math inline">\(f_N\)</span> beliebig nahe kommt. (Allerdings nicht in der
+<em>Supremumsnorm</em>).
+Da für genügend große <span class="math inline">\(a_i\)</span> aber sichergestellt wird, dass <span class="math inline">\(g_M\)</span>
+auf jedem Teilintervall zwischen den Werten von <span class="math inline">\(f_N\)</span> interpoliert, folgt aus
+\tag{9.1}, dass auch die punktweise Differenz kleiner als <span class="math inline">\(\varepsilon\)</span>
+ist.
+Insgesamt folgt so die Existenz von <span class="math inline">\(g_M\)</span> mit den gewünschten
+Eigenschaften.</p>
+<p>Im letzten Schritt interpretieren wir die <span class="math inline">\(g_M\)</span> Approximation als ein neuronales
+Netz.</p>
 
 </div>
 <h3>Referenzen<a href="referenzen.html#referenzen" class="anchor-section" aria-label="Anchor link to header"></a></h3>

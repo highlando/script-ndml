@@ -38,7 +38,7 @@ Schritte da hin sind wie folgt
 
 2. Zu diesem $f_N$ k&ouml;nnen wir immer eine Funktion
    \begin{equation*}
-   s_M(x) = c_0 + \sum_{i=1}c_i \tanh (a_ix + b_i)
+   s_M(x) = c_0 + \sum_{i=1}^Mc_i \tanh (a_i(x - b_i))
    \end{equation*}
    konstruieren (durch Anpassung der Parameter $c_0$, $c_i$, $b_i$, $a_i$,
    $i=1,\dotsc, M$) sodass 
@@ -88,14 +88,60 @@ zeigen nur die Konstruktion eines potentiellen Folgengliedes.
 Sei $f\in \Cab$ beliebig. Da stetige Funktionen auf kompakten Mengen
 gleichm&auml;&szlig;ig stetig sind, gibt es zu jedem $\varepsilon>0$ ein $\delta>0$, sodass
 \begin{equation*}
-|f(x\pm h) - f(x)| < \epsilon
+|f(x\pm h) - f(x)| < \varepsilon
 \end{equation*}
 f&uuml;r alle $h<\delta$. Damit k&ouml;nnen wir zu jedem $\varepsilon$ eine
 Unterteilung von $(a, b]$ in $N(\delta)$ halboffene disjunkte Intervalle $I_j$,
 $j=1, \dotsc, N(\delta)$ finden, sodass
 \begin{equation*}
-f_N(x) = \sum_{j=1}^N\max_{x\in I_j}f(x)\Chi_{I_j}
+f_N(x) = \sum_{j=1}^N\chi_{I_j}(x)
 \end{equation*}
 :::
+mit den Indikatorfunktionen $\chi_{I_j}$ und mit 
+\begin{equation*}
+f_j = \frac 12 (\max_{\xi\in I_j}\{f(\xi)\}+\min_{\eta \in I_j}\{f(\eta)\})
+\end{equation*}
 eine Funktion aus $\PLab$ darstellt, die um maximal $\varepsilon$ von $f$
-abweicht.
+abweicht. Au&szlig;erdem k&ouml;nnen wir damit sicherstellen, dass
+\begin{equation}(\#eq:eqn-fj-fjp-se)
+|f_{j} - f_{j+1}| < \varepsilon,
+\end{equation}
+f&uuml;r alle $j=1, \dotsc, N-1$ gilt, was im n&auml;chsten Schritt
+relevant wird.
+
+In Schritt 2 wird nun die Funktion $f_N$ durch Linearkombinationen von
+transformierten $\tanh$ Funktionen approximiert:
+\begin{equation*}
+f_N(x) \approx g_M(x) := c_0 + \sum_{i=1}^Mc_i\tanh(a_i(x-b_i))
+\end{equation*}
+
+![Beispiel Illustration wie eine Linearkombination von skalierten $\tanh$ Funktionen eine Treppenfunktion approximiert](bilder/09-sumtanhs.png){#fig:sum-tanhs width="95%"}
+
+Die Konstruktion und der Nachweis, dass f&uuml;r jedes $\varepsilon<0$ (mit $f_N$ bereits entsprechend konstruiert) eine Differenz $\|f_N - g_M\|_\infty < \varepsilon$ m&ouml;glich ist, basiert auf folgenden Argumenten:
+
+* Allgemein gilt f&uuml;r die Funktion $\tanh$, dass sie *streng monoton* ist,
+  dass $\tanh(0)=0$ und dass $\lim_{x\to \pm \infty} \tanh(x) = \pm 1$.
+
+* Durch eine Skalierung von $x\leftarrow ax$ mit $a\to \infty$, passiert der &uuml;bergang von $-1$ zu $1$
+  beliebig schnell -- $\tanh$ entspricht zunehmend der Treppenfunktion, die
+  bei $0$ von $-1$ auf $+1$ springt. (Jan bemerke, dass diese "Konvergenz"
+  **nicht** bez&uuml;glich der *Supremumsnorm* stattfindet.)
+* Durch einen Shift $x \leftarrow x-b$ kann der Sprung von $x=0$ zu $x=b$
+  verschoben werden.
+* Durch Skalierung $\tanh \leftarrow c\tanh$ kann die H&ouml;he des Sprungs
+  angepasst werden.
+
+Damit (und insbesondere mit $b_i$ als die Sprungstellen von $f_N$ gew&auml;hlt
+und $c_i$ als die Differenz zwischen den Werten an diesem Sprung), kann direkt
+ein $g_M$ konstruiert werden, das bis auf beliebig kleine, offene Umgebungen um die
+Sprungstellen dem $f_N$ beliebig nahe kommt. (Allerdings nicht in der
+*Supremumsnorm*). 
+Da f&uuml;r gen&uuml;gend gro&szlig;e $a_i$ aber sichergestellt wird, dass $g_M$
+auf jedem Teilintervall zwischen den Werten von $f_N$ interpoliert, folgt aus
+(\#eq:eqn-fj-fjp-se), dass auch die punktweise Differenz kleiner als $\varepsilon$
+ist. 
+Insgesamt folgt so die Existenz von $g_M$ mit den gew&uuml;nschten
+Eigenschaften.
+
+Im letzten Schritt interpretieren wir die $g_M$ Approximation als ein neuronales
+Netz.

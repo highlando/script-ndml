@@ -29,6 +29,7 @@ lem:varianz-maximization
 def:def-svm-problem
 eq:eqn-trennende-hyperebene
 thm:thm-pl-dense-C
+eq:eqn-fj-fjp-se
 einführung
 was-ist-ein-algorithmus
 konsistenz-stabilität-genauigkeit
