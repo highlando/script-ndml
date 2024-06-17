@@ -2666,8 +2666,73 @@ ist.
 Insgesamt folgt so die Existenz von \(g_M\) mit den gewünschten
 Eigenschaften.
 
-Im letzten Schritt interpretieren wir die \(g_M\) Approximation als ein neuronales
+Im letzten Schritt 3 interpretieren wir die \(g_M\) Approximation als ein neuronales
 Netz.
+
+Dazu bemerken wir, dass wir \(g_M\) schreiben können als
+\begin{equation*}
+g_M(x) = c_0 + c^T \tanh(Ax+b)
+\end{equation*}
+mit
+\begin{equation*}
+c=
+\begin{bmatrix}
+c_1 \\ c_2 \\ \vdots \\ c_M
+\end{bmatrix}, 
+\quad
+A=
+\begin{bmatrix}
+a_1 \\ a_2 \\ \vdots \\ a_M
+\end{bmatrix}, 
+\quad
+b=
+\begin{bmatrix}
+-a_1b_1 \\ -a_2b_2 \\ \vdots \\ -a_Mb_M
+\end{bmatrix}
+\end{equation*}
+und der \emph{eintragsbezogenen} Interpretation der eigentlich skalaren \(\tanh\)
+Funktion und dass
+
+\begin{itemize}
+\tightlist
+\item
+  der Anteil
+  \begin{equation*}
+  \tanh (Ax+b)
+  \end{equation*}
+  eine klassische \emph{linear layer} mit Aktivierung ist
+\item
+  während der Ausgang \(y=c_0+c^T\xi\) eine einfache lineare Abbildung (ohne
+  Aktivierung ist).
+\end{itemize}
+
+In dieser Darstellung, ist die Suche nach den Parametern für \(g_M\) in den
+Standardroutinen von \emph{ML} Paketen ohne weiteres möglich.
+
+Wir schließen mit einigen allgemeinen Bemerkungen
+
+\begin{itemize}
+\tightlist
+\item
+  die Funktion \(\tanh\) hat durchaus Relevanz in der Praxis. Für die
+  Theorie, die im wesentlichen Beschränktheit und Monotonie voraussetzt,
+  gehen auch die gerne verwendeten allgemeineren \emph{sigmoid} Funktionen.
+\item
+  die größte Lücke zur Praxis ist die Annahme \emph{\(M\) genügend
+  groß}. Etwas unpraktisch ist auch, dass nur eine \emph{hidden layer}
+  verwendet wird. Neuere Arbeiten behandeln ähnliche
+  Approximationsresultate mit mehreren Schichten.
+\item
+  die theoretisch unschönste Lücke ist die Annahme, dass eine Funktion
+  auf einer kompakten Menge approximiert wird (was beispielsweise in der
+  Behandlung von dynamischen Systemen nachteilig ist)
+\item
+  Zur Approximation von \(f_N\) ist Jan geneigt, die \(a_i\) einfach sehr groß
+  zu wählen. Ist \(f\) stetig, dann werden allerdings bessere Resultate (die
+  den Verlauf von \(f\) nachzeichnen) mit kleineren \(a_i\) erreicht. Außerdem
+  führen große Werte von \(a\) zum sogenannten \emph{vanishing gradients}
+  Phänomen, da \(\frac{\tanh(a(x+h))-\tanh(ax)}{h}\to 0\) für \(a\to \infty\).
+\end{itemize}
 
 \hypertarget{nachklapp}{%
 \chapter{Nachklapp}\label{nachklapp}}

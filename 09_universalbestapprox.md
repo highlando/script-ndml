@@ -143,5 +143,61 @@ ist.
 Insgesamt folgt so die Existenz von $g_M$ mit den gew&uuml;nschten
 Eigenschaften.
 
-Im letzten Schritt interpretieren wir die $g_M$ Approximation als ein neuronales
+Im letzten Schritt 3 interpretieren wir die $g_M$ Approximation als ein neuronales
 Netz.
+
+Dazu bemerken wir, dass wir $g_M$ schreiben k&ouml;nnen als
+\begin{equation*}
+g_M(x) = c_0 + c^T \tanh(Ax+b)
+\end{equation*}
+mit 
+\begin{equation*}
+c=
+\begin{bmatrix}
+c_1 \\ c_2 \\ \vdots \\ c_M
+\end{bmatrix}, 
+\quad
+A=
+\begin{bmatrix}
+a_1 \\ a_2 \\ \vdots \\ a_M
+\end{bmatrix}, 
+\quad
+b=
+\begin{bmatrix}
+-a_1b_1 \\ -a_2b_2 \\ \vdots \\ -a_Mb_M
+\end{bmatrix}
+\end{equation*}
+und der *eintragsbezogenen* Interpretation der eigentlich skalaren $\tanh$
+Funktion und dass 
+
+* der Anteil
+\begin{equation*}
+\tanh (Ax+b)
+\end{equation*}
+eine klassische *linear layer* mit Aktivierung ist
+* w&auml;hrend der Ausgang $y=c_0+c^T\xi$ eine einfache lineare Abbildung (ohne
+  Aktivierung ist).
+
+In dieser Darstellung, ist die Suche nach den Parametern f&uuml;r $g_M$ in den
+Standardroutinen von *ML* Paketen ohne weiteres m&ouml;glich.
+
+Wir schlie&szlig;en mit einigen allgemeinen Bemerkungen
+
+* die Funktion $\tanh$ hat durchaus Relevanz in der Praxis. F&uuml;r die
+  Theorie, die im wesentlichen Beschr&auml;nktheit und Monotonie voraussetzt,
+  gehen auch die gerne verwendeten allgemeineren *sigmoid* Funktionen.
+* die gr&ouml;&szlig;te L&uuml;cke zur Praxis ist die Annahme *$M$ gen&uuml;gend
+  gro&szlig;*. Etwas unpraktisch ist auch, dass nur eine *hidden layer*
+  verwendet wird. Neuere Arbeiten behandeln &auml;hnliche
+  Approximationsresultate mit mehreren Schichten.
+* die theoretisch unsch&ouml;nste L&uuml;cke ist die Annahme, dass eine Funktion
+  auf einer kompakten Menge approximiert wird (was beispielsweise in der
+  Behandlung von dynamischen Systemen nachteilig ist)
+* Zur Approximation von $f_N$ ist Jan geneigt, die $a_i$ einfach sehr gro&szlig;
+  zu w&auml;hlen. Ist $f$ stetig, dann werden allerdings bessere Resultate (die
+  den Verlauf von $f$ nachzeichnen) mit kleineren $a_i$ erreicht. Au&szlig;erdem
+  f&uuml;hren gro&szlig;e Werte von $a$ zum sogenannten *vanishing gradients*
+  Ph&auml;nomen, da $\frac{\tanh(a(x+h))-\tanh(ax)}{h}\to 0$ f&uuml;r $a\to
+  \infty$.
+
+

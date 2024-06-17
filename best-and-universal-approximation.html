@@ -345,8 +345,60 @@ auf jedem Teilintervall zwischen den Werten von <span class="math inline">\(f_N\
 ist.
 Insgesamt folgt so die Existenz von <span class="math inline">\(g_M\)</span> mit den gewünschten
 Eigenschaften.</p>
-<p>Im letzten Schritt interpretieren wir die <span class="math inline">\(g_M\)</span> Approximation als ein neuronales
+<p>Im letzten Schritt 3 interpretieren wir die <span class="math inline">\(g_M\)</span> Approximation als ein neuronales
 Netz.</p>
+<p>Dazu bemerken wir, dass wir <span class="math inline">\(g_M\)</span> schreiben können als
+<span class="math display">\[\begin{equation*}
+g_M(x) = c_0 + c^T \tanh(Ax+b)
+\end{equation*}\]</span>
+mit
+<span class="math display">\[\begin{equation*}
+c=
+\begin{bmatrix}
+c_1 \\ c_2 \\ \vdots \\ c_M
+\end{bmatrix}, 
+\quad
+A=
+\begin{bmatrix}
+a_1 \\ a_2 \\ \vdots \\ a_M
+\end{bmatrix}, 
+\quad
+b=
+\begin{bmatrix}
+-a_1b_1 \\ -a_2b_2 \\ \vdots \\ -a_Mb_M
+\end{bmatrix}
+\end{equation*}\]</span>
+und der <em>eintragsbezogenen</em> Interpretation der eigentlich skalaren <span class="math inline">\(\tanh\)</span>
+Funktion und dass</p>
+<ul>
+<li>der Anteil
+<span class="math display">\[\begin{equation*}
+\tanh (Ax+b)
+\end{equation*}\]</span>
+eine klassische <em>linear layer</em> mit Aktivierung ist</li>
+<li>während der Ausgang <span class="math inline">\(y=c_0+c^T\xi\)</span> eine einfache lineare Abbildung (ohne
+Aktivierung ist).</li>
+</ul>
+<p>In dieser Darstellung, ist die Suche nach den Parametern für <span class="math inline">\(g_M\)</span> in den
+Standardroutinen von <em>ML</em> Paketen ohne weiteres möglich.</p>
+<p>Wir schließen mit einigen allgemeinen Bemerkungen</p>
+<ul>
+<li>die Funktion <span class="math inline">\(\tanh\)</span> hat durchaus Relevanz in der Praxis. Für die
+Theorie, die im wesentlichen Beschränktheit und Monotonie voraussetzt,
+gehen auch die gerne verwendeten allgemeineren <em>sigmoid</em> Funktionen.</li>
+<li>die größte Lücke zur Praxis ist die Annahme <em><span class="math inline">\(M\)</span> genügend
+groß</em>. Etwas unpraktisch ist auch, dass nur eine <em>hidden layer</em>
+verwendet wird. Neuere Arbeiten behandeln ähnliche
+Approximationsresultate mit mehreren Schichten.</li>
+<li>die theoretisch unschönste Lücke ist die Annahme, dass eine Funktion
+auf einer kompakten Menge approximiert wird (was beispielsweise in der
+Behandlung von dynamischen Systemen nachteilig ist)</li>
+<li>Zur Approximation von <span class="math inline">\(f_N\)</span> ist Jan geneigt, die <span class="math inline">\(a_i\)</span> einfach sehr groß
+zu wählen. Ist <span class="math inline">\(f\)</span> stetig, dann werden allerdings bessere Resultate (die
+den Verlauf von <span class="math inline">\(f\)</span> nachzeichnen) mit kleineren <span class="math inline">\(a_i\)</span> erreicht. Außerdem
+führen große Werte von <span class="math inline">\(a\)</span> zum sogenannten <em>vanishing gradients</em>
+Phänomen, da <span class="math inline">\(\frac{\tanh(a(x+h))-\tanh(ax)}{h}\to 0\)</span> für <span class="math inline">\(a\to \infty\)</span>.</li>
+</ul>
 
 </div>
 <h3>Referenzen<a href="referenzen.html#referenzen" class="anchor-section" aria-label="Anchor link to header"></a></h3>
