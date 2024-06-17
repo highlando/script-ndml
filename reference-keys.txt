@@ -28,7 +28,7 @@ eq:eqn-max-varianz
 lem:varianz-maximization
 def:def-svm-problem
 eq:eqn-trennende-hyperebene
-thm:thm-pl-dense-C
+thm:thm-pc-dense-C
 eq:eqn-fj-fjp-se
 einführung
 was-ist-ein-algorithmus

@@ -244,7 +244,7 @@ Schritte da hin sind wie folgt</p>
 <li><p>Zu einem gegebenen <span class="math inline">\(f\in \mathcal C[a, b]\)</span> (einer reellwertigen, stetigen Funktion
 auf einem
 endlichen und abgeschlossenen Intervall) existiert immer eine stückweise
-Stetige Funktion <span class="math inline">\(f_N\)</span> mit endlich vielen <em>Sprungstellen</em>, sodass
+konstante Funktion <span class="math inline">\(f_N\)</span> mit endlich vielen <em>Sprungstellen</em>, sodass
 <span class="math display">\[\begin{equation*}
 \|f-f_N\|_\infty &lt; \frac \epsilon2
 \end{equation*}\]</span></p></li>
@@ -278,16 +278,15 @@ auf die Approximation aus?</li>
 Approximation und das referenzierte <em>universal
 approximation theorem</em> ist Grundlage vieler Analyseansätze für
 neuronale Netzwerke.</p>
-<p>In Schritt 1, wird die stückweise stetige Funktion <span class="math inline">\(f_N\)</span> definiert. Die
+<p>In Schritt 1, wird die stückweise konstante Funktion <span class="math inline">\(f_N\)</span> definiert. Die
 Existenz folgt aus dem Satz</p>
 <div class="theorem">
-<p><span id="thm:thm-pl-dense-C" class="theorem"><strong>Theorem 9.1  (Stückweise stetige Funktion liegen dicht) </strong></span>Sei <span class="math inline">\([a, b]\subset \mathbb R^{}\)</span> ein abgeschlossenes endliches Intervall.
-Die Menge <span class="math inline">\(\operatorname{pl}[a, b]\)</span> aller stückweise stetigen Funktionen auf <span class="math inline">\([a, b]\)</span> <em>liegt dicht</em>
-in <span class="math inline">\(\mathcal C[a, b]\)</span> sodass für ein beliebiges <span class="math inline">\(f\in \mathcal C[a, b]\)</span> und <span class="math inline">\(\varepsilon &gt; 0\)</span>, immer ein <span class="math inline">\(g\in \operatorname{pl}[a, b]\)</span> existiert mit <span class="math inline">\(\|f-g\|_\infty&lt;\varepsilon\)</span>.</p>
+<p><span id="thm:thm-pc-dense-C" class="theorem"><strong>Theorem 9.1  (Approximation durch stückweise konstante Funktionen) </strong></span>Sei <span class="math inline">\([a, b]\subset \mathbb R^{}\)</span> ein abgeschlossenes endliches Intervall.
+Der Abschlüss der Menge <span class="math inline">\(\operatorname{Pc}[a, b]\)</span> der aller stückweise konstanten Funktionen auf <span class="math inline">\([a, b]\)</span> mit endlich vielen Sprungstellen enthält <span class="math inline">\(\mathcal C[a, b]\)</span>. Insbesondere, existiert für ein beliebiges <span class="math inline">\(f\in \mathcal C[a, b]\)</span> und <span class="math inline">\(\varepsilon &gt; 0\)</span>, immer ein <span class="math inline">\(g\in \operatorname{Pc}[a, b]\)</span> mit <span class="math inline">\(\|f-g\|_\infty&lt;\varepsilon\)</span>.</p>
 </div>
 <div class="proof">
 <p><span id="unlabeled-div-7" class="proof"><em>Proof</em>. </span>Der Beweis ist klassisch – hier nur die relevanten und konstruktiven Elemente.</p>
-<p>An sich muss für Dichtheit gezeigt werden, dass es zu jeder Funktion <span class="math inline">\(f\in \mathcal C[a, b]\)</span> als eine Folge in <span class="math inline">\(\operatorname{PL}[a, b]\)</span> gibt, mit <span class="math inline">\(f\)</span> als Grenzwert. Wir
+<p>An sich muss gezeigt werden, dass es zu jeder Funktion <span class="math inline">\(f\in \mathcal C[a, b]\)</span> eine Folge <span class="math inline">\(\{f_n\}\subset \operatorname{Pc}[a, b]\)</span> gibt, mit <span class="math inline">\(f\)</span> als Grenzwert. Wir
 zeigen nur die Konstruktion eines potentiellen Folgengliedes.</p>
 <p>Sei <span class="math inline">\(f\in \mathcal{C}[a, b]\)</span> beliebig. Da stetige Funktionen auf kompakten Mengen
 gleichmäßig stetig sind, gibt es zu jedem <span class="math inline">\(\varepsilon&gt;0\)</span> ein <span class="math inline">\(\delta&gt;0\)</span>, sodass
@@ -295,7 +294,8 @@ gleichmäßig stetig sind, gibt es zu jedem <span class="math inline">\(\varepsi
 |f(x\pm h) - f(x)| &lt; \varepsilon
 \end{equation*}\]</span>
 für alle <span class="math inline">\(h&lt;\delta\)</span>. Damit können wir zu jedem <span class="math inline">\(\varepsilon\)</span> eine
-Unterteilung von <span class="math inline">\((a, b]\)</span> in <span class="math inline">\(N(\delta)\)</span> halboffene disjunkte Intervalle <span class="math inline">\(I_j\)</span>,
+Unterteilung von <span class="math inline">\((a, b]\)</span> in <span class="math inline">\(N(\delta)\)</span> halboffene (bis auf das abgeschlossene
+“erste” Intervall, das <span class="math inline">\(a\)</span> enthält) disjunkte Intervalle <span class="math inline">\(I_j\)</span>,
 <span class="math inline">\(j=1, \dotsc, N(\delta)\)</span> finden, sodass
 <span class="math display">\[\begin{equation*}
 f_N(x) = \sum_{j=1}^N\chi_{I_j}(x)
@@ -314,7 +314,7 @@ für alle <span class="math inline">\(j=1, \dotsc, N-1\)</span> gilt, was im nä
 relevant wird.</p>
 <p>In Schritt 2 wird nun die Funktion <span class="math inline">\(f_N\)</span> durch Linearkombinationen von
 transformierten <span class="math inline">\(\tanh\)</span> Funktionen approximiert:
-<span class="math display" id="eq:eqn-fj-fjp-se">\[\begin{equation*}
+<span class="math display">\[\begin{equation*}
 f_N(x) \approx g_M(x) := c_0 + \sum_{i=1}^Mc_i\tanh(a_i(x-b_i))
 \end{equation*}\]</span></p>
 <div class="figure">
@@ -341,7 +341,8 @@ Sprungstellen dem <span class="math inline">\(f_N\)</span> beliebig nahe kommt. 
 <em>Supremumsnorm</em>).
 Da für genügend große <span class="math inline">\(a_i\)</span> aber sichergestellt wird, dass <span class="math inline">\(g_M\)</span>
 auf jedem Teilintervall zwischen den Werten von <span class="math inline">\(f_N\)</span> interpoliert, folgt aus
-\tag{9.1}, dass auch die punktweise Differenz kleiner als <span class="math inline">\(\varepsilon\)</span>
+<a href="#eq:eqn-fj-fjp-se">(9.1)</a>,
+dass auch die punktweise Differenz kleiner als <span class="math inline">\(\varepsilon\)</span>
 ist.
 Insgesamt folgt so die Existenz von <span class="math inline">\(g_M\)</span> mit den gewünschten
 Eigenschaften.</p>

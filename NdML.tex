@@ -2496,6 +2496,7 @@ dass
 \chapter{Best and Universal Approximation}\label{best-and-universal-approximation}}
 
 \def\PLab{\operatorname{PL}[a, b]}
+\def\PCab{\operatorname{Pc}[a, b]}
 \def\Cab{\mathcal{C}[a, b]}
 
 Alle bisher betrachteten Approximationsprobleme waren in Bezug auf eine \emph{2-norm}
@@ -2535,7 +2536,7 @@ Schritte da hin sind wie folgt
   Zu einem gegebenen \(f\in \mathcal C[a, b]\) (einer reellwertigen, stetigen Funktion
   auf einem
   endlichen und abgeschlossenen Intervall) existiert immer eine stückweise
-  Stetige Funktion \(f_N\) mit endlich vielen \emph{Sprungstellen}, sodass
+  konstante Funktion \(f_N\) mit endlich vielen \emph{Sprungstellen}, sodass
   \begin{equation*}
   \|f-f_N\|_\infty < \frac \epsilon2
   \end{equation*}
@@ -2581,19 +2582,18 @@ Approximation und das referenzierte \emph{universal
 approximation theorem} ist Grundlage vieler Analyseansätze für
 neuronale Netzwerke.
 
-In Schritt 1, wird die stückweise stetige Funktion \(f_N\) definiert. Die
+In Schritt 1, wird die stückweise konstante Funktion \(f_N\) definiert. Die
 Existenz folgt aus dem Satz
 
-\begin{theorem}[Stückweise stetige Funktion liegen dicht]
-\protect\hypertarget{thm:thm-pl-dense-C}{}\label{thm:thm-pl-dense-C}Sei \([a, b]\subset \mathbb R^{}\) ein abgeschlossenes endliches Intervall.
-Die Menge \(\operatorname{pl}[a, b]\) aller stückweise stetigen Funktionen auf \([a, b]\) \emph{liegt dicht}
-in \(\mathcal C[a, b]\) sodass für ein beliebiges \(f\in \mathcal C[a, b]\) und \(\varepsilon > 0\), immer ein \(g\in \operatorname{pl}[a, b]\) existiert mit \(\|f-g\|_\infty<\varepsilon\).
+\begin{theorem}[Approximation durch stückweise konstante Funktionen]
+\protect\hypertarget{thm:thm-pc-dense-C}{}\label{thm:thm-pc-dense-C}Sei \([a, b]\subset \mathbb R^{}\) ein abgeschlossenes endliches Intervall.
+Der Abschlüss der Menge \(\operatorname{Pc}[a, b]\) der aller stückweise konstanten Funktionen auf \([a, b]\) mit endlich vielen Sprungstellen enthält \(\mathcal C[a, b]\). Insbesondere, existiert für ein beliebiges \(f\in \mathcal C[a, b]\) und \(\varepsilon > 0\), immer ein \(g\in \operatorname{Pc}[a, b]\) mit \(\|f-g\|_\infty<\varepsilon\).
 \end{theorem}
 
 \begin{proof}
 Der Beweis ist klassisch -- hier nur die relevanten und konstruktiven Elemente.
 
-An sich muss für Dichtheit gezeigt werden, dass es zu jeder Funktion \(f\in \mathcal C[a, b]\) als eine Folge in \(\operatorname{PL}[a, b]\) gibt, mit \(f\) als Grenzwert. Wir
+An sich muss gezeigt werden, dass es zu jeder Funktion \(f\in \mathcal C[a, b]\) eine Folge \(\{f_n\}\subset \operatorname{Pc}[a, b]\) gibt, mit \(f\) als Grenzwert. Wir
 zeigen nur die Konstruktion eines potentiellen Folgengliedes.
 
 Sei \(f\in \mathcal{C}[a, b]\) beliebig. Da stetige Funktionen auf kompakten Mengen
@@ -2602,7 +2602,8 @@ gleichmäßig stetig sind, gibt es zu jedem \(\varepsilon>0\) ein \(\delta>0\), 
 |f(x\pm h) - f(x)| < \varepsilon
 \end{equation*}
 für alle \(h<\delta\). Damit können wir zu jedem \(\varepsilon\) eine
-Unterteilung von \((a, b]\) in \(N(\delta)\) halboffene disjunkte Intervalle \(I_j\),
+Unterteilung von \((a, b]\) in \(N(\delta)\) halboffene (bis auf das abgeschlossene
+``erste'' Intervall, das \(a\) enthält) disjunkte Intervalle \(I_j\),
 \(j=1, \dotsc, N(\delta)\) finden, sodass
 \begin{equation*}
 f_N(x) = \sum_{j=1}^N\chi_{I_j}(x)
@@ -2661,7 +2662,8 @@ Sprungstellen dem \(f_N\) beliebig nahe kommt. (Allerdings nicht in der
 \emph{Supremumsnorm}).
 Da für genügend große \(a_i\) aber sichergestellt wird, dass \(g_M\)
 auf jedem Teilintervall zwischen den Werten von \(f_N\) interpoliert, folgt aus
-\label{eq:eqn-fj-fjp-se}, dass auch die punktweise Differenz kleiner als \(\varepsilon\)
+\eqref{eq:eqn-fj-fjp-se},
+dass auch die punktweise Differenz kleiner als \(\varepsilon\)
 ist.
 Insgesamt folgt so die Existenz von \(g_M\) mit den gewünschten
 Eigenschaften.

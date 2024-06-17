@@ -1,6 +1,7 @@
 # Best and Universal Approximation
 
 \def\PLab{\operatorname{PL}[a, b]}
+\def\PCab{\operatorname{Pc}[a, b]}
 \def\Cab{\mathcal{C}[a, b]}
 
 Alle bisher betrachteten Approximationsprobleme waren in Bezug auf eine *2-norm*
@@ -31,7 +32,7 @@ Schritte da hin sind wie folgt
 1. Zu einem gegebenen $f\in \mathcal C[a, b]$ (einer reellwertigen, stetigen Funktion
    auf einem
    endlichen und abgeschlossenen Intervall) existiert immer eine st&uuml;ckweise
-   Stetige Funktion $f_N$ mit endlich vielen *Sprungstellen*, sodass 
+   konstante Funktion $f_N$ mit endlich vielen *Sprungstellen*, sodass 
    \begin{equation*}
    \|f-f_N\|_\infty < \frac \epsilon2
    \end{equation*}
@@ -68,21 +69,20 @@ Approximation und das referenzierte *universal
 approximation theorem* ist Grundlage vieler Analyseans&auml;tze f&uuml;r
 neuronale Netzwerke.
 
-In Schritt 1, wird die st&uuml;ckweise stetige Funktion $f_N$ definiert. Die
+In Schritt 1, wird die st&uuml;ckweise konstante Funktion $f_N$ definiert. Die
 Existenz folgt aus dem Satz
 
-::: {.theorem #thm-pl-dense-C name="St&uuml;ckweise stetige Funktion liegen dicht"}
+::: {.theorem #thm-pc-dense-C name="Approximation durch st&uuml;ckweise konstante Funktionen"}
 Sei $[a, b]\subset \mathbb R^{}$ ein abgeschlossenes endliches Intervall. 
-Die Menge $\operatorname{pl}[a, b]$ aller st&uuml;ckweise stetigen Funktionen auf $[a, b]$ *liegt dicht*
-in $\mathcal C[a, b]$ sodass f&uuml;r ein beliebiges $f\in \mathcal C[a, b]$ und $\varepsilon > 0$, immer ein $g\in
-\operatorname{pl}[a, b]$ existiert mit $\|f-g\|_\infty<\varepsilon$.
+Der Abschl&uuml;ss der Menge $\PCab$ der aller st&uuml;ckweise konstanten Funktionen auf $[a, b]$ mit endlich vielen Sprungstellen enth&auml;lt $\mathcal C[a, b]$. Insbesondere, existiert f&uuml;r ein beliebiges $f\in \mathcal C[a, b]$ und $\varepsilon > 0$, immer ein $g\in
+\PCab$ mit $\|f-g\|_\infty<\varepsilon$.
 :::
 
 ::: {.proof}
 Der Beweis ist klassisch -- hier nur die relevanten und konstruktiven Elemente.
 
-An sich muss f&uuml;r Dichtheit gezeigt werden, dass es zu jeder Funktion $f\in
-\mathcal C[a, b]$ als eine Folge in $\PLab$ gibt, mit $f$ als Grenzwert. Wir
+An sich muss gezeigt werden, dass es zu jeder Funktion $f\in
+\mathcal C[a, b]$ eine Folge $\{f_n\}\subset \PCab$ gibt, mit $f$ als Grenzwert. Wir
 zeigen nur die Konstruktion eines potentiellen Folgengliedes.
 
 Sei $f\in \Cab$ beliebig. Da stetige Funktionen auf kompakten Mengen
@@ -91,7 +91,8 @@ gleichm&auml;&szlig;ig stetig sind, gibt es zu jedem $\varepsilon>0$ ein $\delta
 |f(x\pm h) - f(x)| < \varepsilon
 \end{equation*}
 f&uuml;r alle $h<\delta$. Damit k&ouml;nnen wir zu jedem $\varepsilon$ eine
-Unterteilung von $(a, b]$ in $N(\delta)$ halboffene disjunkte Intervalle $I_j$,
+Unterteilung von $(a, b]$ in $N(\delta)$ halboffene (bis auf das abgeschlossene
+"erste" Intervall, das $a$ enth&auml;lt) disjunkte Intervalle $I_j$,
 $j=1, \dotsc, N(\delta)$ finden, sodass
 \begin{equation*}
 f_N(x) = \sum_{j=1}^N\chi_{I_j}(x)
@@ -138,7 +139,8 @@ Sprungstellen dem $f_N$ beliebig nahe kommt. (Allerdings nicht in der
 *Supremumsnorm*). 
 Da f&uuml;r gen&uuml;gend gro&szlig;e $a_i$ aber sichergestellt wird, dass $g_M$
 auf jedem Teilintervall zwischen den Werten von $f_N$ interpoliert, folgt aus
-(\#eq:eqn-fj-fjp-se), dass auch die punktweise Differenz kleiner als $\varepsilon$
+\@ref(eq:eqn-fj-fjp-se),
+dass auch die punktweise Differenz kleiner als $\varepsilon$
 ist. 
 Insgesamt folgt so die Existenz von $g_M$ mit den gew&uuml;nschten
 Eigenschaften.
