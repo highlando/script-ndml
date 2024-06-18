@@ -74,7 +74,11 @@ Existenz folgt aus dem Satz
 
 ::: {.theorem #thm-pc-dense-C name="Approximation durch st&uuml;ckweise konstante Funktionen"}
 Sei $[a, b]\subset \mathbb R^{}$ ein abgeschlossenes endliches Intervall. 
-Der Abschl&uuml;ss der Menge $\PCab$ der aller st&uuml;ckweise konstanten Funktionen auf $[a, b]$ mit endlich vielen Sprungstellen enth&auml;lt $\mathcal C[a, b]$. Insbesondere, existiert f&uuml;r ein beliebiges $f\in \mathcal C[a, b]$ und $\varepsilon > 0$, immer ein $g\in
+Der Abschluss bez&uuml;glich der Supremumsnorm der Menge $\PCab$ aller st&uuml;ckweise konstanten Funktionen auf $[a, b]$ mit endlich vielen Sprungstellen **enth&auml;lt** $\mathcal C[a, b]$, d.h.
+\begin{equation*}
+\Cab \subset \operatorname{closure}_{\|\cdot\|_\infty}(\PCab).
+\end{equation*}
+Insbesondere, existiert f&uuml;r ein beliebiges $f\in \mathcal C[a, b]$ und $\varepsilon > 0$, immer ein $g\in
 \PCab$ mit $\|f-g\|_\infty<\varepsilon$.
 :::
 
