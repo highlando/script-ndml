@@ -2587,7 +2587,11 @@ Existenz folgt aus dem Satz
 
 \begin{theorem}[Approximation durch stückweise konstante Funktionen]
 \protect\hypertarget{thm:thm-pc-dense-C}{}\label{thm:thm-pc-dense-C}Sei \([a, b]\subset \mathbb R^{}\) ein abgeschlossenes endliches Intervall.
-Der Abschlüss der Menge \(\operatorname{Pc}[a, b]\) der aller stückweise konstanten Funktionen auf \([a, b]\) mit endlich vielen Sprungstellen enthält \(\mathcal C[a, b]\). Insbesondere, existiert für ein beliebiges \(f\in \mathcal C[a, b]\) und \(\varepsilon > 0\), immer ein \(g\in \operatorname{Pc}[a, b]\) mit \(\|f-g\|_\infty<\varepsilon\).
+Der Abschluss bezüglich der Supremumsnorm der Menge \(\operatorname{Pc}[a, b]\) aller stückweise konstanten Funktionen auf \([a, b]\) mit endlich vielen Sprungstellen \textbf{enthält} \(\mathcal C[a, b]\), d.h.
+\begin{equation*}
+\mathcal{C}[a, b]\subset \operatorname{closure}_{\|\cdot\|_\infty}(\operatorname{Pc}[a, b]).
+\end{equation*}
+Insbesondere, existiert für ein beliebiges \(f\in \mathcal C[a, b]\) und \(\varepsilon > 0\), immer ein \(g\in \operatorname{Pc}[a, b]\) mit \(\|f-g\|_\infty<\varepsilon\).
 \end{theorem}
 
 \begin{proof}
