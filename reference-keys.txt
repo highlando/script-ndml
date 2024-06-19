@@ -30,6 +30,7 @@ def:def-svm-problem
 eq:eqn-trennende-hyperebene
 thm:thm-pc-dense-C
 eq:eqn-fj-fjp-se
+eq:eqn-gm-approx
 einführung
 was-ist-ein-algorithmus
 konsistenz-stabilität-genauigkeit
@@ -86,4 +87,6 @@ maximierung-des-minimalen-abstands
 nichtlineare-separation
 aufgaben-1
 best-and-universal-approximation
+universal-approximation
+aufgaben-2
 nachklapp

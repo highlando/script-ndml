@@ -2526,6 +2526,9 @@ zur möglichen Lösung dieses sogenannten
 \emph{Tschebyscheff-Approximation}-Problem, sind in (Kapitel 8.7.2, Richter and Wick \protect\hyperlink{ref-RicW17}{2017}) gut
 nachzulesen.
 
+\hypertarget{universal-approximation}{%
+\section{Universal Approximation}\label{universal-approximation}}
+
 Wir wollen hier nachvollziehen, dass klassische neuronale Netze, dieses Problem
 approximativ aber mit beliebiger Genauigkeit \(\epsilon\) lösen könnten. Die
 Schritte da hin sind wie folgt
@@ -2676,9 +2679,9 @@ Im letzten Schritt 3 interpretieren wir die \(g_M\) Approximation als ein neuron
 Netz.
 
 Dazu bemerken wir, dass wir \(g_M\) schreiben können als
-\begin{equation*}
+\begin{equation}\label{eq:eqn-gm-approx}
 g_M(x) = c_0 + c^T \tanh(Ax+b)
-\end{equation*}
+\end{equation}
 mit
 \begin{equation*}
 c=
@@ -2739,6 +2742,41 @@ Wir schließen mit einigen allgemeinen Bemerkungen
   führen große Werte von \(a\) zum sogenannten \emph{vanishing gradients}
   Phänomen, da \(\frac{\tanh(a(x+h))-\tanh(ax)}{h}\to 0\) für \(a\to \infty\).
 \end{itemize}
+
+\hypertarget{aufgaben-2}{%
+\section{Aufgaben}\label{aufgaben-2}}
+
+Zur Approximation einer Funktion \(f\colon \mathbb  R^{}\to \mathbb R^{}\) über den Ansatz \eqref{eq:eqn-gm-approx} seien
+Datenpunkte \(\mathbb X = \{(x_i, y_i)\}_i\) mit \(y_i=f(x_i)\) gegeben und das
+Optimierungsproblem
+\begin{equation*}
+   L(c, A, b; \mathbb X) = \sum_{i} \|y_i - g_M(c, A, b;\, x_i)\|_2^2 \to \min_{c, A, b}
+   \end{equation*}
+mittels des stochastischen Gradientenabstiegs zu lösen.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Schreiben Sie die Koeffizienten in einen Vektor \(p=(c, A, b)\) und berechnen
+  Sie \(\nabla_{c_0}L(p; \mathbf x)\), sowie beispielhaft die Komponenten
+  von \(\nabla_p L(p; \mathbf x)\) für einen einzelnen Datenpunkt \(\mathbf x = x_i\) oder einen \emph{batch} \(\mathbf x = \mathbb x\) (wie es für den stochastischen
+  Gradienten benutzt würde).
+\item
+  Formulieren Sie die Berechnung des Gradienten (bezüglich \(p\)) für
+  \(M=1\) und einen Datenpunkt \(x\), also für die Funktion \(l = L(c_0, c_1, a_1, b_1; x)\) über \emph{automatisches Differenzieren} im Vorwärts-- und
+  im Rückwärtsmodus.
+\item
+  Implementieren Sie die Approximation und das Training. Dafür können
+  die Bausteine aus \protect\hyperlink{beispiel-implementierung}{Beispiel Implementierung} verwendet werden. Implementieren
+  Sie auch die Gradientenberechnung zur Verwendung im stochastischen
+  Abstiegsverfahren. Testen Sie ihre Implementierung für verschiedene \(M\)
+  und verschiedene Daten für die Funktionen
+  \begin{equation*}
+  f_1(x)=\chi_{[-1, 0]}(x) - \chi_{(0, \frac 13]}(x)+ \chi_{(\frac 13, \frac 12]}(x) -
+  \chi_{(\frac 12, 1]}(x), \quad f_2(x) = \sin(4x)
+  \end{equation*}
+  jeweils auf dem Intervall \([-1, 1]\).
+\end{enumerate}
 
 \hypertarget{nachklapp}{%
 \chapter{Nachklapp}\label{nachklapp}}

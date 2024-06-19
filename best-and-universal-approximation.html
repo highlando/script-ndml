@@ -193,7 +193,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.2" data-path="support-vector-machines.html"><a href="support-vector-machines.html#maximierung-des-minimalen-abstands"><i class="fa fa-check"></i><b>8.2</b> Maximierung des Minimalen Abstands</a></li>
 <li class="chapter" data-level="8.3" data-path="support-vector-machines.html"><a href="support-vector-machines.html#aufgaben-1"><i class="fa fa-check"></i><b>8.3</b> Aufgaben</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="best-and-universal-approximation.html"><a href="best-and-universal-approximation.html"><i class="fa fa-check"></i><b>9</b> Best and Universal Approximation</a></li>
+<li class="chapter" data-level="9" data-path="best-and-universal-approximation.html"><a href="best-and-universal-approximation.html"><i class="fa fa-check"></i><b>9</b> Best and Universal Approximation</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="best-and-universal-approximation.html"><a href="best-and-universal-approximation.html#universal-approximation"><i class="fa fa-check"></i><b>9.1</b> Universal Approximation</a></li>
+<li class="chapter" data-level="9.2" data-path="best-and-universal-approximation.html"><a href="best-and-universal-approximation.html#aufgaben-2"><i class="fa fa-check"></i><b>9.2</b> Aufgaben</a></li>
+</ul></li>
 <li class="chapter" data-level="10" data-path="nachklapp.html"><a href="nachklapp.html"><i class="fa fa-check"></i><b>10</b> Nachklapp</a></li>
 <li class="chapter" data-level="" data-path="referenzen.html"><a href="referenzen.html"><i class="fa fa-check"></i>Referenzen</a></li>
 <li class="divider"></li>
@@ -237,6 +241,8 @@ Die entstehenden Schwierigkeiten und theoretische und praktische Ansätze
 zur möglichen Lösung dieses sogenannten
 <em>Tschebyscheff-Approximation</em>-Problem, sind in <span class="citation">(Kapitel 8.7.2, Richter and Wick <a href="#ref-RicW17" role="doc-biblioref">2017</a>)</span> gut
 nachzulesen.</p>
+<div id="universal-approximation" class="section level2 hasAnchor" number="9.1">
+<h2><span class="header-section-number">9.1</span> Universal Approximation<a href="best-and-universal-approximation.html#universal-approximation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Wir wollen hier nachvollziehen, dass klassische neuronale Netze, dieses Problem
 approximativ aber mit beliebiger Genauigkeit <span class="math inline">\(\epsilon\)</span> lösen könnten. Die
 Schritte da hin sind wie folgt</p>
@@ -353,9 +359,9 @@ Eigenschaften.</p>
 <p>Im letzten Schritt 3 interpretieren wir die <span class="math inline">\(g_M\)</span> Approximation als ein neuronales
 Netz.</p>
 <p>Dazu bemerken wir, dass wir <span class="math inline">\(g_M\)</span> schreiben können als
-<span class="math display">\[\begin{equation*}
+<span class="math display" id="eq:eqn-gm-appr\tag{9.2}on}(#eq:eqn-gm-approx)
 g_M(x) = c_0 + c^T \tanh(Ax+b)
-\end{equation*}\]</span>
+\end{equation}\]</span>
 mit
 <span class="math display">\[\begin{equation*}
 c=
@@ -404,7 +410,37 @@ den Verlauf von <span class="math inline">\(f\)</span> nachzeichnen) mit kleiner
 führen große Werte von <span class="math inline">\(a\)</span> zum sogenannten <em>vanishing gradients</em>
 Phänomen, da <span class="math inline">\(\frac{\tanh(a(x+h))-\tanh(ax)}{h}\to 0\)</span> für <span class="math inline">\(a\to \infty\)</span>.</li>
 </ul>
+</div>
+<div id="aufgaben-2" class="section level2 hasAnchor" number="9.2">
+<h2><span class="header-section-number">9.2</span> Aufgaben<a href="best-and-universal-approximation.html#aufgaben-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Zur Approximation einer Funktion <span class="math inline">\(f\colon \mathbb  R^{}\to \mathbb R^{}\)</span> über den Ansatz <a href="#eq:eqn-gm-approx">(9.2)</a> seien
+Datenpunkte <span class="math inline">\(\mathbb X = \{(x_i, y_i)\}_i\)</span> mit <span class="math inline">\(y_i=f(x_i)\)</span> gegeben und das
+Optimierungsproblem
+<span class="math display">\[\begin{equation*}
+   L(c, A, b; \mathbb X) = \sum_{i} \|y_i - g_M(c, A, b;\, x_i)\|_2^2 \to \min_{c, A, b}
+   \end{equation*}\]</span>
+mittels des stochastischen Gradientenabstiegs zu lösen.</p>
+<ol style="list-style-type: decimal">
+<li><p>Schreiben Sie die Koeffizienten in einen Vektor <span class="math inline">\(p=(c, A, b)\)</span> und berechnen
+Sie <span class="math inline">\(\nabla_{c_0}L(p; \mathbf x)\)</span>, sowie beispielhaft die Komponenten
+von <span class="math inline">\(\nabla_p L(p; \mathbf x)\)</span> für einen einzelnen Datenpunkt <span class="math inline">\(\mathbf x = x_i\)</span> oder einen <em>batch</em> <span class="math inline">\(\mathbf x = \mathbb x\)</span> (wie es für den stochastischen
+Gradienten benutzt würde).</p></li>
+<li><p>Formulieren Sie die Berechnung des Gradienten (bezüglich <span class="math inline">\(p\)</span>) für
+<span class="math inline">\(M=1\)</span> und einen Datenpunkt <span class="math inline">\(x\)</span>, also für die Funktion <span class="math inline">\(l = L(c_0, c_1, a_1, b_1; x)\)</span> über <em>automatisches Differenzieren</em> im Vorwärts– und
+im Rückwärtsmodus.</p></li>
+<li><p>Implementieren Sie die Approximation und das Training. Dafür können
+die Bausteine aus <a href="ein-nn-beispiel.html#beispiel-implementierung">Beispiel Implementierung</a> verwendet werden. Implementieren
+Sie auch die Gradientenberechnung zur Verwendung im stochastischen
+Abstiegsverfahren. Testen Sie ihre Implementierung für verschiedene <span class="math inline">\(M\)</span>
+und verschiedene Daten für die Funktionen
+<span class="math display">\[\begin{equation*}
+f_1(x)=\chi_{[-1, 0]}(x) - \chi_{(0, \frac 13]}(x)+ \chi_{(\frac 13, \frac 12]}(x) -
+\chi_{(\frac 12, 1]}(x), \quad f_2(x) = \sin(4x)
+\end{equation*}\]</span>
+jeweils auf dem Intervall <span class="math inline">\([-1, 1]\)</span>.</p></li>
+</ol>
 
+</div>
 </div>
 <h3>Referenzen<a href="referenzen.html#referenzen" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="refs" class="references">
