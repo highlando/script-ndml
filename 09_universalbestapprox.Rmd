@@ -25,6 +25,8 @@ zur m&ouml;glichen L&ouml;sung dieses sogenannten
 *Tschebyscheff-Approximation*-Problem, sind in [Kapitel 8.7.2, @RicW17] gut
 nachzulesen.
 
+## Universal Approximation
+
 Wir wollen hier nachvollziehen, dass klassische neuronale Netze, dieses Problem
 approximativ aber mit beliebiger Genauigkeit $\epsilon$ l&ouml;sen k&ouml;nnten. Die
 Schritte da hin sind wie folgt
@@ -153,9 +155,9 @@ Im letzten Schritt 3 interpretieren wir die $g_M$ Approximation als ein neuronal
 Netz.
 
 Dazu bemerken wir, dass wir $g_M$ schreiben k&ouml;nnen als
-\begin{equation*}
+\begin{equation}(\#eq:eqn-gm-approx)
 g_M(x) = c_0 + c^T \tanh(Ax+b)
-\end{equation*}
+\end{equation}
 mit 
 \begin{equation*}
 c=
@@ -206,4 +208,35 @@ Wir schlie&szlig;en mit einigen allgemeinen Bemerkungen
   Ph&auml;nomen, da $\frac{\tanh(a(x+h))-\tanh(ax)}{h}\to 0$ f&uuml;r $a\to
   \infty$.
 
+## Aufgaben
 
+Zur Approximation einer Funktion $f\colon \mathbb
+   R^{}\to \mathbb R^{}$ &uuml;ber den Ansatz \@ref(eq:eqn-gm-approx) seien
+   Datenpunkte $\mathbb X = \{(x_i, y_i)\}_i$ mit $y_i=f(x_i)$ gegeben und das
+   Optimierungsproblem
+   \begin{equation*}
+   L(c, A, b; \mathbb X) = \sum_{i} \|y_i - g_M(c, A, b;\, x_i)\|_2^2 \to \min_{c, A, b}
+   \end{equation*}
+   mittels des stochastischen Gradientenabstiegs zu l&ouml;sen.
+
+1. Schreiben Sie die Koeffizienten in einen Vektor $p=(c, A, b)$ und berechnen
+   Sie $\nabla_{c_0}L(p; \mathbf x)$, sowie beispielhaft die Komponenten 
+   von $\nabla_p L(p; \mathbf x)$ f&uuml;r einen einzelnen Datenpunkt $\mathbf x
+   = x_i$ oder einen *batch* $\mathbf x = \mathbb x$ (wie es f&uuml;r den stochastischen
+   Gradienten benutzt w&uuml;rde).
+
+2. Formulieren Sie die Berechnung des Gradienten (bez&uuml;glich $p$) f&uuml;r
+   $M=1$ und einen Datenpunkt $x$, also f&uuml;r die Funktion $l = L(c_0, c_1,
+   a_1, b_1; x)$ &uuml;ber *automatisches Differenzieren* im Vorw&auml;rts-- und
+   im R&uuml;ckw&auml;rtsmodus.
+
+3. Implementieren Sie die Approximation und das Training. Daf&uuml;r k&ouml;nnen
+   die Bausteine aus [Beispiel Implementierung] verwendet werden. Implementieren
+   Sie auch die Gradientenberechnung zur Verwendung im stochastischen
+   Abstiegsverfahren. Testen Sie ihre Implementierung f&uuml;r verschiedene $M$
+   und verschiedene Daten f&uuml;r die Funktionen
+   \begin{equation*}
+   f_1(x)=\chi_{[-1, 0]}(x) - \chi_{(0, \frac 13]}(x)+ \chi_{(\frac 13, \frac 12]}(x) -
+   \chi_{(\frac 12, 1]}(x), \quad f_2(x) = \sin(4x)
+   \end{equation*}
+   jeweils auf dem Intervall $[-1, 1]$.
