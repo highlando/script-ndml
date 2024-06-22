@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Page not found | Numerik des Maschinellen Lernens</title>
+  <title>10 Automatisches Differenzieren (Algorithmisches Differenzieren) | Numerik des Maschinellen Lernens</title>
   <meta name="description" content="Vorlesungsnotizen zu meiner integrierten Vorlesung im SoSe 2024" />
   <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Page not found | Numerik des Maschinellen Lernens" />
+  <meta property="og:title" content="10 Automatisches Differenzieren (Algorithmisches Differenzieren) | Numerik des Maschinellen Lernens" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="Vorlesungsnotizen zu meiner integrierten Vorlesung im SoSe 2024" />
   <meta name="github-repo" content="highlando/script-ndml" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Page not found | Numerik des Maschinellen Lernens" />
+  <meta name="twitter:title" content="10 Automatisches Differenzieren (Algorithmisches Differenzieren) | Numerik des Maschinellen Lernens" />
   
   <meta name="twitter:description" content="Vorlesungsnotizen zu meiner integrierten Vorlesung im SoSe 2024" />
   
@@ -29,8 +29,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-
+<link rel="prev" href="best-and-universal-approximation.html"/>
+<link rel="next" href="implementierungen-anwendungsbeispiele-backpropagation.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -227,19 +227,69 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="page-not-found" class="section level1">
-<h1>Page not found</h1>
-<p>The page you requested cannot be found (perhaps it was moved or renamed).</p>
-<p>You may want to try searching to find the page's new location, or use
-the table of contents to find the page you are looking for.</p>
+<div id="automatisches-differenzieren-algorithmisches-differenzieren" class="section level1 hasAnchor" number="10">
+<h1><span class="header-section-number">10</span> Automatisches Differenzieren (Algorithmisches Differenzieren)<a href="automatisches-differenzieren-algorithmisches-differenzieren.html#automatisches-differenzieren-algorithmisches-differenzieren" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>In der Mathematik und im Bereich der Computeralgebra ist das <strong>automatische
+Differenzieren</strong> (auch <strong>Auto-Differenzieren</strong>, <strong>Autodiff</strong> oder einfach <strong>AD</strong>
+genannt und in anderen communities als <strong>algorithmisches Differenzieren</strong> oder
+<strong>computergestütztes Differenzieren</strong>), ein Satz von Techniken zur Bewertung der
+partiellen Ableitung einer durch ein Computerprogramm spezifizierten Funktion.</p>
+<p>AD nutzt die Tatsache, dass jede Computerberechnung,
+egal wie kompliziert, eine Sequenz von elementaren arithmetischen Operationen
+(Addition, Subtraktion, Multiplikation, Division usw.) und elementaren
+Funktionen (exp, log, sin, cos usw.) ausführt. Durch wiederholte Anwendung der
+Kettenregel auf diese Operationen können partielle Ableitungen beliebiger
+Ordnung automatisch, genau bis zur Arbeitspräzision und mit höchstens einem
+kleinen konstanten Faktor mehr an arithmetischen Operationen als das
+ursprüngliche Programm berechnet werden.</p>
+<div id="unterschied-zu-anderen-differentiationsmethoden" class="section level2 hasAnchor" number="10.1">
+<h2><span class="header-section-number">10.1</span> Unterschied zu anderen Differentiationsmethoden<a href="automatisches-differenzieren-algorithmisches-differenzieren.html#unterschied-zu-anderen-differentiationsmethoden" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>AD unterscheidet sich von symbolischer Differentiation
+und numerischer Differentiation. Symbolische Differentiation hat die
+Schwierigkeit, ein Computerprogramm in einen einzigen mathematischen Ausdruck
+umzuwandeln und kann zu ineffizientem Code führen. Numerische Differentiation
+(die Methode der finiten Differenzen) ist enorm schlecht konditioniert (da im Nenner des Differenzenquotienten fast gleich grosse Größen subtrahiert werden).
+Beide klassischen Methoden
+haben Probleme mit der Berechnung höherer Ableitungen, wo Komplexität und Fehler
+zunehmen. Diese Komplexität macht sich bei multivariablen Funktionen
+bemerkbar, da die <span class="math inline">\(m \cdot n\)</span> (Anzahl abhängiger mal mal Anzahl unabhängiger Variablen) einzeln berechnet werden.</p>
+</div>
+<div id="anwendungen" class="section level2 hasAnchor" number="10.2">
+<h2><span class="header-section-number">10.2</span> Anwendungen<a href="automatisches-differenzieren-algorithmisches-differenzieren.html#anwendungen" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Automatisches Differenzieren ist ein entscheidender Baustein im Erfolg des
+maschinellen Lernens. Jan könnte sagen, dass ohne AD die Optimierung der
+neuronalen Netze mit tausenden bis Millionen von Parametern nicht möglich
+wäre.</p>
+</div>
+<div id="vorwärts--und-rückwärtsakkumulation" class="section level2 hasAnchor" number="10.3">
+<h2><span class="header-section-number">10.3</span> Vorwärts- und Rückwärtsakkumulation<a href="automatisches-differenzieren-algorithmisches-differenzieren.html#vorwärts--und-rückwärtsakkumulation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="kettenregel-der-partiellen-ableitungen-zusammengesetzter-funktionen" class="section level3 hasAnchor" number="10.3.1">
+<h3><span class="header-section-number">10.3.1</span> Kettenregel der partiellen Ableitungen zusammengesetzter Funktionen<a href="automatisches-differenzieren-algorithmisches-differenzieren.html#kettenregel-der-partiellen-ableitungen-zusammengesetzter-funktionen" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Grundlegend für die automatische Differentiation ist die Zerlegung von
+Differentialen, die durch die Kettenregel der partiellen Ableitungen
+zusammengesetzter Funktionen bereitgestellt wird. Für die einfache
+Zusammensetzung</p>
+<p><span class="math display">\[\begin{align}
+y &amp;= f(g(h(x))) = f(g(h(w_0))) = f(g(w_1)) = f(w_2) = w_3 \\
+w_0 &amp;= x \\ 
+w_1 &amp;= h(w_0) \\
+w_2 &amp;= g(w_1) \\
+w_3 &amp;= f(w_2) = y
+\end{align}\]</span></p>
+<p>gibt die Kettenregel</p>
+<p><span class="math display">\[
+\frac{\partial y}{\partial x} = \frac{\partial y}{\partial w_2} \frac{\partial w_2}{\partial w_1} \frac{\partial w_1}{\partial x} = \frac{\partial f(w_2)}{\partial w_2} \frac{\partial g(w_1)}{\partial w_1} \frac{\partial h(w_0)}{\partial x}
+\]</span></p>
+</div>
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-
+<a href="best-and-universal-approximation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="implementierungen-anwendungsbeispiele-backpropagation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

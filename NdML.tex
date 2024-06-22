@@ -2778,6 +2778,75 @@ mittels des stochastischen Gradientenabstiegs zu lösen.
   jeweils auf dem Intervall \([-1, 1]\).
 \end{enumerate}
 
+\hypertarget{automatisches-differenzieren-algorithmisches-differenzieren}{%
+\chapter{Automatisches Differenzieren (Algorithmisches Differenzieren)}\label{automatisches-differenzieren-algorithmisches-differenzieren}}
+
+In der Mathematik und im Bereich der Computeralgebra ist das \textbf{automatische
+Differenzieren} (auch \textbf{Auto-Differenzieren}, \textbf{Autodiff} oder einfach \textbf{AD}
+genannt und in anderen communities als \textbf{algorithmisches Differenzieren} oder
+\textbf{computergestütztes Differenzieren}), ein Satz von Techniken zur Bewertung der
+partiellen Ableitung einer durch ein Computerprogramm spezifizierten Funktion.
+
+AD nutzt die Tatsache, dass jede Computerberechnung,
+egal wie kompliziert, eine Sequenz von elementaren arithmetischen Operationen
+(Addition, Subtraktion, Multiplikation, Division usw.) und elementaren
+Funktionen (exp, log, sin, cos usw.) ausführt. Durch wiederholte Anwendung der
+Kettenregel auf diese Operationen können partielle Ableitungen beliebiger
+Ordnung automatisch, genau bis zur Arbeitspräzision und mit höchstens einem
+kleinen konstanten Faktor mehr an arithmetischen Operationen als das
+ursprüngliche Programm berechnet werden.
+
+\hypertarget{unterschied-zu-anderen-differentiationsmethoden}{%
+\section{Unterschied zu anderen Differentiationsmethoden}\label{unterschied-zu-anderen-differentiationsmethoden}}
+
+AD unterscheidet sich von symbolischer Differentiation
+und numerischer Differentiation. Symbolische Differentiation hat die
+Schwierigkeit, ein Computerprogramm in einen einzigen mathematischen Ausdruck
+umzuwandeln und kann zu ineffizientem Code führen. Numerische Differentiation
+(die Methode der finiten Differenzen) ist enorm schlecht konditioniert (da im Nenner des Differenzenquotienten fast gleich grosse Größen subtrahiert werden).
+Beide klassischen Methoden
+haben Probleme mit der Berechnung höherer Ableitungen, wo Komplexität und Fehler
+zunehmen. Diese Komplexität macht sich bei multivariablen Funktionen
+bemerkbar, da die \(m \cdot n\) (Anzahl abhängiger mal mal Anzahl unabhängiger Variablen) einzeln berechnet werden.
+
+\hypertarget{anwendungen}{%
+\section{Anwendungen}\label{anwendungen}}
+
+Automatisches Differenzieren ist ein entscheidender Baustein im Erfolg des
+maschinellen Lernens. Jan könnte sagen, dass ohne AD die Optimierung der
+neuronalen Netze mit tausenden bis Millionen von Parametern nicht möglich
+wäre.
+
+\hypertarget{vorwuxe4rts--und-ruxfcckwuxe4rtsakkumulation}{%
+\section{Vorwärts- und Rückwärtsakkumulation}\label{vorwuxe4rts--und-ruxfcckwuxe4rtsakkumulation}}
+
+\hypertarget{kettenregel-der-partiellen-ableitungen-zusammengesetzter-funktionen}{%
+\subsection{Kettenregel der partiellen Ableitungen zusammengesetzter Funktionen}\label{kettenregel-der-partiellen-ableitungen-zusammengesetzter-funktionen}}
+
+Grundlegend für die automatische Differentiation ist die Zerlegung von
+Differentialen, die durch die Kettenregel der partiellen Ableitungen
+zusammengesetzter Funktionen bereitgestellt wird. Für die einfache
+Zusammensetzung
+
+\begin{align}
+y &= f(g(h(x))) = f(g(h(w_0))) = f(g(w_1)) = f(w_2) = w_3 \\
+w_0 &= x \\ 
+w_1 &= h(w_0) \\
+w_2 &= g(w_1) \\
+w_3 &= f(w_2) = y
+\end{align}
+
+gibt die Kettenregel
+
+\[
+\frac{\partial y}{\partial x} = \frac{\partial y}{\partial w_2} \frac{\partial w_2}{\partial w_1} \frac{\partial w_1}{\partial x} = \frac{\partial f(w_2)}{\partial w_2} \frac{\partial g(w_1)}{\partial w_1} \frac{\partial h(w_0)}{\partial x}
+\]
+
+\hypertarget{implementierungen-anwendungsbeispiele-backpropagation}{%
+\chapter{Implementierungen, Anwendungsbeispiele, Backpropagation}\label{implementierungen-anwendungsbeispiele-backpropagation}}
+
+\ldots{}
+
 \hypertarget{nachklapp}{%
 \chapter{Nachklapp}\label{nachklapp}}
 

@@ -89,4 +89,10 @@ aufgaben-1
 best-and-universal-approximation
 universal-approximation
 aufgaben-2
+automatisches-differenzieren-algorithmisches-differenzieren
+unterschied-zu-anderen-differentiationsmethoden
+anwendungen
+vorwärts--und-rückwärtsakkumulation
+kettenregel-der-partiellen-ableitungen-zusammengesetzter-funktionen
+implementierungen-anwendungsbeispiele-backpropagation
 nachklapp
