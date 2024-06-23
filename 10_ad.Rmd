@@ -1,4 +1,4 @@
-# Automatisches Differenzieren (Algorithmisches Differenzieren)
+# Automatisches (Algorithmisches) Differenzieren
 
 In der Mathematik und im Bereich der Computeralgebra ist das **automatische
 Differenzieren** (auch **Auto-Differenzieren**, **Autodiff** oder einfach **AD**
@@ -51,11 +51,111 @@ w_2 &= g(w_1) \\
 w_3 &= f(w_2) = y
 \end{align}
 
-gibt die Kettenregel
+ergibt die Kettenregel:
 
 $$
 \frac{\partial y}{\partial x} = \frac{\partial y}{\partial w_2} \frac{\partial w_2}{\partial w_1} \frac{\partial w_1}{\partial x} = \frac{\partial f(w_2)}{\partial w_2} \frac{\partial g(w_1)}{\partial w_1} \frac{\partial h(w_0)}{\partial x}
 $$
+
+### Zwei Arten der automatischen Differentiation
+
+Es gibt zwei Hauptmodi der AD:
+
+1. *Vorwärtsakkumulation* (Bottom-Up, Vorwärtsmodus, Tangentenmodus)
+
+  - Kettenregel von "außen nach innen".
+  - Berechnet rekursiv: \(\frac{\partial y}{\partial w_i} = \frac{\partial y}{\partial w_{i+1}} \frac{\partial w_{i+1}}{\partial w_{i}}\) mit dem Ziel zu \(w_0 = x\) zu gelangen.
+
+2. *Rückwärtsakkumulation* (Top-Down, Rückwärtsmodus, Adjungierter Modus)
+
+  - Kettenregel von innen nach außen.
+  - Berechnet rekursiv: \(\frac{\partial w_i}{\partial x} = \frac{\partial w_i}{\partial w_{i-1}} \frac{\partial w_{i-1}}{\partial x}\) mit dem Ziel bis zu \(w_3 = y\) zu gelangen.
+
+Die Entscheidung zwischen Vorwärts- und Rückwärtsmodus hängt von der "Durchlaufanzahl" ab, die direkt mit der rechnerischen Komplexität des Originalcodes zusammenhängt.
+
+- *Vorwärtsakkumulation*: Bevorzugt für Funktionen \(f \colon \mathbb{R}^n \rightarrow \mathbb{R}^m\), wobei \(n \ll m\).
+- *Rückwärtsakkumulation*: Bevorzugt für Funktionen \(f\colon \mathbb{R}^n \rightarrow \mathbb{R}^m\), wobei \(n \gg m\).
+
+Vor allem f&uuml;r neuronale Netze mit vielen Parametern und dem Fehler als
+(skalaren) Ausgang, ist der R&uuml;ckw&auml;rtsmodus fraglos die Methode der
+Wahl. Hier wird dann typischerweise von *backpropagation* gesprochen, was eine
+Adaption der Methode an die Architektur typischer neuronaler Netze ist.
+
+## Vorw&auml;rtsmodus
+
+Bei der Vorwärtsakkumulation in der automatischen Differenzierung fixiert man zunächst die "unabhängige Variable", bezüglich derer differenziert wird, und berechnet die Ableitung jeder Teil-[Ausdruck (Mathematik)|Ausdrucks] rekursiv. Bei einer Berechnung mit Stift und Papier bedeutet dies, wiederholt die Ableitung der "inneren" Funktionen in der Kettenregel zu substituieren:
+
+\begin{align}
+\frac{\partial y}{\partial x}
+&= \frac{\partial y}{\partial w_{n-1}} \frac{\partial w_{n-1}}{\partial x} \\
+&= \frac{\partial y}{\partial w_{n-1}} \left(\frac{\partial w_{n-1}}{\partial w_{n-2}} \frac{\partial w_{n-2}}{\partial x}\right) \\
+&= \frac{\partial y}{\partial w_{n-1}} \left(\frac{\partial w_{n-1}}{\partial w_{n-2}} \left(\frac{\partial w_{n-2}}{\partial w_{n-3}} \frac{\partial w_{n-3}}{\partial x}\right)\right) \\
+&= \cdots
+\end{align}
+
+Dies kann zu einer Matrixprodukt von Jakobimatrizen für mehrere Variablen verallgemeinert werden.
+
+Im Vergleich zur Rückwärtsakkumulation ist die Vorwärtsakkumulation natürlich und einfach zu implementieren, da der Fluss der Ableitungsinformationen mit der Auswertungsreihenfolge übereinstimmt. Jede Variable \(w_i\) wird mit ihrer Ableitung \(\dot w_i\) (gespeichert als numerischer Wert, nicht als symbolischer Ausdruck),
+
+$$
+\dot w_i = \frac{\partial w_i}{\partial x}
+$$
+
+wie durch den Punkt angezeigt, ergänzt. Die Ableitungen werden dann synchron mit den Auswertungsschritten berechnet und über die Kettenregel mit anderen Ableitungen kombiniert.
+
+Unter Verwendung der Kettenregel, wenn \(w_i\) Vorgänger im Berechnungsgraph hat:
+
+$$
+\dot w_i = \sum_{j \in \{\text{Vorgänger von i}\}} \frac{\partial w_i}{\partial w_j} \dot w_j
+$$
+
+![Beispiel für Vorwärtsakkumulation mit Berechnungsgraph](bilder/ForwardAccumulationAutomaticDifferentiation.png)
+
+Als Beispiel betrachte die Funktion:
+
+\begin{align*}
+y
+&= f(x_1, x_2) \\
+&= x_1 x_2 + \sin x_1 \\
+&= w_1 w_2 + \sin w_1 \\
+&= w_3 + w_4 \\
+&= w_5
+\end{align*}
+
+Zur Verdeutlichung wurden die einzelnen Teil-Ausdrücke mit den Variablen \(w_i\) beschriftet.
+
+Die Wahl der unabhängigen Variablen, bezüglich derer differenziert wird, beeinflusst die "Seed"-Werte \(\dot w_1\) und \(\dot w_2\). Bei Interesse an der Ableitung dieser Funktion in Bezug auf \(x_1\) sollten die Seed-Werte wie folgt gesetzt werden:
+
+\begin{align}
+\dot w_1 = \frac{\partial w_1}{\partial x_1} = \frac{\partial x_1}{\partial x_1} = 1 \\
+\dot w_2 = \frac{\partial w_2}{\partial x_1} = \frac{\partial x_2}{\partial x_1} = 0
+\end{align}
+
+Mit den gesetzten Seed-Werten breiten sich die Werte unter Verwendung der Kettenregel aus, wie gezeigt. Abbildung 2 zeigt eine bildliche Darstellung dieses Prozesses als Berechnungsgraph.
+
+Um den Gradienten dieser Beispiel-Funktion zu berechnen, der nicht nur \(\frac{\partial y}{\partial x_1}\) sondern auch \(\frac{\partial y}{\partial x_2}\) erfordert, wird ein "zusätzlicher" Durchlauf über den Berechnungsgraphen mit den Seed-Werten \(\dot w_1 = 0; \dot w_2 = 1\) durchgeführt.
+
+Bei der Rückwärtsakkumulation ist die Größe von Interesse der *Adjungierte*, bezeichnet mit einem Balken $\bar{w}_i$; es handelt sich um eine Ableitung einer gewählten abhängigen Variablen in Bezug auf einen Teilausdruck $w_i$:
+
+$$\bar{w}_i = \frac{\partial y}{\partial w_i}$$
+
+Unter Verwendung der Kettenregel, wenn $w_i$ Nachfolger im Berechnungsgraphen hat:
+
+$$\bar{w}_i = \sum_{j \in \{\text{Nachfolger von i}\}} \bar{w}_j \frac{\partial w_j}{\partial w_i}$$
+
+Die Rückwärtsakkumulation durchläuft die Kettenregel von außen nach innen oder im Falle des Berechnungsgraphen in Abbildung 3 von oben nach unten. Die Beispiel-Funktion ist skalarwertig, und daher gibt es nur einen Startwert für die Ableitungsberechnung, und nur einen Durchlauf des Berechnungsgraphen ist nötig, um den (zweikomponentigen) Gradienten zu berechnen. Dies ist nur halb so viel Arbeit im Vergleich zur Vorwärtsakkumulation, aber die Rückwärtsakkumulation erfordert das Speichern der Zwischenvariablen $w_i$ sowie der Anweisungen, die sie erzeugt haben, in einer Datenstruktur, die als "Band" oder Wengert-Liste bekannt ist (jedoch veröffentlichte Wengert die Vorwärtsakkumulation, nicht die Rückwärtsakkumulation), was erheblichen Speicher verbrauchen kann, wenn der Berechnungsgraph groß ist. Dies kann bis zu einem gewissen Grad gemildert werden, indem nur eine Teilmenge der Zwischenvariablen gespeichert und dann die notwendigen Arbeitsvariablen durch Wiederholung der Bewertungen rekonstruiert werden, eine Technik, die als Rematerialisierung bekannt ist. Auch das Checkpointing wird verwendet, um Zwischenstände zu speichern.
+
+![Abbildung 3: Beispiel für Rückwärtsakkumulation mit Berechnungsgraph](bilder/ReverseaccumulationAD.png)
+
+Die Operationen zur Berechnung der Ableitung mittels Rückwärtsakkumulation sind in der folgenden Tabelle dargestellt (beachte die umgekehrte Reihenfolge):
+
+- $\bar{w}_5 = 1$ (Startwert)
+- $\bar{w}_4 = \bar{w}_5 \cdot 1$
+- $\bar{w}_3 = \bar{w}_5 \cdot 1$
+- $\bar{w}_2 = \bar{w}_3 \cdot w_1$
+- $\bar{w}_1 = \bar{w}_3 \cdot w_2 + \bar{w}_4 \cdot \cos(w_1)$
+
+Der Datenflussgraph einer Berechnung kann manipuliert werden, um den Gradienten seiner ursprünglichen Berechnung zu berechnen. Dies geschieht durch Hinzufügen eines adjungierten Knotens für jeden primalen Knoten, verbunden durch adjungierte Kanten, die den primalen Kanten parallel verlaufen, aber in entgegengesetzter Richtung fließen. Die Knoten im adjungierten Graphen repräsentieren die Multiplikation mit den Ableitungen der Funktionen, die von den Knoten im primalen berechnet wurden. Zum Beispiel führt Addition im Primalen zu Fanout im Adjungierten; Fanout im Primalen führt zu Addition im Adjungierten; eine unäre Funktion $y = f(x)$ im Primalen führt zu $x̄ = ȳ f′(x)$ im Adjungierten; usw.
 
 # Implementierungen, Anwendungsbeispiele, Backpropagation
 
