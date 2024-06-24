@@ -114,8 +114,8 @@ dass hierbei
    \end{equation*}
    und 
    \begin{equation*}
-   (F, \partial F) \colon \mathbb R^{\ell} \to \mathbb R^{\ell} \times  \mathbb
-   R^{m \times m}
+   (F, \partial F) \colon \mathbb R^{\ell} \to \mathbb R^{m} \times  \mathbb
+   R^{m \times \ell}
    \end{equation*}
    und der Akkumulation
    \begin{equation*}
