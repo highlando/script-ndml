@@ -1,10 +1,11 @@
 # Automatisches (Algorithmisches) Differenzieren
 
-In der Mathematik und im Bereich der Computeralgebra ist das **automatische
-Differenzieren** (auch **Auto-Differenzieren**, **Autodiff** oder einfach **AD**
-genannt und in anderen communities als **algorithmisches Differenzieren** oder
-**computergestütztes Differenzieren**), ein Satz von Techniken zur Bewertung der
-partiellen Ableitung einer durch ein Computerprogramm spezifizierten Funktion.
+In der Mathematik und im Bereich der Computeralgebra ist das *automatische
+Differenzieren* (auch *Auto-Differenzieren*, *Autodiff* oder einfach *AD*
+genannt und in anderen communities als *algorithmisches Differenzieren* oder
+*computergestütztes Differenzieren* bezeichnet), ein Satz von Techniken zur
+Berechnung (der Werte(!)) der partiellen Ableitung einer durch ein
+Computerprogramm spezifizierten Funktion.
 
 AD nutzt die Tatsache, dass jede Computerberechnung,
 egal wie kompliziert, eine Sequenz von elementaren arithmetischen Operationen
@@ -15,17 +16,39 @@ Ordnung automatisch, genau bis zur Arbeitspräzision und mit höchstens einem
 kleinen konstanten Faktor mehr an arithmetischen Operationen als das
 ursprüngliche Programm berechnet werden.
 
-## Unterschied zu anderen Differentiationsmethoden
+## Andere Differentiationsmethoden
 
-AD unterscheidet sich von symbolischer Differentiation
-und numerischer Differentiation. Symbolische Differentiation hat die
-Schwierigkeit, ein Computerprogramm in einen einzigen mathematischen Ausdruck
-umzuwandeln und kann zu ineffizientem Code führen. Numerische Differentiation
-(die Methode der finiten Differenzen) ist enorm schlecht konditioniert (da im Nenner des Differenzenquotienten fast gleich grosse Gr&ouml;&szlig;en subtrahiert werden).
-Beide klassischen Methoden
-haben Probleme mit der Berechnung höherer Ableitungen, wo Komplexität und Fehler
-zunehmen. Diese Komplexit&auml;t macht sich bei multivariablen Funktionen
-bemerkbar, da die $m \cdot n$ (Anzahl abh&auml;ngiger mal mal Anzahl unabh&auml;ngiger Variablen) einzeln berechnet werden. 
+In manchen Anwendungsf&auml;llen wird auf eine symbolische Repr&auml;sentation von
+Funktionen und Variablen in der computergest&uuml;tzten Berechnung
+zur&uuml;ckgegriffen. Sogenannte Computeralgebra Pakete wie `Maple`,
+`Mathematica` oder die *Python* Bibliotheken `SageMath` oder `Sympy` k&ouml;nnen
+dann automatisiert auch Operationen auf Funktionen wie Integralberechnung und
+eben auch Differentiation *exakt* ausf&uuml;hren. Durch die Kettenregel und
+unter der Massgabe, dass alle Codes letztlich nur elementare Funktionen mit
+bekannten Ableitungen verschalten, w&auml;re es auch m&ouml;glich, bei
+entsprechender Implementierung des prim&auml;ren Progamms, auch automatisiert
+die Ableitungen zu erzeugen. Allerdings ist der Mehraufwand in der symbolischen
+Programmierung erheblich und die Auswertung der Ausdr&uuml;cke langsam, sodass
+symbolische Berechnungen (und entsprechend auch die M&ouml;glichkeit der
+symbolischen automatischen Differentiation) nur in spezifischen und insbesondere
+nicht in "grossen" und "multi-purpose" Algorithmen zur Anwendung kommen.
+
+
+::: {#ad-vs-sd .JHSAYS data-latex=''}
+Auch AD rechnet symbolisch und rekursiv mit der Kettenregel. Der Unterschied ist, dass AD nur mit Funktionswerten der
+Ableitungen arbeitet w&auml;hrend die symbolische Ableitung versucht, die
+Ableitung als Funktion zu erzeugen.
+:::
+
+Auf der anderen Seite steht die *numerische Differentiation* (beispielsweise durch Berechnung von Differenzenquotienten). 
+Diese Methode ist universell (Ableitungen k&ouml;nnen ohne Kenntnis dessen
+berechnet werden, was im Innern des Programms alles passiert) ist jedoch enorm schlecht konditioniert (da im
+Z&auml;hler des Differenzenquotienten fast gleich grosse Gr&ouml;&szlig;en
+subtrahiert werden). Die Bestimmung einer passenden Schrittweite muss immer *ad
+hoc* erfolgen und macht diese Berechnung zus&auml;tzlich teuer.
+
+Sind h&ouml;here Ableitungen gefragt, verst&auml;rken sich zudem die
+Komplexit&auml;t (f&uuml;r die symbolische Berechnung) und die Fehlerverst&auml;rkung (in der numerischen Differentiation).
 
 ## Anwendungen
 
@@ -43,35 +66,78 @@ Differentialen, die durch die Kettenregel der partiellen Ableitungen
 zusammengesetzter Funktionen bereitgestellt wird. Für die einfache
 Zusammensetzung
 
-\begin{align}
+\begin{align*}
 y &= f(g(h(x))) = f(g(h(w_0))) = f(g(w_1)) = f(w_2) = w_3 \\
 w_0 &= x \\ 
 w_1 &= h(w_0) \\
 w_2 &= g(w_1) \\
 w_3 &= f(w_2) = y
-\end{align}
+\end{align*}
 
-ergibt die Kettenregel:
+ergibt die Kettenregel f&uuml;r die Werte zu einem fixen Wert $x^*$ von $x$:
 
-$$
-\frac{\partial y}{\partial x} = \frac{\partial y}{\partial w_2} \frac{\partial w_2}{\partial w_1} \frac{\partial w_1}{\partial x} = \frac{\partial f(w_2)}{\partial w_2} \frac{\partial g(w_1)}{\partial w_1} \frac{\partial h(w_0)}{\partial x}
-$$
+\begin{align*}
+\frac{\partial y(x^*)}{\partial x} &= 
+\frac{\partial y}{\partial w_2}\Biggl|_{w_2=g(h(x^*))} \frac{\partial w_2}{\partial w_1} \Biggl|_{w_1=h(x^*)}\frac{\partial w_1}{\partial w_0}\Biggl|_{w_0=x^*} \\
+&= \frac{\partial f}{\partial w_2}(w_2^*)\biggl[ \frac{\partial g}{\partial w_1}(w_1^*) \Bigl[\frac{\partial h}{\partial x}(w_0^*) \Bigr] \biggr]
+\end{align*}
 
-### Zwei Arten der automatischen Differentiation
+F&uuml;r multivariate Funktionen gilt die mehrdimensionale Kettenregel und das
+Produkt der Ableitungen wird zum Produkt der Jacobi-Matrizen.
 
-Es gibt zwei Hauptmodi der AD:
+## AD -- Vorw&auml;rtsmodus
 
-1. *Vorwärtsakkumulation* (Bottom-Up, Vorwärtsmodus, Tangentenmodus)
+Im sogenannten *Vorw&auml;rtsmodus* (auch *forward accumulation*) wird jede Teilfunktion im Programm
+so erweitert, dass mit dem Funktionswert direkt der Wert der Ableitung
+mitgeliefert wird. Ein Programmfluss f&uuml;r obiges $f$, $g$, $h$ Beispiel
+w&uuml;rde also jeweils immer zwei Berechnungen machen und die Ableitung
+*akkumulieren*:
 
-  - Kettenregel von "außen nach innen".
-  - Berechnet rekursiv: \(\frac{\partial y}{\partial w_i} = \frac{\partial y}{\partial w_{i+1}} \frac{\partial w_{i+1}}{\partial w_{i}}\) mit dem Ziel zu \(w_0 = x\) zu gelangen.
 
-2. *Rückwärtsakkumulation* (Top-Down, Rückwärtsmodus, Adjungierter Modus)
+| Schritt | Funktionswert | Ableitung | Akkumulation |
+| --- | ------ | --- | ---- |
+| `0` | $w_0 = x$ | $\dot w_0 = 1$ | $1$ |
+| `1` | $(w_1, \dot w_1) = (h(w_0), h'(w_0))$ | $\dot w_1$ | $\dot w_1 \cdot 1$ |
+| `2` | $(w_2, \dot w_2) = (g(w_1), g(w_1))$ | $\dot w_2$ | $\dot w_2 \cdot\dot w_1 \cdot 1$ |
+| `3` | $(w_3, \dot w_3) = (f(w_1), f(w_1))$ | $\dot w_3$ | $\dot w_3 \cdot\dot w_2 \cdot\dot w_1 \cdot 1$ |
 
-  - Kettenregel von innen nach außen.
-  - Berechnet rekursiv: \(\frac{\partial w_i}{\partial x} = \frac{\partial w_i}{\partial w_{i-1}} \frac{\partial w_{i-1}}{\partial x}\) mit dem Ziel bis zu \(w_3 = y\) zu gelangen.
+Das ergibt die Ableitung als den finalen Wert der Akkumulation. Wir bemerken,
+dass hierbei
 
-Die Entscheidung zwischen Vorwärts- und Rückwärtsmodus hängt von der "Durchlaufanzahl" ab, die direkt mit der rechnerischen Komplexität des Originalcodes zusammenhängt.
+ * die Ableitung entlang des Programmflusses immer direkt mitbestimmt wird
+   (deshalb *vorw&auml;rts* Modus)
+ * es gen&uuml;gt im Schritt $k$, den Wert $w_{k-1}$ und die Akkumulation zu
+   kennen.
+ * F&uuml;r eine Funktion $F\otimes G \otimes h \colon \mathbb R^{}\to \mathbb R^{m}$, funktioniert die Berechnung ganz analog mit beispielsweise 
+   \begin{equation*}
+   (G, \partial G) \colon \mathbb R^{} \to \mathbb R^{\ell} \times  \mathbb R^{\ell}
+   \end{equation*}
+   und 
+   \begin{equation*}
+   (F, \partial F) \colon \mathbb R^{\ell} \to \mathbb R^{\ell} \times  \mathbb
+   R^{m \times m}
+   \end{equation*}
+   und der Akkumulation
+   \begin{equation*}
+   \frac{\partial y}{\partial x}(x^*) = \partial F(w_2)\cdot \partial G(w_1)\cdot h'(w_0) \cdot 1.
+   \end{equation*}
+ * F&uuml;r eine Funktion in mehreren Variablen, d.h. von $\mathbb R^{n}$ nach $\mathbb R^{m}$, werden die
+   partiellen Ableitungen $\frac{\partial y}{\partial x_k}$ separat in eigenen Durchl&auml;fen berechnet:
+     * damit ist an der Implementierung nichts zu &auml;ndern, nur die
+       Akkumulation wird mit $\dot w_0 = \begin{bmatrix} 0 & \hdots & 1 & 0
+       & \hdots 0 \end{bmatrix}^T$ initialisiert
+     * eine simultane Berechnung aller Ableitungen verursacht vergleichsweise
+       viel *overhead* (entweder m&uuml;ssen die verschiedenen Richtungen im
+       Code
+       organisiert werden oder es m&uuml;ssen alle Zwischenberechnungen der
+       Ableitung gespeichert werden).
+
+
+::: {#fwd-ad-vs-bwd .JHSAYS data-latex=''}
+
+Wir halten fest, dass der *Vorw&auml;rtsmodus* gut funktioniert f&uuml;r skalare
+Eing&auml;nge unabh&auml;ngig von der Zahl der Ausg&auml;nge. Wir werden lernen,
+dass sich beim R&uuml;ckw&auml;rtmodus dieses Verh&auml;ltnis umdreht. Damit:
 
 - *Vorwärtsakkumulation*: Bevorzugt für Funktionen \(f \colon \mathbb{R}^n \rightarrow \mathbb{R}^m\), wobei \(n \ll m\).
 - *Rückwärtsakkumulation*: Bevorzugt für Funktionen \(f\colon \mathbb{R}^n \rightarrow \mathbb{R}^m\), wobei \(n \gg m\).
@@ -81,59 +147,45 @@ Vor allem f&uuml;r neuronale Netze mit vielen Parametern und dem Fehler als
 Wahl. Hier wird dann typischerweise von *backpropagation* gesprochen, was eine
 Adaption der Methode an die Architektur typischer neuronaler Netze ist.
 
-## Vorw&auml;rtsmodus
+:::
 
-Bei der Vorwärtsakkumulation in der automatischen Differenzierung fixiert man zunächst die "unabhängige Variable", bezüglich derer differenziert wird, und berechnet die Ableitung jeder Teil-[Ausdruck (Mathematik)|Ausdrucks] rekursiv. Bei einer Berechnung mit Stift und Papier bedeutet dies, wiederholt die Ableitung der "inneren" Funktionen in der Kettenregel zu substituieren:
+Bevor wir zum R&uuml;ckw&auml;rtsmodus kommen, noch einige Praktische
+Bemerkungen anhand eines konkreten Beispiel.
 
-\begin{align}
-\frac{\partial y}{\partial x}
-&= \frac{\partial y}{\partial w_{n-1}} \frac{\partial w_{n-1}}{\partial x} \\
-&= \frac{\partial y}{\partial w_{n-1}} \left(\frac{\partial w_{n-1}}{\partial w_{n-2}} \frac{\partial w_{n-2}}{\partial x}\right) \\
-&= \frac{\partial y}{\partial w_{n-1}} \left(\frac{\partial w_{n-1}}{\partial w_{n-2}} \left(\frac{\partial w_{n-2}}{\partial w_{n-3}} \frac{\partial w_{n-3}}{\partial x}\right)\right) \\
-&= \cdots
-\end{align}
+Zun&auml;chst mal die Bemerkung, dass es vorteilhaft ist, ein Programm als ein Graph der
+die Abh&auml;ngigkeiten der Variablen enth&auml;lt, darzustellen. Dann werden
+insbesondere "nicht vorhandene" Abh&auml;ngigkeiten vermieden und Speicher-- und
+Rechenaufwand reduziert. 
 
-Dies kann zu einer Matrixprodukt von Jakobimatrizen für mehrere Variablen verallgemeinert werden.
+Entsprechend werden die Zwischenwerte $w_i$ nicht mehr einfach durchnummeriert,
+sondern es wird von Vorg&auml;ngern gesprochen
 
-Im Vergleich zur Rückwärtsakkumulation ist die Vorwärtsakkumulation natürlich und einfach zu implementieren, da der Fluss der Ableitungsinformationen mit der Auswertungsreihenfolge übereinstimmt. Jede Variable \(w_i\) wird mit ihrer Ableitung \(\dot w_i\) (gespeichert als numerischer Wert, nicht als symbolischer Ausdruck),
+> $w_j$ ist ein *Vorg&auml;nger* von $w_i$ genau dann wenn $w_i$ unmittelbar
+> (also *explizit*) von $w_j$ abh&auml;ngt.
 
-$$
-\dot w_i = \frac{\partial w_i}{\partial x}
-$$
-
-wie durch den Punkt angezeigt, ergänzt. Die Ableitungen werden dann synchron mit den Auswertungsschritten berechnet und über die Kettenregel mit anderen Ableitungen kombiniert.
-
-Unter Verwendung der Kettenregel, wenn \(w_i\) Vorgänger im Berechnungsgraph hat:
+Damit (und mit Anwendung der Kettenregel im mehrdimensionalen) wird aus
+$\dot w_i = \frac{\partial w_i}{\partial w_{"i-1"}}$ der Ausdruck
 
 $$
 \dot w_i = \sum_{j \in \{\text{Vorgänger von i}\}} \frac{\partial w_i}{\partial w_j} \dot w_j
 $$
 
-![Beispiel für Vorwärtsakkumulation mit Berechnungsgraph](bilder/ForwardAccumulationAutomaticDifferentiation.png)
-
-Als Beispiel betrachte die Funktion:
-
+F&uuml;r das Beispiel 
 \begin{align*}
 y
 &= f(x_1, x_2) \\
 &= x_1 x_2 + \sin x_1 \\
-&= w_1 w_2 + \sin w_1 \\
-&= w_3 + w_4 \\
-&= w_5
+&=: w_1 w_2 + \sin w_1 \\
+&=: w_3 + w_4 \\
+&=: w_5
 \end{align*}
+ergibt sich folgender Berechnungsgraph und Fluss in der
+Vorw&auml;rtsakkumulation.
 
-Zur Verdeutlichung wurden die einzelnen Teil-Ausdrücke mit den Variablen \(w_i\) beschriftet.
+![Beispiel für Vorwärtsakkumulation mit Berechnungsgraph](bilder/ForwardAccumulationAutomaticDifferentiation.png)
 
-Die Wahl der unabhängigen Variablen, bezüglich derer differenziert wird, beeinflusst die "Seed"-Werte \(\dot w_1\) und \(\dot w_2\). Bei Interesse an der Ableitung dieser Funktion in Bezug auf \(x_1\) sollten die Seed-Werte wie folgt gesetzt werden:
 
-\begin{align}
-\dot w_1 = \frac{\partial w_1}{\partial x_1} = \frac{\partial x_1}{\partial x_1} = 1 \\
-\dot w_2 = \frac{\partial w_2}{\partial x_1} = \frac{\partial x_2}{\partial x_1} = 0
-\end{align}
-
-Mit den gesetzten Seed-Werten breiten sich die Werte unter Verwendung der Kettenregel aus, wie gezeigt. Abbildung 2 zeigt eine bildliche Darstellung dieses Prozesses als Berechnungsgraph.
-
-Um den Gradienten dieser Beispiel-Funktion zu berechnen, der nicht nur \(\frac{\partial y}{\partial x_1}\) sondern auch \(\frac{\partial y}{\partial x_2}\) erfordert, wird ein "zusätzlicher" Durchlauf über den Berechnungsgraphen mit den Seed-Werten \(\dot w_1 = 0; \dot w_2 = 1\) durchgeführt.
+## R&uuml;ckw&auml;rtsmodus
 
 Bei der Rückwärtsakkumulation ist die Größe von Interesse der *Adjungierte*, bezeichnet mit einem Balken $\bar{w}_i$; es handelt sich um eine Ableitung einer gewählten abhängigen Variablen in Bezug auf einen Teilausdruck $w_i$:
 
