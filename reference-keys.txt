@@ -31,6 +31,7 @@ eq:eqn-trennende-hyperebene
 thm:thm-pc-dense-C
 eq:eqn-fj-fjp-se
 eq:eqn-gm-approx
+eq:eqn-chainrule-fgh
 einführung
 was-ist-ein-algorithmus
 konsistenz-stabilität-genauigkeit
@@ -97,4 +98,8 @@ kettenregel-der-partiellen-ableitungen-zusammengesetzter-funktionen
 ad-vorwärtsmodus
 rückwärtsmodus
 implementierungen-anwendungsbeispiele-backpropagation
+exkurs-gradienten-und-repräsentation
+backpropagation
+aufgaben-3
+ableitung-und-newton
 nachklapp

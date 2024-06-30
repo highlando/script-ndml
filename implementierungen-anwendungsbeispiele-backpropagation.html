@@ -206,7 +206,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="10.4" data-path="automatisches-algorithmisches-differenzieren.html"><a href="automatisches-algorithmisches-differenzieren.html#ad-vorwärtsmodus"><i class="fa fa-check"></i><b>10.4</b> AD – Vorwärtsmodus</a></li>
 <li class="chapter" data-level="10.5" data-path="automatisches-algorithmisches-differenzieren.html"><a href="automatisches-algorithmisches-differenzieren.html#rückwärtsmodus"><i class="fa fa-check"></i><b>10.5</b> Rückwärtsmodus</a></li>
 </ul></li>
-<li class="chapter" data-level="11" data-path="implementierungen-anwendungsbeispiele-backpropagation.html"><a href="implementierungen-anwendungsbeispiele-backpropagation.html"><i class="fa fa-check"></i><b>11</b> Implementierungen, Anwendungsbeispiele, Backpropagation</a></li>
+<li class="chapter" data-level="11" data-path="implementierungen-anwendungsbeispiele-backpropagation.html"><a href="implementierungen-anwendungsbeispiele-backpropagation.html"><i class="fa fa-check"></i><b>11</b> Implementierungen, Anwendungsbeispiele, Backpropagation</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="implementierungen-anwendungsbeispiele-backpropagation.html"><a href="implementierungen-anwendungsbeispiele-backpropagation.html#exkurs-gradienten-und-repräsentation"><i class="fa fa-check"></i><b>11.1</b> Exkurs – Gradienten und Repräsentation</a></li>
+<li class="chapter" data-level="11.2" data-path="implementierungen-anwendungsbeispiele-backpropagation.html"><a href="implementierungen-anwendungsbeispiele-backpropagation.html#backpropagation"><i class="fa fa-check"></i><b>11.2</b> Backpropagation</a></li>
+<li class="chapter" data-level="11.3" data-path="implementierungen-anwendungsbeispiele-backpropagation.html"><a href="implementierungen-anwendungsbeispiele-backpropagation.html#aufgaben-3"><i class="fa fa-check"></i><b>11.3</b> Aufgaben</a></li>
+</ul></li>
 <li class="chapter" data-level="12" data-path="nachklapp.html"><a href="nachklapp.html"><i class="fa fa-check"></i><b>12</b> Nachklapp</a></li>
 <li class="chapter" data-level="" data-path="referenzen.html"><a href="referenzen.html"><i class="fa fa-check"></i>Referenzen</a></li>
 <li class="divider"></li>
@@ -231,8 +236,106 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="implementierungen-anwendungsbeispiele-backpropagation" class="section level1 hasAnchor" number="11">
 <h1><span class="header-section-number">11</span> Implementierungen, Anwendungsbeispiele, Backpropagation<a href="implementierungen-anwendungsbeispiele-backpropagation.html#implementierungen-anwendungsbeispiele-backpropagation" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>…</p>
+<div id="exkurs-gradienten-und-repräsentation" class="section level2 hasAnchor" number="11.1">
+<h2><span class="header-section-number">11.1</span> Exkurs – Gradienten und Repräsentation<a href="implementierungen-anwendungsbeispiele-backpropagation.html#exkurs-gradienten-und-repräsentation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Die Berechnung von Gradienten ist ebenso wesentlich wie schwierig in numerischen
+Algorithmen.
+Viele <em>erfolgreiche</em> Algorithmen basieren auf effizient berechenbaren
+Darstellungen oder Approximationen des Gradienten.</p>
+<p>Ein erstes Beispiel ist der stochastische Gradientenabstieg, der auf einen
+Schätzer statt des eigentlichen Gradienten baut.</p>
+<p>In der Optimierung mit (partiellen) Differentialgleichungen wie
+<span class="math display">\[\begin{equation*}
+\mathcal J(u) = \frac 12 \int_0^T\|x(t)-x^*\|^2 + \|u(t)\|^2\,\mathsf{d}s\to \min_{u} \quad \text{s.t. }\dot x(t) =
+Ax(t) + Bu(t)
+\end{equation*}\]</span>
+macht es einen entscheidenden Unterschied, dass der Gradient
+<span class="math display">\[\partial_u \mathcal J(u) = u + B^Tp \]</span>
+über die Lösung der adjungierten Gleichung
+<span class="math display">\[\begin{equation*}
+-\dot p(t) = A^T p(t) + x(t)-x^*, \quad p(T) = 0
+\end{equation*}\]</span>
+definiert ist (siehe beispielsweise (Kurdila/Zarabankin, Thm 5.5.1) für ein
+abstraktes Resultat und bspw. (Troeltzsch Abschnitt 5.9.1) für eine
+Umsetzung in einem Gradientenabstiegsverfahren mit PDEs).</p>
+<p>Während diese Resultate in der Theorie die Wohlgestelltheit der
+Optimierungsprobleme helfen zu analysieren, werden Sie in der Praxis gerne
+verwendet weil die Lösung einer Differentialgleichung einfacher umzusetzen
+ist (und im Zweifel auf effizienter) als die Berechnung von sehr abstrakten
+Gradienten.</p>
+<p>Um abstraktere Gradienten zu charakterisieren ist oftmals die Definition der
+<em>totalen Ableitung</em> einer Funktion <span class="math inline">\(f\colon X\to Y\)</span> bei einem <span class="math inline">\(x\in X\)</span> als die lineare Abbildung <span class="math inline">\(A_x\colon X\to Y\)</span> derart, dass
+<span class="math display">\[\begin{equation*}
+f(x+h) - f(x) - A_x[h] = o(\| h\|)
+\end{equation*}\]</span>
+gilt.</p>
+<p>Sei beispielsweise <span class="math inline">\(X=Y=\mathbb R^{n\times n}\)</span> und
+<span class="math display">\[\begin{equation*}
+f(S) = A^TS + SA -SRS + Q
+\end{equation*}\]</span>
+dann hat der <em>Riccati</em> Operator <span class="math inline">\(f\)</span> mit Koeffizienten <span class="math inline">\(A\)</span>, <span class="math inline">\(R\)</span>, <span class="math inline">\(Q \in \mathbb R^{n\times n}\)</span>
+demnach die Realisierung des Gradienten (an der Stelle <span class="math inline">\(S_0\)</span>) gegeben als
+<span class="math display">\[\begin{equation*}
+\partial f(S_0)[h] = (A^T-S_0R)h + h(A-RS_0).
+\end{equation*}\]</span></p>
+<p>Für neuronale Netze ist der Gradient von <span class="math inline">\(f(x; \tilde A, b)=Ax+b\)</span> bezüglich der
+<em>Gewichte</em> <span class="math inline">\(\tilde A\in \mathbb R^{m\times n-1}\)</span> und <span class="math inline">\(b\in \mathbb R^{m}\)</span> interessant.
+Zunächst mal verstehen wir die affine lineare Abbildung im
+projektiven Raum vermöge
+<span class="math display">\[\begin{equation*}
+y = Ax + b \longleftrightarrow \begin{bmatrix} y \\ 1 \end{bmatrix} = \begin{bmatrix}A &amp; b \\ 0 &amp; 1 \end{bmatrix}\begin{bmatrix} x \\ 1
+\end{bmatrix}
+\end{equation*}\]</span>
+und betrachten einfach <span class="math inline">\(f(x; A)=Ax\)</span> mit <span class="math inline">\(A\in \mathbb R^{m\times n}\)</span>. Gemäß der Ableitungsformel gilt
+<span class="math display">\[\begin{equation*}
+f(x;A+h) - f(x;A) - hx = (A+h)x - Ax - hx = 0 = o(\|h\|)
+\end{equation*}\]</span>
+also im Prinzip ist <span class="math inline">\(x\)</span> die Ableitung allerdings im Sinne von
+<span class="math display">\[\begin{equation*}
+x\colon \mathbb R^{n\times m} \to \mathbb R^{n}\colon h\to hx
+\end{equation*}\]</span>
+Diese Abbildung ist linear und könnte als Matrix
+im <span class="math inline">\(\mathbb R^{n \times (n\times m)}\)</span> realisiert werden.</p>
+</div>
+<div id="backpropagation" class="section level2 hasAnchor" number="11.2">
+<h2><span class="header-section-number">11.2</span> Backpropagation<a href="implementierungen-anwendungsbeispiele-backpropagation.html#backpropagation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Die besondere Architektur neuronaler Netze, wie sie im Machine Learning
+verwendet werden, impliziert eine besondere Struktur in der
+Gradientenberechnung.</p>
+<p>Wir betrachten ein 2-layer Netzwerk
+<span class="math display">\[\begin{equation*}
+y = \sigma(A_2 \sigma(A_1x))
+\end{equation*}\]</span>
+und erinnern uns daran, dass für das Training der Gradient vom Ausgang
+bezüglich der Parameter <span class="math inline">\((A_2, A_1)\)</span> gesucht ist.</p>
+<p>Bezüglich <span class="math inline">\(A_2\)</span> ergibt die Kettenregel direkt
+<span class="math display">\[\begin{equation*}
+\frac{dy}{dA_2} = \sigma&#39;(A_2x_1)x_1
+\end{equation*}\]</span>
+wobei <span class="math inline">\(\sigma&#39;\)</span> passend interpretiert werden muss.
+Bezüglich <span class="math inline">\(A_1\)</span> ergibt die Kettenregel direkt
+<span class="math display">\[\begin{equation*}
+\frac{dy}{dA_1} = \sigma&#39;(A_2x_1)A_2\sigma&#39;(A_1x)\cdot x
+\end{equation*}\]</span>
+wobei <span class="math inline">\(\sigma&#39;\)</span> passend interpretiert werden muss.
+und da die <em>späteren</em> Parameter (hier <span class="math inline">\(A_2\)</span>) nicht von den <em>früheren</em>
+Parametern (hier <span class="math inline">\(A_1\)</span>) abhängen</p>
+<ul>
+<li>Beispiel in PyTorch</li>
+<li>CASADI</li>
+<li>Nico Gauger</li>
+</ul>
+</div>
+<div id="aufgaben-3" class="section level2 hasAnchor" number="11.3">
+<h2><span class="header-section-number">11.3</span> Aufgaben<a href="implementierungen-anwendungsbeispiele-backpropagation.html#aufgaben-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="ableitung-und-newton" class="section level3 hasAnchor" number="11.3.1">
+<h3><span class="header-section-number">11.3.1</span> Ableitung und Newton<a href="implementierungen-anwendungsbeispiele-backpropagation.html#ableitung-und-newton" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Weisen Sie nach, dass der Gradient der (matrixwertigen) Riccati Abbildung
+tatsächlich die gegebene Form hat und formulieren Sie damit ein Newton
+Verfahren zur Lösung der Riccati Gleichung <span class="math inline">\(f(S)=0\)</span>.</p>
 
+</div>
+</div>
 </div>
             </section>
 

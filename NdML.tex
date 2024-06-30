@@ -2862,11 +2862,13 @@ w_3 &= f(w_2) = y
 
 ergibt die Kettenregel für die Werte zu einem fixen Wert \(x^*\) von \(x\):
 
-\begin{align*}
+\begin{equation}\label{eq:eqn-chainrule-fgh}
+\begin{split}
 \frac{\partial y(x^*)}{\partial x} &= 
 \frac{\partial y}{\partial w_2}\Biggl|_{w_2=g(h(x^*))} \frac{\partial w_2}{\partial w_1} \Biggl|_{w_1=h(x^*)}\frac{\partial w_1}{\partial w_0}\Biggl|_{w_0=x^*} \\
 &= \frac{\partial f}{\partial w_2}(w_2^*)\biggl[ \frac{\partial g}{\partial w_1}(w_1^*) \Bigl[\frac{\partial h}{\partial x}(w_0^*) \Bigr] \biggr]
-\end{align*}
+\end{split}
+\end{equation}
 
 Für multivariate Funktionen gilt die mehrdimensionale Kettenregel und das
 Produkt der Ableitungen wird zum Produkt der Jacobi-Matrizen.
@@ -3037,47 +3039,307 @@ Vorwärtsakkumulation.
 \caption{Beispiel für Vorwärtsakkumulation mit Berechnungsgraph}
 \end{figure}
 
+Mit den folgenden Schritten ergibt sich für die partielle
+Ableitung von \(y\) bezüglich \(x_1\)
+
+\begin{longtable}[]{@{}llll@{}}
+\toprule
+\begin{minipage}[b]{0.10\columnwidth}\raggedright
+Schritt\strut
+\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright
+Funktionswert\strut
+\end{minipage} & \begin{minipage}[b]{0.20\columnwidth}\raggedright
+Ableitung\strut
+\end{minipage} & \begin{minipage}[b]{0.41\columnwidth}\raggedright
+Akkumulation\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.10\columnwidth}\raggedright
+\texttt{0a}\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\(w_1=x_1\)\strut
+\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
+\(\partial w_1=1\)\strut
+\end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
+\(\dot w_1 = 1\)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.10\columnwidth}\raggedright
+\texttt{0b}\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\(w_2=x_2\)\strut
+\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
+\(\partial w_2=0\)\strut
+\end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
+\(\dot w_2 = 0\)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.10\columnwidth}\raggedright
+\texttt{1a}\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\(w_3 = w_1w_2\)\strut
+\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
+\(\partial w_3 = \begin{bmatrix} w_2&w_1\end{bmatrix}\)\strut
+\end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
+\(\dot w_3 = \begin{bmatrix}w_2&w_1\end{bmatrix}\begin{bmatrix} 1 \\ 0 \end{bmatrix} = x_1\)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.10\columnwidth}\raggedright
+\texttt{1b}\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\(w_4 = \sin(w_1)\)\strut
+\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
+\(\partial w_4=\cos(w_1)\)\strut
+\end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
+\(\dot w_4 =\cos(w_1)\cdot\dot w_1 = \cos(x_1)\)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.10\columnwidth}\raggedright
+\texttt{2}\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\(w_5 = w_3 + w_4\)\strut
+\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
+\(\partial w_5=\begin{bmatrix}1 & 1\end{bmatrix}\)\strut
+\end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
+\(\dot w_5 = \begin{bmatrix}1 & 1\end{bmatrix}\begin{bmatrix} \dot w_3 \\ \dot w_4 \end{bmatrix} = x_1 + \cos(x_1)\)\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
 \hypertarget{ruxfcckwuxe4rtsmodus}{%
 \section{Rückwärtsmodus}\label{ruxfcckwuxe4rtsmodus}}
 
-Bei der Rückwärtsakkumulation ist die Größe von Interesse der \emph{Adjungierte}, bezeichnet mit einem Balken \(\bar{w}_i\); es handelt sich um eine Ableitung einer gewählten abhängigen Variablen in Bezug auf einen Teilausdruck \(w_i\):
+Bei der Rückwärtsakkumulation werden die sogenannten \emph{Adjungierten}
+\begin{equation*}
+\bar{w}_i = \frac{\partial y}{\partial w_i}
+\end{equation*}
+berechnet. Jan beachte, dass immer \(y\) \emph{differenziert} wird und dass der
+gewünschte Ausdruck bei beispielsweise \(\bar x = \frac{\partial y}{\partial x}\) erreicht ist.
 
-\[\bar{w}_i = \frac{\partial y}{\partial w_i}\]
-
-Unter Verwendung der Kettenregel, wenn \(w_i\) Nachfolger im Berechnungsgraphen hat:
+Unter Verwendung der Kettenregel ergibt sich die folgende rekursive Formel aus dem
+Berechnungsgraphen:
 
 \[\bar{w}_i = \sum_{j \in \{\text{Nachfolger von i}\}} \bar{w}_j \frac{\partial w_j}{\partial w_i}\]
+Sind also \emph{spätere} Adjungierte \(\bar w_j\) bekannt, können
+\emph{frühere} \(\bar w_i\) bestimmt werden.
 
-Die Rückwärtsakkumulation durchläuft die Kettenregel von außen nach innen oder im Falle des Berechnungsgraphen in Abbildung 3 von oben nach unten. Die Beispiel-Funktion ist skalarwertig, und daher gibt es nur einen Startwert für die Ableitungsberechnung, und nur einen Durchlauf des Berechnungsgraphen ist nötig, um den (zweikomponentigen) Gradienten zu berechnen. Dies ist nur halb so viel Arbeit im Vergleich zur Vorwärtsakkumulation, aber die Rückwärtsakkumulation erfordert das Speichern der Zwischenvariablen \(w_i\) sowie der Anweisungen, die sie erzeugt haben, in einer Datenstruktur, die als ``Band'' oder Wengert-Liste bekannt ist (jedoch veröffentlichte Wengert die Vorwärtsakkumulation, nicht die Rückwärtsakkumulation), was erheblichen Speicher verbrauchen kann, wenn der Berechnungsgraph groß ist. Dies kann bis zu einem gewissen Grad gemildert werden, indem nur eine Teilmenge der Zwischenvariablen gespeichert und dann die notwendigen Arbeitsvariablen durch Wiederholung der Bewertungen rekonstruiert werden, eine Technik, die als Rematerialisierung bekannt ist. Auch das Checkpointing wird verwendet, um Zwischenstände zu speichern.
+Die Rückwärtsakkumulation durchläuft die Kettenregel (wie in Gleichung
+\eqref{eq:eqn-chainrule-fgh} von außen nach
+innen oder im Falle des Berechnungsgraphen (wie in Abbildung \ref{fig:10-ad-bw} illustriert) von oben nach unten.
 
 \begin{figure}
+\hypertarget{fig:10-ad-bw}{%
 \centering
-\includegraphics{bilder/ReverseaccumulationAD.png}
-\caption{Abbildung 3: Beispiel für Rückwärtsakkumulation mit Berechnungsgraph}
+\includegraphics[width=1\textwidth,height=\textheight]{bilder/ReverseaccumulationAD.png}
+\caption{Beispiel für Rückwärtsakkumulation mit Berechnungsgraph}\label{fig:10-ad-bw}
+}
 \end{figure}
 
 Die Operationen zur Berechnung der Ableitung mittels Rückwärtsakkumulation sind in der folgenden Tabelle dargestellt (beachte die umgekehrte Reihenfolge):
 
-\begin{itemize}
-\tightlist
-\item
-  \(\bar{w}_5 = 1\) (Startwert)
-\item
-  \(\bar{w}_4 = \bar{w}_5 \cdot 1\)
-\item
-  \(\bar{w}_3 = \bar{w}_5 \cdot 1\)
-\item
-  \(\bar{w}_2 = \bar{w}_3 \cdot w_1\)
-\item
-  \(\bar{w}_1 = \bar{w}_3 \cdot w_2 + \bar{w}_4 \cdot \cos(w_1)\)
-\end{itemize}
+\begin{longtable}[]{@{}llll@{}}
+\toprule
+\begin{minipage}[b]{0.10\columnwidth}\raggedright
+Schritt\strut
+\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright
+Funktionswert\strut
+\end{minipage} & \begin{minipage}[b]{0.20\columnwidth}\raggedright
+Ableitung\strut
+\end{minipage} & \begin{minipage}[b]{0.41\columnwidth}\raggedright
+Adjungierte\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.10\columnwidth}\raggedright
+\texttt{0}\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\(y=w_5\)\strut
+\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
+\(\partial y=1\)\strut
+\end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
+\(\bar w_5 = 1\)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.10\columnwidth}\raggedright
+\texttt{1}\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\(w_5=w_4+w_3\)\strut
+\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
+\(\partial w_5=\begin{bmatrix} 1&1 \end{bmatrix}\)\strut
+\end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
+\(\bar w_5 = 1\)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.10\columnwidth}\raggedright
+\texttt{2a}\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\(w_4=\sin(w_1)\)\strut
+\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
+\(\partial w_4=\cos(w_1)\)\strut
+\end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
+\(\bar w_4 = \bar w_5 \cdot 1 = 1\)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.10\columnwidth}\raggedright
+\texttt{2b}\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\(w_3=w_1w_2\)\strut
+\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
+\(\partial w_3=\begin{bmatrix}w_2&w_1\end{bmatrix}\)\strut
+\end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
+\(\bar w_3 = \bar w_5 \cdot 1 = 1\)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.10\columnwidth}\raggedright
+\texttt{3b}\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\(w_2=x_2\)\strut
+\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
+\(\bar w_2 = \bar w_3 w_1= x_1\)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.10\columnwidth}\raggedright
+\texttt{3a}\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\(w_1=x_1\)\strut
+\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
+\(\bar w_1 = \bar w_3 w_2 +\bar w_4 \cos(w_1) = x_2 + \cos(x_1)\)\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
 
-Der Datenflussgraph einer Berechnung kann manipuliert werden, um den Gradienten seiner ursprünglichen Berechnung zu berechnen. Dies geschieht durch Hinzufügen eines adjungierten Knotens für jeden primalen Knoten, verbunden durch adjungierte Kanten, die den primalen Kanten parallel verlaufen, aber in entgegengesetzter Richtung fließen. Die Knoten im adjungierten Graphen repräsentieren die Multiplikation mit den Ableitungen der Funktionen, die von den Knoten im primalen berechnet wurden. Zum Beispiel führt Addition im Primalen zu Fanout im Adjungierten; Fanout im Primalen führt zu Addition im Adjungierten; eine unäre Funktion \(y = f(x)\) im Primalen führt zu \(x̄ = ȳ f′(x)\) im Adjungierten; usw.
+Wir bemerken, dass in einem Durchlauf, beide partiellen Ableitungen direkt
+berechnet werden. Allerdings müssen zunächst in einem
+Vorwärsdurchlauf die Gradienten \(\partial w_i\) berechnet und gespeichert werden.
+Das kann bei komplexen Programmen durchaus ein Nachteil sein. Ein Ausweg bietet
+\emph{checkpointing} wo nur wenige Zwischenetappen der Werte \(w_i\) gespeichert
+werden, aus denen bei Bedarf die Nachfolger und Gradienten zwischen den
+Checkpoints erzeugt werden können.
+
+Zusätzlich muss der Programmablauf (also welche Variablen aus welchen
+hervorgegangen sind -- die sogenannte \emph{Wengert Liste}) verfügbar sein.
+
+Hätte \(y\) mehrere Komponenten, müsste
+für jede Komponente die entsprechenden adjungierten in einem neuen
+Durchlauf berechnet werden.
+
+Andersherum ist es beim Vorwärtsmodus, bei welchem mehrere Komponenten im
+Ausgang direkt berechnet werden aber für jede Eingangsvariable die
+Akkumulation separat durchgeführt werden muss.
 
 \hypertarget{implementierungen-anwendungsbeispiele-backpropagation}{%
 \chapter{Implementierungen, Anwendungsbeispiele, Backpropagation}\label{implementierungen-anwendungsbeispiele-backpropagation}}
 
-\ldots{}
+\hypertarget{exkurs-gradienten-und-repruxe4sentation}{%
+\section{Exkurs -- Gradienten und Repräsentation}\label{exkurs-gradienten-und-repruxe4sentation}}
+
+Die Berechnung von Gradienten ist ebenso wesentlich wie schwierig in numerischen
+Algorithmen.
+Viele \emph{erfolgreiche} Algorithmen basieren auf effizient berechenbaren
+Darstellungen oder Approximationen des Gradienten.
+
+Ein erstes Beispiel ist der stochastische Gradientenabstieg, der auf einen
+Schätzer statt des eigentlichen Gradienten baut.
+
+In der Optimierung mit (partiellen) Differentialgleichungen wie
+\begin{equation*}
+\mathcal J(u) = \frac 12 \int_0^T\|x(t)-x^*\|^2 + \|u(t)\|^2\,\mathsf{d}s\to \min_{u} \quad \text{s.t. }\dot x(t) =
+Ax(t) + Bu(t)
+\end{equation*}
+macht es einen entscheidenden Unterschied, dass der Gradient
+\[\partial_u \mathcal J(u) = u + B^Tp \]
+über die Lösung der adjungierten Gleichung
+\begin{equation*}
+-\dot p(t) = A^T p(t) + x(t)-x^*, \quad p(T) = 0
+\end{equation*}
+definiert ist (siehe beispielsweise (Kurdila/Zarabankin, Thm 5.5.1) für ein
+abstraktes Resultat und bspw. (Troeltzsch Abschnitt 5.9.1) für eine
+Umsetzung in einem Gradientenabstiegsverfahren mit PDEs).
+
+Während diese Resultate in der Theorie die Wohlgestelltheit der
+Optimierungsprobleme helfen zu analysieren, werden Sie in der Praxis gerne
+verwendet weil die Lösung einer Differentialgleichung einfacher umzusetzen
+ist (und im Zweifel auf effizienter) als die Berechnung von sehr abstrakten
+Gradienten.
+
+Um abstraktere Gradienten zu charakterisieren ist oftmals die Definition der
+\emph{totalen Ableitung} einer Funktion \(f\colon X\to Y\) bei einem \(x\in X\) als die lineare Abbildung \(A_x\colon X\to Y\) derart, dass
+\begin{equation*}
+f(x+h) - f(x) - A_x[h] = o(\| h\|)
+\end{equation*}
+gilt.
+
+Sei beispielsweise \(X=Y=\mathbb R^{n\times n}\) und
+\begin{equation*}
+f(S) = A^TS + SA -SRS + Q
+\end{equation*}
+dann hat der \emph{Riccati} Operator \(f\) mit Koeffizienten \(A\), \(R\), \(Q \in \mathbb R^{n\times n}\)
+demnach die Realisierung des Gradienten (an der Stelle \(S_0\)) gegeben als
+\begin{equation*}
+\partial f(S_0)[h] = (A^T-S_0R)h + h(A-RS_0).
+\end{equation*}
+
+Für neuronale Netze ist der Gradient von \(f(x; \tilde A, b)=Ax+b\) bezüglich der
+\emph{Gewichte} \(\tilde A\in \mathbb R^{m\times n-1}\) und \(b\in \mathbb R^{m}\) interessant.
+Zunächst mal verstehen wir die affine lineare Abbildung im
+projektiven Raum vermöge
+\begin{equation*}
+y = Ax + b \longleftrightarrow \begin{bmatrix} y \\ 1 \end{bmatrix} = \begin{bmatrix}A & b \\ 0 & 1 \end{bmatrix}\begin{bmatrix} x \\ 1
+\end{bmatrix}
+\end{equation*}
+und betrachten einfach \(f(x; A)=Ax\) mit \(A\in \mathbb R^{m\times n}\). Gemäß der Ableitungsformel gilt
+\begin{equation*}
+f(x;A+h) - f(x;A) - hx = (A+h)x - Ax - hx = 0 = o(\|h\|)
+\end{equation*}
+also im Prinzip ist \(x\) die Ableitung allerdings im Sinne von
+\begin{equation*}
+x\colon \mathbb R^{n\times m} \to \mathbb R^{n}\colon h\to hx
+\end{equation*}
+Diese Abbildung ist linear und könnte als Matrix
+im \(\mathbb R^{n \times (n\times m)}\) realisiert werden.
+
+\hypertarget{backpropagation}{%
+\section{Backpropagation}\label{backpropagation}}
+
+Die besondere Architektur neuronaler Netze, wie sie im Machine Learning
+verwendet werden, impliziert eine besondere Struktur in der
+Gradientenberechnung.
+
+Wir betrachten ein 2-layer Netzwerk
+\begin{equation*}
+y = \sigma(A_2 \sigma(A_1x))
+\end{equation*}
+und erinnern uns daran, dass für das Training der Gradient vom Ausgang
+bezüglich der Parameter \((A_2, A_1)\) gesucht ist.
+
+Bezüglich \(A_2\) ergibt die Kettenregel direkt
+\begin{equation*}
+\frac{dy}{dA_2} = \sigma'(A_2x_1)x_1
+\end{equation*}
+wobei \(\sigma'\) passend interpretiert werden muss.
+Bezüglich \(A_1\) ergibt die Kettenregel direkt
+\begin{equation*}
+\frac{dy}{dA_1} = \sigma'(A_2x_1)A_2\sigma'(A_1x)\cdot x
+\end{equation*}
+wobei \(\sigma'\) passend interpretiert werden muss.
+und da die \emph{späteren} Parameter (hier \(A_2\)) nicht von den \emph{früheren}
+Parametern (hier \(A_1\)) abhängen
+
+\begin{itemize}
+\tightlist
+\item
+  Beispiel in PyTorch
+\item
+  CASADI
+\item
+  Nico Gauger
+\end{itemize}
+
+\hypertarget{aufgaben-3}{%
+\section{Aufgaben}\label{aufgaben-3}}
+
+\hypertarget{ableitung-und-newton}{%
+\subsection{Ableitung und Newton}\label{ableitung-und-newton}}
+
+Weisen Sie nach, dass der Gradient der (matrixwertigen) Riccati Abbildung
+tatsächlich die gegebene Form hat und formulieren Sie damit ein Newton
+Verfahren zur Lösung der Riccati Gleichung \(f(S)=0\).
 
 \hypertarget{nachklapp}{%
 \chapter{Nachklapp}\label{nachklapp}}

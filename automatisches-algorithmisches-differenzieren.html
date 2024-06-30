@@ -206,7 +206,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="10.4" data-path="automatisches-algorithmisches-differenzieren.html"><a href="automatisches-algorithmisches-differenzieren.html#ad-vorwärtsmodus"><i class="fa fa-check"></i><b>10.4</b> AD – Vorwärtsmodus</a></li>
 <li class="chapter" data-level="10.5" data-path="automatisches-algorithmisches-differenzieren.html"><a href="automatisches-algorithmisches-differenzieren.html#rückwärtsmodus"><i class="fa fa-check"></i><b>10.5</b> Rückwärtsmodus</a></li>
 </ul></li>
-<li class="chapter" data-level="11" data-path="implementierungen-anwendungsbeispiele-backpropagation.html"><a href="implementierungen-anwendungsbeispiele-backpropagation.html"><i class="fa fa-check"></i><b>11</b> Implementierungen, Anwendungsbeispiele, Backpropagation</a></li>
+<li class="chapter" data-level="11" data-path="implementierungen-anwendungsbeispiele-backpropagation.html"><a href="implementierungen-anwendungsbeispiele-backpropagation.html"><i class="fa fa-check"></i><b>11</b> Implementierungen, Anwendungsbeispiele, Backpropagation</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="implementierungen-anwendungsbeispiele-backpropagation.html"><a href="implementierungen-anwendungsbeispiele-backpropagation.html#exkurs-gradienten-und-repräsentation"><i class="fa fa-check"></i><b>11.1</b> Exkurs – Gradienten und Repräsentation</a></li>
+<li class="chapter" data-level="11.2" data-path="implementierungen-anwendungsbeispiele-backpropagation.html"><a href="implementierungen-anwendungsbeispiele-backpropagation.html#backpropagation"><i class="fa fa-check"></i><b>11.2</b> Backpropagation</a></li>
+<li class="chapter" data-level="11.3" data-path="implementierungen-anwendungsbeispiele-backpropagation.html"><a href="implementierungen-anwendungsbeispiele-backpropagation.html#aufgaben-3"><i class="fa fa-check"></i><b>11.3</b> Aufgaben</a></li>
+</ul></li>
 <li class="chapter" data-level="12" data-path="nachklapp.html"><a href="nachklapp.html"><i class="fa fa-check"></i><b>12</b> Nachklapp</a></li>
 <li class="chapter" data-level="" data-path="referenzen.html"><a href="referenzen.html"><i class="fa fa-check"></i>Referenzen</a></li>
 <li class="divider"></li>
@@ -298,11 +303,13 @@ w_2 &amp;= g(w_1) \\
 w_3 &amp;= f(w_2) = y
 \end{align*}\]</span></p>
 <p>ergibt die Kettenregel für die Werte zu einem fixen Wert <span class="math inline">\(x^*\)</span> von <span class="math inline">\(x\)</span>:</p>
-<p><span class="math display">\[\begin{align*}
+<p><span class="math display" id="eq:eqn-chainru\tag{10.1}on}(#eq:eqn-chainrule-fgh)
+\begin{split}
 \frac{\partial y(x^*)}{\partial x} &amp;= 
 \frac{\partial y}{\partial w_2}\Biggl|_{w_2=g(h(x^*))} \frac{\partial w_2}{\partial w_1} \Biggl|_{w_1=h(x^*)}\frac{\partial w_1}{\partial w_0}\Biggl|_{w_0=x^*} \\
 &amp;= \frac{\partial f}{\partial w_2}(w_2^*)\biggl[ \frac{\partial g}{\partial w_1}(w_1^*) \Bigl[\frac{\partial h}{\partial x}(w_0^*) \Bigr] \biggr]
-\end{align*}\]</span></p>
+\end{split}
+\end{equation}\]</span></p>
 <p>Für multivariate Funktionen gilt die mehrdimensionale Kettenregel und das
 Produkt der Ableitungen wird zum Produkt der Jacobi-Matrizen.</p>
 </div>
@@ -433,27 +440,147 @@ Vorwärtsakkumulation.</p>
 <img src="bilder/ForwardAccumulationAutomaticDifferentiation.png" alt="" />
 <p class="caption">Beispiel für Vorwärtsakkumulation mit Berechnungsgraph</p>
 </div>
+<p>Mit den folgenden Schritten ergibt sich für die partielle
+Ableitung von <span class="math inline">\(y\)</span> bezüglich <span class="math inline">\(x_1\)</span></p>
+<table>
+<colgroup>
+<col width="11%" />
+<col width="19%" />
+<col width="23%" />
+<col width="46%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Schritt</th>
+<th>Funktionswert</th>
+<th>Ableitung</th>
+<th>Akkumulation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>0a</code></td>
+<td><span class="math inline">\(w_1=x_1\)</span></td>
+<td><span class="math inline">\(\partial w_1=1\)</span></td>
+<td><span class="math inline">\(\dot w_1 = 1\)</span></td>
+</tr>
+<tr class="even">
+<td><code>0b</code></td>
+<td><span class="math inline">\(w_2=x_2\)</span></td>
+<td><span class="math inline">\(\partial w_2=0\)</span></td>
+<td><span class="math inline">\(\dot w_2 = 0\)</span></td>
+</tr>
+<tr class="odd">
+<td><code>1a</code></td>
+<td><span class="math inline">\(w_3 = w_1w_2\)</span></td>
+<td><span class="math inline">\(\partial w_3 = \begin{bmatrix} w_2&amp;w_1\end{bmatrix}\)</span></td>
+<td><span class="math inline">\(\dot w_3 = \begin{bmatrix}w_2&amp;w_1\end{bmatrix}\begin{bmatrix} 1 \\ 0 \end{bmatrix} = x_1\)</span></td>
+</tr>
+<tr class="even">
+<td><code>1b</code></td>
+<td><span class="math inline">\(w_4 = \sin(w_1)\)</span></td>
+<td><span class="math inline">\(\partial w_4=\cos(w_1)\)</span></td>
+<td><span class="math inline">\(\dot w_4 =\cos(w_1)\cdot\dot w_1 = \cos(x_1)\)</span></td>
+</tr>
+<tr class="odd">
+<td><code>2</code></td>
+<td><span class="math inline">\(w_5 = w_3 + w_4\)</span></td>
+<td><span class="math inline">\(\partial w_5=\begin{bmatrix}1 &amp; 1\end{bmatrix}\)</span></td>
+<td><span class="math inline">\(\dot w_5 = \begin{bmatrix}1 &amp; 1\end{bmatrix}\begin{bmatrix} \dot w_3 \\ \dot w_4 \end{bmatrix} = x_1 + \cos(x_1)\)</span></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="rückwärtsmodus" class="section level2 hasAnchor" number="10.5">
 <h2><span class="header-section-number">10.5</span> Rückwärtsmodus<a href="automatisches-algorithmisches-differenzieren.html#rückwärtsmodus" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Bei der Rückwärtsakkumulation ist die Größe von Interesse der <em>Adjungierte</em>, bezeichnet mit einem Balken <span class="math inline">\(\bar{w}_i\)</span>; es handelt sich um eine Ableitung einer gewählten abhängigen Variablen in Bezug auf einen Teilausdruck <span class="math inline">\(w_i\)</span>:</p>
-<p><span class="math display">\[\bar{w}_i = \frac{\partial y}{\partial w_i}\]</span></p>
-<p>Unter Verwendung der Kettenregel, wenn <span class="math inline">\(w_i\)</span> Nachfolger im Berechnungsgraphen hat:</p>
-<p><span class="math display">\[\bar{w}_i = \sum_{j \in \{\text{Nachfolger von i}\}} \bar{w}_j \frac{\partial w_j}{\partial w_i}\]</span></p>
-<p>Die Rückwärtsakkumulation durchläuft die Kettenregel von außen nach innen oder im Falle des Berechnungsgraphen in Abbildung 3 von oben nach unten. Die Beispiel-Funktion ist skalarwertig, und daher gibt es nur einen Startwert für die Ableitungsberechnung, und nur einen Durchlauf des Berechnungsgraphen ist nötig, um den (zweikomponentigen) Gradienten zu berechnen. Dies ist nur halb so viel Arbeit im Vergleich zur Vorwärtsakkumulation, aber die Rückwärtsakkumulation erfordert das Speichern der Zwischenvariablen <span class="math inline">\(w_i\)</span> sowie der Anweisungen, die sie erzeugt haben, in einer Datenstruktur, die als “Band” oder Wengert-Liste bekannt ist (jedoch veröffentlichte Wengert die Vorwärtsakkumulation, nicht die Rückwärtsakkumulation), was erheblichen Speicher verbrauchen kann, wenn der Berechnungsgraph groß ist. Dies kann bis zu einem gewissen Grad gemildert werden, indem nur eine Teilmenge der Zwischenvariablen gespeichert und dann die notwendigen Arbeitsvariablen durch Wiederholung der Bewertungen rekonstruiert werden, eine Technik, die als Rematerialisierung bekannt ist. Auch das Checkpointing wird verwendet, um Zwischenstände zu speichern.</p>
+<p>Bei der Rückwärtsakkumulation werden die sogenannten <em>Adjungierten</em>
+<span class="math display">\[\begin{equation*}
+\bar{w}_i = \frac{\partial y}{\partial w_i}
+\end{equation*}\]</span>
+berechnet. Jan beachte, dass immer <span class="math inline">\(y\)</span> <em>differenziert</em> wird und dass der
+gewünschte Ausdruck bei beispielsweise <span class="math inline">\(\bar x = \frac{\partial y}{\partial x}\)</span> erreicht ist.</p>
+<p>Unter Verwendung der Kettenregel ergibt sich die folgende rekursive Formel aus dem
+Berechnungsgraphen:</p>
+<p><span class="math display">\[\bar{w}_i = \sum_{j \in \{\text{Nachfolger von i}\}} \bar{w}_j \frac{\partial w_j}{\partial w_i}\]</span>
+Sind also <em>spätere</em> Adjungierte <span class="math inline">\(\bar w_j\)</span> bekannt, können
+<em>frühere</em> <span class="math inline">\(\bar w_i\)</span> bestimmt werden.</p>
+<p>Die Rückwärtsakkumulation durchläuft die Kettenregel (wie in Gleichung
+<a href="#eq:eqn-chainrule-fgh">(10.1)</a> von außen nach
+innen oder im Falle des Berechnungsgraphen (wie in Abbildung <a href="automatisches-algorithmisches-differenzieren.html#fig:10-ad-bw"><strong>??</strong></a> illustriert) von oben nach unten.</p>
 <div class="figure">
-<img src="bilder/ReverseaccumulationAD.png" alt="" />
-<p class="caption">Abbildung 3: Beispiel für Rückwärtsakkumulation mit Berechnungsgraph</p>
+<img src="bilder/ReverseaccumulationAD.png" id="fig:10-ad-bw" style="width:100.0%" alt="" />
+<p class="caption">Beispiel für Rückwärtsakkumulation mit Berechnungsgraph</p>
 </div>
 <p>Die Operationen zur Berechnung der Ableitung mittels Rückwärtsakkumulation sind in der folgenden Tabelle dargestellt (beachte die umgekehrte Reihenfolge):</p>
-<ul>
-<li><span class="math inline">\(\bar{w}_5 = 1\)</span> (Startwert)</li>
-<li><span class="math inline">\(\bar{w}_4 = \bar{w}_5 \cdot 1\)</span></li>
-<li><span class="math inline">\(\bar{w}_3 = \bar{w}_5 \cdot 1\)</span></li>
-<li><span class="math inline">\(\bar{w}_2 = \bar{w}_3 \cdot w_1\)</span></li>
-<li><span class="math inline">\(\bar{w}_1 = \bar{w}_3 \cdot w_2 + \bar{w}_4 \cdot \cos(w_1)\)</span></li>
-</ul>
-<p>Der Datenflussgraph einer Berechnung kann manipuliert werden, um den Gradienten seiner ursprünglichen Berechnung zu berechnen. Dies geschieht durch Hinzufügen eines adjungierten Knotens für jeden primalen Knoten, verbunden durch adjungierte Kanten, die den primalen Kanten parallel verlaufen, aber in entgegengesetzter Richtung fließen. Die Knoten im adjungierten Graphen repräsentieren die Multiplikation mit den Ableitungen der Funktionen, die von den Knoten im primalen berechnet wurden. Zum Beispiel führt Addition im Primalen zu Fanout im Adjungierten; Fanout im Primalen führt zu Addition im Adjungierten; eine unäre Funktion <span class="math inline">\(y = f(x)\)</span> im Primalen führt zu <span class="math inline">\(x̄ = ȳ f′(x)\)</span> im Adjungierten; usw.</p>
+<table>
+<colgroup>
+<col width="11%" />
+<col width="19%" />
+<col width="23%" />
+<col width="46%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Schritt</th>
+<th>Funktionswert</th>
+<th>Ableitung</th>
+<th>Adjungierte</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>0</code></td>
+<td><span class="math inline">\(y=w_5\)</span></td>
+<td><span class="math inline">\(\partial y=1\)</span></td>
+<td><span class="math inline">\(\bar w_5 = 1\)</span></td>
+</tr>
+<tr class="even">
+<td><code>1</code></td>
+<td><span class="math inline">\(w_5=w_4+w_3\)</span></td>
+<td><span class="math inline">\(\partial w_5=\begin{bmatrix} 1&amp;1 \end{bmatrix}\)</span></td>
+<td><span class="math inline">\(\bar w_5 = 1\)</span></td>
+</tr>
+<tr class="odd">
+<td><code>2a</code></td>
+<td><span class="math inline">\(w_4=\sin(w_1)\)</span></td>
+<td><span class="math inline">\(\partial w_4=\cos(w_1)\)</span></td>
+<td><span class="math inline">\(\bar w_4 = \bar w_5 \cdot 1 = 1\)</span></td>
+</tr>
+<tr class="even">
+<td><code>2b</code></td>
+<td><span class="math inline">\(w_3=w_1w_2\)</span></td>
+<td><span class="math inline">\(\partial w_3=\begin{bmatrix}w_2&amp;w_1\end{bmatrix}\)</span></td>
+<td><span class="math inline">\(\bar w_3 = \bar w_5 \cdot 1 = 1\)</span></td>
+</tr>
+<tr class="odd">
+<td><code>3b</code></td>
+<td><span class="math inline">\(w_2=x_2\)</span></td>
+<td></td>
+<td><span class="math inline">\(\bar w_2 = \bar w_3 w_1= x_1\)</span></td>
+</tr>
+<tr class="even">
+<td><code>3a</code></td>
+<td><span class="math inline">\(w_1=x_1\)</span></td>
+<td></td>
+<td><span class="math inline">\(\bar w_1 = \bar w_3 w_2 +\bar w_4 \cos(w_1) = x_2 + \cos(x_1)\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Wir bemerken, dass in einem Durchlauf, beide partiellen Ableitungen direkt
+berechnet werden. Allerdings müssen zunächst in einem
+Vorwärsdurchlauf die Gradienten <span class="math inline">\(\partial w_i\)</span> berechnet und gespeichert werden.
+Das kann bei komplexen Programmen durchaus ein Nachteil sein. Ein Ausweg bietet
+<em>checkpointing</em> wo nur wenige Zwischenetappen der Werte <span class="math inline">\(w_i\)</span> gespeichert
+werden, aus denen bei Bedarf die Nachfolger und Gradienten zwischen den
+Checkpoints erzeugt werden können.</p>
+<p>Zusätzlich muss der Programmablauf (also welche Variablen aus welchen
+hervorgegangen sind – die sogenannte <em>Wengert Liste</em>) verfügbar sein.</p>
+<p>Hätte <span class="math inline">\(y\)</span> mehrere Komponenten, müsste
+für jede Komponente die entsprechenden adjungierten in einem neuen
+Durchlauf berechnet werden.</p>
+<p>Andersherum ist es beim Vorwärtsmodus, bei welchem mehrere Komponenten im
+Ausgang direkt berechnet werden aber für jede Eingangsvariable die
+Akkumulation separat durchgeführt werden muss.</p>
 </div>
 </div>
             </section>
