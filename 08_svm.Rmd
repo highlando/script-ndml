@@ -13,7 +13,7 @@ In der Tat sind die Merkmale der SVM
   h&ouml;here Dimensionen (*kernel-SVM*)
 
 ![Beispiel Illustration von Punktwolken mit zwei verschiedenen Labels (hier rot
-und blau) und verschiedener trennender Hyperebenen](bilder/08_hyperebene-punkte-bsp.png){#fig:cases-cntrd-HA width="65%"}
+und blau) und verschiedener trennender Hyperebenen](bilder/08_hyperebene-punkte-bsp.png)
 
 ## Problemstellung 
 

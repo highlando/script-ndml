@@ -25,7 +25,7 @@ Ein Problemlösungsverfahren wird als *Algorithmus* bezeichnet, genau dann wenn 
 
 Diese Definition ist in ihrer Allgemeinheit nicht allzu hilfreich - wir haben noch nicht einmal definiert, was eine Turing-Maschine ist.
 
-::: {#rem-coors .JHSAYS data-latex=''}
+::: {#rem-turing-machine .JHSAYS data-latex=''}
 Eine *Turing-Maschine* kann als eine Maschine beschrieben werden, die ein Band von Anweisungen liest und auf dieses Band schreiben kann. Abhängig davon, was sie liest, kann sie vorwärts bewegen, rückwärts bewegen oder anhalten (wenn das Band einen vordefinierten Zustand erreicht hat). Das Schöne daran ist, dass dieses Setup in einen vollständig mathematischen Rahmen gestellt werden kann.
 :::
 

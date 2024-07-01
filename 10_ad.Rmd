@@ -78,12 +78,13 @@ w_3 &= f(w_2) = y
 
 ergibt die Kettenregel f&uuml;r die Werte zu einem fixen Wert $x^*$ von $x$:
 
-\begin{equation}(\#eq:eqn-chainrule-fgh)
+\begin{equation}
 \begin{split}
 \frac{\partial y(x^*)}{\partial x} &= 
 \frac{\partial y}{\partial w_2}\Biggl|_{w_2=g(h(x^*))} \frac{\partial w_2}{\partial w_1} \Biggl|_{w_1=h(x^*)}\frac{\partial w_1}{\partial w_0}\Biggl|_{w_0=x^*} \\
 &= \frac{\partial f}{\partial w_2}(w_2^*)\biggl[ \frac{\partial g}{\partial w_1}(w_1^*) \Bigl[\frac{\partial h}{\partial x}(w_0^*) \Bigr] \biggr]
 \end{split}
+(\#eq:eqn-chainrule-fgh)
 \end{equation}
 
 F&uuml;r multivariate Funktionen gilt die mehrdimensionale Kettenregel und das
@@ -128,8 +129,8 @@ dass hierbei
  * F&uuml;r eine Funktion in mehreren Variablen, d.h. von $\mathbb R^{n}$ nach $\mathbb R^{m}$, werden die
    partiellen Ableitungen $\frac{\partial y}{\partial x_k}$ separat in eigenen Durchl&auml;fen berechnet:
      * damit ist an der Implementierung nichts zu &auml;ndern, nur die
-       Akkumulation wird mit $\dot w_0 = \begin{bmatrix} 0 & \hdots & 1 & 0
-       & \hdots 0 \end{bmatrix}^T$ initialisiert
+       Akkumulation wird mit $\dot w_0 = \begin{bmatrix} 0 & \dotsm & 1 & 0
+       & \dotsm & 0 \end{bmatrix}^T$ initialisiert
      * eine simultane Berechnung aller Ableitungen verursacht vergleichsweise
        viel *overhead* (entweder m&uuml;ssen die verschiedenen Richtungen im
        Code
@@ -186,20 +187,23 @@ y
 ergibt sich folgender Berechnungsgraph und Fluss in der
 Vorw&auml;rtsakkumulation.
 
-![Beispiel für Vorwärtsakkumulation mit Berechnungsgraph](bilder/ForwardAccumulationAutomaticDifferentiation.png)
+<!-- ![Beispiel für Vorwärtsakkumulation mit Berechnungsgraph](bilder/ForwardAccumulationAutomaticDifferentiation.png) -->
+```{r fig-10-ad-fwd, out.width='100%', fig.show='hold', fig.cap='Beispiel für Vorwärtsakkumulation mit Berechnungsgraph', eval=TRUE, echo=FALSE}
+knitr::include_graphics('bilder/ForwardAccumulationAutomaticDifferentiation.png')
+```
 
 Mit den folgenden Schritten ergibt sich f&uuml;r die partielle
 Ableitung von $y$ bez&uuml;glich $x_1$
 
 | Schritt | Funktionswert | Ableitung | Akkumulation |
 | --- | ----- | ------ | ------------ |
-| `0a` | $w_1=x_1$ | $\partial w_1=1$ | $\dot w_1 = 1$  |
-| `0b` | $w_2=x_2$ | $\partial w_2=0$ | $\dot w_2 = 0$  |
+| `0a` | $w_1=x_1$ | | $\dot w_1 = 1$  |
+| `0b` | $w_2=x_2$ |  | $\dot w_2 = 0$  |
 | `1a` | $w_3 = w_1w_2$ | $\partial w_3 = \begin{bmatrix}
 w_2&w_1\end{bmatrix}$ | $\dot w_3 = \begin{bmatrix}w_2&w_1\end{bmatrix}\begin{bmatrix}
-1 \\ 0 \end{bmatrix} = x_1$ |
+1 \\ 0 \end{bmatrix} = x_2$ |
 | `1b` | $w_4 = \sin(w_1)$ | $\partial w_4=\cos(w_1)$ | $\dot w_4 =\cos(w_1)\cdot\dot w_1 = \cos(x_1)$ |
-| `2` | $w_5 = w_3 + w_4$ | $\partial w_5=\begin{bmatrix}1 & 1\end{bmatrix}$ | $\dot w_5 = \begin{bmatrix}1 & 1\end{bmatrix}\begin{bmatrix} \dot w_3 \\ \dot w_4 \end{bmatrix} = x_1 + \cos(x_1)$ |
+| `2` | $w_5 = w_3 + w_4$ | $\partial w_5=\begin{bmatrix}1 & 1\end{bmatrix}$ | $\dot w_5 = \begin{bmatrix}1 & 1\end{bmatrix}\begin{bmatrix} \dot w_3 \\ \dot w_4 \end{bmatrix} = x_2 + \cos(x_1)$ |
 
 
 ## R&uuml;ckw&auml;rtsmodus
@@ -221,9 +225,14 @@ Sind also *sp&auml;tere* Adjungierte $\bar w_j$ bekannt, k&ouml;nnen
 
 Die Rückwärtsakkumulation durchläuft die Kettenregel (wie in Gleichung
 \@ref(eq:eqn-chainrule-fgh) von außen nach
-innen oder im Falle des Berechnungsgraphen (wie in Abbildung \@ref(fig:10-ad-bw) illustriert) von oben nach unten.
+innen oder im Falle des Berechnungsgraphen (wie in Abbildung \@ref(fig:fig-10-ad-bw) illustriert) von oben nach unten.
 
-![Beispiel für Rückwärtsakkumulation mit Berechnungsgraph](bilder/ReverseaccumulationAD.png){#fig:10-ad-bw width="100%"}
+
+<!-- ![Beispiel für Rückwärtsakkumulation mit Berechnungsgraph](bilder/ReverseaccumulationAD.png){#fig-10-ad-bw width="100%"} -->
+
+```{r fig-10-ad-bw, out.width='100%', fig.show='hold', fig.cap='Beispiel für Rückwärtsakkumulation mit Berechnungsgraph', eval=TRUE, echo=FALSE}
+knitr::include_graphics('bilder/ReverseaccumulationAD.png')
+```
 
 Die Operationen zur Berechnung der Ableitung mittels Rückwärtsakkumulation sind in der folgenden Tabelle dargestellt (beachte die umgekehrte Reihenfolge):
 
@@ -236,7 +245,11 @@ Die Operationen zur Berechnung der Ableitung mittels Rückwärtsakkumulation sin
 | `3b` | $w_2=x_2$ | | $\bar w_2 = \bar w_3 w_1= x_1$  |
 | `3a` | $w_1=x_1$ | | $\bar w_1 = \bar w_3 w_2 +\bar w_4 \cos(w_1) = x_2 + \cos(x_1)$  |
 
-Wir bemerken, dass in einem Durchlauf, beide partiellen Ableitungen direkt
+Wir bemerken, dass in einem Durchlauf, beide partiellen Ableitungen 
+\begin{equation*}
+\bar w_2 = \frac{\partial y}{\partial w_2}= \frac{\partial y}{\partial x_2},\quad \bar w_1 = \frac{\partial y}{\partial w_1}= \frac{\partial y}{\partial x_1}
+\end{equation*}
+direkt
 berechnet werden. Allerdings m&uuml;ssen zun&auml;chst in einem
 Vorw&auml;rsdurchlauf die Gradienten $\partial w_i$ berechnet und gespeichert werden.
 Das kann bei komplexen Programmen durchaus ein Nachteil sein. Ein Ausweg bietet
@@ -289,9 +302,9 @@ ist (und im Zweifel auch effizienter) als die Berechnung von sehr abstrakten
 Gradienten.
 
 Um abstraktere Gradienten zu charakterisieren ist oftmals die Definition der
-*totalen Ableitung* einer Funktion $f\colon X\to Y$ bei einem $x\in X$ als die lineare Abbildung $A_x\colon X\to Y$ derart, dass
+*totalen Ableitung* einer Funktion $f\colon X\to Y$ bei einem $x\in X$ als die lineare Abbildung $L(x)\colon X\to Y$ derart, dass
 \begin{equation*}
-f(x+h) - f(x) - A_x[h] = o(\| h\|)
+f(x+h) - f(x) - L(x)[h] = o(\| h\|)
 \end{equation*}
 f&uuml;r $h\in X$ gilt.
 
@@ -302,7 +315,7 @@ f(S) = A^TS + SA -SRS + Q
 dann hat der *Riccati* Operator $f$ mit Koeffizienten $A$, $R$, $Q \in \mathbb R^{n\times n}$
 demnach die Realisierung des Gradienten (an der Stelle $S_0$) gegeben als
 \begin{equation*}
-\partial f(S_0)[h] = (A^T-S_0R)h + h(A-RS_0).
+L(S_0)[h] = (A^T-S_0R)h + h(A-RS_0).
 \end{equation*}
 
 F&uuml;r neuronale Netze ist der Gradient von $f(x; \tilde A, b)=\tilde Ax+b$ bez&uuml;glich der
@@ -317,11 +330,20 @@ und betrachten einfach $f(x; A)=Ax$ mit $A\in \mathbb R^{m\times n}$. Gem&auml;&
 \begin{equation*}
 f(x;A+h) - f(x;A) - hx = (A+h)x - Ax - hx = 0 = o(\|h\|)
 \end{equation*}
-also im Prinzip ist $x$ die Ableitung wenn auch nicht als Vektor sondern als
+also im Prinzip ist $L(A)\leftrightarrow x$ die Ableitung wenn auch nicht als Vektor sondern als
 \begin{equation*}
 L_{[x]}\colon \mathbb R^{n\times m} \to \mathbb R^{n}\colon h\to L_{[x]} h = hx.
 \end{equation*}
-Diese Abbildung ist linear und k&ouml;nnte als Matrix (bzw. Tensor im Sinne
+
+::: {#Lx-not-LA .JHSAYS data-latex=''}
+Weil hier an der Stelle $A$ abgeleitet wird, sollte hier $L(A)$ stehen. Da bei
+linearen Abbildung die Ableitung &uuml;berall gleich ist, gilt $L(A)\equiv L$
+unabh&auml;ngig von $A$. F&uuml;r sp&auml;ter wird es interessant sein, dass
+die Ableitung direkt mit $x$ zusammenh&auml;ngt, sodass wir das $x$ in die
+Definition mit aufnehmen.
+:::
+
+Diese Abbildung $L_{[x]}$ ist linear und k&ouml;nnte als Matrix (bzw. Tensor im Sinne
 einer h&ouml;herdimensionalen Datenstruktur)
 im $\mathbb R^{n \times (n\times m)}$ realisiert werden.
 
@@ -382,7 +404,12 @@ von der letzten bis zur ersten *layer* berechnet werden k&ouml;nnen.
 
 ## Praktische Berechnung des Gradienten
 
-Mit $\hat y = -2(y-s(x;p))$ bekommen wir aus obigen Formeln, dass
+::: {#grad-vs-jac .JHSAYS data-latex=''}
+Im sch&ouml;nsten *machine learning*-Sprech sagt Jan hier immer Gradient obwohl
+eher die Ableitung oder die Jacobi Matrix gemeint ist.
+:::
+
+Mit $\hat y = -2(y-s(x;p)) \in \mathbb R^{n_2\times 1}$ bekommen wir aus obigen Formeln, dass
 \begin{equation*}
 \begin{split}
 \partial_{A_2}l(x; p) = \ipro{\hat y}{\partial_{A_2}s(x;p)} &= \hat y^T
@@ -393,7 +420,32 @@ Mit $\hat y = -2(y-s(x;p))$ bekommen wir aus obigen Formeln, dass
 
 Eine Betrachtung der Dimensionen $\hat y \in \mathbb R^{n_2 \times 1}$,
 $\sigma'(A_2x_1)\in \mathbb R^{n_2\times n_2}$ und $L_{[x_1]}\in \mathbb
-R^{n_2\times(n_2\times n_1)}$ ergibt...
+R^{n_2\times(n_2\times n_1)}$ ergibt f&uuml;r das Produkt, dass 
+\begin{equation*}
+\tilde y^T L_{[x_1]} \in \mathbb R^{1\times (n_2 \times n_1)}
+\end{equation*}
+sodass wir schon fast den Gradienten zum Parameter $A_2 \in \mathbb R^{n_2
+\times n_1}$ addieren k&ouml;nnen. 
+
+Wir berechnen die Eintr&auml;ge $g_{1ij}$ des Gradienten $\tilde y^T L_{[x_1]}$
+als die $1$-te (und einzige -- da der Bildraum 1-dimensional ist) Komponente
+(bzgl. die kanonischen Basis) auf die der $ij$ kanonische Basisvektor aus dem
+Urbildraum abgebildet wird. Hier bietet sich als kanonische Basis $\{e^{(ij)}\}$
+die Menge der Matrizen an, die $0$ sind bis auf eine $1$ in der $i$-ten Zeile an der
+$j$-ten Stelle. In der Tat gilt dann
+\begin{equation*}
+\mathbb R^{n_2\times n_1}\ni A = [a_{ij}] \leftrightarrow A =
+\sum_{i,j}a_{ij}e^{(ij)}
+\end{equation*}
+Damit gilt
+\begin{equation*}
+g_{1ij}=\tilde y^TL_{[x_1]}e^{(ij)} = \tilde y^T e_{ij}x_1 = \tilde y_i (x_{1})_j
+\end{equation*}
+sodass wir als $1$-te und einzige (matrixwertige) Komponente des Gradienten das
+&auml;u&szlig;ere Produkt von $\tilde y$ und $x_1$ erhalten
+\begin{equation*}
+(\tilde y^T L_{[x_1]})_1 = \tilde y x_1^T \in \mathbb R^{n_2 \times n_1}.
+\end{equation*}
 
 ## Implementierungsbeispiele
 
