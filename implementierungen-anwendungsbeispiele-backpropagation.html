@@ -266,9 +266,9 @@ verwendet weil die Lösung einer Differentialgleichung einfacher umzusetzen
 ist (und im Zweifel auch effizienter) als die Berechnung von sehr abstrakten
 Gradienten.</p>
 <p>Um abstraktere Gradienten zu charakterisieren ist oftmals die Definition der
-<em>totalen Ableitung</em> einer Funktion <span class="math inline">\(f\colon X\to Y\)</span> bei einem <span class="math inline">\(x\in X\)</span> als die lineare Abbildung <span class="math inline">\(A_x\colon X\to Y\)</span> derart, dass
+<em>totalen Ableitung</em> einer Funktion <span class="math inline">\(f\colon X\to Y\)</span> bei einem <span class="math inline">\(x\in X\)</span> als die lineare Abbildung <span class="math inline">\(L(x)\colon X\to Y\)</span> derart, dass
 <span class="math display">\[\begin{equation*}
-f(x+h) - f(x) - A_x[h] = o(\| h\|)
+f(x+h) - f(x) - L(x)[h] = o(\| h\|)
 \end{equation*}\]</span>
 für <span class="math inline">\(h\in X\)</span> gilt.</p>
 <p>Seien beispielsweise die Räume als <span class="math inline">\(X=Y=\mathbb R^{n\times n}\)</span> gegeben und
@@ -278,7 +278,7 @@ f(S) = A^TS + SA -SRS + Q
 dann hat der <em>Riccati</em> Operator <span class="math inline">\(f\)</span> mit Koeffizienten <span class="math inline">\(A\)</span>, <span class="math inline">\(R\)</span>, <span class="math inline">\(Q \in \mathbb R^{n\times n}\)</span>
 demnach die Realisierung des Gradienten (an der Stelle <span class="math inline">\(S_0\)</span>) gegeben als
 <span class="math display">\[\begin{equation*}
-\partial f(S_0)[h] = (A^T-S_0R)h + h(A-RS_0).
+L(S_0)[h] = (A^T-S_0R)h + h(A-RS_0).
 \end{equation*}\]</span></p>
 <p>Für neuronale Netze ist der Gradient von <span class="math inline">\(f(x; \tilde A, b)=\tilde Ax+b\)</span> bezüglich der
 <em>Gewichte</em> <span class="math inline">\(\tilde A\in \mathbb R^{m\times n-1}\)</span> und <span class="math inline">\(b\in \mathbb R^{m}\)</span> interessant.
@@ -292,11 +292,18 @@ und betrachten einfach <span class="math inline">\(f(x; A)=Ax\)</span> mit <span
 <span class="math display">\[\begin{equation*}
 f(x;A+h) - f(x;A) - hx = (A+h)x - Ax - hx = 0 = o(\|h\|)
 \end{equation*}\]</span>
-also im Prinzip ist <span class="math inline">\(x\)</span> die Ableitung wenn auch nicht als Vektor sondern als
+also im Prinzip ist <span class="math inline">\(L(A)\leftrightarrow x\)</span> die Ableitung wenn auch nicht als Vektor sondern als
 <span class="math display">\[\begin{equation*}
 L_{[x]}\colon \mathbb R^{n\times m} \to \mathbb R^{n}\colon h\to L_{[x]} h = hx.
-\end{equation*}\]</span>
-Diese Abbildung ist linear und könnte als Matrix (bzw. Tensor im Sinne
+\end{equation*}\]</span></p>
+<div id="Lx-not-LA" class="JHSAYS">
+<p>Weil hier an der Stelle <span class="math inline">\(A\)</span> abgeleitet wird, sollte hier <span class="math inline">\(L(A)\)</span> stehen. Da bei
+linearen Abbildung die Ableitung überall gleich ist, gilt <span class="math inline">\(L(A)\equiv L\)</span>
+unabhängig von <span class="math inline">\(A\)</span>. Für später wird es interessant sein, dass
+die Ableitung direkt mit <span class="math inline">\(x\)</span> zusammenhängt, sodass wir das <span class="math inline">\(x\)</span> in die
+Definition mit aufnehmen.</p>
+</div>
+<p>Diese Abbildung <span class="math inline">\(L_{[x]}\)</span> ist linear und könnte als Matrix (bzw. Tensor im Sinne
 einer höherdimensionalen Datenstruktur)
 im <span class="math inline">\(\mathbb R^{n \times (n\times m)}\)</span> realisiert werden.</p>
 </div>
@@ -350,7 +357,11 @@ von der letzten bis zur ersten <em>layer</em> berechnet werden können.</p>
 </div>
 <div id="praktische-berechnung-des-gradienten" class="section level2 hasAnchor" number="11.3">
 <h2><span class="header-section-number">11.3</span> Praktische Berechnung des Gradienten<a href="implementierungen-anwendungsbeispiele-backpropagation.html#praktische-berechnung-des-gradienten" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Mit <span class="math inline">\(\hat y = -2(y-s(x;p))\)</span> bekommen wir aus obigen Formeln, dass
+<div id="grad-vs-jac" class="JHSAYS">
+<p>Im schönsten <em>machine learning</em>-Sprech sagt Jan hier immer Gradient obwohl
+eher die Ableitung oder die Jacobi Matrix gemeint ist.</p>
+</div>
+<p>Mit <span class="math inline">\(\hat y = -2(y-s(x;p)) \in \mathbb R^{n_2\times 1}\)</span> bekommen wir aus obigen Formeln, dass
 <span class="math display">\[\begin{equation*}
 \begin{split}
 \partial_{A_2}l(x; p) = \bigl \langle \hat y, \, \partial_{A_2}s(x;p)\bigr\rangle  &amp;= \hat y^T
@@ -359,7 +370,30 @@ von der letzten bis zur ersten <em>layer</em> berechnet werden können.</p>
 \end{split}
 \end{equation*}\]</span></p>
 <p>Eine Betrachtung der Dimensionen <span class="math inline">\(\hat y \in \mathbb R^{n_2 \times 1}\)</span>,
-<span class="math inline">\(\sigma&#39;(A_2x_1)\in \mathbb R^{n_2\times n_2}\)</span> und <span class="math inline">\(L_{[x_1]}\in \mathbb R^{n_2\times(n_2\times n_1)}\)</span> ergibt…</p>
+<span class="math inline">\(\sigma&#39;(A_2x_1)\in \mathbb R^{n_2\times n_2}\)</span> und <span class="math inline">\(L_{[x_1]}\in \mathbb R^{n_2\times(n_2\times n_1)}\)</span> ergibt für das Produkt, dass
+<span class="math display">\[\begin{equation*}
+\tilde y^T L_{[x_1]} \in \mathbb R^{1\times (n_2 \times n_1)}
+\end{equation*}\]</span>
+sodass wir schon fast den Gradienten zum Parameter <span class="math inline">\(A_2 \in \mathbb R^{n_2 \times n_1}\)</span> addieren können.</p>
+<p>Wir berechnen die Einträge <span class="math inline">\(g_{1ij}\)</span> des Gradienten <span class="math inline">\(\tilde y^T L_{[x_1]}\)</span>
+als die <span class="math inline">\(1\)</span>-te (und einzige – da der Bildraum 1-dimensional ist) Komponente
+(bzgl. die kanonischen Basis) auf die der <span class="math inline">\(ij\)</span> kanonische Basisvektor aus dem
+Urbildraum abgebildet wird. Hier bietet sich als kanonische Basis <span class="math inline">\(\{e^{(ij)}\}\)</span>
+die Menge der Matrizen an, die <span class="math inline">\(0\)</span> sind bis auf eine <span class="math inline">\(1\)</span> in der <span class="math inline">\(i\)</span>-ten Zeile an der
+<span class="math inline">\(j\)</span>-ten Stelle. In der Tat gilt dann
+<span class="math display">\[\begin{equation*}
+\mathbb R^{n_2\times n_1}\ni A = [a_{ij}] \leftrightarrow A =
+\sum_{i,j}a_{ij}e^{(ij)}
+\end{equation*}\]</span>
+Damit gilt
+<span class="math display">\[\begin{equation*}
+g_{1ij}=\tilde y^TL_{[x_1]}e^{(ij)} = \tilde y^T e_{ij}x_1 = \tilde y_i (x_{1})_j
+\end{equation*}\]</span>
+sodass wir als <span class="math inline">\(1\)</span>-te und einzige (matrixwertige) Komponente des Gradienten das
+äußere Produkt von <span class="math inline">\(\tilde y\)</span> und <span class="math inline">\(x_1\)</span> erhalten
+<span class="math display">\[\begin{equation*}
+(\tilde y^T L_{[x_1]})_1 = \tilde y x_1^T \in \mathbb R^{n_2 \times n_1}.
+\end{equation*}\]</span></p>
 </div>
 <div id="implementierungsbeispiele" class="section level2 hasAnchor" number="11.4">
 <h2><span class="header-section-number">11.4</span> Implementierungsbeispiele<a href="implementierungen-anwendungsbeispiele-backpropagation.html#implementierungsbeispiele" class="anchor-section" aria-label="Anchor link to header"></a></h2>

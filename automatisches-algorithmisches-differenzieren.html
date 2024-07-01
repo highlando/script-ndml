@@ -306,12 +306,13 @@ w_2 &amp;= g(w_1) \\
 w_3 &amp;= f(w_2) = y
 \end{align*}\]</span></p>
 <p>ergibt die Kettenregel für die Werte zu einem fixen Wert <span class="math inline">\(x^*\)</span> von <span class="math inline">\(x\)</span>:</p>
-<p><span class="math display" id="eq:eqn-chainru\tag{10.1}on}(#eq:eqn-chainrule-fgh)
+<p><span class="math display" id="eq:eqn-chainrule-fgh">\[\begin{equation}
 \begin{split}
 \frac{\partial y(x^*)}{\partial x} &amp;= 
 \frac{\partial y}{\partial w_2}\Biggl|_{w_2=g(h(x^*))} \frac{\partial w_2}{\partial w_1} \Biggl|_{w_1=h(x^*)}\frac{\partial w_1}{\partial w_0}\Biggl|_{w_0=x^*} \\
 &amp;= \frac{\partial f}{\partial w_2}(w_2^*)\biggl[ \frac{\partial g}{\partial w_1}(w_1^*) \Bigl[\frac{\partial h}{\partial x}(w_0^*) \Bigr] \biggr]
 \end{split}
+\tag{10.1}
 \end{equation}\]</span></p>
 <p>Für multivariate Funktionen gilt die mehrdimensionale Kettenregel und das
 Produkt der Ableitungen wird zum Produkt der Jacobi-Matrizen.</p>
@@ -390,7 +391,7 @@ und der Akkumulation
 partiellen Ableitungen <span class="math inline">\(\frac{\partial y}{\partial x_k}\)</span> separat in eigenen Durchläfen berechnet:
 <ul>
 <li>damit ist an der Implementierung nichts zu ändern, nur die
-Akkumulation wird mit <span class="math inline">\(\dot w_0 = \begin{bmatrix} 0 &amp; \hdots &amp; 1 &amp; 0 &amp; \hdots 0 \end{bmatrix}^T\)</span> initialisiert</li>
+Akkumulation wird mit <span class="math inline">\(\dot w_0 = \begin{bmatrix} 0 &amp; \dotsm &amp; 1 &amp; 0 &amp; \dotsm &amp; 0 \end{bmatrix}^T\)</span> initialisiert</li>
 <li>eine simultane Berechnung aller Ableitungen verursacht vergleichsweise
 viel <em>overhead</em> (entweder müssen die verschiedenen Richtungen im
 Code
@@ -439,9 +440,12 @@ y
 \end{align*}\]</span>
 ergibt sich folgender Berechnungsgraph und Fluss in der
 Vorwärtsakkumulation.</p>
-<div class="figure">
-<img src="bilder/ForwardAccumulationAutomaticDifferentiation.png" alt="" />
-<p class="caption">Beispiel für Vorwärtsakkumulation mit Berechnungsgraph</p>
+<!-- ![Beispiel für Vorwärtsakkumulation mit Berechnungsgraph](bilder/ForwardAccumulationAutomaticDifferentiation.png) -->
+<div class="figure"><span style="display:block;" id="fig:fig-10-ad-fwd"></span>
+<img src="bilder/ForwardAccumulationAutomaticDifferentiation.png" alt="Beispiel für Vorwärtsakkumulation mit Berechnungsgraph" width="100%" />
+<p class="caption">
+Figure 10.1: Beispiel für Vorwärtsakkumulation mit Berechnungsgraph
+</p>
 </div>
 <p>Mit den folgenden Schritten ergibt sich für die partielle
 Ableitung von <span class="math inline">\(y\)</span> bezüglich <span class="math inline">\(x_1\)</span></p>
@@ -464,20 +468,20 @@ Ableitung von <span class="math inline">\(y\)</span> bezüglich <span class="mat
 <tr class="odd">
 <td><code>0a</code></td>
 <td><span class="math inline">\(w_1=x_1\)</span></td>
-<td><span class="math inline">\(\partial w_1=1\)</span></td>
+<td></td>
 <td><span class="math inline">\(\dot w_1 = 1\)</span></td>
 </tr>
 <tr class="even">
 <td><code>0b</code></td>
 <td><span class="math inline">\(w_2=x_2\)</span></td>
-<td><span class="math inline">\(\partial w_2=0\)</span></td>
+<td></td>
 <td><span class="math inline">\(\dot w_2 = 0\)</span></td>
 </tr>
 <tr class="odd">
 <td><code>1a</code></td>
 <td><span class="math inline">\(w_3 = w_1w_2\)</span></td>
 <td><span class="math inline">\(\partial w_3 = \begin{bmatrix} w_2&amp;w_1\end{bmatrix}\)</span></td>
-<td><span class="math inline">\(\dot w_3 = \begin{bmatrix}w_2&amp;w_1\end{bmatrix}\begin{bmatrix} 1 \\ 0 \end{bmatrix} = x_1\)</span></td>
+<td><span class="math inline">\(\dot w_3 = \begin{bmatrix}w_2&amp;w_1\end{bmatrix}\begin{bmatrix} 1 \\ 0 \end{bmatrix} = x_2\)</span></td>
 </tr>
 <tr class="even">
 <td><code>1b</code></td>
@@ -489,7 +493,7 @@ Ableitung von <span class="math inline">\(y\)</span> bezüglich <span class="mat
 <td><code>2</code></td>
 <td><span class="math inline">\(w_5 = w_3 + w_4\)</span></td>
 <td><span class="math inline">\(\partial w_5=\begin{bmatrix}1 &amp; 1\end{bmatrix}\)</span></td>
-<td><span class="math inline">\(\dot w_5 = \begin{bmatrix}1 &amp; 1\end{bmatrix}\begin{bmatrix} \dot w_3 \\ \dot w_4 \end{bmatrix} = x_1 + \cos(x_1)\)</span></td>
+<td><span class="math inline">\(\dot w_5 = \begin{bmatrix}1 &amp; 1\end{bmatrix}\begin{bmatrix} \dot w_3 \\ \dot w_4 \end{bmatrix} = x_2 + \cos(x_1)\)</span></td>
 </tr>
 </tbody>
 </table>
@@ -508,11 +512,14 @@ Berechnungsgraphen:</p>
 Sind also <em>spätere</em> Adjungierte <span class="math inline">\(\bar w_j\)</span> bekannt, können
 <em>frühere</em> <span class="math inline">\(\bar w_i\)</span> bestimmt werden.</p>
 <p>Die Rückwärtsakkumulation durchläuft die Kettenregel (wie in Gleichung
-<a href="#eq:eqn-chainrule-fgh">(10.1)</a> von außen nach
-innen oder im Falle des Berechnungsgraphen (wie in Abbildung <a href="automatisches-algorithmisches-differenzieren.html#fig:10-ad-bw"><strong>??</strong></a> illustriert) von oben nach unten.</p>
-<div class="figure">
-<img src="bilder/ReverseaccumulationAD.png" id="fig:10-ad-bw" style="width:100.0%" alt="" />
-<p class="caption">Beispiel für Rückwärtsakkumulation mit Berechnungsgraph</p>
+<a href="automatisches-algorithmisches-differenzieren.html#eq:eqn-chainrule-fgh">(10.1)</a> von außen nach
+innen oder im Falle des Berechnungsgraphen (wie in Abbildung <a href="automatisches-algorithmisches-differenzieren.html#fig:fig-10-ad-bw">10.2</a> illustriert) von oben nach unten.</p>
+<!-- ![Beispiel für Rückwärtsakkumulation mit Berechnungsgraph](bilder/ReverseaccumulationAD.png){#fig-10-ad-bw width="100%"} -->
+<div class="figure"><span style="display:block;" id="fig:fig-10-ad-bw"></span>
+<img src="bilder/ReverseaccumulationAD.png" alt="Beispiel für Rückwärtsakkumulation mit Berechnungsgraph" width="100%" />
+<p class="caption">
+Figure 10.2: Beispiel für Rückwärtsakkumulation mit Berechnungsgraph
+</p>
 </div>
 <p>Die Operationen zur Berechnung der Ableitung mittels Rückwärtsakkumulation sind in der folgenden Tabelle dargestellt (beachte die umgekehrte Reihenfolge):</p>
 <table>
@@ -569,7 +576,11 @@ innen oder im Falle des Berechnungsgraphen (wie in Abbildung <a href="automatisc
 </tr>
 </tbody>
 </table>
-<p>Wir bemerken, dass in einem Durchlauf, beide partiellen Ableitungen direkt
+<p>Wir bemerken, dass in einem Durchlauf, beide partiellen Ableitungen
+<span class="math display">\[\begin{equation*}
+\bar w_2 = \frac{\partial y}{\partial w_2}= \frac{\partial y}{\partial x_2},\quad \bar w_1 = \frac{\partial y}{\partial w_1}= \frac{\partial y}{\partial x_1}
+\end{equation*}\]</span>
+direkt
 berechnet werden. Allerdings müssen zunächst in einem
 Vorwärsdurchlauf die Gradienten <span class="math inline">\(\partial w_i\)</span> berechnet und gespeichert werden.
 Das kann bei komplexen Programmen durchaus ein Nachteil sein. Ein Ausweg bietet

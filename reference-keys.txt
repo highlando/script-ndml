@@ -32,6 +32,8 @@ thm:thm-pc-dense-C
 eq:eqn-fj-fjp-se
 eq:eqn-gm-approx
 eq:eqn-chainrule-fgh
+fig:fig-10-ad-fwd
+fig:fig-10-ad-bw
 einführung
 was-ist-ein-algorithmus
 konsistenz-stabilität-genauigkeit
