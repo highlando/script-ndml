@@ -100,6 +100,9 @@ rückwärtsmodus
 implementierungen-anwendungsbeispiele-backpropagation
 exkurs-gradienten-und-repräsentation
 backpropagation
+rekursion
+praktische-berechnung-des-gradienten
+implementierungsbeispiele
 aufgaben-3
 ableitung-und-newton
 nachklapp

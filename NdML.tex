@@ -3255,7 +3255,7 @@ Umsetzung in einem Gradientenabstiegsverfahren mit PDEs).
 Während diese Resultate in der Theorie die Wohlgestelltheit der
 Optimierungsprobleme helfen zu analysieren, werden Sie in der Praxis gerne
 verwendet weil die Lösung einer Differentialgleichung einfacher umzusetzen
-ist (und im Zweifel auf effizienter) als die Berechnung von sehr abstrakten
+ist (und im Zweifel auch effizienter) als die Berechnung von sehr abstrakten
 Gradienten.
 
 Um abstraktere Gradienten zu charakterisieren ist oftmals die Definition der
@@ -3263,9 +3263,9 @@ Um abstraktere Gradienten zu charakterisieren ist oftmals die Definition der
 \begin{equation*}
 f(x+h) - f(x) - A_x[h] = o(\| h\|)
 \end{equation*}
-gilt.
+für \(h\in X\) gilt.
 
-Sei beispielsweise \(X=Y=\mathbb R^{n\times n}\) und
+Seien beispielsweise die Räume als \(X=Y=\mathbb R^{n\times n}\) gegeben und
 \begin{equation*}
 f(S) = A^TS + SA -SRS + Q
 \end{equation*}
@@ -3275,7 +3275,7 @@ demnach die Realisierung des Gradienten (an der Stelle \(S_0\)) gegeben als
 \partial f(S_0)[h] = (A^T-S_0R)h + h(A-RS_0).
 \end{equation*}
 
-Für neuronale Netze ist der Gradient von \(f(x; \tilde A, b)=Ax+b\) bezüglich der
+Für neuronale Netze ist der Gradient von \(f(x; \tilde A, b)=\tilde Ax+b\) bezüglich der
 \emph{Gewichte} \(\tilde A\in \mathbb R^{m\times n-1}\) und \(b\in \mathbb R^{m}\) interessant.
 Zunächst mal verstehen wir die affine lineare Abbildung im
 projektiven Raum vermöge
@@ -3287,11 +3287,12 @@ und betrachten einfach \(f(x; A)=Ax\) mit \(A\in \mathbb R^{m\times n}\). Gemä�
 \begin{equation*}
 f(x;A+h) - f(x;A) - hx = (A+h)x - Ax - hx = 0 = o(\|h\|)
 \end{equation*}
-also im Prinzip ist \(x\) die Ableitung allerdings im Sinne von
+also im Prinzip ist \(x\) die Ableitung wenn auch nicht als Vektor sondern als
 \begin{equation*}
-x\colon \mathbb R^{n\times m} \to \mathbb R^{n}\colon h\to hx
+L_{[x]}\colon \mathbb R^{n\times m} \to \mathbb R^{n}\colon h\to L_{[x]} h = hx.
 \end{equation*}
-Diese Abbildung ist linear und könnte als Matrix
+Diese Abbildung ist linear und könnte als Matrix (bzw. Tensor im Sinne
+einer höherdimensionalen Datenstruktur)
 im \(\mathbb R^{n \times (n\times m)}\) realisiert werden.
 
 \hypertarget{backpropagation}{%
@@ -3303,23 +3304,74 @@ Gradientenberechnung.
 
 Wir betrachten ein 2-layer Netzwerk
 \begin{equation*}
-y = \sigma(A_2 \sigma(A_1x))
+s(x) = \sigma(A_2 \sigma(A_1x))
 \end{equation*}
-und erinnern uns daran, dass für das Training der Gradient vom Ausgang
-bezüglich der Parameter \((A_2, A_1)\) gesucht ist.
+mit den \emph{bias}-Vektoren \(b_1\) und \(b_2\) wie oben erläutert bereits in den Matrizen \(A_1\in \mathbb R^{n_0\times n_1}\) und \(A_2 \in \mathbb R^{n_2\times n_1}\) integriert.
+Für das \emph{learning} wird zu Datenpunkten \((x, y) \in \mathbb R^{n_0}\times \mathbb R^{n_2}\) die Ableitung der Funktion
+\begin{equation*}
+(A_1, A_2) \to l(x; A_1, A_2) = \|y-s(x)\|_2^2
+\end{equation*}
+bezüglich des Parameter``vektors'' \(p=(A_2, A_1)\) gesucht.
+
+Eine erste Anwendung der Kettenregel ergibt
+\begin{equation*}
+\frac{\partial}{\partial p}l(x; p) = -2\bigl \langle y-s(x;p), \, \partial_p s(x;p)\bigr\rangle 
+\end{equation*}
+sodass wir uns erstmal um die Ableitung von \(s\) bezüglich \(p\) kümmern
+können.
 
 Bezüglich \(A_2\) ergibt die Kettenregel direkt
 \begin{equation*}
-\frac{dy}{dA_2} = \sigma'(A_2x_1)x_1
+\frac{\partial s}{\partial A_2} = \sigma'(A_2x_1)L_{[x_1]}
 \end{equation*}
-wobei \(\sigma'\) passend interpretiert werden muss.
+wobei
+
+\begin{itemize}
+\tightlist
+\item
+  \(x_1:=\sigma(A_1x)\) der Zwischenwert nach der vorletzten (hier der ersten) \emph{layer} ist,
+\item
+  \(\sigma'(A_2x_1)\in \mathbb R^{n_2'\times n_2}\) die (diagonale) Jacobimatrix der komponentenweise definierten Aktivierungsfunktion \(\sigma\)
+\item
+  und \(L_{[x_1]}\in \mathbb R^{n_2\times (n_2\times n_1)}\) die Ableitung von \(A_2x_1\) nach \(A_2\) (vgl. oben).
+\end{itemize}
+
 Bezüglich \(A_1\) ergibt die Kettenregel direkt
 \begin{equation*}
-\frac{dy}{dA_1} = \sigma'(A_2x_1)A_2\sigma'(A_1x)\cdot x
+\frac{\partial s}{\partial A_1} = \sigma'(A_2x_1)A_2\sigma'(A_1x)L_{[x]}
 \end{equation*}
-wobei \(\sigma'\) passend interpretiert werden muss.
-und da die \emph{späteren} Parameter (hier \(A_2\)) nicht von den \emph{früheren}
-Parametern (hier \(A_1\)) abhängen
+
+\hypertarget{rekursion}{%
+\subsection{Rekursion}\label{rekursion}}
+
+Wir bemerken, dass die \(A_i\) Komponenten des Gradienten von \(s\) über
+\begin{equation*}
+\delta_N := \sigma'(A_Nx_{N-1}), \quad \partial_{A_N} s(x) = \delta_N L_{[x_{N-1}]}
+\end{equation*}
+für die letzte \emph{layer} und dann rekursiv über
+
+\begin{equation*}
+\delta_{n-1} := \delta_n\sigma'(A_{n-1}x_{n-1}), \quad \partial_{A_{n-1}} s(x) = \delta_{n-1} L_{[x_{n-2}]}
+\end{equation*}
+von der letzten bis zur ersten \emph{layer} berechnet werden können.
+
+\hypertarget{praktische-berechnung-des-gradienten}{%
+\section{Praktische Berechnung des Gradienten}\label{praktische-berechnung-des-gradienten}}
+
+Mit \(\hat y = -2(y-s(x;p))\) bekommen wir aus obigen Formeln, dass
+\begin{equation*}
+\begin{split}
+\partial_{A_2}l(x; p) = \bigl \langle \hat y, \, \partial_{A_2}s(x;p)\bigr\rangle  &= \hat y^T
+\sigma'(A_2x_1)L_{[x_1]} \\
+&= \tilde y^TL_{[x_1]}.
+\end{split}
+\end{equation*}
+
+Eine Betrachtung der Dimensionen \(\hat y \in \mathbb R^{n_2 \times 1}\),
+\(\sigma'(A_2x_1)\in \mathbb R^{n_2\times n_2}\) und \(L_{[x_1]}\in \mathbb R^{n_2\times(n_2\times n_1)}\) ergibt\ldots{}
+
+\hypertarget{implementierungsbeispiele}{%
+\section{Implementierungsbeispiele}\label{implementierungsbeispiele}}
 
 \begin{itemize}
 \tightlist

@@ -210,7 +210,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="11.1" data-path="implementierungen-anwendungsbeispiele-backpropagation.html"><a href="implementierungen-anwendungsbeispiele-backpropagation.html#exkurs-gradienten-und-repräsentation"><i class="fa fa-check"></i><b>11.1</b> Exkurs – Gradienten und Repräsentation</a></li>
 <li class="chapter" data-level="11.2" data-path="implementierungen-anwendungsbeispiele-backpropagation.html"><a href="implementierungen-anwendungsbeispiele-backpropagation.html#backpropagation"><i class="fa fa-check"></i><b>11.2</b> Backpropagation</a></li>
-<li class="chapter" data-level="11.3" data-path="implementierungen-anwendungsbeispiele-backpropagation.html"><a href="implementierungen-anwendungsbeispiele-backpropagation.html#aufgaben-3"><i class="fa fa-check"></i><b>11.3</b> Aufgaben</a></li>
+<li class="chapter" data-level="11.3" data-path="implementierungen-anwendungsbeispiele-backpropagation.html"><a href="implementierungen-anwendungsbeispiele-backpropagation.html#praktische-berechnung-des-gradienten"><i class="fa fa-check"></i><b>11.3</b> Praktische Berechnung des Gradienten</a></li>
+<li class="chapter" data-level="11.4" data-path="implementierungen-anwendungsbeispiele-backpropagation.html"><a href="implementierungen-anwendungsbeispiele-backpropagation.html#implementierungsbeispiele"><i class="fa fa-check"></i><b>11.4</b> Implementierungsbeispiele</a></li>
+<li class="chapter" data-level="11.5" data-path="implementierungen-anwendungsbeispiele-backpropagation.html"><a href="implementierungen-anwendungsbeispiele-backpropagation.html#aufgaben-3"><i class="fa fa-check"></i><b>11.5</b> Aufgaben</a></li>
 </ul></li>
 <li class="chapter" data-level="12" data-path="nachklapp.html"><a href="nachklapp.html"><i class="fa fa-check"></i><b>12</b> Nachklapp</a></li>
 <li class="chapter" data-level="" data-path="referenzen.html"><a href="referenzen.html"><i class="fa fa-check"></i>Referenzen</a></li>
@@ -261,15 +263,15 @@ Umsetzung in einem Gradientenabstiegsverfahren mit PDEs).</p>
 <p>Während diese Resultate in der Theorie die Wohlgestelltheit der
 Optimierungsprobleme helfen zu analysieren, werden Sie in der Praxis gerne
 verwendet weil die Lösung einer Differentialgleichung einfacher umzusetzen
-ist (und im Zweifel auf effizienter) als die Berechnung von sehr abstrakten
+ist (und im Zweifel auch effizienter) als die Berechnung von sehr abstrakten
 Gradienten.</p>
 <p>Um abstraktere Gradienten zu charakterisieren ist oftmals die Definition der
 <em>totalen Ableitung</em> einer Funktion <span class="math inline">\(f\colon X\to Y\)</span> bei einem <span class="math inline">\(x\in X\)</span> als die lineare Abbildung <span class="math inline">\(A_x\colon X\to Y\)</span> derart, dass
 <span class="math display">\[\begin{equation*}
 f(x+h) - f(x) - A_x[h] = o(\| h\|)
 \end{equation*}\]</span>
-gilt.</p>
-<p>Sei beispielsweise <span class="math inline">\(X=Y=\mathbb R^{n\times n}\)</span> und
+für <span class="math inline">\(h\in X\)</span> gilt.</p>
+<p>Seien beispielsweise die Räume als <span class="math inline">\(X=Y=\mathbb R^{n\times n}\)</span> gegeben und
 <span class="math display">\[\begin{equation*}
 f(S) = A^TS + SA -SRS + Q
 \end{equation*}\]</span>
@@ -278,7 +280,7 @@ demnach die Realisierung des Gradienten (an der Stelle <span class="math inline"
 <span class="math display">\[\begin{equation*}
 \partial f(S_0)[h] = (A^T-S_0R)h + h(A-RS_0).
 \end{equation*}\]</span></p>
-<p>Für neuronale Netze ist der Gradient von <span class="math inline">\(f(x; \tilde A, b)=Ax+b\)</span> bezüglich der
+<p>Für neuronale Netze ist der Gradient von <span class="math inline">\(f(x; \tilde A, b)=\tilde Ax+b\)</span> bezüglich der
 <em>Gewichte</em> <span class="math inline">\(\tilde A\in \mathbb R^{m\times n-1}\)</span> und <span class="math inline">\(b\in \mathbb R^{m}\)</span> interessant.
 Zunächst mal verstehen wir die affine lineare Abbildung im
 projektiven Raum vermöge
@@ -290,11 +292,12 @@ und betrachten einfach <span class="math inline">\(f(x; A)=Ax\)</span> mit <span
 <span class="math display">\[\begin{equation*}
 f(x;A+h) - f(x;A) - hx = (A+h)x - Ax - hx = 0 = o(\|h\|)
 \end{equation*}\]</span>
-also im Prinzip ist <span class="math inline">\(x\)</span> die Ableitung allerdings im Sinne von
+also im Prinzip ist <span class="math inline">\(x\)</span> die Ableitung wenn auch nicht als Vektor sondern als
 <span class="math display">\[\begin{equation*}
-x\colon \mathbb R^{n\times m} \to \mathbb R^{n}\colon h\to hx
+L_{[x]}\colon \mathbb R^{n\times m} \to \mathbb R^{n}\colon h\to L_{[x]} h = hx.
 \end{equation*}\]</span>
-Diese Abbildung ist linear und könnte als Matrix
+Diese Abbildung ist linear und könnte als Matrix (bzw. Tensor im Sinne
+einer höherdimensionalen Datenstruktur)
 im <span class="math inline">\(\mathbb R^{n \times (n\times m)}\)</span> realisiert werden.</p>
 </div>
 <div id="backpropagation" class="section level2 hasAnchor" number="11.2">
@@ -304,32 +307,72 @@ verwendet werden, impliziert eine besondere Struktur in der
 Gradientenberechnung.</p>
 <p>Wir betrachten ein 2-layer Netzwerk
 <span class="math display">\[\begin{equation*}
-y = \sigma(A_2 \sigma(A_1x))
+s(x) = \sigma(A_2 \sigma(A_1x))
 \end{equation*}\]</span>
-und erinnern uns daran, dass für das Training der Gradient vom Ausgang
-bezüglich der Parameter <span class="math inline">\((A_2, A_1)\)</span> gesucht ist.</p>
+mit den <em>bias</em>-Vektoren <span class="math inline">\(b_1\)</span> und <span class="math inline">\(b_2\)</span> wie oben erläutert bereits in den Matrizen <span class="math inline">\(A_1\in \mathbb R^{n_0\times n_1}\)</span> und <span class="math inline">\(A_2 \in \mathbb R^{n_2\times n_1}\)</span> integriert.
+Für das <em>learning</em> wird zu Datenpunkten <span class="math inline">\((x, y) \in \mathbb R^{n_0}\times \mathbb R^{n_2}\)</span> die Ableitung der Funktion
+<span class="math display">\[\begin{equation*}
+(A_1, A_2) \to l(x; A_1, A_2) = \|y-s(x)\|_2^2
+\end{equation*}\]</span>
+bezüglich des Parameter“vektors” <span class="math inline">\(p=(A_2, A_1)\)</span> gesucht.</p>
+<p>Eine erste Anwendung der Kettenregel ergibt
+<span class="math display">\[\begin{equation*}
+\frac{\partial}{\partial p}l(x; p) = -2\bigl \langle y-s(x;p), \, \partial_p s(x;p)\bigr\rangle 
+\end{equation*}\]</span>
+sodass wir uns erstmal um die Ableitung von <span class="math inline">\(s\)</span> bezüglich <span class="math inline">\(p\)</span> kümmern
+können.</p>
 <p>Bezüglich <span class="math inline">\(A_2\)</span> ergibt die Kettenregel direkt
 <span class="math display">\[\begin{equation*}
-\frac{dy}{dA_2} = \sigma&#39;(A_2x_1)x_1
+\frac{\partial s}{\partial A_2} = \sigma&#39;(A_2x_1)L_{[x_1]}
 \end{equation*}\]</span>
-wobei <span class="math inline">\(\sigma&#39;\)</span> passend interpretiert werden muss.
-Bezüglich <span class="math inline">\(A_1\)</span> ergibt die Kettenregel direkt
+wobei</p>
+<ul>
+<li><span class="math inline">\(x_1:=\sigma(A_1x)\)</span> der Zwischenwert nach der vorletzten (hier der ersten) <em>layer</em> ist,</li>
+<li><span class="math inline">\(\sigma&#39;(A_2x_1)\in \mathbb R^{n_2&#39;\times n_2}\)</span> die (diagonale) Jacobimatrix der komponentenweise definierten Aktivierungsfunktion <span class="math inline">\(\sigma\)</span></li>
+<li>und <span class="math inline">\(L_{[x_1]}\in \mathbb R^{n_2\times (n_2\times n_1)}\)</span> die Ableitung von <span class="math inline">\(A_2x_1\)</span> nach <span class="math inline">\(A_2\)</span> (vgl. oben).</li>
+</ul>
+<p>Bezüglich <span class="math inline">\(A_1\)</span> ergibt die Kettenregel direkt
 <span class="math display">\[\begin{equation*}
-\frac{dy}{dA_1} = \sigma&#39;(A_2x_1)A_2\sigma&#39;(A_1x)\cdot x
+\frac{\partial s}{\partial A_1} = \sigma&#39;(A_2x_1)A_2\sigma&#39;(A_1x)L_{[x]}
+\end{equation*}\]</span></p>
+<div id="rekursion" class="section level3 hasAnchor" number="11.2.1">
+<h3><span class="header-section-number">11.2.1</span> Rekursion<a href="implementierungen-anwendungsbeispiele-backpropagation.html#rekursion" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Wir bemerken, dass die <span class="math inline">\(A_i\)</span> Komponenten des Gradienten von <span class="math inline">\(s\)</span> über
+<span class="math display">\[\begin{equation*}
+\delta_N := \sigma&#39;(A_Nx_{N-1}), \quad \partial_{A_N} s(x) = \delta_N L_{[x_{N-1}]}
 \end{equation*}\]</span>
-wobei <span class="math inline">\(\sigma&#39;\)</span> passend interpretiert werden muss.
-und da die <em>späteren</em> Parameter (hier <span class="math inline">\(A_2\)</span>) nicht von den <em>früheren</em>
-Parametern (hier <span class="math inline">\(A_1\)</span>) abhängen</p>
+für die letzte <em>layer</em> und dann rekursiv über</p>
+<p><span class="math display">\[\begin{equation*}
+\delta_{n-1} := \delta_n\sigma&#39;(A_{n-1}x_{n-1}), \quad \partial_{A_{n-1}} s(x) = \delta_{n-1} L_{[x_{n-2}]}
+\end{equation*}\]</span>
+von der letzten bis zur ersten <em>layer</em> berechnet werden können.</p>
+</div>
+</div>
+<div id="praktische-berechnung-des-gradienten" class="section level2 hasAnchor" number="11.3">
+<h2><span class="header-section-number">11.3</span> Praktische Berechnung des Gradienten<a href="implementierungen-anwendungsbeispiele-backpropagation.html#praktische-berechnung-des-gradienten" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Mit <span class="math inline">\(\hat y = -2(y-s(x;p))\)</span> bekommen wir aus obigen Formeln, dass
+<span class="math display">\[\begin{equation*}
+\begin{split}
+\partial_{A_2}l(x; p) = \bigl \langle \hat y, \, \partial_{A_2}s(x;p)\bigr\rangle  &amp;= \hat y^T
+\sigma&#39;(A_2x_1)L_{[x_1]} \\
+&amp;= \tilde y^TL_{[x_1]}.
+\end{split}
+\end{equation*}\]</span></p>
+<p>Eine Betrachtung der Dimensionen <span class="math inline">\(\hat y \in \mathbb R^{n_2 \times 1}\)</span>,
+<span class="math inline">\(\sigma&#39;(A_2x_1)\in \mathbb R^{n_2\times n_2}\)</span> und <span class="math inline">\(L_{[x_1]}\in \mathbb R^{n_2\times(n_2\times n_1)}\)</span> ergibt…</p>
+</div>
+<div id="implementierungsbeispiele" class="section level2 hasAnchor" number="11.4">
+<h2><span class="header-section-number">11.4</span> Implementierungsbeispiele<a href="implementierungen-anwendungsbeispiele-backpropagation.html#implementierungsbeispiele" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
 <li>Beispiel in PyTorch</li>
 <li>CASADI</li>
 <li>Nico Gauger</li>
 </ul>
 </div>
-<div id="aufgaben-3" class="section level2 hasAnchor" number="11.3">
-<h2><span class="header-section-number">11.3</span> Aufgaben<a href="implementierungen-anwendungsbeispiele-backpropagation.html#aufgaben-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div id="ableitung-und-newton" class="section level3 hasAnchor" number="11.3.1">
-<h3><span class="header-section-number">11.3.1</span> Ableitung und Newton<a href="implementierungen-anwendungsbeispiele-backpropagation.html#ableitung-und-newton" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="aufgaben-3" class="section level2 hasAnchor" number="11.5">
+<h2><span class="header-section-number">11.5</span> Aufgaben<a href="implementierungen-anwendungsbeispiele-backpropagation.html#aufgaben-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="ableitung-und-newton" class="section level3 hasAnchor" number="11.5.1">
+<h3><span class="header-section-number">11.5.1</span> Ableitung und Newton<a href="implementierungen-anwendungsbeispiele-backpropagation.html#ableitung-und-newton" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Weisen Sie nach, dass der Gradient der (matrixwertigen) Riccati Abbildung
 tatsächlich die gegebene Form hat und formulieren Sie damit ein Newton
 Verfahren zur Lösung der Riccati Gleichung <span class="math inline">\(f(S)=0\)</span>.</p>
