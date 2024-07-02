@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>11 Implementierungen, Anwendungsbeispiele, Backpropagation | Numerik des Maschinellen Lernens</title>
   <meta name="description" content="Vorlesungsnotizen zu meiner integrierten Vorlesung im SoSe 2024" />
-  <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
   <meta property="og:title" content="11 Implementierungen, Anwendungsbeispiele, Backpropagation | Numerik des Maschinellen Lernens" />
   <meta property="og:type" content="book" />
@@ -248,24 +248,25 @@ Darstellungen oder Approximationen des Gradienten.</p>
 Schätzer statt des eigentlichen Gradienten baut.</p>
 <p>In der Optimierung mit (partiellen) Differentialgleichungen wie
 <span class="math display">\[\begin{equation*}
-\mathcal J(u) = \frac 12 \int_0^T\|x(t)-x^*\|^2 + \|u(t)\|^2\,\mathsf{d}s\to \min_{u} \quad \text{s.t. }\dot x(t) =
+\mathcal J(u) = \frac 12 \int_0^T\|x(s)-x^*\|^2 + \|u(s)\|^2\,\mathsf{d}s\to \min_{u} \quad \text{s.t. }\dot x(t) =
 Ax(t) + Bu(t)
 \end{equation*}\]</span>
 macht es einen entscheidenden Unterschied, dass der Gradient
 <span class="math display">\[\partial_u \mathcal J(u) = u + B^Tp \]</span>
-über die Lösung der adjungierten Gleichung
+(Jan beachte, dass <span class="math inline">\(u\)</span> eine Funktion ist, also ein <span class="math inline">\(\infty\)</span>-dimensionales
+Objekt) über die Lösung der adjungierten Gleichung
 <span class="math display">\[\begin{equation*}
 -\dot p(t) = A^T p(t) + x(t)-x^*, \quad p(T) = 0
 \end{equation*}\]</span>
-definiert ist (siehe beispielsweise (Kurdila/Zarabankin, Thm 5.5.1) für ein
-abstraktes Resultat und bspw. (Troeltzsch Abschnitt 5.9.1) für eine
+definiert ist (siehe beispielsweise <span class="citation">(Kurdila and Zabarankin <a href="#ref-KurZ05" role="doc-biblioref">2005</a>, Theorem 5.5.1)</span> für ein
+abstraktes Resultat und bspw. <span class="citation">(Tröltzsch <a href="#ref-Tr09" role="doc-biblioref">2009</a>, Abschnitt 5.9.1)</span> für eine
 Umsetzung in einem Gradientenabstiegsverfahren mit PDEs).</p>
 <p>Während diese Resultate in der Theorie die Wohlgestelltheit der
 Optimierungsprobleme helfen zu analysieren, werden Sie in der Praxis gerne
 verwendet weil die Lösung einer Differentialgleichung einfacher umzusetzen
 ist (und im Zweifel auch effizienter) als die Berechnung von sehr abstrakten
 Gradienten.</p>
-<p>Um abstraktere Gradienten zu charakterisieren ist oftmals die Definition der
+<p>Um abstraktere Gradienten zu charakterisieren hilft oftmals die Definition der
 <em>totalen Ableitung</em> einer Funktion <span class="math inline">\(f\colon X\to Y\)</span> bei einem <span class="math inline">\(x\in X\)</span> als die lineare Abbildung <span class="math inline">\(L(x)\colon X\to Y\)</span> derart, dass
 <span class="math display">\[\begin{equation*}
 f(x+h) - f(x) - L(x)[h] = o(\| h\|)
@@ -324,13 +325,13 @@ Für das <em>learning</em> wird zu Datenpunkten <span class="math inline">\((x, 
 bezüglich des Parameter“vektors” <span class="math inline">\(p=(A_2, A_1)\)</span> gesucht.</p>
 <p>Eine erste Anwendung der Kettenregel ergibt
 <span class="math display">\[\begin{equation*}
-\frac{\partial}{\partial p}l(x; p) = -2\bigl \langle y-s(x;p), \, \partial_p s(x;p)\bigr\rangle 
+\partial_p l(x; p) = -2\bigl \langle y-s(x;p), \, \partial_p s(x;p)\bigr\rangle 
 \end{equation*}\]</span>
 sodass wir uns erstmal um die Ableitung von <span class="math inline">\(s\)</span> bezüglich <span class="math inline">\(p\)</span> kümmern
 können.</p>
 <p>Bezüglich <span class="math inline">\(A_2\)</span> ergibt die Kettenregel direkt
 <span class="math display">\[\begin{equation*}
-\frac{\partial s}{\partial A_2} = \sigma&#39;(A_2x_1)L_{[x_1]}
+\partial_{A_2} = \sigma&#39;(A_2x_1)L_{[x_1]}
 \end{equation*}\]</span>
 wobei</p>
 <ul>
@@ -340,7 +341,7 @@ wobei</p>
 </ul>
 <p>Bezüglich <span class="math inline">\(A_1\)</span> ergibt die Kettenregel direkt
 <span class="math display">\[\begin{equation*}
-\frac{\partial s}{\partial A_1} = \sigma&#39;(A_2x_1)A_2\sigma&#39;(A_1x)L_{[x]}
+\partial_{A_1} = \sigma&#39;(A_2x_1)A_2\sigma&#39;(A_1x)L_{[x]}
 \end{equation*}\]</span></p>
 <div id="rekursion" class="section level3 hasAnchor" number="11.2.1">
 <h3><span class="header-section-number">11.2.1</span> Rekursion<a href="implementierungen-anwendungsbeispiele-backpropagation.html#rekursion" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -350,7 +351,7 @@ wobei</p>
 \end{equation*}\]</span>
 für die letzte <em>layer</em> und dann rekursiv über</p>
 <p><span class="math display">\[\begin{equation*}
-\delta_{n-1} := \delta_n\sigma&#39;(A_{n-1}x_{n-1}), \quad \partial_{A_{n-1}} s(x) = \delta_{n-1} L_{[x_{n-2}]}
+\delta_{n-1} := \delta_nA_n\sigma&#39;(A_{n-1}x_{n-1}), \quad \partial_{A_{n-1}} s(x) = \delta_{n-1} L_{[x_{n-2}]}
 \end{equation*}\]</span>
 von der letzten bis zur ersten <em>layer</em> berechnet werden können.</p>
 </div>
@@ -366,9 +367,11 @@ eher die Ableitung oder die Jacobi Matrix gemeint ist.</p>
 \begin{split}
 \partial_{A_2}l(x; p) = \bigl \langle \hat y, \, \partial_{A_2}s(x;p)\bigr\rangle  &amp;= \hat y^T
 \sigma&#39;(A_2x_1)L_{[x_1]} \\
-&amp;= \tilde y^TL_{[x_1]}.
+&amp;= \tilde y^TL_{[x_1]},
 \end{split}
-\end{equation*}\]</span></p>
+\end{equation*}\]</span>
+mit <span class="math inline">\(\tilde y=\sigma&#39;(A_2x_1)\hat y\)</span>, was wegen der Diagonalität von <span class="math inline">\(\sigma&#39;\)</span>
+nur eine Skalierung der einzelnen Elemente von <span class="math inline">\(\hat y\)</span> darstellt.</p>
 <p>Eine Betrachtung der Dimensionen <span class="math inline">\(\hat y \in \mathbb R^{n_2 \times 1}\)</span>,
 <span class="math inline">\(\sigma&#39;(A_2x_1)\in \mathbb R^{n_2\times n_2}\)</span> und <span class="math inline">\(L_{[x_1]}\in \mathbb R^{n_2\times(n_2\times n_1)}\)</span> ergibt für das Produkt, dass
 <span class="math display">\[\begin{equation*}
@@ -378,16 +381,17 @@ sodass wir schon fast den Gradienten zum Parameter <span class="math inline">\(A
 <p>Wir berechnen die Einträge <span class="math inline">\(g_{1ij}\)</span> des Gradienten <span class="math inline">\(\tilde y^T L_{[x_1]}\)</span>
 als die <span class="math inline">\(1\)</span>-te (und einzige – da der Bildraum 1-dimensional ist) Komponente
 (bzgl. die kanonischen Basis) auf die der <span class="math inline">\(ij\)</span> kanonische Basisvektor aus dem
-Urbildraum abgebildet wird. Hier bietet sich als kanonische Basis <span class="math inline">\(\{e^{(ij)}\}\)</span>
+Urbildraum abgebildet wird. Hier bietet sich als kanonische Basis
+<span class="math inline">\(\{e^{(ij)}\}\subset \mathbb R^{n_2\times n_1}\)</span>
 die Menge der Matrizen an, die <span class="math inline">\(0\)</span> sind bis auf eine <span class="math inline">\(1\)</span> in der <span class="math inline">\(i\)</span>-ten Zeile an der
 <span class="math inline">\(j\)</span>-ten Stelle. In der Tat gilt dann
 <span class="math display">\[\begin{equation*}
 \mathbb R^{n_2\times n_1}\ni A = [a_{ij}] \leftrightarrow A =
 \sum_{i,j}a_{ij}e^{(ij)}
 \end{equation*}\]</span>
-Damit gilt
+und weiter
 <span class="math display">\[\begin{equation*}
-g_{1ij}=\tilde y^TL_{[x_1]}e^{(ij)} = \tilde y^T e_{ij}x_1 = \tilde y_i (x_{1})_j
+g_{1ij}=\tilde y^TL_{[x_1]}e^{(ij)} = \tilde y^T e^{(ij)}x_1 = \tilde y_i (x_{1})_j
 \end{equation*}\]</span>
 sodass wir als <span class="math inline">\(1\)</span>-te und einzige (matrixwertige) Komponente des Gradienten das
 äußere Produkt von <span class="math inline">\(\tilde y\)</span> und <span class="math inline">\(x_1\)</span> erhalten
@@ -412,6 +416,15 @@ tatsächlich die gegebene Form hat und formulieren Sie damit ein Newton
 Verfahren zur Lösung der Riccati Gleichung <span class="math inline">\(f(S)=0\)</span>.</p>
 
 </div>
+</div>
+</div>
+<h3>Referenzen<a href="referenzen.html#referenzen" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references">
+<div id="ref-KurZ05">
+<p> Kurdila, A.J., Zabarankin, M.: Convex functional analysis. Birkhäuser (2005)</p>
+</div>
+<div id="ref-Tr09">
+<p> Tröltzsch, F.: Optimale steuerung partieller differentialgleichungen. Vieweg+Teubner, Wiesbaden, Germany (2009)</p>
 </div>
 </div>
             </section>
