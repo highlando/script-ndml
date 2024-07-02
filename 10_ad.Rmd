@@ -282,17 +282,18 @@ Sch&auml;tzer statt des eigentlichen Gradienten baut.
 
 In der Optimierung mit (partiellen) Differentialgleichungen wie 
 \begin{equation*}
-\mathcal J(u) = \frac 12 \int_0^T\|x(t)-x^*\|^2 + \|u(t)\|^2\,\mathsf{d}s\to \min_{u} \quad \text{s.t. }\dot x(t) =
+\mathcal J(u) = \frac 12 \int_0^T\|x(s)-x^*\|^2 + \|u(s)\|^2\,\mathsf{d}s\to \min_{u} \quad \text{s.t. }\dot x(t) =
 Ax(t) + Bu(t)
 \end{equation*}
 macht es einen entscheidenden Unterschied, dass der Gradient 
 $$\partial_u \mathcal J(u) = u + B^Tp $$
-&uuml;ber die L&ouml;sung der adjungierten Gleichung
+(Jan beachte, dass $u$ eine Funktion ist, also ein $\infty$-dimensionales
+Objekt) &uuml;ber die L&ouml;sung der adjungierten Gleichung
 \begin{equation*}
 -\dot p(t) = A^T p(t) + x(t)-x^*, \quad p(T) = 0
 \end{equation*}
-definiert ist (siehe beispielsweise (Kurdila/Zarabankin, Thm 5.5.1) f&uuml;r ein
-abstraktes Resultat und bspw. (Troeltzsch Abschnitt 5.9.1) f&uuml;r eine
+definiert ist (siehe beispielsweise [@KurZ05, Theorem 5.5.1] f&uuml;r ein
+abstraktes Resultat und bspw. [@Tr09, Abschnitt 5.9.1] f&uuml;r eine
 Umsetzung in einem Gradientenabstiegsverfahren mit PDEs). 
 
 W&auml;hrend diese Resultate in der Theorie die Wohlgestelltheit der
@@ -301,7 +302,7 @@ verwendet weil die L&ouml;sung einer Differentialgleichung einfacher umzusetzen
 ist (und im Zweifel auch effizienter) als die Berechnung von sehr abstrakten
 Gradienten.
 
-Um abstraktere Gradienten zu charakterisieren ist oftmals die Definition der
+Um abstraktere Gradienten zu charakterisieren hilft oftmals die Definition der
 *totalen Ableitung* einer Funktion $f\colon X\to Y$ bei einem $x\in X$ als die lineare Abbildung $L(x)\colon X\to Y$ derart, dass
 \begin{equation*}
 f(x+h) - f(x) - L(x)[h] = o(\| h\|)
@@ -368,7 +369,7 @@ bez&uuml;glich des Parameter"vektors" $p=(A_2, A_1)$ gesucht.
 
 Eine erste Anwendung der Kettenregel ergibt
 \begin{equation*}
-\frac{\partial}{\partial p}l(x; p) = -2\ipro{y-s(x;p)}{\partial_p s(x;p)}
+\partial_p l(x; p) = -2\ipro{y-s(x;p)}{\partial_p s(x;p)}
 \end{equation*}
 sodass wir uns erstmal um die Ableitung von $s$ bez&uuml;glich $p$ k&uuml;mmern
 k&ouml;nnen.
@@ -376,7 +377,7 @@ k&ouml;nnen.
 
 Bez&uuml;glich $A_2$ ergibt die Kettenregel direkt
 \begin{equation*}
-\frac{\partial s}{\partial A_2} = \sigma'(A_2x_1)L_{[x_1]}
+\partial_{A_2} = \sigma'(A_2x_1)L_{[x_1]}
 \end{equation*}
 wobei 
 
@@ -386,7 +387,7 @@ wobei
 
 Bez&uuml;glich $A_1$ ergibt die Kettenregel direkt
 \begin{equation*}
-\frac{\partial s}{\partial A_1} = \sigma'(A_2x_1)A_2\sigma'(A_1x)L_{[x]}
+\partial_{A_1} = \sigma'(A_2x_1)A_2\sigma'(A_1x)L_{[x]}
 \end{equation*}
 
 ### Rekursion
@@ -398,7 +399,7 @@ Wir bemerken, dass die $A_i$ Komponenten des Gradienten von $s$ &uuml;ber
 f&uuml;r die letzte *layer* und dann rekursiv &uuml;ber
 
 \begin{equation*}
-\delta_{n-1} := \delta_n\sigma'(A_{n-1}x_{n-1}), \quad \partial_{A_{n-1}} s(x) = \delta_{n-1} L_{[x_{n-2}]}
+\delta_{n-1} := \delta_nA_n\sigma'(A_{n-1}x_{n-1}), \quad \partial_{A_{n-1}} s(x) = \delta_{n-1} L_{[x_{n-2}]}
 \end{equation*}
 von der letzten bis zur ersten *layer* berechnet werden k&ouml;nnen.
 
@@ -414,9 +415,11 @@ Mit $\hat y = -2(y-s(x;p)) \in \mathbb R^{n_2\times 1}$ bekommen wir aus obigen 
 \begin{split}
 \partial_{A_2}l(x; p) = \ipro{\hat y}{\partial_{A_2}s(x;p)} &= \hat y^T
 \sigma'(A_2x_1)L_{[x_1]} \\
-&= \tilde y^TL_{[x_1]}.
+&= \tilde y^TL_{[x_1]},
 \end{split}
 \end{equation*}
+mit $\tilde y=\sigma'(A_2x_1)\hat y$, was wegen der Diagonalit&auml;t von $\sigma'$
+nur eine Skalierung der einzelnen Elemente von $\hat y$ darstellt.
 
 Eine Betrachtung der Dimensionen $\hat y \in \mathbb R^{n_2 \times 1}$,
 $\sigma'(A_2x_1)\in \mathbb R^{n_2\times n_2}$ und $L_{[x_1]}\in \mathbb
@@ -430,16 +433,17 @@ sodass wir schon fast den Gradienten zum Parameter $A_2 \in \mathbb R^{n_2
 Wir berechnen die Eintr&auml;ge $g_{1ij}$ des Gradienten $\tilde y^T L_{[x_1]}$
 als die $1$-te (und einzige -- da der Bildraum 1-dimensional ist) Komponente
 (bzgl. die kanonischen Basis) auf die der $ij$ kanonische Basisvektor aus dem
-Urbildraum abgebildet wird. Hier bietet sich als kanonische Basis $\{e^{(ij)}\}$
+Urbildraum abgebildet wird. Hier bietet sich als kanonische Basis
+$\{e^{(ij)}\}\subset \mathbb R^{n_2\times n_1}$
 die Menge der Matrizen an, die $0$ sind bis auf eine $1$ in der $i$-ten Zeile an der
 $j$-ten Stelle. In der Tat gilt dann
 \begin{equation*}
 \mathbb R^{n_2\times n_1}\ni A = [a_{ij}] \leftrightarrow A =
 \sum_{i,j}a_{ij}e^{(ij)}
 \end{equation*}
-Damit gilt
+und weiter
 \begin{equation*}
-g_{1ij}=\tilde y^TL_{[x_1]}e^{(ij)} = \tilde y^T e_{ij}x_1 = \tilde y_i (x_{1})_j
+g_{1ij}=\tilde y^TL_{[x_1]}e^{(ij)} = \tilde y^T e^{(ij)}x_1 = \tilde y_i (x_{1})_j
 \end{equation*}
 sodass wir als $1$-te und einzige (matrixwertige) Komponente des Gradienten das
 &auml;u&szlig;ere Produkt von $\tilde y$ und $x_1$ erhalten
