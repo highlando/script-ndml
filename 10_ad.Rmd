@@ -310,9 +310,10 @@ f(x+h) - f(x) - L(x)[h] = o(\| h\|)
 f&uuml;r $h\in X$ gilt.
 
 Seien beispielsweise die R&auml;ume als $X=Y=\mathbb R^{n\times n}$ gegeben und 
-\begin{equation*}
+\begin{equation}
 f(S) = A^TS + SA -SRS + Q
-\end{equation*}
+(\#eq:eqn-ric-operator)
+\end{equation}
 dann hat der *Riccati* Operator $f$ mit Koeffizienten $A$, $R$, $Q \in \mathbb R^{n\times n}$
 demnach die Realisierung des Gradienten (an der Stelle $S_0$) gegeben als
 \begin{equation*}
@@ -363,13 +364,13 @@ s(x) = \sigma(A_2 \sigma(A_1x))
 mit den *bias*-Vektoren $b_1$ und $b_2$ wie oben erl&auml;utert bereits in den Matrizen $A_1\in \mathbb R^{n_0\times n_1}$ und $A_2 \in \mathbb R^{n_2\times n_1}$ integriert.
 F&uuml;r das *learning* wird zu Datenpunkten $(x, y) \in \mathbb R^{n_0}\times \mathbb R^{n_2}$ die Ableitung der Funktion
 \begin{equation*}
-(A_1, A_2) \to l(x; A_1, A_2) = \|y-s(x)\|_2^2
+(A_1, A_2) \to l((x,y); A_1, A_2) = \|y-s(x)\|_2^2
 \end{equation*}
 bez&uuml;glich des Parameter"vektors" $p=(A_2, A_1)$ gesucht.
 
 Eine erste Anwendung der Kettenregel ergibt
 \begin{equation*}
-\partial_p l(x; p) = -2\ipro{y-s(x;p)}{\partial_p s(x;p)}
+\partial_p l((x,y); p) = -2\ipro{y-s(x;p)}{\partial_p s(x;p)}
 \end{equation*}
 sodass wir uns erstmal um die Ableitung von $s$ bez&uuml;glich $p$ k&uuml;mmern
 k&ouml;nnen.
@@ -459,8 +460,46 @@ sodass wir als $1$-te und einzige (matrixwertige) Komponente des Gradienten das
 
 ## Aufgaben
 
-### Ableitung und Newton
+### Ableitung und Newton der Riccati Gleichung
 
-Weisen Sie nach, dass der Gradient der (matrixwertigen) Riccati Abbildung
+Weisen Sie nach, dass der Gradient der (matrixwertigen) Riccati Abbildung 
+\@ref(eq:eqn-ric-operator)
 tats&auml;chlich die gegebene Form hat und formulieren Sie damit ein Newton
 Verfahren zur L&ouml;sung der Riccati Gleichung $f(S)=0$.
+
+### Ableitung von $Ax$ nach der Matrix
+
+Sei $A=[a_{ij}]\in \mathbb R^{m\times n}$. Bestimmen Sie partielle Ableitung der
+Funktion $f_x(A)=A(x)$ nach einer Komponente 
+\begin{equation*}
+\frac{\partial {f_x}}{{\partial a_{ij}}}(A)
+\end{equation*}
+und geben Sie davon ausgehend eine Darstellung der totalen Ableitung $\partial
+f_x(A) \colon \mathbb R^{m\times n}\to \mathbb R^{m}$ an
+
+### Backward Propagation
+
+Leiten Sie aus $\mathbf A = \begin{bmatrix} A & b \\ 0 & 1 \end{bmatrix}$ und
+$\mathbf x = (x, 1)$ sowie $\mathbf y = (y, 1)$
+an der Stelle $[A\,b]=[A_0\, b_0]$ die Formel f&uuml;r den Gradienten 
+\begin{equation*}
+\partial_{[A\,b]} (\frac 12 \|\mathbf y-\sigma(\mathbf A\mathbf x)\|_2^2)\Bigr|_{[A_0\, b_0]}=\Bigl (\sigma'(A_0x+b_0)\bigr (y-\sigma(A_0x+b_0)\bigr )\Bigr)\,\mathbf x^T
+\end{equation*}
+Best&auml;tigen Sie sie numerisch, beispielsweise mit Hilfe der Code snippets aus
+[Beispiel Implementierung], 
+f&uuml;r ein Beispiel Netzwerk $s\colon \mathbb R^{3}\to \mathbb R^{2}\colon \xi \to \sigma(\tilde A\xi + b)$
+mit $\sigma = \tanh$ an der Stelle 
+$A_0=\begin{bmatrix}2 & 1 & 1 \\ 1 & 2& 0  \end{bmatrix}$ und 
+$b_0=\begin{bmatrix}0\\1 \end{bmatrix}$ beim Datenpunkt $(\tilde x, y) =
+((1,1,1), (1, 1))$
+
+### AD and Autograd in `pytorch`
+
+Arbeiten Sie sie sich durch die `pytorch` tutorials 
+
+1. [Introduction to `torch.autograd`](https://pytorch.org/tutorials/beginner/blitz/autograd_tutorial.html)
+2. [AD with `torch.autograd`](https://pytorch.org/tutorials/beginner/basics/autogradqs_tutorial.html)
+
+und erweitern Sie die Codes um den Gradienten (in Bezug auf $A\in \mathbb
+R^{2\times 2}$) von $x\to x^TAx$ f&uuml;r $x\in \mathbb R^{2}$ an der Stelle 
+$A_0=\begin{bmatrix}2 & 1 \\ 1 & 2 \end{bmatrix}$ zu bestimmen.
