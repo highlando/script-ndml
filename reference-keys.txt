@@ -34,6 +34,7 @@ eq:eqn-gm-approx
 eq:eqn-chainrule-fgh
 fig:fig-10-ad-fwd
 fig:fig-10-ad-bw
+eq:eqn-ric-operator
 einführung
 was-ist-ein-algorithmus
 konsistenz-stabilität-genauigkeit
@@ -106,5 +107,8 @@ rekursion
 praktische-berechnung-des-gradienten
 implementierungsbeispiele
 aufgaben-3
-ableitung-und-newton
+ableitung-und-newton-der-riccati-gleichung
+ableitung-von-ax-nach-der-matrix
+backward-propagation
+ad-and-autograd-in-pytorch
 nachklapp

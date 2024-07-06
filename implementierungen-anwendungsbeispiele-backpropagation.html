@@ -273,9 +273,10 @@ f(x+h) - f(x) - L(x)[h] = o(\| h\|)
 \end{equation*}\]</span>
 für <span class="math inline">\(h\in X\)</span> gilt.</p>
 <p>Seien beispielsweise die Räume als <span class="math inline">\(X=Y=\mathbb R^{n\times n}\)</span> gegeben und
-<span class="math display">\[\begin{equation*}
+<span class="math display" id="eq:eqn-ric-operator">\[\begin{equation}
 f(S) = A^TS + SA -SRS + Q
-\end{equation*}\]</span>
+\tag{11.1}
+\end{equation}\]</span>
 dann hat der <em>Riccati</em> Operator <span class="math inline">\(f\)</span> mit Koeffizienten <span class="math inline">\(A\)</span>, <span class="math inline">\(R\)</span>, <span class="math inline">\(Q \in \mathbb R^{n\times n}\)</span>
 demnach die Realisierung des Gradienten (an der Stelle <span class="math inline">\(S_0\)</span>) gegeben als
 <span class="math display">\[\begin{equation*}
@@ -320,12 +321,12 @@ s(x) = \sigma(A_2 \sigma(A_1x))
 mit den <em>bias</em>-Vektoren <span class="math inline">\(b_1\)</span> und <span class="math inline">\(b_2\)</span> wie oben erläutert bereits in den Matrizen <span class="math inline">\(A_1\in \mathbb R^{n_0\times n_1}\)</span> und <span class="math inline">\(A_2 \in \mathbb R^{n_2\times n_1}\)</span> integriert.
 Für das <em>learning</em> wird zu Datenpunkten <span class="math inline">\((x, y) \in \mathbb R^{n_0}\times \mathbb R^{n_2}\)</span> die Ableitung der Funktion
 <span class="math display">\[\begin{equation*}
-(A_1, A_2) \to l(x; A_1, A_2) = \|y-s(x)\|_2^2
+(A_1, A_2) \to l((x,y); A_1, A_2) = \|y-s(x)\|_2^2
 \end{equation*}\]</span>
 bezüglich des Parameter“vektors” <span class="math inline">\(p=(A_2, A_1)\)</span> gesucht.</p>
 <p>Eine erste Anwendung der Kettenregel ergibt
 <span class="math display">\[\begin{equation*}
-\partial_p l(x; p) = -2\bigl \langle y-s(x;p), \, \partial_p s(x;p)\bigr\rangle 
+\partial_p l((x,y); p) = -2\bigl \langle y-s(x;p), \, \partial_p s(x;p)\bigr\rangle 
 \end{equation*}\]</span>
 sodass wir uns erstmal um die Ableitung von <span class="math inline">\(s\)</span> bezüglich <span class="math inline">\(p\)</span> kümmern
 können.</p>
@@ -409,11 +410,46 @@ sodass wir als <span class="math inline">\(1\)</span>-te und einzige (matrixwert
 </div>
 <div id="aufgaben-3" class="section level2 hasAnchor" number="11.5">
 <h2><span class="header-section-number">11.5</span> Aufgaben<a href="implementierungen-anwendungsbeispiele-backpropagation.html#aufgaben-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div id="ableitung-und-newton" class="section level3 hasAnchor" number="11.5.1">
-<h3><span class="header-section-number">11.5.1</span> Ableitung und Newton<a href="implementierungen-anwendungsbeispiele-backpropagation.html#ableitung-und-newton" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="ableitung-und-newton-der-riccati-gleichung" class="section level3 hasAnchor" number="11.5.1">
+<h3><span class="header-section-number">11.5.1</span> Ableitung und Newton der Riccati Gleichung<a href="implementierungen-anwendungsbeispiele-backpropagation.html#ableitung-und-newton-der-riccati-gleichung" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Weisen Sie nach, dass der Gradient der (matrixwertigen) Riccati Abbildung
+<a href="implementierungen-anwendungsbeispiele-backpropagation.html#eq:eqn-ric-operator">(11.1)</a>
 tatsächlich die gegebene Form hat und formulieren Sie damit ein Newton
 Verfahren zur Lösung der Riccati Gleichung <span class="math inline">\(f(S)=0\)</span>.</p>
+</div>
+<div id="ableitung-von-ax-nach-der-matrix" class="section level3 hasAnchor" number="11.5.2">
+<h3><span class="header-section-number">11.5.2</span> Ableitung von <span class="math inline">\(Ax\)</span> nach der Matrix<a href="implementierungen-anwendungsbeispiele-backpropagation.html#ableitung-von-ax-nach-der-matrix" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Sei <span class="math inline">\(A=[a_{ij}]\in \mathbb R^{m\times n}\)</span>. Bestimmen Sie partielle Ableitung der
+Funktion <span class="math inline">\(f_x(A)=A(x)\)</span> nach einer Komponente
+<span class="math display">\[\begin{equation*}
+\frac{\partial {f_x}}{{\partial a_{ij}}}(A)
+\end{equation*}\]</span>
+und geben Sie davon ausgehend eine Darstellung der totalen Ableitung <span class="math inline">\(\partial f_x(A) \colon \mathbb R^{m\times n}\to \mathbb R^{m}\)</span> an</p>
+</div>
+<div id="backward-propagation" class="section level3 hasAnchor" number="11.5.3">
+<h3><span class="header-section-number">11.5.3</span> Backward Propagation<a href="implementierungen-anwendungsbeispiele-backpropagation.html#backward-propagation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Leiten Sie aus <span class="math inline">\(\mathbf A = \begin{bmatrix} A &amp; b \\ 0 &amp; 1 \end{bmatrix}\)</span> und
+<span class="math inline">\(\mathbf x = (x, 1)\)</span> sowie <span class="math inline">\(\mathbf y = (y, 1)\)</span>
+an der Stelle <span class="math inline">\([A\,b]=[A_0\, b_0]\)</span> die Formel für den Gradienten
+<span class="math display">\[\begin{equation*}
+\partial_{[A\,b]} (\frac 12 \|\mathbf y-\sigma(\mathbf A\mathbf x)\|_2^2)\Bigr|_{[A_0\, b_0]}=\Bigl (\sigma&#39;(A_0x+b_0)\bigr (y-\sigma(A_0x+b_0)\bigr )\Bigr)\,\mathbf x^T
+\end{equation*}\]</span>
+Bestätigen Sie sie numerisch, beispielsweise mit Hilfe der Code snippets aus
+<a href="ein-nn-beispiel.html#beispiel-implementierung">Beispiel Implementierung</a>,
+für ein Beispiel Netzwerk <span class="math inline">\(s\colon \mathbb R^{3}\to \mathbb R^{2}\colon \xi \to \sigma(\tilde A\xi + b)\)</span>
+mit <span class="math inline">\(\sigma = \tanh\)</span> an der Stelle
+<span class="math inline">\(A_0=\begin{bmatrix}2 &amp; 1 &amp; 1 \\ 1 &amp; 2&amp; 0 \end{bmatrix}\)</span> und
+<span class="math inline">\(b_0=\begin{bmatrix}0\\1 \end{bmatrix}\)</span> beim Datenpunkt <span class="math inline">\((\tilde x, y) = ((1,1,1), (1, 1))\)</span></p>
+</div>
+<div id="ad-and-autograd-in-pytorch" class="section level3 hasAnchor" number="11.5.4">
+<h3><span class="header-section-number">11.5.4</span> AD and Autograd in <code>pytorch</code><a href="implementierungen-anwendungsbeispiele-backpropagation.html#ad-and-autograd-in-pytorch" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Arbeiten Sie sie sich durch die <code>pytorch</code> tutorials</p>
+<ol style="list-style-type: decimal">
+<li><a href="https://pytorch.org/tutorials/beginner/blitz/autograd_tutorial.html">Introduction to <code>torch.autograd</code></a></li>
+<li><a href="https://pytorch.org/tutorials/beginner/basics/autogradqs_tutorial.html">AD with <code>torch.autograd</code></a></li>
+</ol>
+<p>und erweitern Sie die Codes um den Gradienten (in Bezug auf <span class="math inline">\(A\in \mathbb R^{2\times 2}\)</span>) von <span class="math inline">\(x\to x^TAx\)</span> für <span class="math inline">\(x\in \mathbb R^{2}\)</span> an der Stelle
+<span class="math inline">\(A_0=\begin{bmatrix}2 &amp; 1 \\ 1 &amp; 2 \end{bmatrix}\)</span> zu bestimmen.</p>
 
 </div>
 </div>
