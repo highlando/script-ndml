@@ -366,7 +366,7 @@ eher die Ableitung oder die Jacobi Matrix gemeint ist.</p>
 <p>Mit <span class="math inline">\(\hat y = -2(y-s(x;p)) \in \mathbb R^{n_2\times 1}\)</span> bekommen wir aus obigen Formeln, dass
 <span class="math display">\[\begin{equation*}
 \begin{split}
-\partial_{A_2}l(x; p) = \bigl \langle \hat y, \, \partial_{A_2}s(x;p)\bigr\rangle  &amp;= \hat y^T
+\partial_{A_2}l((x,y); p) = \bigl \langle \hat y, \, \partial_{A_2}s(x;p)\bigr\rangle  &amp;= \hat y^T
 \sigma&#39;(A_2x_1)L_{[x_1]} \\
 &amp;= \tilde y^TL_{[x_1]},
 \end{split}
@@ -408,7 +408,7 @@ x_{k-1}^T
 mit
 <span class="math display">\[\begin{equation*}
 {\tilde {\tilde y}}^T = \hat y^T \sigma&#39;(A_Nx_N)A_N\sigma&#39;(A_{N-1})A_{N-1}
-\dotsm \sigma&#39;(A_kx_{k-1})
+\dotsm \sigma&#39;(A_kx_{k-1}).
 \end{equation*}\]</span></p>
 </div>
 <div id="implementierungen-und-beispiele" class="section level2 hasAnchor" number="11.4">
@@ -490,7 +490,7 @@ Bestätigen Sie sie numerisch, beispielsweise mit Hilfe der Code snippets aus
 für ein Beispiel Netzwerk <span class="math inline">\(s\colon \mathbb R^{3}\to \mathbb R^{2}\colon \xi \to \sigma(\tilde A\xi + b)\)</span>
 mit <span class="math inline">\(\sigma = \tanh\)</span> an der Stelle
 <span class="math inline">\(A_0=\begin{bmatrix}2 &amp; 1 &amp; 1 \\ 1 &amp; 2&amp; 0 \end{bmatrix}\)</span> und
-<span class="math inline">\(b_0=\begin{bmatrix}0\\1 \end{bmatrix}\)</span> beim Datenpunkt <span class="math inline">\((\tilde x, y) = ((1,1,1), (1, 1))\)</span></p>
+<span class="math inline">\(b_0=\begin{bmatrix}0\\1 \end{bmatrix}\)</span> beim Datenpunkt <span class="math inline">\((\tilde x, y) = ((1,1,1), (1, 1))\)</span>.</p>
 </div>
 <div id="ad-and-autograd-in-pytorch" class="section level3 hasAnchor" number="11.5.4">
 <h3><span class="header-section-number">11.5.4</span> AD and Autograd in <code>pytorch</code><a href="implementierungen-anwendungsbeispiele-backpropagation.html#ad-and-autograd-in-pytorch" class="anchor-section" aria-label="Anchor link to header"></a></h3>
