@@ -414,7 +414,7 @@ eher die Ableitung oder die Jacobi Matrix gemeint ist.
 Mit $\hat y = -2(y-s(x;p)) \in \mathbb R^{n_2\times 1}$ bekommen wir aus obigen Formeln, dass
 \begin{equation*}
 \begin{split}
-\partial_{A_2}l(x; p) = \ipro{\hat y}{\partial_{A_2}s(x;p)} &= \hat y^T
+\partial_{A_2}l((x,y); p) = \ipro{\hat y}{\partial_{A_2}s(x;p)} &= \hat y^T
 \sigma'(A_2x_1)L_{[x_1]} \\
 &= \tilde y^TL_{[x_1]},
 \end{split}
@@ -461,7 +461,7 @@ x_{k-1}^T
 mit
 \begin{equation*}
 {\tilde {\tilde y}}^T = \hat y^T \sigma'(A_Nx_N)A_N\sigma'(A_{N-1})A_{N-1}
-\dotsm \sigma'(A_kx_{k-1})
+\dotsm \sigma'(A_kx_{k-1}).
 \end{equation*}
 
 ## Implementierungen und Beispiele
@@ -545,7 +545,7 @@ f&uuml;r ein Beispiel Netzwerk $s\colon \mathbb R^{3}\to \mathbb R^{2}\colon \xi
 mit $\sigma = \tanh$ an der Stelle 
 $A_0=\begin{bmatrix}2 & 1 & 1 \\ 1 & 2& 0  \end{bmatrix}$ und 
 $b_0=\begin{bmatrix}0\\1 \end{bmatrix}$ beim Datenpunkt $(\tilde x, y) =
-((1,1,1), (1, 1))$
+((1,1,1), (1, 1))$.
 
 ### AD and Autograd in `pytorch`
 
