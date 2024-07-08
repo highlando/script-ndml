@@ -211,7 +211,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.1" data-path="implementierungen-anwendungsbeispiele-backpropagation.html"><a href="implementierungen-anwendungsbeispiele-backpropagation.html#exkurs-gradienten-und-repräsentation"><i class="fa fa-check"></i><b>11.1</b> Exkurs – Gradienten und Repräsentation</a></li>
 <li class="chapter" data-level="11.2" data-path="implementierungen-anwendungsbeispiele-backpropagation.html"><a href="implementierungen-anwendungsbeispiele-backpropagation.html#backpropagation"><i class="fa fa-check"></i><b>11.2</b> Backpropagation</a></li>
 <li class="chapter" data-level="11.3" data-path="implementierungen-anwendungsbeispiele-backpropagation.html"><a href="implementierungen-anwendungsbeispiele-backpropagation.html#praktische-berechnung-des-gradienten"><i class="fa fa-check"></i><b>11.3</b> Praktische Berechnung des Gradienten</a></li>
-<li class="chapter" data-level="11.4" data-path="implementierungen-anwendungsbeispiele-backpropagation.html"><a href="implementierungen-anwendungsbeispiele-backpropagation.html#implementierungsbeispiele"><i class="fa fa-check"></i><b>11.4</b> Implementierungsbeispiele</a></li>
+<li class="chapter" data-level="11.4" data-path="implementierungen-anwendungsbeispiele-backpropagation.html"><a href="implementierungen-anwendungsbeispiele-backpropagation.html#implementierungen-und-beispiele"><i class="fa fa-check"></i><b>11.4</b> Implementierungen und Beispiele</a></li>
 <li class="chapter" data-level="11.5" data-path="implementierungen-anwendungsbeispiele-backpropagation.html"><a href="implementierungen-anwendungsbeispiele-backpropagation.html#aufgaben-3"><i class="fa fa-check"></i><b>11.5</b> Aufgaben</a></li>
 </ul></li>
 <li class="chapter" data-level="12" data-path="nachklapp.html"><a href="nachklapp.html"><i class="fa fa-check"></i><b>12</b> Nachklapp</a></li>
@@ -399,14 +399,65 @@ sodass wir als <span class="math inline">\(1\)</span>-te und einzige (matrixwert
 <span class="math display">\[\begin{equation*}
 (\tilde y^T L_{[x_1]})_1 = \tilde y x_1^T \in \mathbb R^{n_2 \times n_1}.
 \end{equation*}\]</span></p>
+<p>Für die Ableitung bezüglich <span class="math inline">\(A_k\)</span> in einem <span class="math inline">\(N\)</span>-layer Netzwerk bekommen
+wir mit obiger Rekursionsformel
+<span class="math display">\[\begin{equation*}
+\partial_{A_k} l(x;p) = \hat y^T \delta_k L_{[x_{k-1}]} = \tilde{\tilde y}
+x_{k-1}^T
+\end{equation*}\]</span>
+mit
+<span class="math display">\[\begin{equation*}
+{\tilde {\tilde y}}^T = \hat y^T \sigma&#39;(A_Nx_N)A_N\sigma&#39;(A_{N-1})A_{N-1}
+\dotsm \sigma&#39;(A_kx_{k-1})
+\end{equation*}\]</span></p>
 </div>
-<div id="implementierungsbeispiele" class="section level2 hasAnchor" number="11.4">
-<h2><span class="header-section-number">11.4</span> Implementierungsbeispiele<a href="implementierungen-anwendungsbeispiele-backpropagation.html#implementierungsbeispiele" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="implementierungen-und-beispiele" class="section level2 hasAnchor" number="11.4">
+<h2><span class="header-section-number">11.4</span> Implementierungen und Beispiele<a href="implementierungen-anwendungsbeispiele-backpropagation.html#implementierungen-und-beispiele" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Jan könnte als grobe Einschätzung sagen:</p>
+<div id="ad-applications" class="JHSAYS">
+<p>Die Eleganz und Effizienz von AD für Optimierungsanwendungen ist
+unbestritten. Dennoch bedeutet der Einsatz eine Abwägung von
+Extra-Implementierungsaufwand und Selbstbeschränkung in Struktur und
+Funktionsumfang des Codes (das sind zwei Seiten der gleichen Medaille – auch
+<em>nonstandard but clever</em> Funktionen können mit entsprechendem Aufwand
+A-differenziert werden).
+Deswegen ist AD in der Forschung (hier wird der Mehraufwand gescheut) und in der
+industriellen Anwendung (viel legacy code mit spezifisch cleveren Funktionen)
+eine Randerscheinung wenn auch mit leuchtenden Erfolgsgeschichten.</p>
+</div>
+<p>Sicherlich ist es am besten im Bezug auf Aufwand und Funtionalität, den
+code sofort mit Augenmerk auf AD zu entwickeln.</p>
+<p>Soll der AD <em>overhead</em> nicht selbst mitentwickelt werden, empfiehlt es sich auf
+Programmumgebungen zurückzugreifen, die einen <em>AD framework</em> mitbringen.
+Hier greift obige Abwägung – die AD verursacht kaum Mehraufwand allerdings
+muss der eigene Code an die vorgegebene Struktur und Funktionalität
+angepasst sein.</p>
+<p>Für bestehenden Code gibt es zwei Herangehensweisen (neben der
+“Um”entwicklung).</p>
+<ol style="list-style-type: decimal">
+<li><p><em>precompiling</em> – “AD ready” Code wird automatisiert aus bestehendem Code
+generiert.</p></li>
+<li><p><em>overloading</em> – Es werden AD Variablentypen und Klassen definiert und die
+Grundoperationen <em>überladen</em> sodass mit minimalen Änderungen ein
+bestehender Code die AD Funktionalität bekommt.</p></li>
+</ol>
+<div id="anwendungsbeispiele" class="section level3 hasAnchor" number="11.4.1">
+<h3><span class="header-section-number">11.4.1</span> Anwendungsbeispiele<a href="implementierungen-anwendungsbeispiele-backpropagation.html#anwendungsbeispiele" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
-<li>Beispiel in PyTorch</li>
-<li>CASADI</li>
-<li>Nico Gauger</li>
+<li><a href="https://doi.org/10.1007/s11081-019-09474-x">Algorithmic differentiation of an industrial airfoil design tool coupled with the adjoint CFD method</a> – ein Beispiel in dem ein kompletter Simulationscode <em>automatisch differenziert</em> wurde um Tragflügel zu optimieren.</li>
 </ul>
+</div>
+<div id="implementierungen" class="section level3 hasAnchor" number="11.4.2">
+<h3><span class="header-section-number">11.4.2</span> Implementierungen<a href="implementierungen-anwendungsbeispiele-backpropagation.html#implementierungen" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><a href="https://web.casadi.org/">CASADI</a> – eine <em>AD aware</em> (für <code>python</code> und <code>Matlab/Octave</code>) Umgebung zur Optimierung (auch mit
+Differentialgleichungen)</li>
+<li><a href="https://pytorch.org/">PyTorch</a> – eine <em>machine learning toolbox</em> mit AD integriert zur
+Gradientenberechnung</li>
+<li><a href="https://www3.math.tu-berlin.de/Vorlesungen/SS06/AlgoDiff/adolc-110.pdf">ADOL-C</a> – ein <em>overloading</em> framework für <code>C</code> und <code>C++</code></li>
+<li><a href="https://tapenade.gitlabpages.inria.fr/userdoc/build/html/tapenade/whatisad.html">Tapenade</a> – ein <em>precompiler</em> der aus Code <em>AD Code</em> generiert</li>
+</ul>
+</div>
 </div>
 <div id="aufgaben-3" class="section level2 hasAnchor" number="11.5">
 <h2><span class="header-section-number">11.5</span> Aufgaben<a href="implementierungen-anwendungsbeispiele-backpropagation.html#aufgaben-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>

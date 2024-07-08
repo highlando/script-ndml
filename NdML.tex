@@ -3414,17 +3414,84 @@ sodass wir als \(1\)-te und einzige (matrixwertige) Komponente des Gradienten da
 (\tilde y^T L_{[x_1]})_1 = \tilde y x_1^T \in \mathbb R^{n_2 \times n_1}.
 \end{equation*}
 
-\hypertarget{implementierungsbeispiele}{%
-\section{Implementierungsbeispiele}\label{implementierungsbeispiele}}
+Für die Ableitung bezüglich \(A_k\) in einem \(N\)-layer Netzwerk bekommen
+wir mit obiger Rekursionsformel
+\begin{equation*}
+\partial_{A_k} l(x;p) = \hat y^T \delta_k L_{[x_{k-1}]} = \tilde{\tilde y}
+x_{k-1}^T
+\end{equation*}
+mit
+\begin{equation*}
+{\tilde {\tilde y}}^T = \hat y^T \sigma'(A_Nx_N)A_N\sigma'(A_{N-1})A_{N-1}
+\dotsm \sigma'(A_kx_{k-1})
+\end{equation*}
+
+\hypertarget{implementierungen-und-beispiele}{%
+\section{Implementierungen und Beispiele}\label{implementierungen-und-beispiele}}
+
+Jan könnte als grobe Einschätzung sagen:
+
+\leavevmode\hypertarget{ad-applications}{}%
+\begin{JHSAYS}
+Die Eleganz und Effizienz von AD für Optimierungsanwendungen ist
+unbestritten. Dennoch bedeutet der Einsatz eine Abwägung von
+Extra-Implementierungsaufwand und Selbstbeschränkung in Struktur und
+Funktionsumfang des Codes (das sind zwei Seiten der gleichen Medaille -- auch
+\emph{nonstandard but clever} Funktionen können mit entsprechendem Aufwand
+A-differenziert werden).
+Deswegen ist AD in der Forschung (hier wird der Mehraufwand gescheut) und in der
+industriellen Anwendung (viel legacy code mit spezifisch cleveren Funktionen)
+eine Randerscheinung wenn auch mit leuchtenden Erfolgsgeschichten.
+
+\end{JHSAYS}
+
+Sicherlich ist es am besten im Bezug auf Aufwand und Funtionalität, den
+code sofort mit Augenmerk auf AD zu entwickeln.
+
+Soll der AD \emph{overhead} nicht selbst mitentwickelt werden, empfiehlt es sich auf
+Programmumgebungen zurückzugreifen, die einen \emph{AD framework} mitbringen.
+Hier greift obige Abwägung -- die AD verursacht kaum Mehraufwand allerdings
+muss der eigene Code an die vorgegebene Struktur und Funktionalität
+angepasst sein.
+
+Für bestehenden Code gibt es zwei Herangehensweisen (neben der
+``Um''entwicklung).
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \emph{precompiling} -- ``AD ready'' Code wird automatisiert aus bestehendem Code
+  generiert.
+\item
+  \emph{overloading} -- Es werden AD Variablentypen und Klassen definiert und die
+  Grundoperationen \emph{überladen} sodass mit minimalen Änderungen ein
+  bestehender Code die AD Funktionalität bekommt.
+\end{enumerate}
+
+\hypertarget{anwendungsbeispiele}{%
+\subsection{Anwendungsbeispiele}\label{anwendungsbeispiele}}
 
 \begin{itemize}
 \tightlist
 \item
-  Beispiel in PyTorch
+  \href{https://doi.org/10.1007/s11081-019-09474-x}{Algorithmic differentiation of an industrial airfoil design tool coupled with the adjoint CFD method} -- ein Beispiel in dem ein kompletter Simulationscode \emph{automatisch differenziert} wurde um Tragflügel zu optimieren.
+\end{itemize}
+
+\hypertarget{implementierungen}{%
+\subsection{Implementierungen}\label{implementierungen}}
+
+\begin{itemize}
+\tightlist
 \item
-  CASADI
+  \href{https://web.casadi.org/}{CASADI} -- eine \emph{AD aware} (für \texttt{python} und \texttt{Matlab/Octave}) Umgebung zur Optimierung (auch mit
+  Differentialgleichungen)
 \item
-  Nico Gauger
+  \href{https://pytorch.org/}{PyTorch} -- eine \emph{machine learning toolbox} mit AD integriert zur
+  Gradientenberechnung
+\item
+  \href{https://www3.math.tu-berlin.de/Vorlesungen/SS06/AlgoDiff/adolc-110.pdf}{ADOL-C} -- ein \emph{overloading} framework für \texttt{C} und \texttt{C++}
+\item
+  \href{https://tapenade.gitlabpages.inria.fr/userdoc/build/html/tapenade/whatisad.html}{Tapenade} -- ein \emph{precompiler} der aus Code \emph{AD Code} generiert
 \end{itemize}
 
 \hypertarget{aufgaben-3}{%

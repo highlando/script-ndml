@@ -105,7 +105,9 @@ exkurs-gradienten-und-repräsentation
 backpropagation
 rekursion
 praktische-berechnung-des-gradienten
-implementierungsbeispiele
+implementierungen-und-beispiele
+anwendungsbeispiele
+implementierungen
 aufgaben-3
 ableitung-und-newton-der-riccati-gleichung
 ableitung-von-ax-nach-der-matrix
