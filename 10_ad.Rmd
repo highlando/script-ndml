@@ -452,11 +452,65 @@ sodass wir als $1$-te und einzige (matrixwertige) Komponente des Gradienten das
 (\tilde y^T L_{[x_1]})_1 = \tilde y x_1^T \in \mathbb R^{n_2 \times n_1}.
 \end{equation*}
 
-## Implementierungsbeispiele
+F&uuml;r die Ableitung bez&uuml;glich $A_k$ in einem $N$-layer Netzwerk bekommen
+wir mit obiger Rekursionsformel
+\begin{equation*}
+\partial_{A_k} l(x;p) = \hat y^T \delta_k L_{[x_{k-1}]} = \tilde{\tilde y}
+x_{k-1}^T
+\end{equation*}
+mit
+\begin{equation*}
+{\tilde {\tilde y}}^T = \hat y^T \sigma'(A_Nx_N)A_N\sigma'(A_{N-1})A_{N-1}
+\dotsm \sigma'(A_kx_{k-1})
+\end{equation*}
 
-* Beispiel in PyTorch
-* CASADI
-* Nico Gauger
+## Implementierungen und Beispiele
+
+Jan k&ouml;nnte als grobe Einsch&auml;tzung sagen:
+
+::: {#ad-applications .JHSAYS data-latex=''}
+Die Eleganz und Effizienz von AD f&uuml;r Optimierungsanwendungen ist
+unbestritten. Dennoch bedeutet der Einsatz eine Abw&auml;gung von
+Extra-Implementierungsaufwand und Selbstbeschr&auml;nkung in Struktur und
+Funktionsumfang des Codes (das sind zwei Seiten der gleichen Medaille -- auch
+*nonstandard but clever* Funktionen k&ouml;nnen mit entsprechendem Aufwand
+A-differenziert werden).
+Deswegen ist AD in der Forschung (hier wird der Mehraufwand gescheut) und in der
+industriellen Anwendung (viel legacy code mit spezifisch cleveren Funktionen)
+eine Randerscheinung wenn auch mit leuchtenden Erfolgsgeschichten.
+:::
+
+Sicherlich ist es am besten im Bezug auf Aufwand und Funtionalit&auml;t, den
+code sofort mit Augenmerk auf AD zu entwickeln.
+
+Soll der AD *overhead* nicht selbst mitentwickelt werden, empfiehlt es sich auf
+Programmumgebungen zur&uuml;ckzugreifen, die einen *AD framework* mitbringen. 
+Hier greift obige Abw&auml;gung -- die AD verursacht kaum Mehraufwand allerdings
+muss der eigene Code an die vorgegebene Struktur und Funktionalit&auml;t
+angepasst sein.
+
+F&uuml;r bestehenden Code gibt es zwei Herangehensweisen (neben der
+"Um"entwicklung).
+
+1. *precompiling* -- "AD ready" Code wird automatisiert aus bestehendem Code
+   generiert.
+
+2. *overloading* -- Es werden AD Variablentypen und Klassen definiert und die
+   Grundoperationen *&uuml;berladen* sodass mit minimalen &Auml;nderungen ein
+   bestehender Code die AD Funktionalit&auml;t bekommt.
+
+### Anwendungsbeispiele
+
+* [Algorithmic differentiation of an industrial airfoil design tool coupled with the adjoint CFD method](https://doi.org/10.1007/s11081-019-09474-x) -- ein Beispiel in dem ein kompletter Simulationscode *automatisch differenziert* wurde um Tragfl&uuml;gel zu optimieren.
+
+### Implementierungen
+
+* [CASADI](https://web.casadi.org/) -- eine *AD aware* (f&uuml;r `python` und `Matlab/Octave`) Umgebung zur Optimierung (auch mit
+  Differentialgleichungen)
+* [PyTorch](https://pytorch.org/) -- eine *machine learning toolbox* mit AD integriert zur
+  Gradientenberechnung
+* [ADOL-C](https://www3.math.tu-berlin.de/Vorlesungen/SS06/AlgoDiff/adolc-110.pdf) -- ein *overloading* framework f&uuml;r `C` und `C++`
+* [Tapenade](https://tapenade.gitlabpages.inria.fr/userdoc/build/html/tapenade/whatisad.html) -- ein *precompiler* der aus Code *AD Code* generiert
 
 ## Aufgaben
 
