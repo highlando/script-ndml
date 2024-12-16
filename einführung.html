@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>1 Einführung | Numerik des Maschinellen Lernens</title>
   <meta name="description" content="Vorlesungsnotizen zu meiner integrierten Vorlesung im SoSe 2024" />
-  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
 
   <meta property="og:title" content="1 Einführung | Numerik des Maschinellen Lernens" />
   <meta property="og:type" content="book" />
@@ -48,7 +48,6 @@
 
 
 
-<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
@@ -56,8 +55,9 @@
 
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
@@ -91,7 +91,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -104,7 +104,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -121,6 +121,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <style type="text/css">
   
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -340,35 +362,35 @@ p(x) &amp;= a_0 + a_1x +  a_2x^2+ \dotsm + a_nx^n \\
 \end{split}
 \end{equation*}\]</span></p>
 <p>Für eine direkte Implementierung der ersten Darstellung erhalten wir die Algorithmen</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb1-1"><a href="einführung.html#cb1-1" aria-hidden="true"></a><span class="co">&#39;&#39;&#39;Berechnung von p(x) in Standarddarstellung</span></span>
-<span id="cb1-2"><a href="einführung.html#cb1-2" aria-hidden="true"></a><span class="co">&#39;&#39;&#39;</span></span>
-<span id="cb1-3"><a href="einführung.html#cb1-3" aria-hidden="true"></a>n <span class="op">=</span> <span class="dv">10</span>                                      <span class="co"># Beispielwert für n</span></span>
-<span id="cb1-4"><a href="einführung.html#cb1-4" aria-hidden="true"></a>ais <span class="op">=</span> [(<span class="op">-</span><span class="dv">1</span>)<span class="op">**</span>k<span class="op">*</span><span class="dv">1</span><span class="op">/</span>k <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n<span class="op">+</span><span class="dv">2</span>)]  <span class="co"># Liste der Beispielkoeffizienten</span></span>
-<span id="cb1-5"><a href="einführung.html#cb1-5" aria-hidden="true"></a>x <span class="op">=</span> <span class="dv">5</span>                                       <span class="co"># Ein Beispielwert für x</span></span>
-<span id="cb1-6"><a href="einführung.html#cb1-6" aria-hidden="true"></a>cpx <span class="op">=</span> ais[<span class="dv">0</span>]                                <span class="co"># der Fall k=0</span></span>
-<span id="cb1-7"><a href="einführung.html#cb1-7" aria-hidden="true"></a><span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(n):</span>
-<span id="cb1-8"><a href="einführung.html#cb1-8" aria-hidden="true"></a>    cpx <span class="op">=</span> cpx <span class="op">+</span> ais[k<span class="op">+</span><span class="dv">1</span>] <span class="op">*</span> x<span class="op">**</span>(k<span class="op">+</span><span class="dv">1</span>)         <span class="co"># der Beitrag des k-ten Schritts</span></span>
-<span id="cb1-9"><a href="einführung.html#cb1-9" aria-hidden="true"></a><span class="bu">print</span>(<span class="ss">f&#39;x=</span><span class="sc">{x}</span><span class="ss">: p(x)=</span><span class="sc">{</span>cpx<span class="sc">:.4f}</span><span class="ss">&#39;</span>)             <span class="co"># Ausgabe des Ergebnisses</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb1-1"><a href="einführung.html#cb1-1" tabindex="-1"></a><span class="co">&#39;&#39;&#39;Berechnung von p(x) in Standarddarstellung</span></span>
+<span id="cb1-2"><a href="einführung.html#cb1-2" tabindex="-1"></a><span class="co">&#39;&#39;&#39;</span></span>
+<span id="cb1-3"><a href="einführung.html#cb1-3" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">10</span>                                      <span class="co"># Beispielwert für n</span></span>
+<span id="cb1-4"><a href="einführung.html#cb1-4" tabindex="-1"></a>ais <span class="op">=</span> [(<span class="op">-</span><span class="dv">1</span>)<span class="op">**</span>k<span class="op">*</span><span class="dv">1</span><span class="op">/</span>k <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n<span class="op">+</span><span class="dv">2</span>)]  <span class="co"># Liste der Beispielkoeffizienten</span></span>
+<span id="cb1-5"><a href="einführung.html#cb1-5" tabindex="-1"></a>x <span class="op">=</span> <span class="dv">5</span>                                       <span class="co"># Ein Beispielwert für x</span></span>
+<span id="cb1-6"><a href="einführung.html#cb1-6" tabindex="-1"></a>cpx <span class="op">=</span> ais[<span class="dv">0</span>]                                <span class="co"># der Fall k=0</span></span>
+<span id="cb1-7"><a href="einführung.html#cb1-7" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(n):</span>
+<span id="cb1-8"><a href="einführung.html#cb1-8" tabindex="-1"></a>    cpx <span class="op">=</span> cpx <span class="op">+</span> ais[k<span class="op">+</span><span class="dv">1</span>] <span class="op">*</span> x<span class="op">**</span>(k<span class="op">+</span><span class="dv">1</span>)         <span class="co"># der Beitrag des k-ten Schritts</span></span>
+<span id="cb1-9"><a href="einführung.html#cb1-9" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&#39;x=</span><span class="sc">{</span>x<span class="sc">}</span><span class="ss">: p(x)=</span><span class="sc">{</span>cpx<span class="sc">:.4f}</span><span class="ss">&#39;</span>)             <span class="co"># Ausgabe des Ergebnisses</span></span></code></pre></div>
 <p>Im <span class="math inline">\(k\)</span>-ten Schritt benötigt der Algorithmus eine Addition (wenn wir auch die Initialisierung als Addition zählen) und <span class="math inline">\(k\)</span> Multiplikationen. Das ergibt eine Gesamtkomplexität von
 <span class="math display">\[\begin{equation*}
 C(n) = \sum_{k=0}^n(1+k) = n+1 + \frac{n(n-1)}{2} = 1 + \frac n2 + \frac{n^2}2 = O(n^2)
 \end{equation*}\]</span></p>
 <p>Für die zweite Darstellung können wir das sogenannte <em>Horner-Schema</em> implementieren, das lauten würde</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb2-1"><a href="einführung.html#cb2-1" aria-hidden="true"></a><span class="co">&#39;&#39;&#39;Berechnung von p(x) mit dem Horner-Schema</span></span>
-<span id="cb2-2"><a href="einführung.html#cb2-2" aria-hidden="true"></a><span class="co">&#39;&#39;&#39;</span></span>
-<span id="cb2-3"><a href="einführung.html#cb2-3" aria-hidden="true"></a>n <span class="op">=</span> <span class="dv">10</span>                                      <span class="co"># Beispielwert für n</span></span>
-<span id="cb2-4"><a href="einführung.html#cb2-4" aria-hidden="true"></a>ais <span class="op">=</span> [(<span class="op">-</span><span class="dv">1</span>)<span class="op">**</span>k<span class="op">*</span><span class="dv">1</span><span class="op">/</span>k <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n<span class="op">+</span><span class="dv">2</span>)]  <span class="co"># Liste der Beispielkoeffizienten</span></span>
-<span id="cb2-5"><a href="einführung.html#cb2-5" aria-hidden="true"></a>x <span class="op">=</span> <span class="dv">5</span>                                       <span class="co"># Ein Beispielwert für x</span></span>
-<span id="cb2-6"><a href="einführung.html#cb2-6" aria-hidden="true"></a>cpx <span class="op">=</span> ais[n]                                <span class="co"># der Fall k=n</span></span>
-<span id="cb2-7"><a href="einführung.html#cb2-7" aria-hidden="true"></a><span class="cf">for</span> k <span class="kw">in</span> <span class="bu">reversed</span>(<span class="bu">range</span>(n)):                </span>
-<span id="cb2-8"><a href="einführung.html#cb2-8" aria-hidden="true"></a>    cpx <span class="op">=</span> ais[k] <span class="op">+</span> x<span class="op">*</span>cpx                    <span class="co"># der Beitrag des k-ten Schritts</span></span>
-<span id="cb2-9"><a href="einführung.html#cb2-9" aria-hidden="true"></a><span class="bu">print</span>(<span class="ss">f&#39;x=</span><span class="sc">{x}</span><span class="ss">: p(x)=</span><span class="sc">{</span>cpx<span class="sc">:.4f}</span><span class="ss">&#39;</span>)             <span class="co"># Ausgabe des Ergebnisses</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb2-1"><a href="einführung.html#cb2-1" tabindex="-1"></a><span class="co">&#39;&#39;&#39;Berechnung von p(x) mit dem Horner-Schema</span></span>
+<span id="cb2-2"><a href="einführung.html#cb2-2" tabindex="-1"></a><span class="co">&#39;&#39;&#39;</span></span>
+<span id="cb2-3"><a href="einführung.html#cb2-3" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">10</span>                                      <span class="co"># Beispielwert für n</span></span>
+<span id="cb2-4"><a href="einführung.html#cb2-4" tabindex="-1"></a>ais <span class="op">=</span> [(<span class="op">-</span><span class="dv">1</span>)<span class="op">**</span>k<span class="op">*</span><span class="dv">1</span><span class="op">/</span>k <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n<span class="op">+</span><span class="dv">2</span>)]  <span class="co"># Liste der Beispielkoeffizienten</span></span>
+<span id="cb2-5"><a href="einführung.html#cb2-5" tabindex="-1"></a>x <span class="op">=</span> <span class="dv">5</span>                                       <span class="co"># Ein Beispielwert für x</span></span>
+<span id="cb2-6"><a href="einführung.html#cb2-6" tabindex="-1"></a>cpx <span class="op">=</span> ais[n]                                <span class="co"># der Fall k=n</span></span>
+<span id="cb2-7"><a href="einführung.html#cb2-7" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> <span class="bu">reversed</span>(<span class="bu">range</span>(n)):                </span>
+<span id="cb2-8"><a href="einführung.html#cb2-8" tabindex="-1"></a>    cpx <span class="op">=</span> ais[k] <span class="op">+</span> x<span class="op">*</span>cpx                    <span class="co"># der Beitrag des k-ten Schritts</span></span>
+<span id="cb2-9"><a href="einführung.html#cb2-9" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&#39;x=</span><span class="sc">{</span>x<span class="sc">}</span><span class="ss">: p(x)=</span><span class="sc">{</span>cpx<span class="sc">:.4f}</span><span class="ss">&#39;</span>)             <span class="co"># Ausgabe des Ergebnisses</span></span></code></pre></div>
 <p>Insgesamt benötigt dieses Schema <span class="math inline">\(n+1\)</span> Additionen und <span class="math inline">\(n\)</span> Multiplikationen, d.h. <span class="math inline">\(2n+1\)</span> FLOPs, so dass wir sagen können, dass <em>dieser Algorithmus <span class="math inline">\(O(n)\)</span> ist</em>.</p>
 </div>
 <div id="literatur" class="section level2 hasAnchor" number="1.4">
 <h2><span class="header-section-number">1.4</span> Literatur<a href="einführung.html#literatur" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
-<li><span class="citation">(Nocedal and Wright <a href="#ref-NocW06" role="doc-biblioref">2006</a>)</span>: Ein gut lesbares Buch zur Optimierung.</li>
+<li><span class="citation">(<a href="#ref-NocW06">Nocedal and Wright 2006</a>)</span>: Ein gut lesbares Buch zur Optimierung.</li>
 </ul>
 </div>
 <div id="übungen" class="section level2 hasAnchor" number="1.5">
@@ -378,17 +400,17 @@ C(n) = \sum_{k=0}^n(1+k) = n+1 + \frac{n(n-1)}{2} = 1 + \frac n2 + \frac{n^2}2 =
 <li><p>Zeigen Sie, dass es für <span class="math inline">\(f\in O(g)\)</span> mit <span class="math inline">\(f\geq 0\)</span> und <span class="math inline">\(g&gt; 0\)</span> eine Konstante <span class="math inline">\(C\)</span> gibt, sodass <span class="math inline">\(f(n)=h(n) + Cg(n)\)</span> mit <span class="math inline">\(h\in o(g)\)</span>. <em>Bemerkung: diese Relation ist die Rechtfertigung für die eigentlich inkorrekte Schreibweise <span class="math inline">\(f=O(g)\)</span></em>.</p></li>
 <li><p>Ermitteln Sie experimentell <em>die Ordnung</em> (d.h. den Exponent <span class="math inline">\(x\)</span> in <span class="math inline">\(O(n^x)\)</span>) und <em>die Konstante</em> <span class="math inline">\(C\)</span> (s.o.) für die Laufzeit <span class="math inline">\(t(n)\)</span> der in <code>scipy.linalg.cholesky</code> implementierten Cholesky Zerlegung der Bandmatrix <code>A_n</code> aus dem folgenden Code Beispiel</p></li>
 </ol>
-<div class="sourceCode" id="cb3"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb3-1"><a href="einführung.html#cb3-1" aria-hidden="true"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb3-2"><a href="einführung.html#cb3-2" aria-hidden="true"></a><span class="im">from</span> scipy.linalg <span class="im">import</span> cholesky</span>
-<span id="cb3-3"><a href="einführung.html#cb3-3" aria-hidden="true"></a><span class="im">from</span> time <span class="im">import</span> time</span>
-<span id="cb3-4"><a href="einführung.html#cb3-4" aria-hidden="true"></a>n <span class="op">=</span> <span class="dv">10</span>                                  <span class="co"># example problem size</span></span>
-<span id="cb3-5"><a href="einführung.html#cb3-5" aria-hidden="true"></a>A_n <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">*</span>np.diag(np.ones(n<span class="op">-</span><span class="dv">1</span>), <span class="op">-</span><span class="dv">1</span>) <span class="op">+</span> <span class="op">\</span>  <span class="co"># a tridiagonal band matrix</span></span>
-<span id="cb3-6"><a href="einführung.html#cb3-6" aria-hidden="true"></a>    <span class="dv">2</span><span class="op">*</span>np.diag(np.ones(n), <span class="dv">0</span>) <span class="op">+</span> <span class="op">\</span></span>
-<span id="cb3-7"><a href="einführung.html#cb3-7" aria-hidden="true"></a>    <span class="op">-</span><span class="dv">1</span><span class="op">*</span>np.diag(np.ones(n<span class="op">-</span><span class="dv">1</span>), <span class="dv">1</span>)</span>
-<span id="cb3-8"><a href="einführung.html#cb3-8" aria-hidden="true"></a>tic <span class="op">=</span> time()                            <span class="co"># start the timer</span></span>
-<span id="cb3-9"><a href="einführung.html#cb3-9" aria-hidden="true"></a>_ <span class="op">=</span> cholesky(A_n)                       <span class="co"># perform the computation</span></span>
-<span id="cb3-10"><a href="einführung.html#cb3-10" aria-hidden="true"></a>toc <span class="op">=</span> time()                            <span class="co"># stop the timer</span></span>
-<span id="cb3-11"><a href="einführung.html#cb3-11" aria-hidden="true"></a><span class="bu">print</span>(<span class="ss">f&#39;n: </span><span class="sc">{n}</span><span class="ss"> -- t_n: </span><span class="sc">{</span>toc<span class="op">-</span>tic<span class="sc">:.4e}</span><span class="ss">&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb3-1"><a href="einführung.html#cb3-1" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-2"><a href="einführung.html#cb3-2" tabindex="-1"></a><span class="im">from</span> scipy.linalg <span class="im">import</span> cholesky</span>
+<span id="cb3-3"><a href="einführung.html#cb3-3" tabindex="-1"></a><span class="im">from</span> time <span class="im">import</span> time</span>
+<span id="cb3-4"><a href="einführung.html#cb3-4" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">10</span>                                  <span class="co"># example problem size</span></span>
+<span id="cb3-5"><a href="einführung.html#cb3-5" tabindex="-1"></a>A_n <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">*</span>np.diag(np.ones(n<span class="op">-</span><span class="dv">1</span>), <span class="op">-</span><span class="dv">1</span>) <span class="op">+</span> \  <span class="co"># a tridiagonal band matrix</span></span>
+<span id="cb3-6"><a href="einführung.html#cb3-6" tabindex="-1"></a>    <span class="dv">2</span><span class="op">*</span>np.diag(np.ones(n), <span class="dv">0</span>) <span class="op">+</span> <span class="op">\</span></span>
+<span id="cb3-7"><a href="einführung.html#cb3-7" tabindex="-1"></a>    <span class="op">-</span><span class="dv">1</span><span class="op">*</span>np.diag(np.ones(n<span class="op">-</span><span class="dv">1</span>), <span class="dv">1</span>)</span>
+<span id="cb3-8"><a href="einführung.html#cb3-8" tabindex="-1"></a>tic <span class="op">=</span> time()                            <span class="co"># start the timer</span></span>
+<span id="cb3-9"><a href="einführung.html#cb3-9" tabindex="-1"></a>_ <span class="op">=</span> cholesky(A_n)                       <span class="co"># perform the computation</span></span>
+<span id="cb3-10"><a href="einführung.html#cb3-10" tabindex="-1"></a>toc <span class="op">=</span> time()                            <span class="co"># stop the timer</span></span>
+<span id="cb3-11"><a href="einführung.html#cb3-11" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&#39;n: </span><span class="sc">{</span>n<span class="sc">}</span><span class="ss"> -- t_n: </span><span class="sc">{</span>toc<span class="op">-</span>tic<span class="sc">:.4e}</span><span class="ss">&#39;</span>)</span></code></pre></div>
 <p><em>Hinweis: Hier geht es um die Methodik und um eine sinnvolle Interpretation der Ergebnisse. Es kann gut sein, dass die Ergebnisse auf verschiedenen Rechnern verschieden ausfallen. Außerdem können für große <span class="math inline">\(n\)</span> (wenn der Exponent und die Konstante am besten sichtbar sind) auf einmal bspw. ein zu voller Arbeitsspeicher die Berechnung negativ beeinflussen.</em></p>
 <ol start="4" style="list-style-type: decimal">
 <li>Diskutieren Sie, wie Laufzeitmessungen (bspw. zur Komplexitätsanalyse eines Verfahrens) aufgesetzt werden sollten, um reproduzierbare Ergebnisse zu erhalten. Was sollte dokumentiert werden, damit dritte Personen die Ergebnisse einordnen und ggf. reproduzieren können.</li>
@@ -401,9 +423,9 @@ C(n) = \sum_{k=0}^n(1+k) = n+1 + \frac{n(n-1)}{2} = 1 + \frac n2 + \frac{n^2}2 =
 </div>
 </div>
 <h3>Referenzen<a href="referenzen.html#referenzen" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div id="refs" class="references">
-<div id="ref-NocW06">
-<p> Nocedal, J., Wright, S.J.: Numerical optimization. Springer (2006)</p>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-NocW06" class="csl-entry">
+Nocedal, J., Wright, S.J.: <a href="https://doi.org/10.1007/978-0-387-40065-5">Numerical optimization</a>. Springer (2006)
 </div>
 </div>
             </section>

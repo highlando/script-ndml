@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>5 Ein NN Beispiel | Numerik des Maschinellen Lernens</title>
   <meta name="description" content="Vorlesungsnotizen zu meiner integrierten Vorlesung im SoSe 2024" />
-  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
 
   <meta property="og:title" content="5 Ein NN Beispiel | Numerik des Maschinellen Lernens" />
   <meta property="og:type" content="book" />
@@ -48,7 +48,6 @@
 
 
 
-<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
@@ -56,8 +55,9 @@
 
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
@@ -91,7 +91,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -104,7 +104,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -121,6 +121,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <style type="text/css">
   
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -243,16 +265,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 Merkmale aufgesetzt, trainiert und auf Funktion geprüft wird.</p>
 <div id="der-penguins-datensatz" class="section level2 hasAnchor" number="5.1">
 <h2><span class="header-section-number">5.1</span> Der PENGUINS Datensatz<a href="ein-nn-beispiel.html#der-penguins-datensatz" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Die Grundlage ist der <a href="https://allisonhorst.github.io/palmerpenguins/"><em>Pinguin Datensatz</em></a>, der eine gern genommene Grundlage für die Illustration in der Datenanalyse ist. Die Daten wurden von <a href="https://www.uaf.edu/cfos/people/faculty/detail/kristen-gorman.php">Kristen Gorman</a> erhoben und beinhalten 4 verschiedene Merkmale (engl. <em>features</em>) von einer Stichprobe von insgesamt 344<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>Pinguinen die 3 verschiedenen Spezies zugeordnet werden können oder sollen (Fachbegriff hier: <em>targets</em>). Im Beispiel werden die Klassen mit <code>0, 1, 2</code> codiert und beschreiben die Unterarten <em>Adele</em>, <em>Gentoo</em> und <em>Chinstrap</em> der Pinguine. Die Merkmale sind gemessene Länge und Höhe des Schnabels (hier <em>bill</em>), die Länge der Flosse (<em>flipper</em>) sowie das Köpergewicht<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>
+<p>Die Grundlage ist der <a href="https://allisonhorst.github.io/palmerpenguins/"><em>Pinguin Datensatz</em></a>, der eine gern genommene Grundlage für die Illustration in der Datenanalyse ist. Die Daten wurden von <a href="https://www.uaf.edu/cfos/people/faculty/detail/kristen-gorman.php">Kristen Gorman</a> erhoben und beinhalten 4 verschiedene Merkmale (engl. <em>features</em>) von einer Stichprobe von insgesamt 344<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>Pinguinen die 3 verschiedenen Spezies zugeordnet werden können oder sollen (Fachbegriff hier: <em>targets</em>). Im Beispiel werden die Klassen mit <code>0, 1, 2</code> codiert und beschreiben die Unterarten <em>Adele</em>, <em>Gentoo</em> und <em>Chinstrap</em> der Pinguine. Die Merkmale sind gemessene Länge und Höhe des Schnabels (hier <em>bill</em>), die Länge der Flosse (<em>flipper</em>) sowie das Köpergewicht <a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>
 (<em>body mass</em>).</p>
 <p>Wir stellen uns die Frage:</p>
 <blockquote>
 <p>Können wir aus den Merkmalen (<em>features</em>) die Klasse (<em>target</em>) erkennen und wie machen wir gegebenenfalls die Zuordnung?</p>
 </blockquote>
 <p>In höheren Dimensionen ist schon die graphische Darstellung der Daten ein Problem. Wir können aber alle möglichen 2er Kombinationen der Daten in 2D plots visualisieren.</p>
-<div class="figure">
-<img src="bilder/05-all-pairs.png" id="fig:05-penguin-allpairs" style="width:75.0%" alt="" />
-<p class="caption">Pinguin Datenset 2D plots</p>
+<div class="float" id="fig:05-penguin-allpairs">
+<img src="bilder/05-all-pairs.png" style="width:75.0%" alt="Pinguin Datenset 2D plots" />
+<div class="figcaption">Pinguin Datenset 2D plots</div>
 </div>
 <p>Ein Blick auf die Diagonale zeigt schon, dass manche Merkmale besser geeignet als andere sind, um die Spezies zu unterscheiden. Allerdings reichen (in dieser linearen Darstellung) zwei Merkmale nicht aus, um eine eindeutige Diskriminierung zu erreichen.</p>
 </div>
@@ -290,36 +312,36 @@ Daten</a> zum Direktdownload.</p>
 <div id="setup" class="section level3 hasAnchor" number="5.3.1">
 <h3><span class="header-section-number">5.3.1</span> Setup<a href="ein-nn-beispiel.html#setup" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Wir importieren die benötigten Module und laden die Daten.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="ein-nn-beispiel.html#cb8-1" aria-hidden="true"></a><span class="co"># import the required modules</span></span>
-<span id="cb8-2"><a href="ein-nn-beispiel.html#cb8-2" aria-hidden="true"></a><span class="im">import</span> json</span>
-<span id="cb8-3"><a href="ein-nn-beispiel.html#cb8-3" aria-hidden="true"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb8-4"><a href="ein-nn-beispiel.html#cb8-4" aria-hidden="true"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb8-5"><a href="ein-nn-beispiel.html#cb8-5" aria-hidden="true"></a><span class="im">from</span> scipy.optimize <span class="im">import</span> approx_fprime  <span class="co"># we will use this function to compute gradients</span></span>
-<span id="cb8-6"><a href="ein-nn-beispiel.html#cb8-6" aria-hidden="true"></a></span>
-<span id="cb8-7"><a href="ein-nn-beispiel.html#cb8-7" aria-hidden="true"></a><span class="co"># load the data</span></span>
-<span id="cb8-8"><a href="ein-nn-beispiel.html#cb8-8" aria-hidden="true"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;penguin-data.json&#39;</span>, <span class="st">&#39;r&#39;</span>) <span class="im">as</span> f:</span>
-<span id="cb8-9"><a href="ein-nn-beispiel.html#cb8-9" aria-hidden="true"></a>    datadict <span class="op">=</span> json.load(f)</span>
-<span id="cb8-10"><a href="ein-nn-beispiel.html#cb8-10" aria-hidden="true"></a><span class="co"># turn it into a numpy array</span></span>
-<span id="cb8-11"><a href="ein-nn-beispiel.html#cb8-11" aria-hidden="true"></a>data <span class="op">=</span> np.array(datadict[<span class="st">&#39;data&#39;</span>])</span>
-<span id="cb8-12"><a href="ein-nn-beispiel.html#cb8-12" aria-hidden="true"></a>data <span class="op">=</span> data <span class="op">-</span> data.mean(axis<span class="op">=</span><span class="dv">0</span>)  <span class="co"># center the data</span></span>
-<span id="cb8-13"><a href="ein-nn-beispiel.html#cb8-13" aria-hidden="true"></a><span class="co"># extract the labels</span></span>
-<span id="cb8-14"><a href="ein-nn-beispiel.html#cb8-14" aria-hidden="true"></a>lbls <span class="op">=</span> np.array(datadict[<span class="st">&#39;target&#39;</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="ein-nn-beispiel.html#cb8-1" tabindex="-1"></a><span class="co"># import the required modules</span></span>
+<span id="cb8-2"><a href="ein-nn-beispiel.html#cb8-2" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb8-3"><a href="ein-nn-beispiel.html#cb8-3" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb8-4"><a href="ein-nn-beispiel.html#cb8-4" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb8-5"><a href="ein-nn-beispiel.html#cb8-5" tabindex="-1"></a><span class="im">from</span> scipy.optimize <span class="im">import</span> approx_fprime  <span class="co"># we will use this function to compute gradients</span></span>
+<span id="cb8-6"><a href="ein-nn-beispiel.html#cb8-6" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="ein-nn-beispiel.html#cb8-7" tabindex="-1"></a><span class="co"># load the data</span></span>
+<span id="cb8-8"><a href="ein-nn-beispiel.html#cb8-8" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;penguin-data.json&#39;</span>, <span class="st">&#39;r&#39;</span>) <span class="im">as</span> f:</span>
+<span id="cb8-9"><a href="ein-nn-beispiel.html#cb8-9" tabindex="-1"></a>    datadict <span class="op">=</span> json.load(f)</span>
+<span id="cb8-10"><a href="ein-nn-beispiel.html#cb8-10" tabindex="-1"></a><span class="co"># turn it into a numpy array</span></span>
+<span id="cb8-11"><a href="ein-nn-beispiel.html#cb8-11" tabindex="-1"></a>data <span class="op">=</span> np.array(datadict[<span class="st">&#39;data&#39;</span>])</span>
+<span id="cb8-12"><a href="ein-nn-beispiel.html#cb8-12" tabindex="-1"></a>data <span class="op">=</span> data <span class="op">-</span> data.mean(axis<span class="op">=</span><span class="dv">0</span>)  <span class="co"># center the data</span></span>
+<span id="cb8-13"><a href="ein-nn-beispiel.html#cb8-13" tabindex="-1"></a><span class="co"># extract the labels</span></span>
+<span id="cb8-14"><a href="ein-nn-beispiel.html#cb8-14" tabindex="-1"></a>lbls <span class="op">=</span> np.array(datadict[<span class="st">&#39;target&#39;</span>])</span></code></pre></div>
 <p>In diesem Beispiel unterscheiden wir nur zwei Gruppen. Wir teilen die
 ersetzen die eigentlichen <em>labels</em> <code>[0, 1, 2]</code> durch die zwei <em>lables</em> <code>[-1, 1]</code>.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="ein-nn-beispiel.html#cb9-1" aria-hidden="true"></a><span class="co"># a dictionary that maps the labels(=targets) of the data into labels {1, -1}</span></span>
-<span id="cb9-2"><a href="ein-nn-beispiel.html#cb9-2" aria-hidden="true"></a><span class="co"># that will use for distinction of two groups</span></span>
-<span id="cb9-3"><a href="ein-nn-beispiel.html#cb9-3" aria-hidden="true"></a>mplbldict <span class="op">=</span> {<span class="dv">0</span>: np.array([<span class="dv">1</span>]),</span>
-<span id="cb9-4"><a href="ein-nn-beispiel.html#cb9-4" aria-hidden="true"></a>             <span class="dv">1</span>: np.array([<span class="dv">1</span>]),</span>
-<span id="cb9-5"><a href="ein-nn-beispiel.html#cb9-5" aria-hidden="true"></a>             <span class="dv">2</span>: np.array([<span class="op">-</span><span class="dv">1</span>])}</span>
-<span id="cb9-6"><a href="ein-nn-beispiel.html#cb9-6" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&#39;our two groups: </span><span class="ch">\n</span><span class="st">&#39;</span>, [<span class="ss">f&#39;</span><span class="sc">{</span>datadict[<span class="st">&quot;target_names&quot;</span>][lblid]<span class="sc">}</span><span class="ss"> --&gt; </span><span class="sc">{</span>mplbldict[lblid]<span class="sc">.</span>item()<span class="sc">}</span><span class="ss">&#39;</span> <span class="cf">for</span> lblid <span class="kw">in</span> [<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>]])</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="ein-nn-beispiel.html#cb9-1" tabindex="-1"></a><span class="co"># a dictionary that maps the labels(=targets) of the data into labels {1, -1}</span></span>
+<span id="cb9-2"><a href="ein-nn-beispiel.html#cb9-2" tabindex="-1"></a><span class="co"># that will use for distinction of two groups</span></span>
+<span id="cb9-3"><a href="ein-nn-beispiel.html#cb9-3" tabindex="-1"></a>mplbldict <span class="op">=</span> {<span class="dv">0</span>: np.array([<span class="dv">1</span>]),</span>
+<span id="cb9-4"><a href="ein-nn-beispiel.html#cb9-4" tabindex="-1"></a>             <span class="dv">1</span>: np.array([<span class="dv">1</span>]),</span>
+<span id="cb9-5"><a href="ein-nn-beispiel.html#cb9-5" tabindex="-1"></a>             <span class="dv">2</span>: np.array([<span class="op">-</span><span class="dv">1</span>])}</span>
+<span id="cb9-6"><a href="ein-nn-beispiel.html#cb9-6" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;our two groups: </span><span class="ch">\n</span><span class="st">&#39;</span>, [<span class="ss">f&#39;</span><span class="sc">{</span>datadict[<span class="st">&quot;target_names&quot;</span>][lblid]<span class="sc">}</span><span class="ss"> --&gt; </span><span class="sc">{</span>mplbldict[lblid]<span class="sc">.</span>item()<span class="sc">}</span><span class="ss">&#39;</span> <span class="cf">for</span> lblid <span class="kw">in</span> [<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>]])</span></code></pre></div>
 <p>Als nächstes legen wir die Dimensionen der <em>layers</em> fest und damit auch die
 Größe der Gewichtsmatrizen. Bei unserem 2-layer Netzwerk, bleibt uns
 da nur die Größe der mittleren Schicht, da die Eingangsdimension
 durch die Daten und die Ausgangsdimension durch unsere Wahl, wie wir entscheiden
 wollen, bereits festgelegt ist.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="ein-nn-beispiel.html#cb10-1" aria-hidden="true"></a><span class="co"># sizes of the layers</span></span>
-<span id="cb10-2"><a href="ein-nn-beispiel.html#cb10-2" aria-hidden="true"></a>sxz, sxo, sxt <span class="op">=</span> data.shape[<span class="dv">1</span>], <span class="dv">2</span>, mplbldict[<span class="dv">0</span>].size</span>
-<span id="cb10-3"><a href="ein-nn-beispiel.html#cb10-3" aria-hidden="true"></a><span class="co"># defines also the sizes of the weightmatrices</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="ein-nn-beispiel.html#cb10-1" tabindex="-1"></a><span class="co"># sizes of the layers</span></span>
+<span id="cb10-2"><a href="ein-nn-beispiel.html#cb10-2" tabindex="-1"></a>sxz, sxo, sxt <span class="op">=</span> data.shape[<span class="dv">1</span>], <span class="dv">2</span>, mplbldict[<span class="dv">0</span>].size</span>
+<span id="cb10-3"><a href="ein-nn-beispiel.html#cb10-3" tabindex="-1"></a><span class="co"># defines also the sizes of the weightmatrices</span></span></code></pre></div>
 <p>Zuletzt noch die Parameter, die das <em>training</em> definieren.</p>
 <ul>
 <li><code>batchsize</code> – über wieviele Samples wird der stochastische Gradient
@@ -329,58 +351,58 @@ bestimmt</li>
 </ul>
 <p>und dann wie gross der Anteil und was die Indizes der Trainings–
 beziehungsweise Testdaten sind</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="ein-nn-beispiel.html#cb11-1" aria-hidden="true"></a><span class="co"># parameters for the training -- these worked fine for me</span></span>
-<span id="cb11-2"><a href="ein-nn-beispiel.html#cb11-2" aria-hidden="true"></a>batchsize <span class="op">=</span> <span class="dv">30</span>  <span class="co"># how many samples for the stochastic gradients</span></span>
-<span id="cb11-3"><a href="ein-nn-beispiel.html#cb11-3" aria-hidden="true"></a>lr <span class="op">=</span> <span class="fl">0.125</span>  <span class="co"># learning rate</span></span>
-<span id="cb11-4"><a href="ein-nn-beispiel.html#cb11-4" aria-hidden="true"></a>epochs <span class="op">=</span> <span class="dv">1000</span>  <span class="co"># how many gradient steps</span></span>
-<span id="cb11-5"><a href="ein-nn-beispiel.html#cb11-5" aria-hidden="true"></a></span>
-<span id="cb11-6"><a href="ein-nn-beispiel.html#cb11-6" aria-hidden="true"></a><span class="co"># the data</span></span>
-<span id="cb11-7"><a href="ein-nn-beispiel.html#cb11-7" aria-hidden="true"></a>traindataratio <span class="op">=</span> <span class="fl">.9</span>     <span class="co"># the ratio of training data vs. test data</span></span>
-<span id="cb11-8"><a href="ein-nn-beispiel.html#cb11-8" aria-hidden="true"></a>ndata <span class="op">=</span> data.shape[<span class="dv">0</span>]   <span class="co"># number of datapoints                                       </span></span>
-<span id="cb11-9"><a href="ein-nn-beispiel.html#cb11-9" aria-hidden="true"></a>trnds <span class="op">=</span> <span class="bu">int</span>(ndata<span class="op">*</span>traindataratio)</span>
-<span id="cb11-10"><a href="ein-nn-beispiel.html#cb11-10" aria-hidden="true"></a>allidx <span class="op">=</span> np.arange(ndata)                                   <span class="co"># indices of all data</span></span>
-<span id="cb11-11"><a href="ein-nn-beispiel.html#cb11-11" aria-hidden="true"></a>trnidx <span class="op">=</span> np.random.choice(allidx, trnds, replace<span class="op">=</span><span class="va">False</span>)     <span class="co"># training ids</span></span>
-<span id="cb11-12"><a href="ein-nn-beispiel.html#cb11-12" aria-hidden="true"></a>tstidx <span class="op">=</span> np.setdiff1d(allidx, trnidx)                       <span class="co"># test ids</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="ein-nn-beispiel.html#cb11-1" tabindex="-1"></a><span class="co"># parameters for the training -- these worked fine for me</span></span>
+<span id="cb11-2"><a href="ein-nn-beispiel.html#cb11-2" tabindex="-1"></a>batchsize <span class="op">=</span> <span class="dv">30</span>  <span class="co"># how many samples for the stochastic gradients</span></span>
+<span id="cb11-3"><a href="ein-nn-beispiel.html#cb11-3" tabindex="-1"></a>lr <span class="op">=</span> <span class="fl">0.125</span>  <span class="co"># learning rate</span></span>
+<span id="cb11-4"><a href="ein-nn-beispiel.html#cb11-4" tabindex="-1"></a>epochs <span class="op">=</span> <span class="dv">1000</span>  <span class="co"># how many gradient steps</span></span>
+<span id="cb11-5"><a href="ein-nn-beispiel.html#cb11-5" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="ein-nn-beispiel.html#cb11-6" tabindex="-1"></a><span class="co"># the data</span></span>
+<span id="cb11-7"><a href="ein-nn-beispiel.html#cb11-7" tabindex="-1"></a>traindataratio <span class="op">=</span> <span class="fl">.9</span>     <span class="co"># the ratio of training data vs. test data</span></span>
+<span id="cb11-8"><a href="ein-nn-beispiel.html#cb11-8" tabindex="-1"></a>ndata <span class="op">=</span> data.shape[<span class="dv">0</span>]   <span class="co"># number of datapoints                                       </span></span>
+<span id="cb11-9"><a href="ein-nn-beispiel.html#cb11-9" tabindex="-1"></a>trnds <span class="op">=</span> <span class="bu">int</span>(ndata<span class="op">*</span>traindataratio)</span>
+<span id="cb11-10"><a href="ein-nn-beispiel.html#cb11-10" tabindex="-1"></a>allidx <span class="op">=</span> np.arange(ndata)                                   <span class="co"># indices of all data</span></span>
+<span id="cb11-11"><a href="ein-nn-beispiel.html#cb11-11" tabindex="-1"></a>trnidx <span class="op">=</span> np.random.choice(allidx, trnds, replace<span class="op">=</span><span class="va">False</span>)     <span class="co"># training ids</span></span>
+<span id="cb11-12"><a href="ein-nn-beispiel.html#cb11-12" tabindex="-1"></a>tstidx <span class="op">=</span> np.setdiff1d(allidx, trnidx)                       <span class="co"># test ids</span></span></code></pre></div>
 </div>
 <div id="neural-network-evaluation-setup" class="section level3 hasAnchor" number="5.3.2">
 <h3><span class="header-section-number">5.3.2</span> Neural Network Evaluation Setup<a href="ein-nn-beispiel.html#neural-network-evaluation-setup" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Hier definieren wir das Netzwerk als Funktion der Parameter und die <em>loss function</em>, die misst wie gut das Netzwerk die Daten wiedergibt und die Grundlage fuer die Optimierung ist.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="ein-nn-beispiel.html#cb12-1" aria-hidden="true"></a><span class="kw">def</span> fwdnn(xzero, Aone<span class="op">=</span><span class="va">None</span>, bone<span class="op">=</span><span class="va">None</span>, Atwo<span class="op">=</span><span class="va">None</span>, btwo<span class="op">=</span><span class="va">None</span>):</span>
-<span id="cb12-2"><a href="ein-nn-beispiel.html#cb12-2" aria-hidden="true"></a>    <span class="co">&#39;&#39;&#39; definition/(forward)evaluation of a neural networks of two layers</span></span>
-<span id="cb12-3"><a href="ein-nn-beispiel.html#cb12-3" aria-hidden="true"></a></span>
-<span id="cb12-4"><a href="ein-nn-beispiel.html#cb12-4" aria-hidden="true"></a><span class="co">    &#39;&#39;&#39;</span></span>
-<span id="cb12-5"><a href="ein-nn-beispiel.html#cb12-5" aria-hidden="true"></a>    xone <span class="op">=</span> np.tanh(Aone <span class="op">@</span> xzero <span class="op">+</span> bone)</span>
-<span id="cb12-6"><a href="ein-nn-beispiel.html#cb12-6" aria-hidden="true"></a>    xtwo <span class="op">=</span> np.tanh(Atwo <span class="op">@</span> xone <span class="op">+</span> btwo)</span>
-<span id="cb12-7"><a href="ein-nn-beispiel.html#cb12-7" aria-hidden="true"></a>    <span class="cf">return</span> xtwo</span></code></pre></div>
-<div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="ein-nn-beispiel.html#cb13-1" aria-hidden="true"></a><span class="kw">def</span> sqrdloss(weightsvector, features<span class="op">=</span><span class="va">None</span>, labels<span class="op">=</span><span class="va">None</span>):</span>
-<span id="cb13-2"><a href="ein-nn-beispiel.html#cb13-2" aria-hidden="true"></a>    <span class="co">&#39;&#39;&#39; compute the sqrd `loss`</span></span>
-<span id="cb13-3"><a href="ein-nn-beispiel.html#cb13-3" aria-hidden="true"></a></span>
-<span id="cb13-4"><a href="ein-nn-beispiel.html#cb13-4" aria-hidden="true"></a><span class="co">    || NN(x_i) - y_i ||^2</span></span>
-<span id="cb13-5"><a href="ein-nn-beispiel.html#cb13-5" aria-hidden="true"></a></span>
-<span id="cb13-6"><a href="ein-nn-beispiel.html#cb13-6" aria-hidden="true"></a><span class="co">    given the vector of weights for a given data point (features)</span></span>
-<span id="cb13-7"><a href="ein-nn-beispiel.html#cb13-7" aria-hidden="true"></a><span class="co">    and the corresponding label</span></span>
-<span id="cb13-8"><a href="ein-nn-beispiel.html#cb13-8" aria-hidden="true"></a><span class="co">    &#39;&#39;&#39;</span></span>
-<span id="cb13-9"><a href="ein-nn-beispiel.html#cb13-9" aria-hidden="true"></a></span>
-<span id="cb13-10"><a href="ein-nn-beispiel.html#cb13-10" aria-hidden="true"></a>    Aone, bone, Atwo, btwo <span class="op">=</span> wvec_to_wmats(weightsvector)</span>
-<span id="cb13-11"><a href="ein-nn-beispiel.html#cb13-11" aria-hidden="true"></a>    <span class="co"># compute the prediction</span></span>
-<span id="cb13-12"><a href="ein-nn-beispiel.html#cb13-12" aria-hidden="true"></a>    nnpred <span class="op">=</span> fwdnn(features, Aone<span class="op">=</span>Aone, bone<span class="op">=</span>bone, Atwo<span class="op">=</span>Atwo, btwo<span class="op">=</span>btwo)</span>
-<span id="cb13-13"><a href="ein-nn-beispiel.html#cb13-13" aria-hidden="true"></a>    <span class="cf">return</span> np.linalg.norm(nnpred <span class="op">-</span> labels)<span class="op">**</span><span class="dv">2</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="ein-nn-beispiel.html#cb12-1" tabindex="-1"></a><span class="kw">def</span> fwdnn(xzero, Aone<span class="op">=</span><span class="va">None</span>, bone<span class="op">=</span><span class="va">None</span>, Atwo<span class="op">=</span><span class="va">None</span>, btwo<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb12-2"><a href="ein-nn-beispiel.html#cb12-2" tabindex="-1"></a>    <span class="co">&#39;&#39;&#39; definition/(forward)evaluation of a neural networks of two layers</span></span>
+<span id="cb12-3"><a href="ein-nn-beispiel.html#cb12-3" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="ein-nn-beispiel.html#cb12-4" tabindex="-1"></a><span class="co">    &#39;&#39;&#39;</span></span>
+<span id="cb12-5"><a href="ein-nn-beispiel.html#cb12-5" tabindex="-1"></a>    xone <span class="op">=</span> np.tanh(Aone <span class="op">@</span> xzero <span class="op">+</span> bone)</span>
+<span id="cb12-6"><a href="ein-nn-beispiel.html#cb12-6" tabindex="-1"></a>    xtwo <span class="op">=</span> np.tanh(Atwo <span class="op">@</span> xone <span class="op">+</span> btwo)</span>
+<span id="cb12-7"><a href="ein-nn-beispiel.html#cb12-7" tabindex="-1"></a>    <span class="cf">return</span> xtwo</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="ein-nn-beispiel.html#cb13-1" tabindex="-1"></a><span class="kw">def</span> sqrdloss(weightsvector, features<span class="op">=</span><span class="va">None</span>, labels<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb13-2"><a href="ein-nn-beispiel.html#cb13-2" tabindex="-1"></a>    <span class="co">&#39;&#39;&#39; compute the sqrd `loss`</span></span>
+<span id="cb13-3"><a href="ein-nn-beispiel.html#cb13-3" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="ein-nn-beispiel.html#cb13-4" tabindex="-1"></a><span class="co">    || NN(x_i) - y_i ||^2</span></span>
+<span id="cb13-5"><a href="ein-nn-beispiel.html#cb13-5" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="ein-nn-beispiel.html#cb13-6" tabindex="-1"></a><span class="co">    given the vector of weights for a given data point (features)</span></span>
+<span id="cb13-7"><a href="ein-nn-beispiel.html#cb13-7" tabindex="-1"></a><span class="co">    and the corresponding label</span></span>
+<span id="cb13-8"><a href="ein-nn-beispiel.html#cb13-8" tabindex="-1"></a><span class="co">    &#39;&#39;&#39;</span></span>
+<span id="cb13-9"><a href="ein-nn-beispiel.html#cb13-9" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="ein-nn-beispiel.html#cb13-10" tabindex="-1"></a>    Aone, bone, Atwo, btwo <span class="op">=</span> wvec_to_wmats(weightsvector)</span>
+<span id="cb13-11"><a href="ein-nn-beispiel.html#cb13-11" tabindex="-1"></a>    <span class="co"># compute the prediction</span></span>
+<span id="cb13-12"><a href="ein-nn-beispiel.html#cb13-12" tabindex="-1"></a>    nnpred <span class="op">=</span> fwdnn(features, Aone<span class="op">=</span>Aone, bone<span class="op">=</span>bone, Atwo<span class="op">=</span>Atwo, btwo<span class="op">=</span>btwo)</span>
+<span id="cb13-13"><a href="ein-nn-beispiel.html#cb13-13" tabindex="-1"></a>    <span class="cf">return</span> np.linalg.norm(nnpred <span class="op">-</span> labels)<span class="op">**</span><span class="dv">2</span></span></code></pre></div>
 <p>An sich liegen die Parameter als Matrizen vor. Da jedoch die Theorie (und auch die praktische Implementierung) einen Parameter<strong>vektor</strong> voraussetzt, entrollen wir die Matrizen und stecken sie in einen grossen Vektor. Dann muessen wir noch an der richtigen Stelle wieder die Matrizen aus dem Vektor extrahieren; was die folgende Funktion realisiert.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="ein-nn-beispiel.html#cb14-1" aria-hidden="true"></a><span class="kw">def</span> wvec_to_wmats(wvec):</span>
-<span id="cb14-2"><a href="ein-nn-beispiel.html#cb14-2" aria-hidden="true"></a>    <span class="co">&#39;&#39;&#39; helper to turn the vector of weights into the system matrices</span></span>
-<span id="cb14-3"><a href="ein-nn-beispiel.html#cb14-3" aria-hidden="true"></a></span>
-<span id="cb14-4"><a href="ein-nn-beispiel.html#cb14-4" aria-hidden="true"></a><span class="co">    &#39;&#39;&#39;</span></span>
-<span id="cb14-5"><a href="ein-nn-beispiel.html#cb14-5" aria-hidden="true"></a>    Aone <span class="op">=</span> wvec[:sxz<span class="op">*</span>sxo].reshape((sxo, sxz))</span>
-<span id="cb14-6"><a href="ein-nn-beispiel.html#cb14-6" aria-hidden="true"></a>    cidx <span class="op">=</span> sxz<span class="op">*</span>sxo</span>
-<span id="cb14-7"><a href="ein-nn-beispiel.html#cb14-7" aria-hidden="true"></a>    bone <span class="op">=</span> wvec[cidx:cidx<span class="op">+</span>sxo]</span>
-<span id="cb14-8"><a href="ein-nn-beispiel.html#cb14-8" aria-hidden="true"></a>    cidx <span class="op">=</span> cidx <span class="op">+</span> sxo</span>
-<span id="cb14-9"><a href="ein-nn-beispiel.html#cb14-9" aria-hidden="true"></a>    Atwo <span class="op">=</span> wvec[cidx:cidx<span class="op">+</span>sxo<span class="op">*</span>sxt].reshape((sxt, sxo))</span>
-<span id="cb14-10"><a href="ein-nn-beispiel.html#cb14-10" aria-hidden="true"></a>    cidx <span class="op">=</span> cidx <span class="op">+</span> sxo<span class="op">*</span>sxt</span>
-<span id="cb14-11"><a href="ein-nn-beispiel.html#cb14-11" aria-hidden="true"></a>    btwo <span class="op">=</span> wvec[cidx:]</span>
-<span id="cb14-12"><a href="ein-nn-beispiel.html#cb14-12" aria-hidden="true"></a>    <span class="cf">if</span> Aone.size <span class="op">+</span> bone.size <span class="op">+</span> Atwo.size <span class="op">+</span> btwo.size <span class="op">==</span> wvec.size:</span>
-<span id="cb14-13"><a href="ein-nn-beispiel.html#cb14-13" aria-hidden="true"></a>        <span class="cf">return</span> Aone, bone, Atwo, btwo</span>
-<span id="cb14-14"><a href="ein-nn-beispiel.html#cb14-14" aria-hidden="true"></a>    <span class="cf">else</span>:</span>
-<span id="cb14-15"><a href="ein-nn-beispiel.html#cb14-15" aria-hidden="true"></a>        <span class="cf">raise</span> <span class="pp">UserWarning</span>(<span class="st">&#39;mismatch weightsvector/matrices&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="ein-nn-beispiel.html#cb14-1" tabindex="-1"></a><span class="kw">def</span> wvec_to_wmats(wvec):</span>
+<span id="cb14-2"><a href="ein-nn-beispiel.html#cb14-2" tabindex="-1"></a>    <span class="co">&#39;&#39;&#39; helper to turn the vector of weights into the system matrices</span></span>
+<span id="cb14-3"><a href="ein-nn-beispiel.html#cb14-3" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="ein-nn-beispiel.html#cb14-4" tabindex="-1"></a><span class="co">    &#39;&#39;&#39;</span></span>
+<span id="cb14-5"><a href="ein-nn-beispiel.html#cb14-5" tabindex="-1"></a>    Aone <span class="op">=</span> wvec[:sxz<span class="op">*</span>sxo].reshape((sxo, sxz))</span>
+<span id="cb14-6"><a href="ein-nn-beispiel.html#cb14-6" tabindex="-1"></a>    cidx <span class="op">=</span> sxz<span class="op">*</span>sxo</span>
+<span id="cb14-7"><a href="ein-nn-beispiel.html#cb14-7" tabindex="-1"></a>    bone <span class="op">=</span> wvec[cidx:cidx<span class="op">+</span>sxo]</span>
+<span id="cb14-8"><a href="ein-nn-beispiel.html#cb14-8" tabindex="-1"></a>    cidx <span class="op">=</span> cidx <span class="op">+</span> sxo</span>
+<span id="cb14-9"><a href="ein-nn-beispiel.html#cb14-9" tabindex="-1"></a>    Atwo <span class="op">=</span> wvec[cidx:cidx<span class="op">+</span>sxo<span class="op">*</span>sxt].reshape((sxt, sxo))</span>
+<span id="cb14-10"><a href="ein-nn-beispiel.html#cb14-10" tabindex="-1"></a>    cidx <span class="op">=</span> cidx <span class="op">+</span> sxo<span class="op">*</span>sxt</span>
+<span id="cb14-11"><a href="ein-nn-beispiel.html#cb14-11" tabindex="-1"></a>    btwo <span class="op">=</span> wvec[cidx:]</span>
+<span id="cb14-12"><a href="ein-nn-beispiel.html#cb14-12" tabindex="-1"></a>    <span class="cf">if</span> Aone.size <span class="op">+</span> bone.size <span class="op">+</span> Atwo.size <span class="op">+</span> btwo.size <span class="op">==</span> wvec.size:</span>
+<span id="cb14-13"><a href="ein-nn-beispiel.html#cb14-13" tabindex="-1"></a>        <span class="cf">return</span> Aone, bone, Atwo, btwo</span>
+<span id="cb14-14"><a href="ein-nn-beispiel.html#cb14-14" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb14-15"><a href="ein-nn-beispiel.html#cb14-15" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">UserWarning</span>(<span class="st">&#39;mismatch weightsvector/matrices&#39;</span>)</span></code></pre></div>
 </div>
 <div id="das-training" class="section level3 hasAnchor" number="5.3.3">
 <h3><span class="header-section-number">5.3.3</span> Das Training<a href="ein-nn-beispiel.html#das-training" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -389,63 +411,63 @@ beziehungsweise Testdaten sind</p>
 Gradienten numerisch zu bestimmen. Das ist hochgradig ineffizient. “Richtige”
 Implementierungen von <em>Machine Learning</em> Bibliotheken benutzen anstelle
 <em>Automatisches Differenzieren</em> für eine sowohl schnelle und als auch akkurate Berechnung des Gradienten.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="ein-nn-beispiel.html#cb15-1" aria-hidden="true"></a><span class="co"># initialization of the weights</span></span>
-<span id="cb15-2"><a href="ein-nn-beispiel.html#cb15-2" aria-hidden="true"></a>wini <span class="op">=</span> np.random.randn(sxo<span class="op">*</span>sxz <span class="op">+</span> sxo <span class="op">+</span> sxt<span class="op">*</span>sxo <span class="op">+</span> sxt)</span>
-<span id="cb15-3"><a href="ein-nn-beispiel.html#cb15-3" aria-hidden="true"></a>gradnrml <span class="op">=</span> []  <span class="co"># list of norm of grads for plotting later</span></span>
-<span id="cb15-4"><a href="ein-nn-beispiel.html#cb15-4" aria-hidden="true"></a></span>
-<span id="cb15-5"><a href="ein-nn-beispiel.html#cb15-5" aria-hidden="true"></a>cwghts <span class="op">=</span> wini  <span class="co"># the current state of the weight vector</span></span>
-<span id="cb15-6"><a href="ein-nn-beispiel.html#cb15-6" aria-hidden="true"></a><span class="cf">for</span> kkk <span class="kw">in</span> <span class="bu">range</span>(epochs):</span>
-<span id="cb15-7"><a href="ein-nn-beispiel.html#cb15-7" aria-hidden="true"></a>    cids <span class="op">=</span> np.random.choice(trnidx, batchsize, replace<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb15-8"><a href="ein-nn-beispiel.html#cb15-8" aria-hidden="true"></a>    cgrad <span class="op">=</span> np.zeros(wini.shape)</span>
-<span id="cb15-9"><a href="ein-nn-beispiel.html#cb15-9" aria-hidden="true"></a>    <span class="cf">for</span> cid <span class="kw">in</span> cids:</span>
-<span id="cb15-10"><a href="ein-nn-beispiel.html#cb15-10" aria-hidden="true"></a>        itrgts <span class="op">=</span> data[cid, :]</span>
-<span id="cb15-11"><a href="ein-nn-beispiel.html#cb15-11" aria-hidden="true"></a>        ilabls <span class="op">=</span> mplbldict[lbls[cid]]</span>
-<span id="cb15-12"><a href="ein-nn-beispiel.html#cb15-12" aria-hidden="true"></a>        cgrad <span class="op">=</span> cgrad <span class="op">+</span> approx_fprime(cwghts, sqrdloss, <span class="fl">1e-8</span>,</span>
-<span id="cb15-13"><a href="ein-nn-beispiel.html#cb15-13" aria-hidden="true"></a>                                      itrgts, ilabls)</span>
-<span id="cb15-14"><a href="ein-nn-beispiel.html#cb15-14" aria-hidden="true"></a>    cwghts <span class="op">=</span> cwghts <span class="op">-</span> lr<span class="op">*</span><span class="dv">1</span><span class="op">/</span>batchsize<span class="op">*</span>cgrad  <span class="co"># the upgrade</span></span>
-<span id="cb15-15"><a href="ein-nn-beispiel.html#cb15-15" aria-hidden="true"></a>    gradnrml.append(<span class="dv">1</span><span class="op">/</span>batchsize<span class="op">*</span>np.linalg.norm(cgrad))</span>
-<span id="cb15-16"><a href="ein-nn-beispiel.html#cb15-16" aria-hidden="true"></a>    <span class="cf">if</span> np.mod(kkk, <span class="dv">50</span>) <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb15-17"><a href="ein-nn-beispiel.html#cb15-17" aria-hidden="true"></a>        <span class="bu">print</span>(<span class="ss">f&#39;k=</span><span class="sc">{</span>kkk<span class="sc">}</span><span class="ss">: norm of gradient: </span><span class="sc">{np.</span>linalg<span class="sc">.</span>norm(cgrad)<span class="sc">}</span><span class="ss">&#39;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb16"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="ein-nn-beispiel.html#cb16-1" aria-hidden="true"></a>plt.figure()</span>
-<span id="cb16-2"><a href="ein-nn-beispiel.html#cb16-2" aria-hidden="true"></a>plt.semilogy(gradnrml, label<span class="op">=</span><span class="st">&#39;norm of gradient estimate&#39;</span>)</span>
-<span id="cb16-3"><a href="ein-nn-beispiel.html#cb16-3" aria-hidden="true"></a>plt.xlabel(<span class="st">&#39;$k$-th stochastic gradient step&#39;</span>)</span>
-<span id="cb16-4"><a href="ein-nn-beispiel.html#cb16-4" aria-hidden="true"></a>plt.legend()</span>
-<span id="cb16-5"><a href="ein-nn-beispiel.html#cb16-5" aria-hidden="true"></a>plt.show()</span></code></pre></div>
-<div class="figure">
-<img src="bilder/051_nnpeng_conv.png" alt="" />
-<p class="caption">Beispiel Konvergenz des Stochastischen Gradienten</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="ein-nn-beispiel.html#cb15-1" tabindex="-1"></a><span class="co"># initialization of the weights</span></span>
+<span id="cb15-2"><a href="ein-nn-beispiel.html#cb15-2" tabindex="-1"></a>wini <span class="op">=</span> np.random.randn(sxo<span class="op">*</span>sxz <span class="op">+</span> sxo <span class="op">+</span> sxt<span class="op">*</span>sxo <span class="op">+</span> sxt)</span>
+<span id="cb15-3"><a href="ein-nn-beispiel.html#cb15-3" tabindex="-1"></a>gradnrml <span class="op">=</span> []  <span class="co"># list of norm of grads for plotting later</span></span>
+<span id="cb15-4"><a href="ein-nn-beispiel.html#cb15-4" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="ein-nn-beispiel.html#cb15-5" tabindex="-1"></a>cwghts <span class="op">=</span> wini  <span class="co"># the current state of the weight vector</span></span>
+<span id="cb15-6"><a href="ein-nn-beispiel.html#cb15-6" tabindex="-1"></a><span class="cf">for</span> kkk <span class="kw">in</span> <span class="bu">range</span>(epochs):</span>
+<span id="cb15-7"><a href="ein-nn-beispiel.html#cb15-7" tabindex="-1"></a>    cids <span class="op">=</span> np.random.choice(trnidx, batchsize, replace<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb15-8"><a href="ein-nn-beispiel.html#cb15-8" tabindex="-1"></a>    cgrad <span class="op">=</span> np.zeros(wini.shape)</span>
+<span id="cb15-9"><a href="ein-nn-beispiel.html#cb15-9" tabindex="-1"></a>    <span class="cf">for</span> cid <span class="kw">in</span> cids:</span>
+<span id="cb15-10"><a href="ein-nn-beispiel.html#cb15-10" tabindex="-1"></a>        itrgts <span class="op">=</span> data[cid, :]</span>
+<span id="cb15-11"><a href="ein-nn-beispiel.html#cb15-11" tabindex="-1"></a>        ilabls <span class="op">=</span> mplbldict[lbls[cid]]</span>
+<span id="cb15-12"><a href="ein-nn-beispiel.html#cb15-12" tabindex="-1"></a>        cgrad <span class="op">=</span> cgrad <span class="op">+</span> approx_fprime(cwghts, sqrdloss, <span class="fl">1e-8</span>,</span>
+<span id="cb15-13"><a href="ein-nn-beispiel.html#cb15-13" tabindex="-1"></a>                                      itrgts, ilabls)</span>
+<span id="cb15-14"><a href="ein-nn-beispiel.html#cb15-14" tabindex="-1"></a>    cwghts <span class="op">=</span> cwghts <span class="op">-</span> lr<span class="op">*</span><span class="dv">1</span><span class="op">/</span>batchsize<span class="op">*</span>cgrad  <span class="co"># the upgrade</span></span>
+<span id="cb15-15"><a href="ein-nn-beispiel.html#cb15-15" tabindex="-1"></a>    gradnrml.append(<span class="dv">1</span><span class="op">/</span>batchsize<span class="op">*</span>np.linalg.norm(cgrad))</span>
+<span id="cb15-16"><a href="ein-nn-beispiel.html#cb15-16" tabindex="-1"></a>    <span class="cf">if</span> np.mod(kkk, <span class="dv">50</span>) <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb15-17"><a href="ein-nn-beispiel.html#cb15-17" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f&#39;k=</span><span class="sc">{</span>kkk<span class="sc">}</span><span class="ss">: norm of gradient: </span><span class="sc">{</span>np<span class="sc">.</span>linalg<span class="sc">.</span>norm(cgrad)<span class="sc">}</span><span class="ss">&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="ein-nn-beispiel.html#cb16-1" tabindex="-1"></a>plt.figure()</span>
+<span id="cb16-2"><a href="ein-nn-beispiel.html#cb16-2" tabindex="-1"></a>plt.semilogy(gradnrml, label<span class="op">=</span><span class="st">&#39;norm of gradient estimate&#39;</span>)</span>
+<span id="cb16-3"><a href="ein-nn-beispiel.html#cb16-3" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;$k$-th stochastic gradient step&#39;</span>)</span>
+<span id="cb16-4"><a href="ein-nn-beispiel.html#cb16-4" tabindex="-1"></a>plt.legend()</span>
+<span id="cb16-5"><a href="ein-nn-beispiel.html#cb16-5" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<div class="float">
+<img src="bilder/051_nnpeng_conv.png" alt="Beispiel Konvergenz des Stochastischen Gradienten" />
+<div class="figcaption">Beispiel Konvergenz des Stochastischen Gradienten</div>
 </div>
 <p>Wir koennen eine gewisse Konvergenz beobachten (sichtbar an der unteren Kante) aber auch ein typisches stochastisches Verhalten.</p>
 </div>
 <div id="das-auswerten" class="section level3 hasAnchor" number="5.3.4">
 <h3><span class="header-section-number">5.3.4</span> Das Auswerten<a href="ein-nn-beispiel.html#das-auswerten" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Wir nehmen das Ergebnis der letzten Iteration als <em>beste Parameter</em>, definieren damit das Neuronale Netz, und testen auf den übriggebliebenen Daten das Ergebnis.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="ein-nn-beispiel.html#cb17-1" aria-hidden="true"></a>optwghts <span class="op">=</span> cwghts  <span class="co"># the optimal weights</span></span>
-<span id="cb17-2"><a href="ein-nn-beispiel.html#cb17-2" aria-hidden="true"></a>Aonex, bonex, Atwox, btwox <span class="op">=</span> wvec_to_wmats(optwghts)</span></code></pre></div>
-<div class="sourceCode" id="cb18"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="ein-nn-beispiel.html#cb18-1" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&#39;***** testing the classification *****&#39;</span>)</span>
-<span id="cb18-2"><a href="ein-nn-beispiel.html#cb18-2" aria-hidden="true"></a>faillst <span class="op">=</span> []</span>
-<span id="cb18-3"><a href="ein-nn-beispiel.html#cb18-3" aria-hidden="true"></a><span class="cf">for</span> cti <span class="kw">in</span> tstidx:  <span class="co"># iteration over the test data points</span></span>
-<span id="cb18-4"><a href="ein-nn-beispiel.html#cb18-4" aria-hidden="true"></a>    itrgt <span class="op">=</span> data[cti, :]</span>
-<span id="cb18-5"><a href="ein-nn-beispiel.html#cb18-5" aria-hidden="true"></a>    ilbl <span class="op">=</span> mplbldict[lbls[cti]]</span>
-<span id="cb18-6"><a href="ein-nn-beispiel.html#cb18-6" aria-hidden="true"></a>    <span class="co"># the prediction of the neural network</span></span>
-<span id="cb18-7"><a href="ein-nn-beispiel.html#cb18-7" aria-hidden="true"></a>    nnlbl <span class="op">=</span> fwdnn(itrgt, Aone<span class="op">=</span>Aonex, bone<span class="op">=</span>bonex, Atwo<span class="op">=</span>Atwox, btwo<span class="op">=</span>btwox)</span>
-<span id="cb18-8"><a href="ein-nn-beispiel.html#cb18-8" aria-hidden="true"></a>    sccs <span class="op">=</span> np.sign(ilbl) <span class="op">==</span> np.sign(nnlbl)</span>
-<span id="cb18-9"><a href="ein-nn-beispiel.html#cb18-9" aria-hidden="true"></a>    <span class="bu">print</span>(<span class="ss">f&#39;label: </span><span class="sc">{</span>ilbl<span class="sc">.</span>item()<span class="sc">}</span><span class="ss"> -- nn: </span><span class="sc">{</span>nnlbl<span class="sc">.</span>item()<span class="sc">:.4f}</span><span class="ss"> -- success: </span><span class="sc">{</span>sccs<span class="sc">}</span><span class="ss">&#39;</span>)</span>
-<span id="cb18-10"><a href="ein-nn-beispiel.html#cb18-10" aria-hidden="true"></a>    <span class="cf">if</span> <span class="kw">not</span> sccs:</span>
-<span id="cb18-11"><a href="ein-nn-beispiel.html#cb18-11" aria-hidden="true"></a>        faillst.append((cti, ilbl.item(), nnlbl.item(),</span>
-<span id="cb18-12"><a href="ein-nn-beispiel.html#cb18-12" aria-hidden="true"></a>                        datadict[<span class="st">&#39;target_names&#39;</span>][lbls[cti]]))</span>
-<span id="cb18-13"><a href="ein-nn-beispiel.html#cb18-13" aria-hidden="true"></a>    <span class="cf">else</span>:</span>
-<span id="cb18-14"><a href="ein-nn-beispiel.html#cb18-14" aria-hidden="true"></a>        <span class="cf">pass</span></span></code></pre></div>
-<div class="sourceCode" id="cb19"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb19-1"><a href="ein-nn-beispiel.html#cb19-1" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&#39;</span><span class="ch">\n</span><span class="st">***** Results *****&#39;</span>)</span>
-<span id="cb19-2"><a href="ein-nn-beispiel.html#cb19-2" aria-hidden="true"></a><span class="bu">print</span>(<span class="ss">f&#39;</span><span class="sc">{</span><span class="dv">100</span><span class="op">-</span><span class="bu">len</span>(faillst)<span class="op">/</span>tstidx<span class="sc">.</span>size<span class="op">*</span><span class="dv">100</span><span class="sc">:.0f}</span><span class="ss">% was classified correctly&#39;</span>)</span>
-<span id="cb19-3"><a href="ein-nn-beispiel.html#cb19-3" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&#39;***** Misses *****&#39;</span>)</span>
-<span id="cb19-4"><a href="ein-nn-beispiel.html#cb19-4" aria-hidden="true"></a><span class="cf">if</span> <span class="bu">len</span>(faillst) <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb19-5"><a href="ein-nn-beispiel.html#cb19-5" aria-hidden="true"></a>    <span class="bu">print</span>(<span class="st">&#39;None&#39;</span>)</span>
-<span id="cb19-6"><a href="ein-nn-beispiel.html#cb19-6" aria-hidden="true"></a><span class="cf">else</span>:</span>
-<span id="cb19-7"><a href="ein-nn-beispiel.html#cb19-7" aria-hidden="true"></a>    <span class="cf">for</span> cfl <span class="kw">in</span> faillst:</span>
-<span id="cb19-8"><a href="ein-nn-beispiel.html#cb19-8" aria-hidden="true"></a>        cid, lbl, nnlbl, name <span class="op">=</span> cfl</span>
-<span id="cb19-9"><a href="ein-nn-beispiel.html#cb19-9" aria-hidden="true"></a>        <span class="bu">print</span>(<span class="ss">f&#39;ID: </span><span class="sc">{</span>cid<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> pinguin) was missclassified &#39;</span> <span class="op">+</span></span>
-<span id="cb19-10"><a href="ein-nn-beispiel.html#cb19-10" aria-hidden="true"></a>              <span class="ss">f&#39;with score </span><span class="sc">{</span>nnlbl<span class="sc">:.4f}</span><span class="ss"> vs. </span><span class="sc">{</span>lbl<span class="sc">}</span><span class="ss">&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="ein-nn-beispiel.html#cb17-1" tabindex="-1"></a>optwghts <span class="op">=</span> cwghts  <span class="co"># the optimal weights</span></span>
+<span id="cb17-2"><a href="ein-nn-beispiel.html#cb17-2" tabindex="-1"></a>Aonex, bonex, Atwox, btwox <span class="op">=</span> wvec_to_wmats(optwghts)</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="ein-nn-beispiel.html#cb18-1" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;***** testing the classification *****&#39;</span>)</span>
+<span id="cb18-2"><a href="ein-nn-beispiel.html#cb18-2" tabindex="-1"></a>faillst <span class="op">=</span> []</span>
+<span id="cb18-3"><a href="ein-nn-beispiel.html#cb18-3" tabindex="-1"></a><span class="cf">for</span> cti <span class="kw">in</span> tstidx:  <span class="co"># iteration over the test data points</span></span>
+<span id="cb18-4"><a href="ein-nn-beispiel.html#cb18-4" tabindex="-1"></a>    itrgt <span class="op">=</span> data[cti, :]</span>
+<span id="cb18-5"><a href="ein-nn-beispiel.html#cb18-5" tabindex="-1"></a>    ilbl <span class="op">=</span> mplbldict[lbls[cti]]</span>
+<span id="cb18-6"><a href="ein-nn-beispiel.html#cb18-6" tabindex="-1"></a>    <span class="co"># the prediction of the neural network</span></span>
+<span id="cb18-7"><a href="ein-nn-beispiel.html#cb18-7" tabindex="-1"></a>    nnlbl <span class="op">=</span> fwdnn(itrgt, Aone<span class="op">=</span>Aonex, bone<span class="op">=</span>bonex, Atwo<span class="op">=</span>Atwox, btwo<span class="op">=</span>btwox)</span>
+<span id="cb18-8"><a href="ein-nn-beispiel.html#cb18-8" tabindex="-1"></a>    sccs <span class="op">=</span> np.sign(ilbl) <span class="op">==</span> np.sign(nnlbl)</span>
+<span id="cb18-9"><a href="ein-nn-beispiel.html#cb18-9" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&#39;label: </span><span class="sc">{</span>ilbl<span class="sc">.</span>item()<span class="sc">}</span><span class="ss"> -- nn: </span><span class="sc">{</span>nnlbl<span class="sc">.</span>item()<span class="sc">:.4f}</span><span class="ss"> -- success: </span><span class="sc">{</span>sccs<span class="sc">}</span><span class="ss">&#39;</span>)</span>
+<span id="cb18-10"><a href="ein-nn-beispiel.html#cb18-10" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> sccs:</span>
+<span id="cb18-11"><a href="ein-nn-beispiel.html#cb18-11" tabindex="-1"></a>        faillst.append((cti, ilbl.item(), nnlbl.item(),</span>
+<span id="cb18-12"><a href="ein-nn-beispiel.html#cb18-12" tabindex="-1"></a>                        datadict[<span class="st">&#39;target_names&#39;</span>][lbls[cti]]))</span>
+<span id="cb18-13"><a href="ein-nn-beispiel.html#cb18-13" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb18-14"><a href="ein-nn-beispiel.html#cb18-14" tabindex="-1"></a>        <span class="cf">pass</span></span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb19-1"><a href="ein-nn-beispiel.html#cb19-1" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;</span><span class="ch">\n</span><span class="st">***** Results *****&#39;</span>)</span>
+<span id="cb19-2"><a href="ein-nn-beispiel.html#cb19-2" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&#39;</span><span class="sc">{</span><span class="dv">100</span><span class="op">-</span><span class="bu">len</span>(faillst)<span class="op">/</span>tstidx<span class="sc">.</span>size<span class="op">*</span><span class="dv">100</span><span class="sc">:.0f}</span><span class="ss">% was classified correctly&#39;</span>)</span>
+<span id="cb19-3"><a href="ein-nn-beispiel.html#cb19-3" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;***** Misses *****&#39;</span>)</span>
+<span id="cb19-4"><a href="ein-nn-beispiel.html#cb19-4" tabindex="-1"></a><span class="cf">if</span> <span class="bu">len</span>(faillst) <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb19-5"><a href="ein-nn-beispiel.html#cb19-5" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&#39;None&#39;</span>)</span>
+<span id="cb19-6"><a href="ein-nn-beispiel.html#cb19-6" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb19-7"><a href="ein-nn-beispiel.html#cb19-7" tabindex="-1"></a>    <span class="cf">for</span> cfl <span class="kw">in</span> faillst:</span>
+<span id="cb19-8"><a href="ein-nn-beispiel.html#cb19-8" tabindex="-1"></a>        cid, lbl, nnlbl, name <span class="op">=</span> cfl</span>
+<span id="cb19-9"><a href="ein-nn-beispiel.html#cb19-9" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f&#39;ID: </span><span class="sc">{</span>cid<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> pinguin) was missclassified &#39;</span> <span class="op">+</span></span>
+<span id="cb19-10"><a href="ein-nn-beispiel.html#cb19-10" tabindex="-1"></a>              <span class="ss">f&#39;with score </span><span class="sc">{</span>nnlbl<span class="sc">:.4f}</span><span class="ss"> vs. </span><span class="sc">{</span>lbl<span class="sc">}</span><span class="ss">&#39;</span>)</span></code></pre></div>
 
 </div>
 </div>

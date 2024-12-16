@@ -210,7 +210,7 @@ x_c \\ y_c
 
 Wir wollen nun also $b_1\in \mathbb R^{2}$, mit $\|b_1\|=1$ so w&auml;hlen, dass 
 \begin{equation*}
-s_1^2 = \frac{1}{N-1}\sum_{i=1}^n \alpha_{i1}^2
+s_1^2 = \frac{1}{N-1}\sum_{i=1}^N \alpha_{i1}^2
 \end{equation*}
 maximal wird. Mit der Matrix $\mathbf X$ aller Daten
 \begin{equation*}
@@ -224,9 +224,9 @@ x_1 & y_1 \\ x_2 & y_2 \\ \vdots & \vdots \\ x_N & y_N
 \end{equation*}
 k&ouml;nnen wir die Varianz in $b_1$-Richtung kompakt schreiben als
 \begin{equation*}
-s_1^2 = \frac{1}{N-1}\sum_{i=1}^n \alpha_{i1}^2
-= \frac{1}{N-1}\sum_{i=1}^n (b_1^T\mathbf x_i)^2
-= \frac{1}{N-1}\sum_{i=1}^n (\mathbf x_i^Tb_1)^2
+s_1^2 = \frac{1}{N-1}\sum_{i=1}^N \alpha_{i1}^2
+= \frac{1}{N-1}\sum_{i=1}^N (b_1^T\mathbf x_i)^2
+= \frac{1}{N-1}\sum_{i=1}^N (\mathbf x_i^Tb_1)^2
 = \frac{1}{N-1}\| \mathbf X b_1 \|^2
 \end{equation*}
 Wir sind also ein weiteres mal bei einem Optimierungsproblem (diesmal mit Nebenbedingung) angelangt:

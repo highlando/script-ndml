@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>11 Implementierungen, Anwendungsbeispiele, Backpropagation | Numerik des Maschinellen Lernens</title>
   <meta name="description" content="Vorlesungsnotizen zu meiner integrierten Vorlesung im SoSe 2024" />
-  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
 
   <meta property="og:title" content="11 Implementierungen, Anwendungsbeispiele, Backpropagation | Numerik des Maschinellen Lernens" />
   <meta property="og:type" content="book" />
@@ -48,7 +48,6 @@
 
 
 
-<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
@@ -56,8 +55,9 @@
 
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
@@ -91,7 +91,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -104,7 +104,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -121,6 +121,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <style type="text/css">
   
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -258,8 +280,8 @@ Objekt) über die Lösung der adjungierten Gleichung
 <span class="math display">\[\begin{equation*}
 -\dot p(t) = A^T p(t) + x(t)-x^*, \quad p(T) = 0
 \end{equation*}\]</span>
-definiert ist (siehe beispielsweise <span class="citation">(Kurdila and Zabarankin <a href="#ref-KurZ05" role="doc-biblioref">2005</a>, Theorem 5.5.1)</span> für ein
-abstraktes Resultat und bspw. <span class="citation">(Tröltzsch <a href="#ref-Tr09" role="doc-biblioref">2009</a>, Abschnitt 5.9.1)</span> für eine
+definiert ist (siehe beispielsweise <span class="citation">(<a href="#ref-KurZ05">Kurdila and Zabarankin 2005</a>, Theorem 5.5.1)</span> für ein
+abstraktes Resultat und bspw. <span class="citation">(<a href="#ref-Tr09">Tröltzsch 2009</a>, Abschnitt 5.9.1)</span> für eine
 Umsetzung in einem Gradientenabstiegsverfahren mit PDEs).</p>
 <p>Während diese Resultate in der Theorie die Wohlgestelltheit der
 Optimierungsprobleme helfen zu analysieren, werden Sie in der Praxis gerne
@@ -323,10 +345,10 @@ Für das <em>learning</em> wird zu Datenpunkten <span class="math inline">\((x, 
 <span class="math display">\[\begin{equation*}
 (A_1, A_2) \to l((x,y); A_1, A_2) = \|y-s(x)\|_2^2
 \end{equation*}\]</span>
-bezüglich des Parameter“vektors” <span class="math inline">\(p=(A_2, A_1)\)</span> gesucht.</p>
+bezüglich des Parameter”vektors” <span class="math inline">\(p=(A_2, A_1)\)</span> gesucht.</p>
 <p>Eine erste Anwendung der Kettenregel ergibt
 <span class="math display">\[\begin{equation*}
-\partial_p l((x,y); p) = -2\bigl \langle y-s(x;p), \, \partial_p s(x;p)\bigr\rangle 
+\partial_p l((x,y); p) = -2\bigl \langle y-s(x;p), \, \partial_p s(x;p)\bigr\rangle
 \end{equation*}\]</span>
 sodass wir uns erstmal um die Ableitung von <span class="math inline">\(s\)</span> bezüglich <span class="math inline">\(p\)</span> kümmern
 können.</p>
@@ -506,12 +528,12 @@ mit <span class="math inline">\(\sigma = \tanh\)</span> an der Stelle
 </div>
 </div>
 <h3>Referenzen<a href="referenzen.html#referenzen" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div id="refs" class="references">
-<div id="ref-KurZ05">
-<p> Kurdila, A.J., Zabarankin, M.: Convex functional analysis. Birkhäuser (2005)</p>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-KurZ05" class="csl-entry">
+Kurdila, A.J., Zabarankin, M.: Convex functional analysis. <span>Birkhäuser</span> (2005)
 </div>
-<div id="ref-Tr09">
-<p> Tröltzsch, F.: Optimale steuerung partieller differentialgleichungen. Vieweg+Teubner, Wiesbaden, Germany (2009)</p>
+<div id="ref-Tr09" class="csl-entry">
+Tröltzsch, F.: Optimale steuerung partieller differentialgleichungen. Vieweg+Teubner, Wiesbaden, Germany (2009)
 </div>
 </div>
             </section>

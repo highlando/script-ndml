@@ -1,21 +1,24 @@
 % Options for packages loaded elsewhere
 \PassOptionsToPackage{unicode}{hyperref}
 \PassOptionsToPackage{hyphens}{url}
-\PassOptionsToPackage{dvipsnames,svgnames*,x11names*}{xcolor}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
 %
 \documentclass[
 ]{book}
-\usepackage{lmodern}
-\usepackage{amssymb,amsmath}
-\usepackage{ifxetex,ifluatex}
-\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
   \usepackage{textcomp} % provide euro and other symbols
 \else % if luatex or xetex
-  \usepackage{unicode-math}
+  \usepackage{unicode-math} % this also loads fontspec
   \defaultfontfeatures{Scale=MatchLowercase}
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -34,18 +37,6 @@
   \KOMAoptions{parskip=half}}
 \makeatother
 \usepackage{xcolor}
-\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
-\hypersetup{
-  pdftitle={Numerik des Maschinellen Lernens},
-  pdfauthor={Jan Heiland},
-  colorlinks=true,
-  linkcolor=Maroon,
-  filecolor=Maroon,
-  citecolor=Blue,
-  urlcolor=purple,
-  pdfcreator={LaTeX via pandoc}}
-\urlstyle{same} % disable monospaced font for URLs
 \usepackage{color}
 \usepackage{fancyvrb}
 \newcommand{\VerbBar}{|}
@@ -57,13 +48,13 @@
 \newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
 \newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
 \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
 \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
 \newcommand{\BuiltInTok}[1]{#1}
 \newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
 \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
 \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
 \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
 \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
@@ -71,7 +62,7 @@
 \newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
 \newcommand{\ExtensionTok}[1]{#1}
 \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
 \newcommand{\ImportTok}[1]{#1}
 \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
@@ -80,13 +71,14 @@
 \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
 \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
 \newcommand{\RegionMarkerTok}[1]{#1}
-\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
 \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\usepackage{longtable,booktabs}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
 \usepackage{etoolbox}
 \makeatletter
@@ -112,14 +104,47 @@
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{5}
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newlength{\cslentryspacingunit} % times entry-spacing
+\setlength{\cslentryspacingunit}{\parskip}
+\newenvironment{CSLReferences}[2] % #1 hanging-ident, #2 entry spacing
+ {% don't indent paragraphs
+  \setlength{\parindent}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+  \let\oldpar\par
+  \def\par{\hangindent=\cslhangindent\oldpar}
+  \fi
+  % set entry spacing
+  \setlength{\parskip}{#2\cslentryspacingunit}
+ }%
+ {}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{#1\hfill\break}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 \usepackage{xcolor}
 \definecolor{jhsc}{HTML}{1f57c7}
 \newenvironment {JHSAYS} [0] {\begin{quote}\color{jhsc}} {\end{quote}}
-\newlength{\cslhangindent}
-\setlength{\cslhangindent}{1.5em}
-\newenvironment{cslreferences}%
-  {}%
-  {\par}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Numerik des Maschinellen Lernens},
+  pdfauthor={Jan Heiland},
+  colorlinks=true,
+  linkcolor={Maroon},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={purple},
+  pdfcreator={LaTeX via pandoc}}
 
 \title{Numerik des Maschinellen Lernens}
 \author{Jan Heiland}
@@ -193,7 +218,7 @@ Interessanterweise ist der Begriff \emph{Algorithmus} zugleich intuitiv und abst
 
 Diese Definition ist in ihrer Allgemeinheit nicht allzu hilfreich - wir haben noch nicht einmal definiert, was eine Turing-Maschine ist.
 
-\leavevmode\hypertarget{rem-turing-machine}{}%
+\leavevmode\vadjust pre{\hypertarget{rem-turing-machine}{}}%
 \begin{JHSAYS}
 Eine \emph{Turing-Maschine} kann als eine Maschine beschrieben werden, die ein Band von Anweisungen liest und auf dieses Band schreiben kann. Abhängig davon, was sie liest, kann sie vorwärts bewegen, rückwärts bewegen oder anhalten (wenn das Band einen vordefinierten Zustand erreicht hat). Das Schöne daran ist, dass dieses Setup in einen vollständig mathematischen Rahmen gestellt werden kann.
 
@@ -223,7 +248,7 @@ Somit könnte eine informelle, gute Praxisdefinition eines Algorithmus sein
 \protect\hypertarget{def:info-algorithm}{}\label{def:info-algorithm}Ein Verfahren aus endlich vielen Anweisungen wird als \emph{Algorithmus} bezeichnet, wenn es eine bestimmte Lösung -- falls sie existiert -- zu einem Problem in endlich vielen Schritten berechnet.
 \end{definition}
 
-\leavevmode\hypertarget{rem-algo-annahmen}{}%
+\leavevmode\vadjust pre{\hypertarget{rem-algo-annahmen}{}}%
 \begin{JHSAYS}
 Beachten Sie, wie einige Eigenschaften (wie endlich viele Anweisungen) a priori angenommen werden.
 
@@ -256,7 +281,7 @@ Für die Analyse numerischer Methoden werden allgemein die folgenden Begriffe ve
 
 Die \emph{Unterschiede in den Anweisungen} sind typischerweise auf Rundungsfehler zurückzuführen, wie sie in \emph{ungenauer Arithmetik} (oft auch als \emph{Gleitkommaarithmetik} bezeichnet) auftreten.
 
-\leavevmode\hypertarget{rem-algo-kons-stab}{}%
+\leavevmode\vadjust pre{\hypertarget{rem-algo-kons-stab}{}}%
 \begin{JHSAYS}
 Man könnte sagen, dass ein Algorithmus konsistent ist, wenn \emph{er das Richtige tut} und dass er stabil ist, \emph{wenn er trotz beliebiger kleiner Ungenauigkeiten funktioniert}. Wenn ein Algorithmus konsistent und stabil ist, wird er oft als \emph{konvergent} bezeichnet, um auszudrücken, dass er schließlich die Lösung auch in ungenauer Arithmetik berechnen wird.
 
@@ -282,7 +307,7 @@ Die \emph{Rechenkomplexität} eines Algorithmus ist sowohl theoretisch (um abzus
 
 Typischerweise wird die Komplexität durch Zählen der elementaren Operationen gemessen -- wir werden stets die Ausführung einer Grundrechenart als eine Operation zählen.
 
-\leavevmode\hypertarget{rem-flops}{}%
+\leavevmode\vadjust pre{\hypertarget{rem-flops}{}}%
 \begin{JHSAYS}
 Die Definition einer \emph{elementaren Operation} auf einem Computer ist nicht universal, da viele Faktoren hier reinspielen. Gerne werden \emph{FLOP}
 s angeführt, was für \emph{floating point operations} steht. Allerdings ist es wiederum sehr verschieden auf verschiedenen Prozessoren wieviele FLOPs für eine Multiplikation oder Addition gebraucht werden.
@@ -343,7 +368,7 @@ Für eine direkte Implementierung der ersten Darstellung erhalten wir die Algori
 \NormalTok{cpx }\OperatorTok{=}\NormalTok{ ais[}\DecValTok{0}\NormalTok{]                                }\CommentTok{\# der Fall k=0}
 \ControlFlowTok{for}\NormalTok{ k }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(n):}
 \NormalTok{    cpx }\OperatorTok{=}\NormalTok{ cpx }\OperatorTok{+}\NormalTok{ ais[k}\OperatorTok{+}\DecValTok{1}\NormalTok{] }\OperatorTok{*}\NormalTok{ x}\OperatorTok{**}\NormalTok{(k}\OperatorTok{+}\DecValTok{1}\NormalTok{)         }\CommentTok{\# der Beitrag des k{-}ten Schritts}
-\BuiltInTok{print}\NormalTok{(}\SpecialStringTok{f\textquotesingle{}x=}\SpecialCharTok{\{x\}}\SpecialStringTok{: p(x)=}\SpecialCharTok{\{}\NormalTok{cpx}\SpecialCharTok{:.4f\}}\SpecialStringTok{\textquotesingle{}}\NormalTok{)             }\CommentTok{\# Ausgabe des Ergebnisses}
+\BuiltInTok{print}\NormalTok{(}\SpecialStringTok{f\textquotesingle{}x=}\SpecialCharTok{\{}\NormalTok{x}\SpecialCharTok{\}}\SpecialStringTok{: p(x)=}\SpecialCharTok{\{}\NormalTok{cpx}\SpecialCharTok{:.4f\}}\SpecialStringTok{\textquotesingle{}}\NormalTok{)             }\CommentTok{\# Ausgabe des Ergebnisses}
 \end{Highlighting}
 \end{Shaded}
 
@@ -364,7 +389,7 @@ Für die zweite Darstellung können wir das sogenannte \emph{Horner-Schema} impl
 \NormalTok{cpx }\OperatorTok{=}\NormalTok{ ais[n]                                }\CommentTok{\# der Fall k=n}
 \ControlFlowTok{for}\NormalTok{ k }\KeywordTok{in} \BuiltInTok{reversed}\NormalTok{(}\BuiltInTok{range}\NormalTok{(n)):                }
 \NormalTok{    cpx }\OperatorTok{=}\NormalTok{ ais[k] }\OperatorTok{+}\NormalTok{ x}\OperatorTok{*}\NormalTok{cpx                    }\CommentTok{\# der Beitrag des k{-}ten Schritts}
-\BuiltInTok{print}\NormalTok{(}\SpecialStringTok{f\textquotesingle{}x=}\SpecialCharTok{\{x\}}\SpecialStringTok{: p(x)=}\SpecialCharTok{\{}\NormalTok{cpx}\SpecialCharTok{:.4f\}}\SpecialStringTok{\textquotesingle{}}\NormalTok{)             }\CommentTok{\# Ausgabe des Ergebnisses}
+\BuiltInTok{print}\NormalTok{(}\SpecialStringTok{f\textquotesingle{}x=}\SpecialCharTok{\{}\NormalTok{x}\SpecialCharTok{\}}\SpecialStringTok{: p(x)=}\SpecialCharTok{\{}\NormalTok{cpx}\SpecialCharTok{:.4f\}}\SpecialStringTok{\textquotesingle{}}\NormalTok{)             }\CommentTok{\# Ausgabe des Ergebnisses}
 \end{Highlighting}
 \end{Shaded}
 
@@ -376,7 +401,7 @@ Insgesamt benötigt dieses Schema \(n+1\) Additionen und \(n\) Multiplikationen,
 \begin{itemize}
 \tightlist
 \item
-  (Nocedal and Wright \protect\hyperlink{ref-NocW06}{2006}): Ein gut lesbares Buch zur Optimierung.
+  (\protect\hyperlink{ref-NocW06}{Nocedal and Wright 2006}): Ein gut lesbares Buch zur Optimierung.
 \end{itemize}
 
 \hypertarget{uxfcbungen}{%
@@ -398,13 +423,13 @@ Insgesamt benötigt dieses Schema \(n+1\) Additionen und \(n\) Multiplikationen,
 \ImportTok{from}\NormalTok{ scipy.linalg }\ImportTok{import}\NormalTok{ cholesky}
 \ImportTok{from}\NormalTok{ time }\ImportTok{import}\NormalTok{ time}
 \NormalTok{n }\OperatorTok{=} \DecValTok{10}                                  \CommentTok{\# example problem size}
-\NormalTok{A\_n }\OperatorTok{=} \OperatorTok{{-}}\DecValTok{1}\OperatorTok{*}\NormalTok{np.diag(np.ones(n}\OperatorTok{{-}}\DecValTok{1}\NormalTok{), }\OperatorTok{{-}}\DecValTok{1}\NormalTok{) }\OperatorTok{+} \OperatorTok{\textbackslash{}}  \CommentTok{\# a tridiagonal band matrix}
+\NormalTok{A\_n }\OperatorTok{=} \OperatorTok{{-}}\DecValTok{1}\OperatorTok{*}\NormalTok{np.diag(np.ones(n}\OperatorTok{{-}}\DecValTok{1}\NormalTok{), }\OperatorTok{{-}}\DecValTok{1}\NormalTok{) }\OperatorTok{+}\NormalTok{ \textbackslash{}  }\CommentTok{\# a tridiagonal band matrix}
     \DecValTok{2}\OperatorTok{*}\NormalTok{np.diag(np.ones(n), }\DecValTok{0}\NormalTok{) }\OperatorTok{+} \OperatorTok{\textbackslash{}}
     \OperatorTok{{-}}\DecValTok{1}\OperatorTok{*}\NormalTok{np.diag(np.ones(n}\OperatorTok{{-}}\DecValTok{1}\NormalTok{), }\DecValTok{1}\NormalTok{)}
 \NormalTok{tic }\OperatorTok{=}\NormalTok{ time()                            }\CommentTok{\# start the timer}
 \NormalTok{\_ }\OperatorTok{=}\NormalTok{ cholesky(A\_n)                       }\CommentTok{\# perform the computation}
 \NormalTok{toc }\OperatorTok{=}\NormalTok{ time()                            }\CommentTok{\# stop the timer}
-\BuiltInTok{print}\NormalTok{(}\SpecialStringTok{f\textquotesingle{}n: }\SpecialCharTok{\{n\}}\SpecialStringTok{ {-}{-} t\_n: }\SpecialCharTok{\{}\NormalTok{toc}\OperatorTok{{-}}\NormalTok{tic}\SpecialCharTok{:.4e\}}\SpecialStringTok{\textquotesingle{}}\NormalTok{)}
+\BuiltInTok{print}\NormalTok{(}\SpecialStringTok{f\textquotesingle{}n: }\SpecialCharTok{\{}\NormalTok{n}\SpecialCharTok{\}}\SpecialStringTok{ {-}{-} t\_n: }\SpecialCharTok{\{}\NormalTok{toc}\OperatorTok{{-}}\NormalTok{tic}\SpecialCharTok{:.4e\}}\SpecialStringTok{\textquotesingle{}}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -442,7 +467,7 @@ Zum Beispiel:
   In iterativen Verfahren können Speicher und Rechenaufwand leicht eingespart werden, indem die Iteration in einem frühen Stadium gestoppt wird - natürlich auf Kosten einer weniger genauen Lösungsapproximation.
 \end{itemize}
 
-\leavevmode\hypertarget{rem-accu-iter}{}%
+\leavevmode\vadjust pre{\hypertarget{rem-accu-iter}{}}%
 \begin{JHSAYS}
 Beide, irgendwie trivialen Beobachtungen sind grundlegende Bestandteile des Trainings neuronaler Netzwerke. Erstens wurde beobachtet, dass Zahldarstellungen mit \emph{einfacher Genauigkeit} (im Vergleich zum gängigen \emph{double precision}) Rechenkosten sparen kann, mit nur geringen Auswirkungen auf die Genauigkeit. Zweitens ist das Training ein iterativer Prozess mit oft langsamer Konvergenz, sodass der richtige Zeitpunkt für einen vorzeitigen Abbruch des Trainings entscheidend ist.
 
@@ -462,7 +487,7 @@ und der \emph{relative Fehler} als
 \end{equation*}
 \end{definition}
 
-\leavevmode\hypertarget{rem-rel-abs-err}{}%
+\leavevmode\vadjust pre{\hypertarget{rem-rel-abs-err}{}}%
 \begin{JHSAYS}
 Generell wird der relative Fehler bevorzugt, da er den gemessenen Fehler in den richtigen Bezug setzt. Zum Beispiel kann ein absoluter Fehler von \(10\) km/h je nach Kontext groß oder klein sein.
 
@@ -498,7 +523,7 @@ Für vektorwertige Probleme/Algorithmen können wir die Konditionszahl darüber 
 die partielle \emph{Konditionszahl} des Problems. Ein Problem wird als \emph{gut konditioniert} bezeichnet, wenn \(|(\kappa_{A,x})_{ij}|\approx 1\) und als \emph{schlecht konditioniert}, wenn \(|(\kappa_{A,x})_{ij}\gg 1|\), für alle \(i=1,\dotsc,m\) und \(j=1,\dotsc,m\).
 \end{definition}
 
-\leavevmode\hypertarget{rem-vector-valued-cond}{}%
+\leavevmode\vadjust pre{\hypertarget{rem-vector-valued-cond}{}}%
 \begin{JHSAYS}
 Anstatt die skalaren Komponentenfunktionen von \(A\colon \mathbb R^{n} \to \mathbb R^{m}\) zu verwenden, kann man die Berechnungen, die zu \eqref{eq:eqn-scalar-cond} geführt haben, mit vektorwertigen Größen in den entsprechenden Normen wiederholen.
 
@@ -534,7 +559,7 @@ Für die Konditionszahl der Addition \(A_y\colon x \to y+x\) gilt:
 
 Diese Konditionszahl kann offenbar beliebig groß werden, wenn \(x\) nah an \(-y\) liegt. Jan spricht von Auslöschung und tatsächlich lässt sich nachvollziehen, dass in diesem Fall die vorderen (korrekten) Stellen einer Zahl von einander abgezogen werden und die hinteren (möglicherweise inkorrekten) Stellen übrig bleiben.
 
-\leavevmode\hypertarget{rem-kons-addition}{}%
+\leavevmode\vadjust pre{\hypertarget{rem-kons-addition}{}}%
 \begin{JHSAYS}
 Praktisch gesagt: Hantiert Jan mit Addition großer Zahlen um ein kleines Ergebnis erzielen ist das numerisch sehr ungünstig.
 
@@ -620,7 +645,7 @@ Ist \(p=1\), so ist \(0<c<1\) notwendig für Konvergenz, genannt \emph{lineare K
 Gilt \(p=1\) und gilt \(|x_{k+1} - z| \leq c_k|x_k-z|^p\) mit \(c_k \to 0\) für \(k\to \infty\) heißt die Konvergenz \emph{superlinear}.
 \end{definition}
 
-\leavevmode\hypertarget{rem-conv-iterat}{}%
+\leavevmode\vadjust pre{\hypertarget{rem-conv-iterat}{}}%
 \begin{JHSAYS}
 Wiederum gelten Konvergenzaussagen eigentlich für die Kombination aus Methode und Problem. Dennoch ist es allgemeine Praxis, beispielsweise zu sagen, dass das \emph{Newton-Verfahren quadratisch konvergiert}.
 
@@ -683,10 +708,10 @@ g'(z)=\dotsm g^{(p-1)}(z)=0, \quad g^{(p)}\neq 0.
 \end{theorem}
 
 \begin{proof}
-Siehe (Richter and Wick \protect\hyperlink{ref-RicW17}{2017}, Thm. 6.31)
+Siehe (\protect\hyperlink{ref-RicW17}{Richter and Wick 2017}, Thm. 6.31)
 \end{proof}
 
-\leavevmode\hypertarget{rem-smooth-fp-conv}{}%
+\leavevmode\vadjust pre{\hypertarget{rem-smooth-fp-conv}{}}%
 \begin{JHSAYS}
 Das \emph{genau dann wenn} in Satz \ref{thm:thm-smooth-fp-conv} ist so zu verstehen, dass die Konvergenzordnung genau gleich \(p\) ist, was insbesondere beinhaltet, dass wenn \(g^{(p)}=0\) ist, die Ordnung eventuell grösser als \(p\) ist. (Jan ist verleitet zu denken, dass in diesem Fall die Iteration nicht (oder mit einer niedrigeren Ordnung) konvergieren würde).
 
@@ -738,7 +763,7 @@ Damit ergibt eine Abschätzung in der \(2\)-Norm und der induzierten Matrixnorm,
 gilt, was lineare Konvergenz mit der Rate \(c=\|I-\gamma A^TA\|_2\) bedeutet, wobei \(c<1\) gilt nach der getroffenen Voraussetzung, dass \(0<\gamma<\frac{2}{\|A^TA\|_2}\) ist.
 \end{proof}
 
-\leavevmode\hypertarget{rem-fpconv-iteration-contraction}{}%
+\leavevmode\vadjust pre{\hypertarget{rem-fpconv-iteration-contraction}{}}%
 \begin{JHSAYS}
 Das Prinzip dieser Beweise ist festzustellen, dass die Verfahrensfunktion in der Nähe des Fixpunkts eine \emph{Kontraktion} ist, d.h. Lipschitz-stetig mit Konstante \(L<1\).
 
@@ -761,7 +786,7 @@ f(x_0 - \gamma_0 \nabla f(x_0)):=f(x_1)   < f(x_0)
 \end{equation*}
 falls \(\gamma_0\) nur genügend klein ist und \(\nabla f(x_0) \neq 0\).
 
-\leavevmode\hypertarget{rem-gamma-zerograd}{}%
+\leavevmode\vadjust pre{\hypertarget{rem-gamma-zerograd}{}}%
 \begin{JHSAYS}
 Was ist, wenn \(\nabla f(x_0) = 0\) ist und warum gibt es andernfalls so ein \(\gamma_0\) und wie könnten wir es systematisch bestimmen?
 
@@ -903,7 +928,7 @@ Zum Abschluss einige Bemerkungen
 \item
   weitere Methoden der Optimierung, die in die betrachteten (AF) Klassen fallen sind beispielsweise \emph{Majorization Minimization}, \emph{Expectation Maximization}, \emph{Proximal Minimization} oder \emph{Regularized Gradient Descent}.
 \item
-  Eine schöne Einführung und Übersicht liefert das Skript \emph{Lecture Notes on Iterative Optimization Algorithms} (Byrne \protect\hyperlink{ref-Byr14}{2014}).
+  Eine schöne Einführung und Übersicht liefert das Skript \emph{Lecture Notes on Iterative Optimization Algorithms} (\protect\hyperlink{ref-Byr14}{Byrne 2014}).
 \end{itemize}
 
 \hypertarget{uxfcbungen-2}{%
@@ -1027,7 +1052,7 @@ Wir betrachten den einfachsten Fall wie im obigen Algorithmus beschrieben, dass 
 \[g(x_k, \xi)=g(x_k, i(\xi))=:\nabla Q_{i(\xi)}(x_k)\]
 also dass der Gradient von \(\frac 1N \nabla \sum Q_i\) geschätzt wird durch den Gradienten der \(i(\xi)\)-ten Komponentenfunktion, wobei \(i(\xi)\) zufällig aus der Indexmenge \(I=\{1, 2, \dotsc, N\}\) gezogen wird.
 
-\leavevmode\hypertarget{sdg-put-it-back}{}%
+\leavevmode\vadjust pre{\hypertarget{sdg-put-it-back}{}}%
 \begin{JHSAYS}
 Im folgenden Beweis wird verwendet werden, dass \emph{zurückgelegt} wird, also dass im \(k\)-ten Schritt alle möglichen Indizes gezogen werden können. Das ist notwendig um zu schlussfolgern, dass
 \begin{equation*}
@@ -1094,7 +1119,7 @@ sodass mit der \(m\)-Konvexität gilt dass
 \end{equation}
 vergleiche die Übungsaufgabe unten.
 
-\leavevmode\hypertarget{sdg-cnv-independent}{}%
+\leavevmode\vadjust pre{\hypertarget{sdg-cnv-independent}{}}%
 \begin{JHSAYS}
 Diese Manipulation mit den Erwartungswerten ist der formale Ausdruck dafür, dass, egal woher das \(x_k\) kam, die zufällige Wahl der aktuellen Richtung führt im statistischen Mittel auf \(\nabla Q(x_k)\).
 
@@ -1164,7 +1189,7 @@ für die Anzahl der Iteration, während für quadratische Konvergenz
 überhaupt Konvergenz zu haben. Abschließend zu bemerken ist dass,
 unter den getätigten Annahmen, für den stochastischen Gradientenabstieg der \textbf{quadratische Fehler} mit ``1/k'' konvergiert. Dementsprechend muss entsprechend von \(n\sim \frac{1}{\epsilon^2}\) ausgegangen werden.
 
-\leavevmode\hypertarget{rem-bad-conv-sdg}{}%
+\leavevmode\vadjust pre{\hypertarget{rem-bad-conv-sdg}{}}%
 \begin{JHSAYS}
 Diese schlechte Konvergenz ist auch ein Grund dafür, dass das Lernen von
 neuronalen Netzen sehr rechenintensiv ist. Abhilfe schaffen hier Algorithmen,
@@ -1257,7 +1282,7 @@ Hier schon mal ein Codegerüst.
 \CommentTok{\# bitte alle Kompenenten berechnen}
 \CommentTok{\# und dann die Norm ueber den ganzen Vektor nehmen}
 
-\BuiltInTok{print}\NormalTok{(}\SpecialStringTok{f\textquotesingle{}h=}\SpecialCharTok{\{h:.2e\}}\SpecialStringTok{: diff in gradient }\SpecialCharTok{\{}\NormalTok{hdiff}\SpecialCharTok{.}\NormalTok{flatten()[}\DecValTok{0}\NormalTok{]}\SpecialCharTok{:.2e\}}\SpecialStringTok{\textquotesingle{}}\NormalTok{)}
+\BuiltInTok{print}\NormalTok{(}\SpecialStringTok{f\textquotesingle{}h=}\SpecialCharTok{\{}\NormalTok{h}\SpecialCharTok{:.2e\}}\SpecialStringTok{: diff in gradient }\SpecialCharTok{\{}\NormalTok{hdiff}\SpecialCharTok{.}\NormalTok{flatten()[}\DecValTok{0}\NormalTok{]}\SpecialCharTok{:.2e\}}\SpecialStringTok{\textquotesingle{}}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1271,7 +1296,7 @@ Merkmale aufgesetzt, trainiert und auf Funktion geprüft wird.
 \hypertarget{der-penguins-datensatz}{%
 \section{Der PENGUINS Datensatz}\label{der-penguins-datensatz}}
 
-Die Grundlage ist der \href{https://allisonhorst.github.io/palmerpenguins/}{\emph{Pinguin Datensatz}}, der eine gern genommene Grundlage für die Illustration in der Datenanalyse ist. Die Daten wurden von \href{https://www.uaf.edu/cfos/people/faculty/detail/kristen-gorman.php}{Kristen Gorman} erhoben und beinhalten 4 verschiedene Merkmale (engl. \emph{features}) von einer Stichprobe von insgesamt 344\footnote{allerdings mit 2 unvollständigen Datenpunkten, die ich entfernt habe für unsere Beispiele}Pinguinen die 3 verschiedenen Spezies zugeordnet werden können oder sollen (Fachbegriff hier: \emph{targets}). Im Beispiel werden die Klassen mit \texttt{0,\ 1,\ 2} codiert und beschreiben die Unterarten \emph{Adele}, \emph{Gentoo} und \emph{Chinstrap} der Pinguine. Die Merkmale sind gemessene Länge und Höhe des Schnabels (hier \emph{bill}), die Länge der Flosse (\emph{flipper}) sowie das Köpergewicht\footnote{Im Originaldatensatz ist das Gewicht in Gramm angegeben, um die Daten innerhalb einer 10er Skala zu haben, habe ich das Gewicht auf in kg umgerechnet}
+Die Grundlage ist der \href{https://allisonhorst.github.io/palmerpenguins/}{\emph{Pinguin Datensatz}}, der eine gern genommene Grundlage für die Illustration in der Datenanalyse ist. Die Daten wurden von \href{https://www.uaf.edu/cfos/people/faculty/detail/kristen-gorman.php}{Kristen Gorman} erhoben und beinhalten 4 verschiedene Merkmale (engl. \emph{features}) von einer Stichprobe von insgesamt 344\footnote{allerdings mit 2 unvollständigen Datenpunkten, die ich entfernt habe für unsere Beispiele}Pinguinen die 3 verschiedenen Spezies zugeordnet werden können oder sollen (Fachbegriff hier: \emph{targets}). Im Beispiel werden die Klassen mit \texttt{0,\ 1,\ 2} codiert und beschreiben die Unterarten \emph{Adele}, \emph{Gentoo} und \emph{Chinstrap} der Pinguine. Die Merkmale sind gemessene Länge und Höhe des Schnabels (hier \emph{bill}), die Länge der Flosse (\emph{flipper}) sowie das Köpergewicht \footnote{Im Originaldatensatz ist das Gewicht in Gramm angegeben, um die Daten innerhalb einer 10er Skala zu haben, habe ich das Gewicht auf in kg umgerechnet}
 (\emph{body mass}).
 
 Wir stellen uns die Frage:
@@ -1500,7 +1525,7 @@ Implementierungen von \emph{Machine Learning} Bibliotheken benutzen anstelle
 \NormalTok{    cwghts }\OperatorTok{=}\NormalTok{ cwghts }\OperatorTok{{-}}\NormalTok{ lr}\OperatorTok{*}\DecValTok{1}\OperatorTok{/}\NormalTok{batchsize}\OperatorTok{*}\NormalTok{cgrad  }\CommentTok{\# the upgrade}
 \NormalTok{    gradnrml.append(}\DecValTok{1}\OperatorTok{/}\NormalTok{batchsize}\OperatorTok{*}\NormalTok{np.linalg.norm(cgrad))}
     \ControlFlowTok{if}\NormalTok{ np.mod(kkk, }\DecValTok{50}\NormalTok{) }\OperatorTok{==} \DecValTok{0}\NormalTok{:}
-        \BuiltInTok{print}\NormalTok{(}\SpecialStringTok{f\textquotesingle{}k=}\SpecialCharTok{\{}\NormalTok{kkk}\SpecialCharTok{\}}\SpecialStringTok{: norm of gradient: }\SpecialCharTok{\{np.}\NormalTok{linalg}\SpecialCharTok{.}\NormalTok{norm(cgrad)}\SpecialCharTok{\}}\SpecialStringTok{\textquotesingle{}}\NormalTok{)}
+        \BuiltInTok{print}\NormalTok{(}\SpecialStringTok{f\textquotesingle{}k=}\SpecialCharTok{\{}\NormalTok{kkk}\SpecialCharTok{\}}\SpecialStringTok{: norm of gradient: }\SpecialCharTok{\{}\NormalTok{np}\SpecialCharTok{.}\NormalTok{linalg}\SpecialCharTok{.}\NormalTok{norm(cgrad)}\SpecialCharTok{\}}\SpecialStringTok{\textquotesingle{}}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1617,7 +1642,7 @@ Ein paar Bemerkungen.
 \item
   Ist \(A\) reell, können auch \(U\) und \(V\) reell gewählt werden.
 \item
-  Ein Beweis ist in (Bollhöfer and Mehrmann \protect\hyperlink{ref-BolM04}{2004}, Satz 14.14) zu finden.
+  Ein Beweis ist in (\protect\hyperlink{ref-BolM04}{Bollhöfer and Mehrmann 2004}, Satz 14.14) zu finden.
 \item
   Die Annahme \(m \geq n\) war nur nötig um für die Matrix \(\Sigma\) keine Fallunterscheidung zu machen. (Für \(m\leq n\) ``steht der Nullblock rechts von den Singulärwerten''). Insbesondere gilt \(A^* = V\Sigma U^*\) ist eine SVD von \(A^*\).
 \item
@@ -1674,7 +1699,7 @@ wobei \(A_{\hat r}\) aus der \emph{truncated SVD} von \(A\) erzeugt wurde. Aller
 \begin{equation*}
 \min_{B\in \mathbb C^{m\times n}, \operatorname{Rg}(B)=\hat r} \|A-B\|_2 = \|A-A_{\hat r}\|_2 = \sigma_{\hat r + 1};
 \end{equation*}
-(vgl. Satz 14.15, Bollhöfer and Mehrmann \protect\hyperlink{ref-BolM04}{2004}).
+(vgl. Satz 14.15, \protect\hyperlink{ref-BolM04}{Bollhöfer and Mehrmann 2004}).
 
 Zum Abschluss noch der Zusammenhang zur \emph{linearen Ausgleichsrechnung}.
 Die Lösung \(w\) des Problems der \emph{linearen Ausgleichsrechnung} war entweder als Lösung eines Optimierungsproblems
@@ -1720,8 +1745,9 @@ Mathematik}.
 In direkter Weise könnten die Singulärwerte und --vektoren über
 das Eigenwertproblem für \(AA^T\) oder \(A^TA\) bestimmt werden.
 Das ist nicht so schlecht, wie mit dem Argument, \emph{dass sich mit dem
-quadrieren der Matrizen auch die Konditionszahl quadriert}, gerne nahegelegt wird,\footnote{denn die Kondition des Eigenwertproblems ist direkt proportional zur Kondition der Matrix; vgl.
-  (Satz 5.9, Richter and Wick \protect\hyperlink{ref-RicW17}{2017})} da
+quadrieren der Matrizen auch die Konditionszahl quadriert}, gerne nahegelegt wird
+\footnote{denn die Kondition des Eigenwertproblems ist direkt proportional zur Kondition der Matrix; vgl.
+  (Satz 5.9, \protect\hyperlink{ref-RicW17}{Richter and Wick 2017})}, da
 
 \begin{itemize}
 \tightlist
@@ -2049,7 +2075,7 @@ und müssen konstatieren, dass die Repräsentation der Daten im \((x,y)\) Koordi
 
 Die Frage ist also, ob es ein Koordinatensystem gibt, dass die Daten besser darstellt.
 
-\leavevmode\hypertarget{rem-coors}{}%
+\leavevmode\vadjust pre{\hypertarget{rem-coors}{}}%
 \begin{JHSAYS}
 Ein Koordinatensystem ist nichts anderes als eine Basis. Und die Koordinaten eines Datenpunktes sind die Komponenten des entsprechenden Vektors in dieser Basis. Typischerweise sind Koordinatensysteme orthogonal (das heißt eine Orthogonalbasis) und häufig noch orientiert (die Basisvektoren haben eine bestimmte Reihenfolge und eine bestimmte Richtung).
 
@@ -2060,7 +2086,7 @@ Ein Koordinatensystem ist nichts anderes als eine Basis. Und die Koordinaten ein
 
 Sei nun also \(\{b_1,b_2\}\subset \mathbb R^{2}\) eine orthogonale Basis.
 
-\leavevmode\hypertarget{rem-ortho-bas}{}%
+\leavevmode\vadjust pre{\hypertarget{rem-ortho-bas}{}}%
 \begin{JHSAYS}
 Wie allgemein gebräuchlich, sagen wir \emph{orthogonal}, meinen aber \emph{orthonormal}. In jedem Falle soll gelten
 \begin{equation*}
@@ -2144,7 +2170,7 @@ x_c \\ y_c
 
 Wir wollen nun also \(b_1\in \mathbb R^{2}\), mit \(\|b_1\|=1\) so wählen, dass
 \begin{equation*}
-s_1^2 = \frac{1}{N-1}\sum_{i=1}^n \alpha_{i1}^2
+s_1^2 = \frac{1}{N-1}\sum_{i=1}^N \alpha_{i1}^2
 \end{equation*}
 maximal wird. Mit der Matrix \(\mathbf X\) aller Daten
 \begin{equation*}
@@ -2158,9 +2184,9 @@ x_1 & y_1 \\ x_2 & y_2 \\ \vdots & \vdots \\ x_N & y_N
 \end{equation*}
 können wir die Varianz in \(b_1\)-Richtung kompakt schreiben als
 \begin{equation*}
-s_1^2 = \frac{1}{N-1}\sum_{i=1}^n \alpha_{i1}^2
-= \frac{1}{N-1}\sum_{i=1}^n (b_1^T\mathbf x_i)^2
-= \frac{1}{N-1}\sum_{i=1}^n (\mathbf x_i^Tb_1)^2
+s_1^2 = \frac{1}{N-1}\sum_{i=1}^N \alpha_{i1}^2
+= \frac{1}{N-1}\sum_{i=1}^N (b_1^T\mathbf x_i)^2
+= \frac{1}{N-1}\sum_{i=1}^N (\mathbf x_i^Tb_1)^2
 = \frac{1}{N-1}\| \mathbf X b_1 \|^2
 \end{equation*}
 Wir sind also ein weiteres mal bei einem Optimierungsproblem (diesmal mit Nebenbedingung) angelangt:
@@ -2521,7 +2547,7 @@ Funktion \(f\colon [a, b]\to \mathbb R^{}\) in einer passenden Menge von Funktio
 fällt nicht darunter.
 Die entstehenden Schwierigkeiten und theoretische und praktische Ansätze
 zur möglichen Lösung dieses sogenannten
-\emph{Tschebyscheff-Approximation}-Problem, sind in (Kapitel 8.7.2, Richter and Wick \protect\hyperlink{ref-RicW17}{2017}) gut
+\emph{Tschebyscheff-Approximation}-Problem, sind in (Kapitel 8.7.2, \protect\hyperlink{ref-RicW17}{Richter and Wick 2017}) gut
 nachzulesen.
 
 \hypertarget{universal-approximation}{%
@@ -2813,7 +2839,7 @@ symbolische Berechnungen (und entsprechend auch die Möglichkeit der
 symbolischen automatischen Differentiation) nur in spezifischen und insbesondere
 nicht in ``grossen'' und ``multi-purpose'' Algorithmen zur Anwendung kommen.
 
-\leavevmode\hypertarget{ad-vs-sd}{}%
+\leavevmode\vadjust pre{\hypertarget{ad-vs-sd}{}}%
 \begin{JHSAYS}
 Auch AD rechnet symbolisch und rekursiv mit der Kettenregel. Der Unterschied ist, dass AD nur mit Funktionswerten der
 Ableitungen arbeitet während die symbolische Ableitung versucht, die
@@ -2881,56 +2907,29 @@ mitgeliefert wird. Ein Programmfluss für obiges \(f\), \(g\), \(h\) Beispiel
 würde also jeweils immer zwei Berechnungen machen und die Ableitung
 \emph{akkumulieren}:
 
-\begin{longtable}[]{@{}llll@{}}
-\toprule
-\begin{minipage}[b]{0.17\columnwidth}\raggedright
-Schritt\strut
-\end{minipage} & \begin{minipage}[b]{0.33\columnwidth}\raggedright
-Funktionswert\strut
-\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright
-Ableitung\strut
-\end{minipage} & \begin{minipage}[b]{0.22\columnwidth}\raggedright
-Akkumulation\strut
-\end{minipage}\tabularnewline
-\midrule
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1875}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.3750}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1875}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Schritt
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Funktionswert
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Ableitung
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Akkumulation
+\end{minipage} \\
+\midrule\noalign{}
 \endhead
-\begin{minipage}[t]{0.17\columnwidth}\raggedright
-\texttt{0}\strut
-\end{minipage} & \begin{minipage}[t]{0.33\columnwidth}\raggedright
-\(w_0 = x\)\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
-\(\dot w_0 = 1\)\strut
-\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
-\(1\)\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.17\columnwidth}\raggedright
-\texttt{1}\strut
-\end{minipage} & \begin{minipage}[t]{0.33\columnwidth}\raggedright
-\((w_1, \dot w_1) = (h(w_0), h'(w_0))\)\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
-\(\dot w_1\)\strut
-\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
-\(\dot w_1 \cdot 1\)\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.17\columnwidth}\raggedright
-\texttt{2}\strut
-\end{minipage} & \begin{minipage}[t]{0.33\columnwidth}\raggedright
-\((w_2, \dot w_2) = (g(w_1), g(w_1))\)\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
-\(\dot w_2\)\strut
-\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
-\(\dot w_2 \cdot\dot w_1 \cdot 1\)\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.17\columnwidth}\raggedright
-\texttt{3}\strut
-\end{minipage} & \begin{minipage}[t]{0.33\columnwidth}\raggedright
-\((w_3, \dot w_3) = (f(w_1), f(w_1))\)\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
-\(\dot w_3\)\strut
-\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
-\(\dot w_3 \cdot\dot w_2 \cdot\dot w_1 \cdot 1\)\strut
-\end{minipage}\tabularnewline
-\bottomrule
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{0} & \(w_0 = x\) & \(\dot w_0 = 1\) & \(1\) \\
+\texttt{1} & \((w_1, \dot w_1) = (h(w_0), h'(w_0))\) & \(\dot w_1\) & \(\dot w_1 \cdot 1\) \\
+\texttt{2} & \((w_2, \dot w_2) = (g(w_1), g(w_1))\) & \(\dot w_2\) & \(\dot w_2 \cdot\dot w_1 \cdot 1\) \\
+\texttt{3} & \((w_3, \dot w_3) = (f(w_1), f(w_1))\) & \(\dot w_3\) & \(\dot w_3 \cdot\dot w_2 \cdot\dot w_1 \cdot 1\) \\
 \end{longtable}
 
 Das ergibt die Ableitung als den finalen Wert der Akkumulation. Wir bemerken,
@@ -2976,7 +2975,7 @@ dass hierbei
   \end{itemize}
 \end{itemize}
 
-\leavevmode\hypertarget{fwd-ad-vs-bwd}{}%
+\leavevmode\vadjust pre{\hypertarget{fwd-ad-vs-bwd}{}}%
 \begin{JHSAYS}
 Wir halten fest, dass der \emph{Vorwärtsmodus} gut funktioniert für skalare
 Eingänge unabhängig von der Zahl der Ausgänge. Wir werden lernen,
@@ -3039,65 +3038,30 @@ Vorwärtsakkumulation.
 Mit den folgenden Schritten ergibt sich für die partielle
 Ableitung von \(y\) bezüglich \(x_1\)
 
-\begin{longtable}[]{@{}llll@{}}
-\toprule
-\begin{minipage}[b]{0.10\columnwidth}\raggedright
-Schritt\strut
-\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright
-Funktionswert\strut
-\end{minipage} & \begin{minipage}[b]{0.20\columnwidth}\raggedright
-Ableitung\strut
-\end{minipage} & \begin{minipage}[b]{0.41\columnwidth}\raggedright
-Akkumulation\strut
-\end{minipage}\tabularnewline
-\midrule
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1154}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1923}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2308}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.4615}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Schritt
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Funktionswert
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Ableitung
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Akkumulation
+\end{minipage} \\
+\midrule\noalign{}
 \endhead
-\begin{minipage}[t]{0.10\columnwidth}\raggedright
-\texttt{0a}\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
-\(w_1=x_1\)\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
-\strut
-\end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
-\(\dot w_1 = 1\)\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.10\columnwidth}\raggedright
-\texttt{0b}\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
-\(w_2=x_2\)\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
-\strut
-\end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
-\(\dot w_2 = 0\)\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.10\columnwidth}\raggedright
-\texttt{1a}\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
-\(w_3 = w_1w_2\)\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
-\(\partial w_3 = \begin{bmatrix} w_2&w_1\end{bmatrix}\)\strut
-\end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
-\(\dot w_3 = \begin{bmatrix}w_2&w_1\end{bmatrix}\begin{bmatrix} 1 \\ 0 \end{bmatrix} = x_2\)\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.10\columnwidth}\raggedright
-\texttt{1b}\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
-\(w_4 = \sin(w_1)\)\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
-\(\partial w_4=\cos(w_1)\)\strut
-\end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
-\(\dot w_4 =\cos(w_1)\cdot\dot w_1 = \cos(x_1)\)\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.10\columnwidth}\raggedright
-\texttt{2}\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
-\(w_5 = w_3 + w_4\)\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
-\(\partial w_5=\begin{bmatrix}1 & 1\end{bmatrix}\)\strut
-\end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
-\(\dot w_5 = \begin{bmatrix}1 & 1\end{bmatrix}\begin{bmatrix} \dot w_3 \\ \dot w_4 \end{bmatrix} = x_2 + \cos(x_1)\)\strut
-\end{minipage}\tabularnewline
-\bottomrule
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{0a} & \(w_1=x_1\) & & \(\dot w_1 = 1\) \\
+\texttt{0b} & \(w_2=x_2\) & & \(\dot w_2 = 0\) \\
+\texttt{1a} & \(w_3 = w_1w_2\) & \(\partial w_3 = \begin{bmatrix} w_2&w_1\end{bmatrix}\) & \(\dot w_3 = \begin{bmatrix}w_2&w_1\end{bmatrix}\begin{bmatrix} 1 \\ 0 \end{bmatrix} = x_2\) \\
+\texttt{1b} & \(w_4 = \sin(w_1)\) & \(\partial w_4=\cos(w_1)\) & \(\dot w_4 =\cos(w_1)\cdot\dot w_1 = \cos(x_1)\) \\
+\texttt{2} & \(w_5 = w_3 + w_4\) & \(\partial w_5=\begin{bmatrix}1 & 1\end{bmatrix}\) & \(\dot w_5 = \begin{bmatrix}1 & 1\end{bmatrix}\begin{bmatrix} \dot w_3 \\ \dot w_4 \end{bmatrix} = x_2 + \cos(x_1)\) \\
 \end{longtable}
 
 \hypertarget{ruxfcckwuxe4rtsmodus}{%
@@ -3127,74 +3091,31 @@ innen oder im Falle des Berechnungsgraphen (wie in Abbildung \ref{fig:fig-10-ad-
 
 Die Operationen zur Berechnung der Ableitung mittels Rückwärtsakkumulation sind in der folgenden Tabelle dargestellt (beachte die umgekehrte Reihenfolge):
 
-\begin{longtable}[]{@{}llll@{}}
-\toprule
-\begin{minipage}[b]{0.10\columnwidth}\raggedright
-Schritt\strut
-\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright
-Funktionswert\strut
-\end{minipage} & \begin{minipage}[b]{0.20\columnwidth}\raggedright
-Ableitung\strut
-\end{minipage} & \begin{minipage}[b]{0.41\columnwidth}\raggedright
-Adjungierte\strut
-\end{minipage}\tabularnewline
-\midrule
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1154}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1923}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2308}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.4615}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Schritt
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Funktionswert
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Ableitung
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Adjungierte
+\end{minipage} \\
+\midrule\noalign{}
 \endhead
-\begin{minipage}[t]{0.10\columnwidth}\raggedright
-\texttt{0}\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
-\(y=w_5\)\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
-\(\partial y=1\)\strut
-\end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
-\(\bar w_5 = 1\)\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.10\columnwidth}\raggedright
-\texttt{1}\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
-\(w_5=w_4+w_3\)\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
-\(\partial w_5=\begin{bmatrix} 1&1 \end{bmatrix}\)\strut
-\end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
-\(\bar w_5 = 1\)\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.10\columnwidth}\raggedright
-\texttt{2a}\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
-\(w_4=\sin(w_1)\)\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
-\(\partial w_4=\cos(w_1)\)\strut
-\end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
-\(\bar w_4 = \bar w_5 \cdot 1 = 1\)\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.10\columnwidth}\raggedright
-\texttt{2b}\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
-\(w_3=w_1w_2\)\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
-\(\partial w_3=\begin{bmatrix}w_2&w_1\end{bmatrix}\)\strut
-\end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
-\(\bar w_3 = \bar w_5 \cdot 1 = 1\)\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.10\columnwidth}\raggedright
-\texttt{3b}\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
-\(w_2=x_2\)\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
-\strut
-\end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
-\(\bar w_2 = \bar w_3 w_1= x_1\)\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.10\columnwidth}\raggedright
-\texttt{3a}\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
-\(w_1=x_1\)\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright
-\strut
-\end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
-\(\bar w_1 = \bar w_3 w_2 +\bar w_4 \cos(w_1) = x_2 + \cos(x_1)\)\strut
-\end{minipage}\tabularnewline
-\bottomrule
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{0} & \(y=w_5\) & \(\partial y=1\) & \(\bar w_5 = 1\) \\
+\texttt{1} & \(w_5=w_4+w_3\) & \(\partial w_5=\begin{bmatrix} 1&1 \end{bmatrix}\) & \(\bar w_5 = 1\) \\
+\texttt{2a} & \(w_4=\sin(w_1)\) & \(\partial w_4=\cos(w_1)\) & \(\bar w_4 = \bar w_5 \cdot 1 = 1\) \\
+\texttt{2b} & \(w_3=w_1w_2\) & \(\partial w_3=\begin{bmatrix}w_2&w_1\end{bmatrix}\) & \(\bar w_3 = \bar w_5 \cdot 1 = 1\) \\
+\texttt{3b} & \(w_2=x_2\) & & \(\bar w_2 = \bar w_3 w_1= x_1\) \\
+\texttt{3a} & \(w_1=x_1\) & & \(\bar w_1 = \bar w_3 w_2 +\bar w_4 \cos(w_1) = x_2 + \cos(x_1)\) \\
 \end{longtable}
 
 Wir bemerken, dass in einem Durchlauf, beide partiellen Ableitungen
@@ -3246,8 +3167,8 @@ Objekt) über die Lösung der adjungierten Gleichung
 \begin{equation*}
 -\dot p(t) = A^T p(t) + x(t)-x^*, \quad p(T) = 0
 \end{equation*}
-definiert ist (siehe beispielsweise (Kurdila and Zabarankin \protect\hyperlink{ref-KurZ05}{2005}, Theorem 5.5.1) für ein
-abstraktes Resultat und bspw. (Tröltzsch \protect\hyperlink{ref-Tr09}{2009}, Abschnitt 5.9.1) für eine
+definiert ist (siehe beispielsweise (\protect\hyperlink{ref-KurZ05}{Kurdila and Zabarankin 2005}, Theorem 5.5.1) für ein
+abstraktes Resultat und bspw. (\protect\hyperlink{ref-Tr09}{Tröltzsch 2009}, Abschnitt 5.9.1) für eine
 Umsetzung in einem Gradientenabstiegsverfahren mit PDEs).
 
 Während diese Resultate in der Theorie die Wohlgestelltheit der
@@ -3291,7 +3212,7 @@ also im Prinzip ist \(L(A)\leftrightarrow x\) die Ableitung wenn auch nicht als 
 L_{[x]}\colon \mathbb R^{n\times m} \to \mathbb R^{n}\colon h\to L_{[x]} h = hx.
 \end{equation*}
 
-\leavevmode\hypertarget{Lx-not-LA}{}%
+\leavevmode\vadjust pre{\hypertarget{Lx-not-LA}{}}%
 \begin{JHSAYS}
 Weil hier an der Stelle \(A\) abgeleitet wird, sollte hier \(L(A)\) stehen. Da bei
 linearen Abbildung die Ableitung überall gleich ist, gilt \(L(A)\equiv L\)
@@ -3321,7 +3242,7 @@ Für das \emph{learning} wird zu Datenpunkten \((x, y) \in \mathbb R^{n_0}\times
 \begin{equation*}
 (A_1, A_2) \to l((x,y); A_1, A_2) = \|y-s(x)\|_2^2
 \end{equation*}
-bezüglich des Parameter``vektors'' \(p=(A_2, A_1)\) gesucht.
+bezüglich des Parameter''vektors'' \(p=(A_2, A_1)\) gesucht.
 
 Eine erste Anwendung der Kettenregel ergibt
 \begin{equation*}
@@ -3368,7 +3289,7 @@ von der letzten bis zur ersten \emph{layer} berechnet werden können.
 \hypertarget{praktische-berechnung-des-gradienten}{%
 \section{Praktische Berechnung des Gradienten}\label{praktische-berechnung-des-gradienten}}
 
-\leavevmode\hypertarget{grad-vs-jac}{}%
+\leavevmode\vadjust pre{\hypertarget{grad-vs-jac}{}}%
 \begin{JHSAYS}
 Im schönsten \emph{machine learning}-Sprech sagt Jan hier immer Gradient obwohl
 eher die Ableitung oder die Jacobi Matrix gemeint ist.
@@ -3431,7 +3352,7 @@ mit
 
 Jan könnte als grobe Einschätzung sagen:
 
-\leavevmode\hypertarget{ad-applications}{}%
+\leavevmode\vadjust pre{\hypertarget{ad-applications}{}}%
 \begin{JHSAYS}
 Die Eleganz und Effizienz von AD für Optimierungsanwendungen ist
 unbestritten. Dennoch bedeutet der Einsatz eine Abwägung von
@@ -3613,24 +3534,25 @@ Ein paar lose Beispiele wo Numerik und maschinelles Lernen sich treffen.
 \addcontentsline{toc}{chapter}{Referenzen}
 
 \hypertarget{refs}{}
-\begin{cslreferences}
-\leavevmode\hypertarget{ref-BolM04}{}%
-Bollhöfer, M., Mehrmann, V.: Numerische Mathematik. Eine projektorientierte Einführung für Ingenieure, Mathematiker und Naturwissenschaftler. Vieweg (2004)
+\begin{CSLReferences}{0}{0}
+\leavevmode\vadjust pre{\hypertarget{ref-BolM04}{}}%
+Bollhöfer, M., Mehrmann, V.: \href{https://doi.org/10.1007/978-3-322-80242-2}{Numerische {Mathematik}. {Eine} projektorientierte {Einf{ü}hrung} f{ü}r {Ingenieure}, {Mathematiker} und {Naturwissenschaftler}.} Vieweg (2004)
 
-\leavevmode\hypertarget{ref-Byr14}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-Byr14}{}}%
 Byrne, C.L.: Lecture notes on iterative optimization algorithms, \url{https://faculty.uml.edu/cbyrne/IOIPNotesOct2014.pdf}, (2014)
 
-\leavevmode\hypertarget{ref-KurZ05}{}%
-Kurdila, A.J., Zabarankin, M.: Convex functional analysis. Birkhäuser (2005)
+\leavevmode\vadjust pre{\hypertarget{ref-KurZ05}{}}%
+Kurdila, A.J., Zabarankin, M.: Convex functional analysis. {Birkhäuser} (2005)
 
-\leavevmode\hypertarget{ref-NocW06}{}%
-Nocedal, J., Wright, S.J.: Numerical optimization. Springer (2006)
+\leavevmode\vadjust pre{\hypertarget{ref-NocW06}{}}%
+Nocedal, J., Wright, S.J.: \href{https://doi.org/10.1007/978-0-387-40065-5}{Numerical optimization}. Springer (2006)
 
-\leavevmode\hypertarget{ref-RicW17}{}%
-Richter, T., Wick, T.: Einführung in die numerische Mathematik. Begriffe, Konzepte und zahlreiche Anwendungsbeispiele. Heidelberg: Springer Spektrum (2017)
+\leavevmode\vadjust pre{\hypertarget{ref-RicW17}{}}%
+Richter, T., Wick, T.: \href{https://doi.org/10.1007/978-3-662-54178-4}{Einf{ü}hrung in die numerische {Mathematik}. {Begriffe}, {Konzepte} und zahlreiche {Anwendungsbeispiele}}. Heidelberg: Springer Spektrum (2017)
 
-\leavevmode\hypertarget{ref-Tr09}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-Tr09}{}}%
 Tröltzsch, F.: Optimale steuerung partieller differentialgleichungen. Vieweg+Teubner, Wiesbaden, Germany (2009)
-\end{cslreferences}
+
+\end{CSLReferences}
 
 \end{document}
