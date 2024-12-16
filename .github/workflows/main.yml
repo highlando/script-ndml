@@ -18,7 +18,6 @@ jobs:
         run: |
           sudo apt install libcurl4-openssl-dev
           sudo apt install pandoc
-          sudo apt install pandoc-citeproc
           sudo apt install texlive-xetex
       - name: Cache Renv packages
         uses: actions/cache@v1
