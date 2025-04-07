@@ -20,14 +20,14 @@ jobs:
           sudo apt install pandoc
           sudo apt install texlive-xetex
       - name: Cache Renv packages
-        uses: actions/cache@v1
+        uses: actions/cache@v4
         with:
           path: $HOME/.local/share/renv
           key: r-${{ hashFiles('renv.lock') }}
           restore-keys: r-
 
       - name: Cache bookdown results
-        uses: actions/cache@v1
+        uses: actions/cache@v4
         with:
           path: _bookdown_files
           key: bookdown-${{ hashFiles('**/*Rmd') }}
