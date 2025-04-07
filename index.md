@@ -1,13 +1,13 @@
 --- 
 title: "Numerik des Maschinellen Lernens"
 author: "Jan Heiland"
-date: "TU Ilmenau -- Sommersemester 2024"
+date: "TU Ilmenau -- Sommersemester 2025"
 institute: "TU Ilmenau"
 site: bookdown::bookdown_site
 documentclass: book
 github-repo: highlando/script-ndml
 url: 'https\://www.janheiland.de/script-ndml/'
-description: "Vorlesungsnotizen zu meiner integrierten Vorlesung im SoSe 2024"
+description: "Vorlesungsnotizen zu meiner integrierten Vorlesung im SoSe 2025"
 urlcolor: purple
 bibliography: ["ndml.bib"]
 link-citations: true
