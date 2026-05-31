@@ -103,7 +103,6 @@ $j=1, \dotsc, N(\delta)$ finden, sodass
 \begin{equation*}
 f_N(x) = \sum_{j=1}^N f_j \chi_{I_j}(x)
 \end{equation*}
-:::
 mit den Indikatorfunktionen $\chi_{I_j}$ und mit 
 \begin{equation*}
 f_j = \frac 12 (\max_{\xi\in I_j}\{f(\xi)\}+\min_{\eta \in I_j}\{f(\eta)\})
@@ -188,6 +187,8 @@ eine klassische *linear layer* mit Aktivierung ist
 
 In dieser Darstellung, ist die Suche nach den Parametern f&uuml;r $g_M$ in den
 Standardroutinen von *ML* Paketen ohne weiteres m&ouml;glich.
+
+:::
 
 Wir schlie&szlig;en mit einigen allgemeinen Bemerkungen
 
