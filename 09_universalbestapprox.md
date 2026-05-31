@@ -101,7 +101,7 @@ Unterteilung von $(a, b]$ in $N(\delta)$ halboffene (bis auf das abgeschlossene
 "erste" Intervall, das $a$ enth&auml;lt) disjunkte Intervalle $I_j$,
 $j=1, \dotsc, N(\delta)$ finden, sodass
 \begin{equation*}
-f_N(x) = \sum_{j=1}^N\chi_{I_j}(x)
+f_N(x) = \sum_{j=1}^N f_j \chi_{I_j}(x)
 \end{equation*}
 :::
 mit den Indikatorfunktionen $\chi_{I_j}$ und mit 
