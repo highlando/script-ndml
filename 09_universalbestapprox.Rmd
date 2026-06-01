@@ -109,8 +109,9 @@ f_j = \frac 12 (\max_{\xi\in I_j}\{f(\xi)\}+\min_{\eta \in I_j}\{f(\eta)\})
 \end{equation*}
 eine Funktion aus $\PLab$ darstellt, die um maximal $\varepsilon$ von $f$
 abweicht. Au&szlig;erdem k&ouml;nnen wir damit sicherstellen, dass
-\begin{equation}(\#eq:eqn-fj-fjp-se)
+\begin{equation}
 |f_{j} - f_{j+1}| < \varepsilon,
+(\#eq:eqn-fj-fjp-se)
 \end{equation}
 f&uuml;r alle $j=1, \dotsc, N-1$ gilt, was im n&auml;chsten Schritt
 relevant wird.
