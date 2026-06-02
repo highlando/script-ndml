@@ -155,8 +155,9 @@ Im letzten Schritt 3 interpretieren wir die $g_M$ Approximation als ein neuronal
 Netz.
 
 Dazu bemerken wir, dass wir $g_M$ schreiben k&ouml;nnen als
-\begin{equation}(\#eq:eqn-gm-approx)
+\begin{equation}
 g_M(x) = c_0 + c^T \tanh(Ax+b)
+(\#eq:eqn-gm-approx)
 \end{equation}
 mit 
 \begin{equation*}
